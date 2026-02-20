@@ -1,44 +1,3 @@
-Skip to content
-ur12163008-bot
-yeter-game
-Repository navigation
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-1
- (1)
-Insights
-Settings
-Files
-Go to file
-t
-MINES.HTML
-bot.py
-dice.html
-index.html
-jackpot.html
-package.json
-server.js
-shop.html
-yeter-game
-/jackpot.html
-ur12163008-bot
-ur12163008-bot
-Update jackpot.html
-6f36034
- · 
-12 minutes ago
-yeter-game
-/jackpot.html
-
-Code
-
-Blame
-1248 lines (1087 loc) · 41 KB
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -817,6 +776,8 @@ Blame
         let roundInProgress = false;
         let timerInterval;
         let gameInterval;
+        let roundEndTime = null;
+        let timerStarted = false;
 
         // Получаем данные из Telegram
         if (tg) {
@@ -873,113 +834,143 @@ Blame
             }
         }
 
-        // Глобальное хранилище через localStorage (все видят всё)
-        const GameState = (function() {
-            const STATE_KEY = 'yeter_jackpot_state';
-            
-            let state = {
-                roundStartTime: null,
-                roundEndTime: null,
+        // ========== LIVE ОБНОВЛЕНИЯ ЧЕРЕЗ localStorage ==========
+        const STATE_KEY = 'yeter_jackpot_live';
+        
+        function getGameState() {
+            const saved = localStorage.getItem(STATE_KEY);
+            if (saved) {
+                try {
+                    return JSON.parse(saved);
+                } catch (e) {
+                    return createNewRound();
+                }
+            }
+            return createNewRound();
+        }
+        
+        function createNewRound() {
+            return {
                 players: [],
                 totalPot: 0,
-                roundInProgress: false,
                 roundActive: true,
                 timerStarted: false,
-                countdown: 15
+                roundEndTime: null
+            };
+        }
+        
+        function saveGameState(state) {
+            localStorage.setItem(STATE_KEY, JSON.stringify(state));
+        }
+
+        // Загружаем начальное состояние
+        let gameState = getGameState();
+        players = gameState.players || [];
+        roundActive = gameState.roundActive;
+        timerStarted = gameState.timerStarted;
+        roundEndTime = gameState.roundEndTime;
+
+        function addPlayer(player) {
+            players = players.filter(p => p.id !== player.id);
+            players.push(player);
+            
+            let total = players.reduce((sum, p) => sum + p.bet, 0);
+            
+            if (players.length >= 2 && !timerStarted && roundActive) {
+                timerStarted = true;
+                roundEndTime = Date.now() + 15000;
+            }
+            
+            gameState = {
+                players: players,
+                totalPot: total,
+                roundActive: roundActive,
+                timerStarted: timerStarted,
+                roundEndTime: roundEndTime
             };
             
-            function loadState() {
-                const saved = localStorage.getItem(STATE_KEY);
-                if (saved) {
-                    try {
-                        return JSON.parse(saved);
-                    } catch (e) {
-                        return createNewRound();
-                    }
-                }
-                return createNewRound();
-            }
+            saveGameState(gameState);
+            updateAllDisplays();
+        }
+
+        function startNewRound() {
+            players = [];
+            timerStarted = false;
+            roundEndTime = null;
+            roundActive = true;
             
-            function createNewRound() {
-                return {
-                    roundStartTime: null,
-                    roundEndTime: null,
-                    players: [],
-                    totalPot: 0,
-                    roundInProgress: false,
-                    roundActive: true,
-                    timerStarted: false,
-                    countdown: 15
-                };
-            }
-            
-            function saveState(newState) {
-                localStorage.setItem(STATE_KEY, JSON.stringify(newState));
-                state = newState;
-            }
-            
-            state = loadState();
-            
-            return {
-                getState: () => ({ ...state }),
-                
-                addPlayer: function(player) {
-                    state.players = state.players.filter(p => p.id !== player.id);
-                    state.players.push(player);
-                    state.totalPot = state.players.reduce((sum, p) => sum + p.bet, 0);
-                    
-                    if (state.players.length >= 2 && !state.timerStarted && !state.roundInProgress) {
-                        state.timerStarted = true;
-                        state.roundStartTime = Date.now();
-                        state.roundEndTime = Date.now() + 15000;
-                    }
-                    
-                    saveState(state);
-                },
-                
-                startNewRound: function() {
-                    state = {
-                        roundStartTime: null,
-                        roundEndTime: null,
-                        players: [],
-                        totalPot: 0,
-                        roundInProgress: false,
-                        roundActive: true,
-                        timerStarted: false,
-                        countdown: 15
-                    };
-                    saveState(state);
-                },
-                
-                setRoundInProgress: function(inProgress) {
-                    state.roundInProgress = inProgress;
-                    saveState(state);
-                },
-                
-                setRoundActive: function(active) {
-                    state.roundActive = active;
-                    saveState(state);
-                },
-                
-                getRemainingTime: function() {
-                    if (!state.timerStarted || !state.roundEndTime) return 0;
-                    return Math.max(0, Math.floor((state.roundEndTime - Date.now()) / 1000));
-                }
+            gameState = {
+                players: [],
+                totalPot: 0,
+                roundActive: true,
+                timerStarted: false,
+                roundEndTime: null
             };
-        })();
+            
+            saveGameState(gameState);
+            
+            const betBtn = document.getElementById('openBetBtn');
+            betBtn.classList.remove('disabled', 'waiting');
+            betBtn.innerText = 'СДЕЛАТЬ СТАВКУ';
+            
+            updateAllDisplays();
+        }
+
+        function pickWinner() {
+            roundActive = false;
+            
+            if (players.length === 0) {
+                setTimeout(startNewRound, 5000);
+                return;
+            }
+            
+            let lotteryPool = [];
+            players.forEach(p => {
+                for (let i = 0; i < p.bet; i++) {
+                    lotteryPool.push(p);
+                }
+            });
+            
+            const winner = lotteryPool[Math.floor(Math.random() * lotteryPool.length)];
+            
+            spinRoulette();
+            
+            setTimeout(() => {
+                if (winner && winner.id === userData.id) {
+                    const total = gameState.totalPot;
+                    const winNotif = document.getElementById('winNotification');
+                    winNotif.innerHTML = `🎉 ВЫИГРЫШ ${total} 🧩`;
+                    winNotif.classList.add('show');
+                    
+                    setTimeout(() => {
+                        winNotif.classList.remove('show');
+                    }, 5000);
+                }
+                
+                setTimeout(startNewRound, 3000);
+            }, 5000);
+        }
+
+        function spinRoulette() {
+            roundInProgress = true;
+            const roulette = document.getElementById('rouletteItems');
+            const spinDistance = 2500 + Math.random() * 2000;
+            
+            roulette.style.transition = 'left 5s cubic-bezier(0.25, 0.1, 0.2, 1)';
+            roulette.style.left = -spinDistance + 'px';
+        }
 
         function generateRouletteItems() {
-            const state = GameState.getState();
-            if (state.players.length === 0) return [];
+            if (players.length === 0) return [];
             
-            const total = state.totalPot;
+            const total = gameState.totalPot;
             const items = [];
             
             for (let i = 0; i < TOTAL_ROULETTE_ITEMS; i++) {
                 const randomValue = Math.random() * total;
                 let cumulative = 0;
                 
-                for (const player of state.players) {
+                for (const player of players) {
                     cumulative += player.bet;
                     if (randomValue < cumulative) {
                         items.push(player);
@@ -991,11 +982,11 @@ Blame
             return items;
         }
 
-        function updateStats() {
-            const state = GameState.getState();
-            document.getElementById('totalPot').innerText = state.totalPot;
+        function updateAllDisplays() {
+            // Обновляем статистику
+            document.getElementById('totalPot').innerText = gameState.totalPot;
             
-            const userPlayer = state.players.find(p => p.id === userData.id);
+            const userPlayer = players.find(p => p.id === userData.id);
             if (userPlayer) {
                 userBet = userPlayer.bet;
                 userHasBet = true;
@@ -1006,29 +997,43 @@ Blame
             
             document.getElementById('yourBet').innerText = userBet;
             
-            let winPercent = userBet > 0 ? ((userBet / state.totalPot) * 100).toFixed(1) : 0;
+            let winPercent = userBet > 0 ? ((userBet / gameState.totalPot) * 100).toFixed(1) : 0;
             document.getElementById('winPercent').innerText = winPercent;
             
+            // Обновляем таймер
             const timerEl = document.getElementById('rouletteTimer');
-            if (state.timerStarted) {
-                timerEl.innerText = GameState.getRemainingTime();
+            if (timerStarted && roundEndTime) {
+                const remaining = Math.max(0, Math.floor((roundEndTime - Date.now()) / 1000));
+                timerEl.innerText = remaining;
                 timerEl.classList.remove('waiting');
+                
+                if (remaining <= 0 && roundActive && !roundInProgress) {
+                    const betBtn = document.getElementById('openBetBtn');
+                    betBtn.classList.add('disabled');
+                    betBtn.classList.remove('waiting');
+                    pickWinner();
+                }
             } else {
                 timerEl.innerText = '0';
-                timerEl.classList.toggle('waiting', state.players.length >= 2);
+                timerEl.classList.toggle('waiting', players.length >= 2);
             }
+            
+            // Обновляем список игроков
+            updatePlayersList();
+            
+            // Обновляем рулетку
+            updateRoulette();
         }
 
         function updatePlayersList() {
             const listDiv = document.getElementById('playersList');
-            const state = GameState.getState();
             
-            if (state.players.length === 0) {
+            if (players.length === 0) {
                 listDiv.innerHTML = '<div class="no-players">ПОКА НЕТ СТАВОК</div>';
                 return;
             }
             
-            const sorted = [...state.players].sort((a, b) => b.bet - a.bet).slice(0, 10);
+            const sorted = [...players].sort((a, b) => b.bet - a.bet).slice(0, 10);
             
             listDiv.innerHTML = sorted.map(p => {
                 const displayName = p.firstName + (p.lastName ? ' ' + p.lastName : '');
@@ -1044,7 +1049,6 @@ Blame
                 </div>
             `}).join('');
             
-            // Устанавливаем аватарки после добавления в DOM
             sorted.forEach(p => {
                 const avatarEl = document.getElementById(`avatar-${p.id}`);
                 if (avatarEl) {
@@ -1055,9 +1059,8 @@ Blame
 
         function updateRoulette() {
             const roulette = document.getElementById('rouletteItems');
-            const state = GameState.getState();
             
-            if (state.players.length === 0) {
+            if (players.length === 0) {
                 roulette.innerHTML = '';
                 return;
             }
@@ -1074,97 +1077,12 @@ Blame
                 </div>
             `}).join('');
             
-            // Устанавливаем аватарки для элементов рулетки
             items.forEach((p, index) => {
                 const avatarEl = document.getElementById(`roulette-${p.id}-${index}`);
                 if (avatarEl) {
                     setPlayerAvatar(avatarEl, p);
                 }
             });
-        }
-
-        function pickWinner() {
-            GameState.setRoundActive(false);
-            
-            const state = GameState.getState();
-            
-            if (state.players.length === 0) {
-                setTimeout(startNewRound, 5000);
-                return;
-            }
-            
-            let lotteryPool = [];
-            state.players.forEach(p => {
-                for (let i = 0; i < p.bet; i++) {
-                    lotteryPool.push(p);
-                }
-            });
-            
-            const winner = lotteryPool[Math.floor(Math.random() * lotteryPool.length)];
-            
-            spinRoulette();
-            
-            setTimeout(() => {
-                if (winner && winner.id === userData.id) {
-                    const total = state.totalPot;
-                    // Здесь будет запрос к серверу на обновление баланса
-                    const winNotif = document.getElementById('winNotification');
-                    winNotif.innerHTML = `🎉 ВЫИГРЫШ ${total} 🧩`;
-                    winNotif.classList.add('show');
-                    
-                    setTimeout(() => {
-                        winNotif.classList.remove('show');
-                    }, 5000);
-                }
-                
-                setTimeout(startNewRound, 3000);
-            }, 5000);
-        }
-
-        function spinRoulette() {
-            GameState.setRoundInProgress(true);
-            const roulette = document.getElementById('rouletteItems');
-            const spinDistance = 2500 + Math.random() * 2000;
-            
-            roulette.style.transition = 'left 5s cubic-bezier(0.25, 0.1, 0.2, 1)';
-            roulette.style.left = -spinDistance + 'px';
-        }
-
-        function startNewRound() {
-            GameState.startNewRound();
-            
-            userBet = 0;
-            userHasBet = false;
-            
-            const roulette = document.getElementById('rouletteItems');
-            roulette.style.transition = 'none';
-            roulette.style.left = '0px';
-            
-            const betBtn = document.getElementById('openBetBtn');
-            betBtn.classList.remove('disabled', 'waiting');
-            betBtn.innerText = 'СДЕЛАТЬ СТАВКУ';
-            
-            updateStats();
-            updatePlayersList();
-            updateRoulette();
-        }
-
-        function startTimer() {
-            timerInterval = setInterval(() => {
-                const state = GameState.getState();
-                
-                if (state.timerStarted) {
-                    const remaining = GameState.getRemainingTime();
-                    document.getElementById('rouletteTimer').innerText = remaining;
-                    
-                    if (remaining <= 0 && state.roundActive && !state.roundInProgress) {
-                        const betBtn = document.getElementById('openBetBtn');
-                        betBtn.classList.add('disabled');
-                        betBtn.classList.remove('waiting');
-                        pickWinner();
-                    }
-                }
-            }, 1000);
         }
 
         // Инициализация модального окна
@@ -1176,9 +1094,7 @@ Blame
         const modalSubmit = document.getElementById('modalSubmitBtn');
         
         openBtn.addEventListener('click', () => {
-            const state = GameState.getState();
-            
-            if (!state.roundActive || state.roundInProgress || userHasBet) {
+            if (!roundActive || roundInProgress || userHasBet) {
                 return;
             }
             
@@ -1230,16 +1146,14 @@ Blame
                 return;
             }
             
-            const state = GameState.getState();
-            
-            if (!state.roundActive || state.roundInProgress || userHasBet) {
+            if (!roundActive || roundInProgress || userHasBet) {
                 modal.classList.remove('active');
                 modalError.innerText = '';
                 return;
             }
             
             // Добавляем игрока с полными данными
-            GameState.addPlayer({
+            addPlayer({
                 id: userData.id,
                 firstName: userData.firstName,
                 lastName: userData.lastName,
@@ -1254,10 +1168,6 @@ Blame
             openBtn.classList.add('waiting');
             openBtn.innerText = 'ОЖИДАНИЕ РАУНДА';
             
-            updateStats();
-            updatePlayersList();
-            updateRoulette();
-            
             modal.classList.remove('active');
             modalError.innerText = '';
         });
@@ -1266,25 +1176,42 @@ Blame
             alert('Пополнение будет доступно позже');
         });
 
-        // Обновление каждые 500мс (все видят всё)
+        // Обновление каждые 200мс (ВСЕ ВИДЯТ ВСЁ МГНОВЕННО)
         setInterval(() => {
-            const state = GameState.getState();
-            if (modal.classList.contains('active') && (!state.roundActive || state.roundInProgress)) {
+            // Проверяем изменения в localStorage
+            const currentState = getGameState();
+            if (JSON.stringify(currentState) !== JSON.stringify(gameState)) {
+                gameState = currentState;
+                players = gameState.players || [];
+                timerStarted = gameState.timerStarted;
+                roundEndTime = gameState.roundEndTime;
+                roundActive = gameState.roundActive;
+                
+                // Обновляем кнопку если пользователь уже сделал ставку
+                const userPlayer = players.find(p => p.id === userData.id);
+                if (userPlayer) {
+                    userHasBet = true;
+                    userBet = userPlayer.bet;
+                    openBtn.classList.add('waiting');
+                    openBtn.innerText = 'ОЖИДАНИЕ РАУНДА';
+                } else {
+                    userHasBet = false;
+                    userBet = 0;
+                    openBtn.classList.remove('waiting');
+                    openBtn.innerText = 'СДЕЛАТЬ СТАВКУ';
+                }
+                
+                updateAllDisplays();
+            }
+            
+            if (modal.classList.contains('active') && (!roundActive || roundInProgress)) {
                 modal.classList.remove('active');
                 modalError.innerText = '';
             }
-            
-            updateStats();
-            updatePlayersList();
-            updateRoulette();
-        }, 500);
+        }, 200);
 
-        // Запуск
-        startTimer();
-        updateStats();
-        updatePlayersList();
-        updateRoulette();
+        // Первое обновление
+        updateAllDisplays();
     </script>
 </body>
 </html>
- 
