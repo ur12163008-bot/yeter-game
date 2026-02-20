@@ -1,133 +1,120 @@
 const express = require('express');
-const TelegramBot = require('node-telegram-bot-api');
-const sqlite3 = require('sqlite3').verbose();
+const http = require('http');
+const WebSocket = require('ws');
 const path = require('path');
 
 const app = express();
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
+
 const PORT = process.env.PORT || 3000;
 
-// Токен бота
-const BOT_TOKEN = process.env.BOT_TOKEN || '8259804573:AAGGkoqbU9iyyp5o5vkgFX7mdx44i5LfwaQ';
+// Хранилище ставок (все видят всё)
+let currentRound = {
+    players: [],
+    totalPot: 0,
+    roundActive: true,
+    timerStarted: false,
+    roundEndTime: null
+};
 
-// ========== БОТ БЕЗ POLLING (ТОЛЬКО WEBHOOK) ==========
-const bot = new TelegramBot(BOT_TOKEN);
-const WEBHOOK_URL = process.env.RENDER_EXTERNAL_URL 
-  ? `${process.env.RENDER_EXTERNAL_URL}/webhook` 
-  : `https://yeter-game.onrender.com/webhook`;
+// Раздаем статику
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Устанавливаем вебхук
-bot.setWebHook(WEBHOOK_URL).then(() => {
-  console.log(`✅ Webhook установлен на ${WEBHOOK_URL}`);
-}).catch(err => {
-  console.error('❌ Ошибка установки webhook:', err.message);
-});
-
-// ========== БАЗА ДАННЫХ ==========
-const db = new sqlite3.Database('./game.db');
-
-db.serialize(() => {
-  db.run(`CREATE TABLE IF NOT EXISTS players (
-    telegram_id INTEGER PRIMARY KEY,
-    username TEXT,
-    first_name TEXT,
-    avatar_url TEXT,
-    balance INTEGER DEFAULT 10000,
-    last_active DATETIME
-  )`);
-});
-
-// ========== MIDDLEWARE ==========
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname));
-
-// ========== API ==========
-app.get('/api/player/:telegramId', (req, res) => {
-  const telegramId = req.params.telegramId;
-  
-  db.get('SELECT * FROM players WHERE telegram_id = ?', [telegramId], (err, player) => {
-    if (err) {
-      res.status(500).json({ error: 'Database error' });
-      return;
-    }
+// WebSocket соединения
+wss.on('connection', (ws) => {
+    console.log('Новый клиент подключился');
     
-    if (player) {
-      res.json(player);
-    } else {
-      const newPlayer = {
-        telegram_id: telegramId,
-        username: `user_${telegramId}`,
-        first_name: 'Player',
-        avatar_url: null,
-        balance: 10000,
-        last_active: new Date().toISOString()
-      };
-      
-      db.run(`INSERT INTO players (telegram_id, username, first_name, avatar_url, balance, last_active)
-        VALUES (?, ?, ?, ?, ?, ?)`,
-        [telegramId, newPlayer.username, newPlayer.first_name, newPlayer.avatar_url, 10000, new Date().toISOString()]);
-      
-      res.json(newPlayer);
-    }
-  });
-});
+    // Отправляем текущее состояние новому клиенту
+    ws.send(JSON.stringify({
+        type: 'init',
+        data: currentRound
+    }));
 
-app.post('/api/update-balance', (req, res) => {
-  const { telegramId, newBalance } = req.body;
-  
-  db.run(`UPDATE players SET balance = ?, last_active = ? WHERE telegram_id = ?`,
-    [newBalance, new Date().toISOString(), telegramId], function(err) {
-      if (err) {
-        res.status(500).json({ error: 'Failed to update balance' });
-      } else {
-        res.json({ success: true });
-      }
+    // Получаем сообщения от клиента
+    ws.on('message', (message) => {
+        try {
+            const data = JSON.parse(message);
+            
+            if (data.type === 'newBet') {
+                // Добавляем ставку
+                const existingIndex = currentRound.players.findIndex(p => p.id === data.player.id);
+                if (existingIndex !== -1) {
+                    currentRound.players[existingIndex] = data.player;
+                } else {
+                    currentRound.players.push(data.player);
+                }
+                
+                // Пересчитываем общий банк
+                currentRound.totalPot = currentRound.players.reduce((sum, p) => sum + p.bet, 0);
+                
+                // Запускаем таймер если есть 2+ игрока
+                if (currentRound.players.length >= 2 && !currentRound.timerStarted) {
+                    currentRound.timerStarted = true;
+                    currentRound.roundEndTime = Date.now() + 15000; // 15 секунд
+                }
+                
+                // Рассылаем ВСЕМ клиентам обновление
+                broadcast({
+                    type: 'update',
+                    data: currentRound
+                });
+            }
+            
+            if (data.type === 'roundEnd') {
+                // Выбираем победителя
+                const winner = pickWinner(currentRound.players);
+                
+                broadcast({
+                    type: 'winner',
+                    winner: winner,
+                    totalPot: currentRound.totalPot
+                });
+                
+                // Новый раунд через 5 секунд
+                setTimeout(() => {
+                    currentRound = {
+                        players: [],
+                        totalPot: 0,
+                        roundActive: true,
+                        timerStarted: false,
+                        roundEndTime: null
+                    };
+                    
+                    broadcast({
+                        type: 'newRound',
+                        data: currentRound
+                    });
+                }, 5000);
+            }
+            
+        } catch (e) {
+            console.error('Ошибка:', e);
+        }
     });
 });
 
-// ========== ВЕБХУК ==========
-app.post('/webhook', (req, res) => {
-  try {
-    bot.processUpdate(req.body);
-    res.sendStatus(200);
-  } catch (error) {
-    console.error('Webhook error:', error.message);
-    res.sendStatus(200);
-  }
+// Функция рассылки всем
+function broadcast(data) {
+    wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(data));
+        }
+    });
+}
+
+// Выбор победителя (чем больше ставка, тем выше шанс)
+function pickWinner(players) {
+    let pool = [];
+    players.forEach(p => {
+        for (let i = 0; i < p.bet; i++) {
+            pool.push(p);
+        }
+    });
+    return pool[Math.floor(Math.random() * pool.length)];
+}
+
+server.listen(PORT, () => {
+    console.log(`Сервер запущен на порту ${PORT}`);
+    console.log(`WebSocket: ws://localhost:${PORT}`);
 });
-
-// ========== КОМАНДЫ БОТА ==========
-bot.onText(/\/start/, (msg) => {
-  const chatId = msg.chat.id;
-  const userId = msg.from.id;
-  const firstName = msg.from.first_name || 'Player';
-  
-  bot.sendMessage(chatId, 
-    `🎮 Добро пожаловать в YETER GAMES, ${firstName}!\n\n` +
-    `💰 Твой баланс: 10000 🧩\n` +
-    `👇 Нажми кнопку, чтобы начать игру:`, {
-    reply_markup: {
-      inline_keyboard: [[
-        { text: '🎰 Джекпот', web_app: { url: `https://yeter-game.onrender.com/index.html?user=${userId}` } }
-      ]]
-    }
-  });
-});
-
-bot.onText(/\/balance/, (msg) => {
-  const chatId = msg.chat.id;
-  const userId = msg.from.id;
-  
-  db.get('SELECT balance FROM players WHERE telegram_id = ?', [userId], (err, player) => {
-    const balance = player ? player.balance : 10000;
-    bot.sendMessage(chatId, `💰 Твой баланс: ${balance} 🧩`);
-  });
-});
-
-// ========== ЗАПУСК ==========
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Сервер запущен на порту ${PORT}`);
-  console.log(`✅ Webhook URL: ${WEBHOOK_URL}`);
-});
-
-
