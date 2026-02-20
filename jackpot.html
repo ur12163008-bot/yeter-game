@@ -31,6 +31,27 @@
             z-index: -2;
         }
 
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 15px 60px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+                radial-gradient(1.2px 1.2px at 72px 430px, rgba(255,245,200,0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 250px 120px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
+                radial-gradient(1.8px 1.8px at 120px 550px, rgba(210,230,255,0.9), rgba(0,0,0,0)),
+                radial-gradient(1.3px 1.3px at 380px 200px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 780px, rgba(200,220,255,0.7), rgba(0,0,0,0)),
+                radial-gradient(1.6px 1.6px at 310px 640px, rgba(255,255,240,0.8), rgba(0,0,0,0)),
+                radial-gradient(1.1px 1.1px at 190px 890px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 420px 350px, rgba(180,200,255,0.9), rgba(0,0,0,0)),
+                radial-gradient(1.4px 1.4px at 80px 920px, rgba(255,255,255,0.8), rgba(0,0,0,0));
+            background-size: 500px 1000px;
+            background-repeat: repeat;
+            opacity: 0.6;
+            z-index: -1;
+        }
+
         .app {
             max-width: 440px;
             width: 100%;
@@ -226,16 +247,19 @@
         .avatar {
             width: 48px;
             height: 48px;
-            background: linear-gradient(145deg, #1e1a2a, #12101a);
-            border-radius: 18px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #6a0dad, #4b0082);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
-            color: #b87aff;
-            border: 2px solid #9b4dff;
+            color: white;
+            border: 2px solid #b87aff;
             flex-shrink: 0;
+            object-fit: cover;
+            background-size: cover;
+            background-position: center;
         }
 
         .nick-level {
@@ -246,8 +270,8 @@
         }
 
         .nick {
-            font-size: 18px;
-            font-weight: 800;
+            font-size: 16px;
+            font-weight: 700;
             color: white;
             white-space: nowrap;
             overflow: hidden;
@@ -262,21 +286,21 @@
 
         .level-badge {
             background: linear-gradient(145deg, #6a0dad, #4b0082);
-            width: 28px;
-            height: 28px;
-            border-radius: 10px;
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 900;
             color: white;
-            box-shadow: 0 4px 0 #2d0b4e;
+            box-shadow: 0 3px 0 #2d0b4e;
         }
 
         .progress-wrap {
-            width: 70px;
-            height: 8px;
+            width: 60px;
+            height: 6px;
             background: rgba(30, 38, 48, 0.8);
             border-radius: 20px;
             overflow: hidden;
@@ -292,13 +316,13 @@
 
         .next-level {
             background: rgba(42, 30, 58, 0.9);
-            width: 28px;
-            height: 28px;
-            border-radius: 10px;
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 900;
             color: #b87aff;
             border: 1px solid rgba(155, 77, 255, 0.4);
@@ -309,7 +333,7 @@
             align-items: center;
             gap: 8px;
             background: rgba(10, 14, 22, 0.9);
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: 40px;
             border: 1px solid rgba(138, 43, 226, 0.5);
         }
@@ -317,15 +341,15 @@
         .balance-stars {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-weight: 900;
-            font-size: 18px;
+            gap: 4px;
+            font-weight: 800;
+            font-size: 16px;
             color: white;
         }
 
         .puzzle-icon {
             color: #ffd700;
-            font-size: 18px;
+            font-size: 16px;
             filter: drop-shadow(0 0 5px #ffaa00);
         }
 
@@ -333,13 +357,13 @@
             background: rgba(106, 13, 173, 0.4);
             border: 2px solid rgba(138, 43, 226, 0.5);
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #b87aff;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.1s;
@@ -388,21 +412,21 @@
         }
 
         .stat-label {
-            font-size: 14px;
+            font-size: 13px;
             color: #8e98a3;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             font-weight: 600;
         }
 
         .stat-value {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 800;
             color: #b87aff;
             line-height: 1.2;
         }
 
         .stat-value-large {
-            font-size: 32px;
+            font-size: 30px;
         }
 
         .roulette-container {
@@ -418,7 +442,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .timer {
@@ -446,7 +470,7 @@
             border-radius: 40px;
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(138, 43, 226, 0.4);
-            margin-top: 15px;
+            margin-top: 10px;
         }
 
         .pointer-container {
@@ -477,7 +501,7 @@
             top: 0;
             height: 100%;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             padding: 0 20px;
             transition: left 5s cubic-bezier(0.25, 0.1, 0.2, 1);
             will-change: left;
@@ -487,40 +511,43 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: rgba(20, 25, 35, 0.95);
             border: 2px solid rgba(155, 77, 255, 0.6);
-            border-radius: 30px;
-            padding: 12px 15px;
-            min-width: 100px;
-            box-shadow: 0 6px 0 #1a1428;
+            border-radius: 25px;
+            padding: 10px 12px;
+            min-width: 90px;
+            box-shadow: 0 4px 0 #1a1428;
         }
 
         .roulette-avatar {
-            width: 48px;
-            height: 48px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: linear-gradient(145deg, #6a0dad, #4b0082);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 22px;
+            font-size: 18px;
             color: white;
             border: 2px solid #b87aff;
+            object-fit: cover;
+            background-size: cover;
+            background-position: center;
         }
 
         .roulette-bet {
             font-weight: 700;
             color: #b87aff;
-            font-size: 16px;
+            font-size: 15px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
 
         .roulette-bet .puzzle-icon {
-            font-size: 14px;
+            font-size: 12px;
         }
 
         .players-container {
@@ -536,8 +563,8 @@
             justify-content: space-between;
             color: #b87aff;
             font-weight: 700;
-            margin-bottom: 20px;
-            font-size: 16px;
+            margin-bottom: 15px;
+            font-size: 15px;
             letter-spacing: 0.5px;
         }
 
@@ -545,37 +572,40 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 0;
+            padding: 12px 0;
             border-bottom: 1px solid rgba(138, 43, 226, 0.3);
         }
 
         .player-info {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             overflow: hidden;
             flex: 1;
         }
 
         .player-avatar-small {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: linear-gradient(145deg, #6a0dad, #4b0082);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 16px;
             color: white;
             border: 2px solid #b87aff;
             flex-shrink: 0;
+            object-fit: cover;
+            background-size: cover;
+            background-position: center;
         }
 
         .player-name-small {
             font-weight: 600;
             color: white;
-            font-size: 15px;
+            font-size: 14px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -584,7 +614,7 @@
         .player-bet-small {
             font-weight: 700;
             color: #b87aff;
-            font-size: 16px;
+            font-size: 15px;
             display: flex;
             align-items: center;
             gap: 4px;
@@ -594,8 +624,8 @@
         .no-players {
             text-align: center;
             color: #8e98a3;
-            padding: 40px;
-            font-size: 15px;
+            padding: 30px;
+            font-size: 14px;
         }
 
         .bet-button-container {
@@ -606,20 +636,20 @@
             background: linear-gradient(145deg, #9b4dff, #6a0dad);
             border: none;
             border-radius: 60px;
-            padding: 20px;
+            padding: 18px;
             width: 100%;
             color: white;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 10px 0 #2d0b4e;
+            box-shadow: 0 8px 0 #2d0b4e;
             transition: all 0.1s;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
 
         .open-bet-btn:active {
-            transform: translateY(10px);
+            transform: translateY(8px);
             box-shadow: none;
         }
 
@@ -627,7 +657,7 @@
             opacity: 0.5;
             pointer-events: none;
             transform: none;
-            box-shadow: 0 5px 0 #2d0b4e;
+            box-shadow: 0 4px 0 #2d0b4e;
             background: linear-gradient(145deg, #666, #444);
         }
 
@@ -635,7 +665,7 @@
             opacity: 0.5;
             pointer-events: none;
             transform: none;
-            box-shadow: 0 5px 0 #2d0b4e;
+            box-shadow: 0 4px 0 #2d0b4e;
             background: linear-gradient(145deg, #666, #444);
         }
     </style>
@@ -664,9 +694,9 @@
     <div class="app">
         <div class="profile-header">
             <div class="profile-left">
-                <div class="avatar" id="avatar">P</div>
+                <div class="avatar" id="avatar"></div>
                 <div class="nick-level">
-                    <div class="nick" id="nickname">@player</div>
+                    <div class="nick" id="nickname">Загрузка...</div>
                     <div class="level-row">
                         <div class="level-badge" id="levelNumber">1</div>
                         <div class="progress-wrap">
@@ -687,16 +717,16 @@
 
         <div class="stats-container">
             <div class="stat-block stat-block-top">
-                <div class="stat-label">Общий банк</div>
+                <div class="stat-label">ОБЩИЙ БАНК</div>
                 <div class="stat-value stat-value-large" id="totalPot">0</div>
             </div>
             <div class="stat-block stat-block-bottom">
                 <div class="stat-block-item">
-                    <div class="stat-label">% выигрыша</div>
+                    <div class="stat-label">% ВЫИГРЫША</div>
                     <div class="stat-value" id="winPercent">0</div>
                 </div>
                 <div class="stat-block-item">
-                    <div class="stat-label">Ваша ставка</div>
+                    <div class="stat-label">ВАША СТАВКА</div>
                     <div class="stat-value" id="yourBet">0</div>
                 </div>
             </div>
@@ -729,14 +759,80 @@
 
     <script>
         const tg = window.Telegram?.WebApp;
+        const TOTAL_ROULETTE_ITEMS = 50;
+        
+        let userData = {
+            id: null,
+            firstName: '',
+            lastName: '',
+            username: '',
+            avatarUrl: null
+        };
+        
+        let players = [];
+        let userBet = 0;
+        let userHasBet = false;
+        let roundActive = true;
+        let roundInProgress = false;
+        let timerInterval;
+        let gameInterval;
+
+        // Получаем данные из Telegram
         if (tg) {
             tg.ready();
             tg.expand();
+            
+            const user = tg.initDataUnsafe?.user;
+            if (user) {
+                userData.id = user.id;
+                userData.firstName = user.first_name || '';
+                userData.lastName = user.last_name || '';
+                userData.username = user.username || '';
+                
+                // Формируем полное имя
+                let fullName = userData.firstName;
+                if (userData.lastName) {
+                    fullName += ' ' + userData.lastName;
+                }
+                document.getElementById('nickname').innerText = fullName;
+                
+                // Пробуем получить аватарку
+                if (user.photo_url) {
+                    userData.avatarUrl = user.photo_url;
+                    setAvatar(user.photo_url);
+                } else {
+                    // Если нет аватарки - показываем первую букву имени
+                    setInitialsAvatar(userData.firstName.charAt(0).toUpperCase());
+                }
+            }
         }
 
-        const TOTAL_ROULETTE_ITEMS = 50; // Всегда 50 рамок в рулетке
+        function setAvatar(url) {
+            const avatarEl = document.getElementById('avatar');
+            avatarEl.style.backgroundImage = `url(${url})`;
+            avatarEl.style.backgroundColor = 'transparent';
+            avatarEl.innerText = '';
+        }
 
-        // Глобальное хранилище
+        function setInitialsAvatar(initial) {
+            const avatarEl = document.getElementById('avatar');
+            avatarEl.style.backgroundImage = 'none';
+            avatarEl.style.backgroundColor = '';
+            avatarEl.innerText = initial;
+        }
+
+        function setPlayerAvatar(element, player) {
+            if (player.avatarUrl) {
+                element.style.backgroundImage = `url(${player.avatarUrl})`;
+                element.style.backgroundColor = 'transparent';
+                element.innerText = '';
+            } else {
+                element.style.backgroundImage = 'none';
+                element.innerText = (player.firstName || player.username || '?').charAt(0).toUpperCase();
+            }
+        }
+
+        // Глобальное хранилище через localStorage (все видят всё)
         const GameState = (function() {
             const STATE_KEY = 'yeter_jackpot_state';
             
@@ -755,11 +851,7 @@
                 const saved = localStorage.getItem(STATE_KEY);
                 if (saved) {
                     try {
-                        const parsed = JSON.parse(saved);
-                        if (parsed.roundEndTime && parsed.roundEndTime < Date.now()) {
-                            return createNewRound();
-                        }
-                        return parsed;
+                        return JSON.parse(saved);
                     } catch (e) {
                         return createNewRound();
                     }
@@ -768,7 +860,7 @@
             }
             
             function createNewRound() {
-                const newRound = {
+                return {
                     roundStartTime: null,
                     roundEndTime: null,
                     players: [],
@@ -778,8 +870,6 @@
                     timerStarted: false,
                     countdown: 15
                 };
-                localStorage.setItem(STATE_KEY, JSON.stringify(newRound));
-                return newRound;
             }
             
             function saveState(newState) {
@@ -801,19 +891,6 @@
                         state.timerStarted = true;
                         state.roundStartTime = Date.now();
                         state.roundEndTime = Date.now() + 15000;
-                    }
-                    
-                    saveState(state);
-                },
-                
-                removePlayer: function(playerId) {
-                    state.players = state.players.filter(p => p.id !== playerId);
-                    state.totalPot = state.players.reduce((sum, p) => sum + p.bet, 0);
-                    
-                    if (state.players.length < 2 && state.timerStarted) {
-                        state.timerStarted = false;
-                        state.roundStartTime = null;
-                        state.roundEndTime = null;
                     }
                     
                     saveState(state);
@@ -845,114 +922,19 @@
                 
                 getRemainingTime: function() {
                     if (!state.timerStarted || !state.roundEndTime) return 0;
-                    const remaining = Math.max(0, Math.floor((state.roundEndTime - Date.now()) / 1000));
-                    return remaining;
-                },
-                
-                isTimerStarted: function() {
-                    return state.timerStarted;
+                    return Math.max(0, Math.floor((state.roundEndTime - Date.now()) / 1000));
                 }
             };
         })();
-
-        const Storage = (function() {
-            let _data = JSON.parse(localStorage.getItem('yeter_user_data')) || {
-                stars: 10000,
-                level: 1,
-                exp: 0,
-                expToNext: 1000,
-                gifts: [],
-                games: {},
-                transactions: []
-            };
-            
-            function _save() {
-                localStorage.setItem('yeter_user_data', JSON.stringify(_data));
-            }
-            
-            return {
-                getStars: () => _data.stars,
-                getLevel: () => _data.level,
-                getExp: () => _data.exp,
-                getExpToNext: () => _data.expToNext,
-                
-                updateStars: function(amount, reason) {
-                    if (_data.stars + amount < 0) return false;
-                    _data.stars += amount;
-                    _data.transactions.push({ amount, reason, time: Date.now(), balance: _data.stars });
-                    _save();
-                    document.getElementById('balanceDisplay').innerText = _data.stars;
-                    return true;
-                },
-                
-                addGameResult: function(game, result) {
-                    if (!_data.games[game]) _data.games[game] = [];
-                    _data.games[game].push(result);
-                    _save();
-                },
-                
-                addExp: function(amount) {
-                    _data.exp += amount;
-                    while (_data.exp >= _data.expToNext) {
-                        _data.exp -= _data.expToNext;
-                        _data.level++;
-                        _data.expToNext = Math.floor(_data.expToNext * 1.5);
-                    }
-                    _save();
-                    updateLevelDisplay();
-                }
-            };
-        })();
-
-        function updateLevelDisplay() {
-            document.getElementById('levelNumber').innerText = Storage.getLevel();
-            document.getElementById('nextLevel').innerText = Storage.getLevel() + 1;
-            const progress = (Storage.getExp() / Storage.getExpToNext()) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-        }
-        updateLevelDisplay();
-        document.getElementById('balanceDisplay').innerText = Storage.getStars();
-
-        document.getElementById('addBalanceBtn').addEventListener('click', () => {
-            Storage.updateStars(1000, 'Пополнение');
-        });
-
-        let userBet = 0;
-        let userHasBet = false;
-        let winner = null;
-        let userData = null;
-
-        const user = tg?.initDataUnsafe?.user;
-        if (user) {
-            const name = user.username || (user.first_name || '').toLowerCase() || 'player';
-            const firstChar = (user.first_name || 'P').charAt(0).toUpperCase();
-            document.getElementById('avatar').innerText = firstChar;
-            document.getElementById('nickname').innerText = '@' + name;
-            
-            userData = {
-                id: user.id || Date.now(),
-                name: '@' + name,
-                avatar: firstChar
-            };
-        } else {
-            userData = {
-                id: Date.now(),
-                name: '@player',
-                avatar: 'P'
-            };
-        }
 
         function generateRouletteItems() {
             const state = GameState.getState();
-            const items = [];
-            
             if (state.players.length === 0) return [];
             
-            // Распределяем 50 рамок между игроками пропорционально их ставкам
             const total = state.totalPot;
+            const items = [];
             
             for (let i = 0; i < TOTAL_ROULETTE_ITEMS; i++) {
-                // Случайный выбор игрока с учётом веса (чем больше ставка, тем чаще выпадает)
                 const randomValue = Math.random() * total;
                 let cumulative = 0;
                 
@@ -983,22 +965,16 @@
             
             document.getElementById('yourBet').innerText = userBet;
             
-            // Реальный процент выигрыша
-            let winPercent = userBet > 0 ? ((userBet / state.totalPot) * 100) : 0;
-            document.getElementById('winPercent').innerText = winPercent.toFixed(1);
+            let winPercent = userBet > 0 ? ((userBet / state.totalPot) * 100).toFixed(1) : 0;
+            document.getElementById('winPercent').innerText = winPercent;
             
             const timerEl = document.getElementById('rouletteTimer');
             if (state.timerStarted) {
-                const remaining = GameState.getRemainingTime();
-                timerEl.innerText = remaining;
+                timerEl.innerText = GameState.getRemainingTime();
                 timerEl.classList.remove('waiting');
             } else {
                 timerEl.innerText = '0';
-                if (state.players.length >= 2) {
-                    timerEl.classList.add('waiting');
-                } else {
-                    timerEl.classList.remove('waiting');
-                }
+                timerEl.classList.toggle('waiting', state.players.length >= 2);
             }
         }
 
@@ -1013,17 +989,27 @@
             
             const sorted = [...state.players].sort((a, b) => b.bet - a.bet).slice(0, 10);
             
-            listDiv.innerHTML = sorted.map(p => `
+            listDiv.innerHTML = sorted.map(p => {
+                const displayName = p.firstName + (p.lastName ? ' ' + p.lastName : '');
+                return `
                 <div class="player-row">
                     <div class="player-info">
-                        <div class="player-avatar-small">${p.avatar}</div>
-                        <span class="player-name-small">${p.name}</span>
+                        <div class="player-avatar-small" id="avatar-${p.id}"></div>
+                        <span class="player-name-small">${displayName}</span>
                     </div>
                     <div class="player-bet-small">
                         ${p.bet} <span class="puzzle-icon">🧩</span>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
+            
+            // Устанавливаем аватарки после добавления в DOM
+            sorted.forEach(p => {
+                const avatarEl = document.getElementById(`avatar-${p.id}`);
+                if (avatarEl) {
+                    setPlayerAvatar(avatarEl, p);
+                }
+            });
         }
 
         function updateRoulette() {
@@ -1037,45 +1023,23 @@
             
             const items = generateRouletteItems();
             
-            roulette.innerHTML = items.map(p => `
+            roulette.innerHTML = items.map((p, index) => {
+                return `
                 <div class="roulette-item" data-id="${p.id}">
-                    <div class="roulette-avatar">${p.avatar}</div>
+                    <div class="roulette-avatar" id="roulette-${p.id}-${index}"></div>
                     <div class="roulette-bet">
                         ${p.bet} <span class="puzzle-icon">🧩</span>
                     </div>
                 </div>
-            `).join('');
-        }
-
-        function showWinNotification(amount) {
-            const notif = document.getElementById('winNotification');
-            notif.innerHTML = `🎉 ВЫИГРЫШ ${amount} 🧩`;
-            notif.classList.add('show');
+            `}).join('');
             
-            setTimeout(() => {
-                notif.classList.remove('show');
-            }, 5000);
-        }
-
-        function calculateSpinDistance() {
-            const state = GameState.getState();
-            const total = state.totalPot;
-            const userChance = userBet > 0 ? (userBet / total) : 0;
-            
-            const baseDistance = 2500;
-            const chanceInfluence = userChance * 2000;
-            const randomFactor = Math.random() * 1500;
-            
-            return baseDistance + chanceInfluence + randomFactor;
-        }
-
-        function spinRoulette() {
-            GameState.setRoundInProgress(true);
-            const roulette = document.getElementById('rouletteItems');
-            const spinDistance = calculateSpinDistance();
-            
-            roulette.style.transition = 'left 5s cubic-bezier(0.25, 0.1, 0.2, 1)';
-            roulette.style.left = -spinDistance + 'px';
+            // Устанавливаем аватарки для элементов рулетки
+            items.forEach((p, index) => {
+                const avatarEl = document.getElementById(`roulette-${p.id}-${index}`);
+                if (avatarEl) {
+                    setPlayerAvatar(avatarEl, p);
+                }
+            });
         }
 
         function pickWinner() {
@@ -1095,20 +1059,34 @@
                 }
             });
             
-            winner = lotteryPool[Math.floor(Math.random() * lotteryPool.length)];
+            const winner = lotteryPool[Math.floor(Math.random() * lotteryPool.length)];
             
             spinRoulette();
             
             setTimeout(() => {
                 if (winner && winner.id === userData.id) {
                     const total = state.totalPot;
-                    Storage.updateStars(total, 'Выигрыш в джекпоте');
-                    Storage.addExp(100);
-                    showWinNotification(total);
+                    // Здесь будет запрос к серверу на обновление баланса
+                    const winNotif = document.getElementById('winNotification');
+                    winNotif.innerHTML = `🎉 ВЫИГРЫШ ${total} 🧩`;
+                    winNotif.classList.add('show');
+                    
+                    setTimeout(() => {
+                        winNotif.classList.remove('show');
+                    }, 5000);
                 }
                 
                 setTimeout(startNewRound, 3000);
             }, 5000);
+        }
+
+        function spinRoulette() {
+            GameState.setRoundInProgress(true);
+            const roulette = document.getElementById('rouletteItems');
+            const spinDistance = 2500 + Math.random() * 2000;
+            
+            roulette.style.transition = 'left 5s cubic-bezier(0.25, 0.1, 0.2, 1)';
+            roulette.style.left = -spinDistance + 'px';
         }
 
         function startNewRound() {
@@ -1116,7 +1094,6 @@
             
             userBet = 0;
             userHasBet = false;
-            winner = null;
             
             const roulette = document.getElementById('rouletteItems');
             roulette.style.transition = 'none';
@@ -1132,7 +1109,7 @@
         }
 
         function startTimer() {
-            const timerInterval = setInterval(() => {
+            timerInterval = setInterval(() => {
                 const state = GameState.getState();
                 
                 if (state.timerStarted) {
@@ -1149,6 +1126,7 @@
             }, 1000);
         }
 
+        // Инициализация модального окна
         const modal = document.getElementById('betModal');
         const openBtn = document.getElementById('openBetBtn');
         const closeBtn = document.getElementById('closeModal');
@@ -1178,30 +1156,15 @@
             }
         });
 
-        setInterval(() => {
-            const state = GameState.getState();
-            if (modal.classList.contains('active') && (!state.roundActive || state.roundInProgress)) {
-                modal.classList.remove('active');
-                modalError.innerText = '';
-            }
-            
-            updateStats();
-            updatePlayersList();
-            updateRoulette();
-        }, 500);
-
         document.getElementById('modalHalfBtn').addEventListener('click', () => {
             let val = parseInt(modalBetInput.value) || 100;
-            val = Math.max(10, Math.floor(val / 2));
-            modalBetInput.value = val;
+            modalBetInput.value = Math.max(10, Math.floor(val / 2));
         });
 
         document.getElementById('modalDoubleBtn').addEventListener('click', () => {
             let val = parseInt(modalBetInput.value) || 100;
             let max = 100000;
-            let newVal = val * 2;
-            val = Math.min(max, Math.max(10, newVal));
-            modalBetInput.value = val;
+            modalBetInput.value = Math.min(max, Math.max(10, val * 2));
         });
 
         document.getElementById('modalMinBtn').addEventListener('click', () => {
@@ -1209,9 +1172,7 @@
         });
 
         document.getElementById('modalMaxBtn').addEventListener('click', () => {
-            let balance = Storage.getStars();
-            let max = Math.min(balance, 100000);
-            modalBetInput.value = max;
+            modalBetInput.value = 100000;
         });
 
         modalSubmit.addEventListener('click', () => {
@@ -1219,17 +1180,16 @@
             if (isNaN(amount) || amount < 10) amount = 10;
             if (amount > 100000) amount = 100000;
             
-            const state = GameState.getState();
-            
-            if (amount > Storage.getStars()) {
+            // Проверка баланса (10000)
+            if (amount > 10000) {
                 modalError.innerText = 'НЕДОСТАТОЧНО СРЕДСТВ';
-                
                 setTimeout(() => {
                     modalError.innerText = '';
                 }, 3000);
-                
                 return;
             }
+            
+            const state = GameState.getState();
             
             if (!state.roundActive || state.roundInProgress || userHasBet) {
                 modal.classList.remove('active');
@@ -1237,12 +1197,13 @@
                 return;
             }
             
-            Storage.updateStars(-amount, 'Ставка в джекпот');
-            
+            // Добавляем игрока с полными данными
             GameState.addPlayer({
                 id: userData.id,
-                name: userData.name,
-                avatar: userData.avatar,
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                username: userData.username,
+                avatarUrl: userData.avatarUrl,
                 bet: amount
             });
             
@@ -1260,6 +1221,24 @@
             modalError.innerText = '';
         });
 
+        document.getElementById('addBalanceBtn').addEventListener('click', () => {
+            alert('Пополнение будет доступно позже');
+        });
+
+        // Обновление каждые 500мс (все видят всё)
+        setInterval(() => {
+            const state = GameState.getState();
+            if (modal.classList.contains('active') && (!state.roundActive || state.roundInProgress)) {
+                modal.classList.remove('active');
+                modalError.innerText = '';
+            }
+            
+            updateStats();
+            updatePlayersList();
+            updateRoulette();
+        }, 500);
+
+        // Запуск
         startTimer();
         updateStats();
         updatePlayersList();
