@@ -108,7 +108,7 @@ bot.onText(/\/start/, (msg) => {
     `👇 Нажми кнопку, чтобы начать игру:`, {
     reply_markup: {
       inline_keyboard: [[
-        { text: '🎰 Джекпот', web_app: { url: `https://yeter-game.onrender.com/jackpot.html?user=${userId}` } }
+        { text: '🎰 Джекпот', web_app: { url: `https://yeter-game.onrender.com/index.html?user=${userId}` } }
       ]]
     }
   });
@@ -129,3 +129,4 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Сервер запущен на порту ${PORT}`);
   console.log(`✅ Webhook URL: ${WEBHOOK_URL}`);
 });
+
