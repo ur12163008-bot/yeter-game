@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>YETER · JACKPOT</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #03050a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 40% 50%, #0a0e1a 0%, #03050a 70%, #000103 100%);
+            z-index: -2;
+        }
+
+        .app {
+            max-width: 440px;
+            width: 100%;
+            padding-bottom: 20px;
+            position: relative;
+        }
+
+        .win-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(145deg, #00c853, #009624);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 60px;
+            font-weight: 800;
+            font-size: 18px;
+            box-shadow: 0 6px 0 #00691e;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .win-notification.show {
+            transform: translateX(0);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .bet-modal {
+            width: 320px;
+            background: linear-gradient(145deg, #1a1028, #0f0a18);
+            border: 2px solid rgba(155, 77, 255, 0.6);
+            border-radius: 40px;
+            padding: 28px 20px 20px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(155, 77, 255, 0.6);
+            color: #b87aff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: rgba(155, 77, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .modal-title {
+            text-align: center;
+            color: #b87aff;
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            letter-spacing: 1px;
+        }
+
+        .modal-input {
+            width: 100%;
+            background: rgba(0,0,0,0.5);
+            border: 2px solid rgba(155, 77, 255, 0.6);
+            border-radius: 60px;
+            padding: 16px 20px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #b87aff;
+            outline: none;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .modal-input:focus {
+            border-color: #b87aff;
+            box-shadow: 0 0 20px rgba(155, 77, 255, 0.6);
+        }
+
+        .modal-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .modal-btn {
+            background: rgba(106, 13, 173, 0.4);
+            border: 2px solid rgba(155, 77, 255, 0.6);
+            border-radius: 60px;
+            padding: 16px;
+            font-weight: 700;
+            color: #b87aff;
+            cursor: pointer;
+            transition: all 0.1s;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .modal-btn:active {
+            background: rgba(106, 13, 173, 0.6);
+            transform: scale(0.96);
+        }
+
+        .modal-error {
+            color: #ff4444;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            min-height: 30px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-submit {
+            background: linear-gradient(145deg, #9b4dff, #6a0dad);
+            border: none;
+            border-radius: 60px;
+            padding: 18px;
+            width: 100%;
+            color: white;
+            font-size: 20px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #2d0b4e;
+            transition: all 0.1s;
+            letter-spacing: 1px;
+        }
+
+        .modal-submit:active {
+            transform: translateY(8px);
+            box-shadow: none;
+        }
+
+        .modal-submit.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(5, 7, 12, 0.6);
+            margin: 10px 20px 25px;
+            padding: 12px 18px;
+            border-radius: 40px;
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            backdrop-filter: blur(4px);
+        }
+
+        .profile-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(145deg, #1e1a2a, #12101a);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #b87aff;
+            border: 2px solid #9b4dff;
+            flex-shrink: 0;
+        }
+
+        .nick-level {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .nick {
+            font-size: 18px;
+            font-weight: 800;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .level-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .level-badge {
+            background: linear-gradient(145deg, #6a0dad, #4b0082);
+            width: 28px;
+            height: 28px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 4px 0 #2d0b4e;
+        }
+
+        .progress-wrap {
+            width: 70px;
+            height: 8px;
+            background: rgba(30, 38, 48, 0.8);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(155, 77, 255, 0.4);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #9b4dff, #b87aff);
+            border-radius: 20px;
+            width: 0%;
+        }
+
+        .next-level {
+            background: rgba(42, 30, 58, 0.9);
+            width: 28px;
+            height: 28px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 900;
+            color: #b87aff;
+            border: 1px solid rgba(155, 77, 255, 0.4);
+        }
+
+        .balance-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(10, 14, 22, 0.9);
+            padding: 6px 14px;
+            border-radius: 40px;
+            border: 1px solid rgba(138, 43, 226, 0.5);
+        }
+
+        .balance-stars {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 900;
+            font-size: 18px;
+            color: white;
+        }
+
+        .puzzle-icon {
+            color: #ffd700;
+            font-size: 18px;
+            filter: drop-shadow(0 0 5px #ffaa00);
+        }
+
+        .add-balance-btn {
+            background: rgba(106, 13, 173, 0.4);
+            border: 2px solid rgba(138, 43, 226, 0.5);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b87aff;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.1s;
+            margin-left: 5px;
+        }
+
+        .add-balance-btn:active {
+            background: rgba(106, 13, 173, 0.6);
+            transform: scale(0.95);
+        }
+
+        .stats-container {
+            margin: 0 20px 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .stat-block {
+            background: rgba(10, 14, 22, 0.7);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 40px;
+            padding: 16px 20px;
+            backdrop-filter: blur(4px);
+            width: 100%;
+        }
+
+        .stat-block-top {
+            text-align: center;
+        }
+
+        .stat-block-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stat-block-item {
+            flex: 1;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 30px;
+            padding: 12px 10px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #8e98a3;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: 800;
+            color: #b87aff;
+            line-height: 1.2;
+        }
+
+        .stat-value-large {
+            font-size: 32px;
+        }
+
+        .roulette-container {
+            margin: 0 20px 25px;
+            background: rgba(10, 14, 22, 0.7);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 40px;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .roulette-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .timer {
+            background: rgba(106, 13, 173, 0.4);
+            padding: 8px 18px;
+            border-radius: 40px;
+            color: #b87aff;
+            font-weight: 800;
+            font-size: 24px;
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .timer.waiting {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffaa00;
+            border-color: rgba(255, 165, 0, 0.4);
+        }
+
+        .roulette-track {
+            position: relative;
+            height: 150px;
+            overflow: hidden;
+            border-radius: 40px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            margin-top: 15px;
+        }
+
+        .pointer-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 150px;
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .pointer-line {
+            width: 6px;
+            height: 150px;
+            background: linear-gradient(to bottom, #b87aff, #9b4dff);
+            box-shadow: 0 0 20px #b87aff;
+        }
+
+        .roulette-items {
+            display: flex;
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            align-items: center;
+            gap: 20px;
+            padding: 0 20px;
+            transition: left 5s cubic-bezier(0.25, 0.1, 0.2, 1);
+            will-change: left;
+        }
+
+        .roulette-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            background: rgba(20, 25, 35, 0.95);
+            border: 2px solid rgba(155, 77, 255, 0.6);
+            border-radius: 30px;
+            padding: 12px 15px;
+            min-width: 100px;
+            box-shadow: 0 6px 0 #1a1428;
+        }
+
+        .roulette-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #6a0dad, #4b0082);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 22px;
+            color: white;
+            border: 2px solid #b87aff;
+        }
+
+        .roulette-bet {
+            font-weight: 700;
+            color: #b87aff;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .roulette-bet .puzzle-icon {
+            font-size: 14px;
+        }
+
+        .players-container {
+            margin: 0 20px 25px;
+            background: rgba(10, 14, 22, 0.7);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 40px;
+            padding: 20px;
+        }
+
+        .players-header {
+            display: flex;
+            justify-content: space-between;
+            color: #b87aff;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .player-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .player-avatar-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #6a0dad, #4b0082);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+            border: 2px solid #b87aff;
+            flex-shrink: 0;
+        }
+
+        .player-name-small {
+            font-weight: 600;
+            color: white;
+            font-size: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-bet-small {
+            font-weight: 700;
+            color: #b87aff;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .no-players {
+            text-align: center;
+            color: #8e98a3;
+            padding: 40px;
+            font-size: 15px;
+        }
+
+        .bet-button-container {
+            margin: 0 20px 25px;
+        }
+
+        .open-bet-btn {
+            background: linear-gradient(145deg, #9b4dff, #6a0dad);
+            border: none;
+            border-radius: 60px;
+            padding: 20px;
+            width: 100%;
+            color: white;
+            font-size: 20px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 10px 0 #2d0b4e;
+            transition: all 0.1s;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .open-bet-btn:active {
+            transform: translateY(10px);
+            box-shadow: none;
+        }
+
+        .open-bet-btn.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            transform: none;
+            box-shadow: 0 5px 0 #2d0b4e;
+            background: linear-gradient(145deg, #666, #444);
+        }
+
+        .open-bet-btn.waiting {
+            opacity: 0.5;
+            pointer-events: none;
+            transform: none;
+            box-shadow: 0 5px 0 #2d0b4e;
+            background: linear-gradient(145deg, #666, #444);
+        }
+    </style>
+</head>
+<body>
+    <div class="win-notification" id="winNotification"></div>
+
+    <div class="modal-overlay" id="betModal">
+        <div class="bet-modal">
+            <div class="modal-close" id="closeModal">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="modal-title">СДЕЛАТЬ СТАВКУ</div>
+            <input type="number" class="modal-input" id="modalBetInput" value="100" min="10" max="100000" step="1">
+            <div class="modal-buttons">
+                <div class="modal-btn" id="modalHalfBtn">½</div>
+                <div class="modal-btn" id="modalDoubleBtn">x2</div>
+                <div class="modal-btn" id="modalMinBtn">Мин</div>
+                <div class="modal-btn" id="modalMaxBtn">Макс</div>
+            </div>
+            <div class="modal-error" id="modalError"></div>
+            <button class="modal-submit" id="modalSubmitBtn">ПОДТВЕРДИТЬ</button>
+        </div>
+    </div>
+
+    <div class="app">
+        <div class="profile-header">
+            <div class="profile-left">
+                <div class="avatar" id="avatar">P</div>
+                <div class="nick-level">
+                    <div class="nick" id="nickname">@player</div>
+                    <div class="level-row">
+                        <div class="level-badge" id="levelNumber">1</div>
+                        <div class="progress-wrap">
+                            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                        </div>
+                        <div class="next-level" id="nextLevel">2</div>
+                    </div>
+                </div>
+            </div>
+            <div class="balance-right">
+                <div class="balance-stars">
+                    <span class="puzzle-icon">🧩</span>
+                    <span id="balanceDisplay">10000</span>
+                </div>
+                <div class="add-balance-btn" id="addBalanceBtn">+</div>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-block stat-block-top">
+                <div class="stat-label">Общий банк</div>
+                <div class="stat-value stat-value-large" id="totalPot">0</div>
+            </div>
+            <div class="stat-block stat-block-bottom">
+                <div class="stat-block-item">
+                    <div class="stat-label">% выигрыша</div>
+                    <div class="stat-value" id="winPercent">0</div>
+                </div>
+                <div class="stat-block-item">
+                    <div class="stat-label">Ваша ставка</div>
+                    <div class="stat-value" id="yourBet">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="roulette-container">
+            <div class="roulette-header">
+                <div class="timer" id="rouletteTimer">0</div>
+            </div>
+            <div class="roulette-track">
+                <div class="pointer-container" id="pointer">
+                    <div class="pointer-line"></div>
+                </div>
+                <div class="roulette-items" id="rouletteItems"></div>
+            </div>
+        </div>
+
+        <div class="bet-button-container">
+            <button class="open-bet-btn" id="openBetBtn">СДЕЛАТЬ СТАВКУ</button>
+        </div>
+
+        <div class="players-container">
+            <div class="players-header">
+                <span>ИГРОКИ</span>
+                <span>СТАВКА</span>
+            </div>
+            <div id="playersList"></div>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        const TOTAL_ROULETTE_ITEMS = 50; // Всегда 50 рамок в рулетке
+
+        // Глобальное хранилище
+        const GameState = (function() {
+            const STATE_KEY = 'yeter_jackpot_state';
+            
+            let state = {
+                roundStartTime: null,
+                roundEndTime: null,
+                players: [],
+                totalPot: 0,
+                roundInProgress: false,
+                roundActive: true,
+                timerStarted: false,
+                countdown: 15
+            };
+            
+            function loadState() {
+                const saved = localStorage.getItem(STATE_KEY);
+                if (saved) {
+                    try {
+                        const parsed = JSON.parse(saved);
+                        if (parsed.roundEndTime && parsed.roundEndTime < Date.now()) {
+                            return createNewRound();
+                        }
+                        return parsed;
+                    } catch (e) {
+                        return createNewRound();
+                    }
+                }
+                return createNewRound();
+            }
+            
+            function createNewRound() {
+                const newRound = {
+                    roundStartTime: null,
+                    roundEndTime: null,
+                    players: [],
+                    totalPot: 0,
+                    roundInProgress: false,
+                    roundActive: true,
+                    timerStarted: false,
+                    countdown: 15
+                };
+                localStorage.setItem(STATE_KEY, JSON.stringify(newRound));
+                return newRound;
+            }
+            
+            function saveState(newState) {
+                localStorage.setItem(STATE_KEY, JSON.stringify(newState));
+                state = newState;
+            }
+            
+            state = loadState();
+            
+            return {
+                getState: () => ({ ...state }),
+                
+                addPlayer: function(player) {
+                    state.players = state.players.filter(p => p.id !== player.id);
+                    state.players.push(player);
+                    state.totalPot = state.players.reduce((sum, p) => sum + p.bet, 0);
+                    
+                    if (state.players.length >= 2 && !state.timerStarted && !state.roundInProgress) {
+                        state.timerStarted = true;
+                        state.roundStartTime = Date.now();
+                        state.roundEndTime = Date.now() + 15000;
+                    }
+                    
+                    saveState(state);
+                },
+                
+                removePlayer: function(playerId) {
+                    state.players = state.players.filter(p => p.id !== playerId);
+                    state.totalPot = state.players.reduce((sum, p) => sum + p.bet, 0);
+                    
+                    if (state.players.length < 2 && state.timerStarted) {
+                        state.timerStarted = false;
+                        state.roundStartTime = null;
+                        state.roundEndTime = null;
+                    }
+                    
+                    saveState(state);
+                },
+                
+                startNewRound: function() {
+                    state = {
+                        roundStartTime: null,
+                        roundEndTime: null,
+                        players: [],
+                        totalPot: 0,
+                        roundInProgress: false,
+                        roundActive: true,
+                        timerStarted: false,
+                        countdown: 15
+                    };
+                    saveState(state);
+                },
+                
+                setRoundInProgress: function(inProgress) {
+                    state.roundInProgress = inProgress;
+                    saveState(state);
+                },
+                
+                setRoundActive: function(active) {
+                    state.roundActive = active;
+                    saveState(state);
+                },
+                
+                getRemainingTime: function() {
+                    if (!state.timerStarted || !state.roundEndTime) return 0;
+                    const remaining = Math.max(0, Math.floor((state.roundEndTime - Date.now()) / 1000));
+                    return remaining;
+                },
+                
+                isTimerStarted: function() {
+                    return state.timerStarted;
+                }
+            };
+        })();
+
+        const Storage = (function() {
+            let _data = JSON.parse(localStorage.getItem('yeter_user_data')) || {
+                stars: 10000,
+                level: 1,
+                exp: 0,
+                expToNext: 1000,
+                gifts: [],
+                games: {},
+                transactions: []
+            };
+            
+            function _save() {
+                localStorage.setItem('yeter_user_data', JSON.stringify(_data));
+            }
+            
+            return {
+                getStars: () => _data.stars,
+                getLevel: () => _data.level,
+                getExp: () => _data.exp,
+                getExpToNext: () => _data.expToNext,
+                
+                updateStars: function(amount, reason) {
+                    if (_data.stars + amount < 0) return false;
+                    _data.stars += amount;
+                    _data.transactions.push({ amount, reason, time: Date.now(), balance: _data.stars });
+                    _save();
+                    document.getElementById('balanceDisplay').innerText = _data.stars;
+                    return true;
+                },
+                
+                addGameResult: function(game, result) {
+                    if (!_data.games[game]) _data.games[game] = [];
+                    _data.games[game].push(result);
+                    _save();
+                },
+                
+                addExp: function(amount) {
+                    _data.exp += amount;
+                    while (_data.exp >= _data.expToNext) {
+                        _data.exp -= _data.expToNext;
+                        _data.level++;
+                        _data.expToNext = Math.floor(_data.expToNext * 1.5);
+                    }
+                    _save();
+                    updateLevelDisplay();
+                }
+            };
+        })();
+
+        function updateLevelDisplay() {
+            document.getElementById('levelNumber').innerText = Storage.getLevel();
+            document.getElementById('nextLevel').innerText = Storage.getLevel() + 1;
+            const progress = (Storage.getExp() / Storage.getExpToNext()) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+        updateLevelDisplay();
+        document.getElementById('balanceDisplay').innerText = Storage.getStars();
+
+        document.getElementById('addBalanceBtn').addEventListener('click', () => {
+            Storage.updateStars(1000, 'Пополнение');
+        });
+
+        let userBet = 0;
+        let userHasBet = false;
+        let winner = null;
+        let userData = null;
+
+        const user = tg?.initDataUnsafe?.user;
+        if (user) {
+            const name = user.username || (user.first_name || '').toLowerCase() || 'player';
+            const firstChar = (user.first_name || 'P').charAt(0).toUpperCase();
+            document.getElementById('avatar').innerText = firstChar;
+            document.getElementById('nickname').innerText = '@' + name;
+            
+            userData = {
+                id: user.id || Date.now(),
+                name: '@' + name,
+                avatar: firstChar
+            };
+        } else {
+            userData = {
+                id: Date.now(),
+                name: '@player',
+                avatar: 'P'
+            };
+        }
+
+        function generateRouletteItems() {
+            const state = GameState.getState();
+            const items = [];
+            
+            if (state.players.length === 0) return [];
+            
+            // Распределяем 50 рамок между игроками пропорционально их ставкам
+            const total = state.totalPot;
+            
+            for (let i = 0; i < TOTAL_ROULETTE_ITEMS; i++) {
+                // Случайный выбор игрока с учётом веса (чем больше ставка, тем чаще выпадает)
+                const randomValue = Math.random() * total;
+                let cumulative = 0;
+                
+                for (const player of state.players) {
+                    cumulative += player.bet;
+                    if (randomValue < cumulative) {
+                        items.push(player);
+                        break;
+                    }
+                }
+            }
+            
+            return items;
+        }
+
+        function updateStats() {
+            const state = GameState.getState();
+            document.getElementById('totalPot').innerText = state.totalPot;
+            
+            const userPlayer = state.players.find(p => p.id === userData.id);
+            if (userPlayer) {
+                userBet = userPlayer.bet;
+                userHasBet = true;
+            } else {
+                userBet = 0;
+                userHasBet = false;
+            }
+            
+            document.getElementById('yourBet').innerText = userBet;
+            
+            // Реальный процент выигрыша
+            let winPercent = userBet > 0 ? ((userBet / state.totalPot) * 100) : 0;
+            document.getElementById('winPercent').innerText = winPercent.toFixed(1);
+            
+            const timerEl = document.getElementById('rouletteTimer');
+            if (state.timerStarted) {
+                const remaining = GameState.getRemainingTime();
+                timerEl.innerText = remaining;
+                timerEl.classList.remove('waiting');
+            } else {
+                timerEl.innerText = '0';
+                if (state.players.length >= 2) {
+                    timerEl.classList.add('waiting');
+                } else {
+                    timerEl.classList.remove('waiting');
+                }
+            }
+        }
+
+        function updatePlayersList() {
+            const listDiv = document.getElementById('playersList');
+            const state = GameState.getState();
+            
+            if (state.players.length === 0) {
+                listDiv.innerHTML = '<div class="no-players">ПОКА НЕТ СТАВОК</div>';
+                return;
+            }
+            
+            const sorted = [...state.players].sort((a, b) => b.bet - a.bet).slice(0, 10);
+            
+            listDiv.innerHTML = sorted.map(p => `
+                <div class="player-row">
+                    <div class="player-info">
+                        <div class="player-avatar-small">${p.avatar}</div>
+                        <span class="player-name-small">${p.name}</span>
+                    </div>
+                    <div class="player-bet-small">
+                        ${p.bet} <span class="puzzle-icon">🧩</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateRoulette() {
+            const roulette = document.getElementById('rouletteItems');
+            const state = GameState.getState();
+            
+            if (state.players.length === 0) {
+                roulette.innerHTML = '';
+                return;
+            }
+            
+            const items = generateRouletteItems();
+            
+            roulette.innerHTML = items.map(p => `
+                <div class="roulette-item" data-id="${p.id}">
+                    <div class="roulette-avatar">${p.avatar}</div>
+                    <div class="roulette-bet">
+                        ${p.bet} <span class="puzzle-icon">🧩</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showWinNotification(amount) {
+            const notif = document.getElementById('winNotification');
+            notif.innerHTML = `🎉 ВЫИГРЫШ ${amount} 🧩`;
+            notif.classList.add('show');
+            
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, 5000);
+        }
+
+        function calculateSpinDistance() {
+            const state = GameState.getState();
+            const total = state.totalPot;
+            const userChance = userBet > 0 ? (userBet / total) : 0;
+            
+            const baseDistance = 2500;
+            const chanceInfluence = userChance * 2000;
+            const randomFactor = Math.random() * 1500;
+            
+            return baseDistance + chanceInfluence + randomFactor;
+        }
+
+        function spinRoulette() {
+            GameState.setRoundInProgress(true);
+            const roulette = document.getElementById('rouletteItems');
+            const spinDistance = calculateSpinDistance();
+            
+            roulette.style.transition = 'left 5s cubic-bezier(0.25, 0.1, 0.2, 1)';
+            roulette.style.left = -spinDistance + 'px';
+        }
+
+        function pickWinner() {
+            GameState.setRoundActive(false);
+            
+            const state = GameState.getState();
+            
+            if (state.players.length === 0) {
+                setTimeout(startNewRound, 5000);
+                return;
+            }
+            
+            let lotteryPool = [];
+            state.players.forEach(p => {
+                for (let i = 0; i < p.bet; i++) {
+                    lotteryPool.push(p);
+                }
+            });
+            
+            winner = lotteryPool[Math.floor(Math.random() * lotteryPool.length)];
+            
+            spinRoulette();
+            
+            setTimeout(() => {
+                if (winner && winner.id === userData.id) {
+                    const total = state.totalPot;
+                    Storage.updateStars(total, 'Выигрыш в джекпоте');
+                    Storage.addExp(100);
+                    showWinNotification(total);
+                }
+                
+                setTimeout(startNewRound, 3000);
+            }, 5000);
+        }
+
+        function startNewRound() {
+            GameState.startNewRound();
+            
+            userBet = 0;
+            userHasBet = false;
+            winner = null;
+            
+            const roulette = document.getElementById('rouletteItems');
+            roulette.style.transition = 'none';
+            roulette.style.left = '0px';
+            
+            const betBtn = document.getElementById('openBetBtn');
+            betBtn.classList.remove('disabled', 'waiting');
+            betBtn.innerText = 'СДЕЛАТЬ СТАВКУ';
+            
+            updateStats();
+            updatePlayersList();
+            updateRoulette();
+        }
+
+        function startTimer() {
+            const timerInterval = setInterval(() => {
+                const state = GameState.getState();
+                
+                if (state.timerStarted) {
+                    const remaining = GameState.getRemainingTime();
+                    document.getElementById('rouletteTimer').innerText = remaining;
+                    
+                    if (remaining <= 0 && state.roundActive && !state.roundInProgress) {
+                        const betBtn = document.getElementById('openBetBtn');
+                        betBtn.classList.add('disabled');
+                        betBtn.classList.remove('waiting');
+                        pickWinner();
+                    }
+                }
+            }, 1000);
+        }
+
+        const modal = document.getElementById('betModal');
+        const openBtn = document.getElementById('openBetBtn');
+        const closeBtn = document.getElementById('closeModal');
+        const modalBetInput = document.getElementById('modalBetInput');
+        const modalError = document.getElementById('modalError');
+        const modalSubmit = document.getElementById('modalSubmitBtn');
+        
+        openBtn.addEventListener('click', () => {
+            const state = GameState.getState();
+            
+            if (!state.roundActive || state.roundInProgress || userHasBet) {
+                return;
+            }
+            
+            modalBetInput.value = 100;
+            modalError.innerText = '';
+            modal.classList.add('active');
+        });
+        
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+        
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        setInterval(() => {
+            const state = GameState.getState();
+            if (modal.classList.contains('active') && (!state.roundActive || state.roundInProgress)) {
+                modal.classList.remove('active');
+                modalError.innerText = '';
+            }
+            
+            updateStats();
+            updatePlayersList();
+            updateRoulette();
+        }, 500);
+
+        document.getElementById('modalHalfBtn').addEventListener('click', () => {
+            let val = parseInt(modalBetInput.value) || 100;
+            val = Math.max(10, Math.floor(val / 2));
+            modalBetInput.value = val;
+        });
+
+        document.getElementById('modalDoubleBtn').addEventListener('click', () => {
+            let val = parseInt(modalBetInput.value) || 100;
+            let max = 100000;
+            let newVal = val * 2;
+            val = Math.min(max, Math.max(10, newVal));
+            modalBetInput.value = val;
+        });
+
+        document.getElementById('modalMinBtn').addEventListener('click', () => {
+            modalBetInput.value = 10;
+        });
+
+        document.getElementById('modalMaxBtn').addEventListener('click', () => {
+            let balance = Storage.getStars();
+            let max = Math.min(balance, 100000);
+            modalBetInput.value = max;
+        });
+
+        modalSubmit.addEventListener('click', () => {
+            let amount = parseInt(modalBetInput.value);
+            if (isNaN(amount) || amount < 10) amount = 10;
+            if (amount > 100000) amount = 100000;
+            
+            const state = GameState.getState();
+            
+            if (amount > Storage.getStars()) {
+                modalError.innerText = 'НЕДОСТАТОЧНО СРЕДСТВ';
+                
+                setTimeout(() => {
+                    modalError.innerText = '';
+                }, 3000);
+                
+                return;
+            }
+            
+            if (!state.roundActive || state.roundInProgress || userHasBet) {
+                modal.classList.remove('active');
+                modalError.innerText = '';
+                return;
+            }
+            
+            Storage.updateStars(-amount, 'Ставка в джекпот');
+            
+            GameState.addPlayer({
+                id: userData.id,
+                name: userData.name,
+                avatar: userData.avatar,
+                bet: amount
+            });
+            
+            userBet = amount;
+            userHasBet = true;
+            
+            openBtn.classList.add('waiting');
+            openBtn.innerText = 'ОЖИДАНИЕ РАУНДА';
+            
+            updateStats();
+            updatePlayersList();
+            updateRoulette();
+            
+            modal.classList.remove('active');
+            modalError.innerText = '';
+        });
+
+        startTimer();
+        updateStats();
+        updatePlayersList();
+        updateRoulette();
+    </script>
+</body>
+</html>

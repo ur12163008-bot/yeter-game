@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>YETER · МИНЫ</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #03050a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 0;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 40% 50%, #0a0e1a 0%, #03050a 70%, #000103 100%);
+            z-index: -2;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 15px 60px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+                radial-gradient(1.2px 1.2px at 72px 430px, rgba(255,245,200,0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 250px 120px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
+                radial-gradient(1.8px 1.8px at 120px 550px, rgba(210,230,255,0.9), rgba(0,0,0,0)),
+                radial-gradient(1.3px 1.3px at 380px 200px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 780px, rgba(200,220,255,0.7), rgba(0,0,0,0)),
+                radial-gradient(1.6px 1.6px at 310px 640px, rgba(255,255,240,0.8), rgba(0,0,0,0)),
+                radial-gradient(1.1px 1.1px at 190px 890px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 420px 350px, rgba(180,200,255,0.9), rgba(0,0,0,0)),
+                radial-gradient(1.4px 1.4px at 80px 920px, rgba(255,255,255,0.8), rgba(0,0,0,0));
+            background-size: 500px 1000px;
+            background-repeat: repeat;
+            opacity: 0.6;
+            z-index: -1;
+        }
+        .app { max-width: 440px; width: 100%; background: transparent; position: relative; min-height: 100vh; padding-bottom: 20px; }
+
+        .puzzle-icon {
+            display: inline-block;
+            font-size: 20px;
+            line-height: 1;
+            color: #ffd700;
+            text-shadow: 0 0 6px #ffaa00;
+            flex-shrink: 0;
+        }
+        .puzzle-balance { 
+            font-size: 24px; 
+            margin-left: 6px;
+        }
+
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 20px 16px; background: transparent; }
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #b87aff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 8px 16px;
+            background: rgba(106, 13, 173, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 40px;
+            transition: 0.1s ease;
+        }
+        .back-button:hover { background: rgba(106, 13, 173, 0.3); }
+        .balance-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(10, 14, 22, 0.8);
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid rgba(138, 43, 226, 0.4);
+        }
+        .stars { display: flex; align-items: center; gap: 6px; font-weight: 900; font-size: 20px; color: white; }
+        
+        .player-profile {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(10, 14, 22, 0.6);
+            backdrop-filter: blur(5px);
+            padding: 16px 20px;
+            margin: 0 20px 20px;
+            border-radius: 24px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+        .avatar-small {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(145deg, #1e1a2a, #12101a);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #b87aff;
+            border: 2px solid #9b4dff;
+            flex-shrink: 0;
+        }
+        .profile-info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .profile-name { font-size: 18px; font-weight: 800; color: white; }
+        .profile-level-row { display: flex; align-items: center; gap: 8px; }
+        .level-number {
+            background: linear-gradient(145deg, #6a0dad, #4b0082);
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 3px 0 #2d0b4e;
+        }
+        .progress-small {
+            width: 80px;
+            height: 6px;
+            background: rgba(30, 38, 48, 0.8);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(155, 77, 255, 0.3);
+        }
+        .progress-fill-small { height: 100%; background: linear-gradient(90deg, #9b4dff, #b87aff); border-radius: 20px; }
+        .next-level { color: #b87aff; font-size: 14px; font-weight: 700; }
+        
+        .message-container {
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .game-message {
+            width: 100%;
+            padding: 16px 24px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.3);
+            animation: messagePop 0.3s ease;
+            min-height: 56px;
+        }
+        @keyframes messagePop {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .game-message.success {
+            background: linear-gradient(145deg, #2ecc71, #27ae60);
+            color: white;
+            border: 1px solid rgba(46, 204, 113, 0.5);
+        }
+        .game-message.error {
+            background: linear-gradient(145deg, #e74c3c, #c0392b);
+            color: white;
+            border: 1px solid rgba(231, 76, 60, 0.5);
+        }
+        .game-message.warning {
+            background: linear-gradient(145deg, #f39c12, #e67e22);
+            color: white;
+            border: 1px solid rgba(243, 156, 18, 0.5);
+        }
+        
+        .game-container { padding: 0 20px; }
+        .mines-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+            background: rgba(10, 14, 22, 0.4);
+            padding: 20px;
+            border-radius: 28px;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+        }
+        .mine-cell {
+            aspect-ratio: 1;
+            background: rgba(20, 25, 35, 0.8);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: white;
+            box-shadow: 0 4px 0 #0a0c16;
+        }
+        .mine-cell:hover { transform: scale(1.05); border-color: rgba(255, 215, 0, 0.6); background: rgba(40, 45, 60, 0.9); }
+        .mine-cell.revealed { animation: cellReveal 0.3s ease; }
+        @keyframes cellReveal { 0% { transform: scale(0.8); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+        .mine-cell.star { background: rgba(255, 215, 0, 0.15); border-color: #ffd700; }
+        .mine-cell.mine { background: rgba(255, 59, 48, 0.15); border-color: #ff3b30; }
+        .controls-row { display: flex; gap: 12px; margin-bottom: 20px; align-items: center; }
+        .input-group { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .input-label { display: flex; align-items: center; gap: 6px; color: #b87aff; font-size: 14px; font-weight: 800; letter-spacing: 0.3px; }
+        .input-field {
+            background: rgba(10, 14, 22, 0.8);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 20px;
+            padding: 12px 16px;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            outline: none;
+            transition: 0.1s ease;
+            width: 100%;
+        }
+        .input-field:focus { border-color: #9b4dff; background: rgba(20, 25, 35, 0.9); }
+        .action-button {
+            background: linear-gradient(145deg, #6a0dad, #4b0082);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #2d0b4e;
+            transition: all 0.1s ease;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .action-button:active { transform: translateY(6px); box-shadow: 0 0 0 #2d0b4e; }
+        .action-button.disabled { opacity: 0.6; pointer-events: none; }
+        .cooldown-message {
+            width: 100%;
+            padding: 16px 24px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(145deg, #f39c12, #e67e22);
+            color: white;
+            border: 1px solid rgba(243, 156, 18, 0.5);
+            box-shadow: 0 6px 0 #b85e0a;
+            animation: messagePop 0.3s ease;
+            min-height: 56px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="header">
+            <div class="back-button" onclick="window.location.href='index.html'">
+                <i class="fas fa-arrow-left"></i>
+                <span>Назад</span>
+            </div>
+            <div class="balance-wrapper">
+                <div class="stars">
+                    <span id="balanceDisplay">0</span>
+                    <span class="puzzle-icon puzzle-balance">🧩</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="player-profile">
+            <div class="avatar-small" id="playerAvatar">Y</div>
+            <div class="profile-info">
+                <div class="profile-name" id="playerName">@yeter</div>
+                <div class="profile-level-row">
+                    <div class="level-number" id="levelDisplay">1</div>
+                    <div class="progress-small">
+                        <div class="progress-fill-small" id="progressFill" style="width: 0%;"></div>
+                    </div>
+                    <span class="next-level" id="nextLevelDisplay">2</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-container">
+            <div class="mines-grid" id="minesGrid"></div>
+            <div class="controls-row">
+                <div class="input-group">
+                    <div class="input-label">
+                        <i class="fas fa-bomb"></i>
+                        Бомбы
+                    </div>
+                    <input type="number" id="minesCount" class="input-field" placeholder="2-24" min="2" max="24" value="3">
+                </div>
+                <div class="input-group">
+                    <div class="input-label">
+                        <i class="fas fa-puzzle-piece"></i>
+                        Ставка
+                    </div>
+                    <input type="number" id="betAmount" class="input-field" placeholder="10-100k" value="50" min="10" max="100000">
+                </div>
+            </div>
+            <button class="action-button" id="gameActionBtn">ИГРАТЬ</button>
+            <div class="message-container" id="messageContainer"></div>
+            <div id="cooldownContainer"></div>
+        </div>
+    </div>
+    
+    <script>
+        // ========== ЖЕСТКАЯ ЗАЩИТА ==========
+        (function() {
+            const protectedMethods = ['getItem', 'setItem', 'removeItem'];
+            protectedMethods.forEach(method => {
+                const original = localStorage[method];
+                localStorage[method] = function() {
+                    if (new Error().stack.includes('debugger')) {
+                        throw new Error('Access denied');
+                    }
+                    return original.apply(this, arguments);
+                };
+            });
+            
+            setInterval(function() {
+                const before = new Date();
+                debugger;
+                const after = new Date();
+                if (after - before > 100) {
+                    window.location.reload();
+                }
+            }, 1000);
+        })();
+
+        // ========== СИСТЕМА СОХРАНЕНИЯ ==========
+        const GameStorage = (function() {
+            let _data = null;
+            const _key = 'yeter_user_data';
+            
+            function _load() {
+                const saved = localStorage.getItem(_key);
+                if (saved) {
+                    try {
+                        _data = JSON.parse(saved);
+                        if (!_validate(_data)) {
+                            _createDefault();
+                        }
+                    } catch {
+                        _createDefault();
+                    }
+                } else {
+                    _createDefault();
+                }
+            }
+            
+            function _validate(data) {
+                return data && 
+                       typeof data.stars === 'number' && 
+                       data.stars >= 0 &&
+                       typeof data.level === 'number' &&
+                       data.level >= 1;
+            }
+            
+            function _createDefault() {
+                _data = {
+                    stars: 1250,
+                    level: 1,
+                    exp: 0,
+                    expToNext: 1000,
+                    games: { mines: { wins: 0, losses: 0 } },
+                    transactions: []
+                };
+            }
+            
+            function _save() {
+                localStorage.setItem(_key, JSON.stringify(_data));
+            }
+            
+            _load();
+            
+            return {
+                getStars: function() { return _data.stars; },
+                
+                updateStars: function(amount, reason) {
+                    if (_data.stars + amount < 0) return false;
+                    _data.stars += amount;
+                    
+                    _data.transactions.push({
+                        amount: amount,
+                        reason: reason,
+                        time: Date.now(),
+                        balance: _data.stars
+                    });
+                    
+                    if (_data.transactions.length > 50) {
+                        _data.transactions = _data.transactions.slice(-50);
+                    }
+                    
+                    _save();
+                    return true;
+                },
+                
+                addExp: function(amount) {
+                    _data.exp += amount;
+                    while (_data.exp >= _data.expToNext) {
+                        _data.exp -= _data.expToNext;
+                        _data.level++;
+                        _data.expToNext = Math.floor(_data.expToNext * 1.5);
+                    }
+                    _save();
+                },
+                
+                updateGameStats: function(game, won) {
+                    if (won) {
+                        _data.games[game].wins++;
+                    } else {
+                        _data.games[game].losses++;
+                    }
+                    _save();
+                },
+                
+                getLevel: function() { return _data.level; },
+                getExp: function() { return _data.exp; },
+                getExpToNext: function() { return _data.expToNext; },
+                
+                updateUI: function() {
+                    document.getElementById('balanceDisplay').innerText = _data.stars.toLocaleString();
+                    document.getElementById('levelDisplay').innerText = _data.level;
+                    document.getElementById('nextLevelDisplay').innerText = _data.level + 1;
+                    
+                    const progress = (_data.exp / _data.expToNext) * 100;
+                    document.getElementById('progressFill').style.width = progress + '%';
+                }
+            };
+        })();
+
+        // ========== TELEGRAM ==========
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+            const user = tg.initDataUnsafe?.user;
+            if (user) {
+                const name = user.username || (user.first_name || '').toLowerCase() || 'player';
+                const firstChar = (user.first_name || 'P').charAt(0).toUpperCase();
+                document.getElementById('playerAvatar').innerText = firstChar;
+                document.getElementById('playerName').innerText = '@' + name;
+            }
+        }
+
+        // ========== ИГРОВАЯ ЛОГИКА ==========
+        let gameState = {
+            minesCount: 3,
+            betAmount: 50,
+            gameActive: false,
+            board: [],
+            revealedCount: 0,
+            totalMines: 0,
+            multiplier: 1.00,
+            hasRevealedAtLeastOne: false,
+            minePositions: [],
+            canStartNewGame: true,
+            lastGameEndTime: 0,
+            cooldownSeconds: 2,
+            cooldownInterval: null
+        };
+
+        function showMessage(message, type = 'success') {
+            const container = document.getElementById('messageContainer');
+            container.innerHTML = '';
+            const messageEl = document.createElement('div');
+            messageEl.className = `game-message ${type}`;
+            messageEl.innerHTML = `<span>${message}</span>`;
+            container.appendChild(messageEl);
+            
+            setTimeout(() => {
+                if (messageEl.parentNode) {
+                    messageEl.style.animation = 'messagePop 0.3s reverse';
+                    setTimeout(() => messageEl.remove(), 300);
+                }
+            }, 3000);
+        }
+
+        function showTwoLineMessage(topText, bottomText, type = 'error') {
+            const container = document.getElementById('messageContainer');
+            container.innerHTML = '';
+            const messageEl = document.createElement('div');
+            messageEl.className = `game-message ${type}`;
+            messageEl.style.flexDirection = 'column';
+            messageEl.style.padding = '12px 16px';
+            messageEl.innerHTML = `
+                <span>${topText}</span>
+                <div style="display: flex; align-items: center; gap: 4px; font-size: 24px;">
+                    <span>${bottomText}</span>
+                    <span class="puzzle-icon">🧩</span>
+                </div>
+            `;
+            container.appendChild(messageEl);
+            
+            setTimeout(() => {
+                if (messageEl.parentNode) {
+                    messageEl.style.animation = 'messagePop 0.3s reverse';
+                    setTimeout(() => messageEl.remove(), 300);
+                }
+            }, 3000);
+        }
+
+        function showCooldownMessage(seconds) {
+            const container = document.getElementById('cooldownContainer');
+            container.innerHTML = '';
+            const messageEl = document.createElement('div');
+            messageEl.className = 'cooldown-message';
+            messageEl.id = 'cooldownMessage';
+            messageEl.innerHTML = `
+                <i class="fas fa-hourglass-half"></i>
+                <span>Упс! Попробуйте через ${seconds}с</span>
+            `;
+            container.appendChild(messageEl);
+        }
+
+        function updateCooldownMessage(seconds) {
+            const messageEl = document.getElementById('cooldownMessage');
+            if (messageEl) {
+                messageEl.innerHTML = `
+                    <i class="fas fa-hourglass-half"></i>
+                    <span>Упс! Попробуйте через ${seconds}с</span>
+                `;
+            }
+        }
+
+        function removeCooldownMessage() {
+            const container = document.getElementById('cooldownContainer');
+            container.innerHTML = '';
+            if (gameState.cooldownInterval) {
+                clearInterval(gameState.cooldownInterval);
+                gameState.cooldownInterval = null;
+            }
+        }
+
+        function startCooldown() {
+            const now = Date.now();
+            const timeSinceLastGame = (now - gameState.lastGameEndTime) / 1000;
+            
+            if (timeSinceLastGame < gameState.cooldownSeconds) {
+                const remainingSeconds = Math.ceil(gameState.cooldownSeconds - timeSinceLastGame);
+                showCooldownMessage(remainingSeconds);
+                
+                if (gameState.cooldownInterval) clearInterval(gameState.cooldownInterval);
+                
+                let secondsLeft = remainingSeconds;
+                gameState.cooldownInterval = setInterval(() => {
+                    secondsLeft--;
+                    if (secondsLeft <= 0) {
+                        clearInterval(gameState.cooldownInterval);
+                        gameState.cooldownInterval = null;
+                        removeCooldownMessage();
+                    } else {
+                        updateCooldownMessage(secondsLeft);
+                    }
+                }, 1000);
+                
+                return false;
+            }
+            return true;
+        }
+
+        function initBoard(minesCount) {
+            const board = [];
+            for (let i = 0; i < 25; i++) board.push({ type: 'star', revealed: false, index: i });
+            gameState.minePositions = [];
+            let placed = 0;
+            while (placed < minesCount) {
+                const index = Math.floor(Math.random() * 25);
+                if (board[index].type !== 'mine') {
+                    board[index].type = 'mine';
+                    gameState.minePositions.push(index);
+                    placed++;
+                }
+            }
+            return board;
+        }
+
+        function renderBoard() {
+            const grid = document.getElementById('minesGrid');
+            if (!grid) return;
+            let html = '';
+            gameState.board.forEach((cell, index) => {
+                let content = '';
+                let classes = 'mine-cell';
+                if (cell.revealed) {
+                    classes += ' revealed';
+                    if (cell.type === 'star') { 
+                        content = '🧩'; 
+                        classes += ' star'; 
+                    } else { 
+                        content = '💣'; 
+                        classes += ' mine'; 
+                    }
+                }
+                html += `<div class="${classes}" data-index="${index}">${content}</div>`;
+            });
+            grid.innerHTML = html;
+        }
+
+        function revealAllMines() {
+            gameState.minePositions.forEach(pos => {
+                if (gameState.board[pos] && !gameState.board[pos].revealed) {
+                    gameState.board[pos].revealed = true;
+                }
+            });
+            renderBoard();
+        }
+
+        function calculateExactMultiplier(revealed, totalMines) {
+            if (revealed === 0) return 1.00;
+            let probability = 1.0;
+            let safeCells = 25 - totalMines;
+            for (let i = 0; i < revealed; i++) {
+                probability *= (safeCells - i) / (25 - i);
+            }
+            return Math.round((1 / probability) * 100) / 100;
+        }
+
+        function resetBoard() {
+            gameState.board = initBoard(gameState.minesCount);
+            gameState.revealedCount = 0;
+            gameState.gameActive = false;
+            gameState.hasRevealedAtLeastOne = false;
+            renderBoard();
+            const btn = document.getElementById('gameActionBtn');
+            btn.innerText = 'ИГРАТЬ';
+            btn.classList.remove('disabled');
+        }
+
+        function startGame() {
+            if (!gameState.canStartNewGame) return;
+            
+            if (!startCooldown()) return;
+            
+            const minesInput = document.getElementById('minesCount');
+            const betInput = document.getElementById('betAmount');
+            gameState.minesCount = parseInt(minesInput.value);
+            gameState.betAmount = parseInt(betInput.value);
+            
+            if (isNaN(gameState.minesCount) || gameState.minesCount < 2) { 
+                showTwoLineMessage('Минимальное количество бомб', '2', 'error'); 
+                return; 
+            }
+            if (gameState.minesCount > 24) { 
+                showTwoLineMessage('Максимальное количество бомб', '24', 'error'); 
+                return; 
+            }
+            if (isNaN(gameState.betAmount)) {
+                showMessage('Введите сумму ставки', 'warning'); 
+                return;
+            }
+            if (gameState.betAmount < 10) { 
+                showTwoLineMessage('Минимальная сумма ставки', '10', 'error'); 
+                return; 
+            }
+            if (gameState.betAmount > 100000) { 
+                showTwoLineMessage('Максимальная сумма ставки', '100000', 'error'); 
+                return; 
+            }
+            if (gameState.betAmount > GameStorage.getStars()) { 
+                showMessage('Недостаточно средств', 'error'); 
+                return; 
+            }
+            
+            // Списываем ставку
+            if (!GameStorage.updateStars(-gameState.betAmount, 'mines_bet')) {
+                showMessage('Ошибка транзакции', 'error');
+                return;
+            }
+            
+            gameState.gameActive = true;
+            gameState.totalMines = gameState.minesCount;
+            gameState.revealedCount = 0;
+            gameState.hasRevealedAtLeastOne = false;
+            gameState.multiplier = 1.00;
+            gameState.board = initBoard(gameState.minesCount);
+            gameState.canStartNewGame = false;
+            renderBoard();
+            
+            const btn = document.getElementById('gameActionBtn');
+            const winAmount = Math.floor(gameState.betAmount * gameState.multiplier);
+            btn.innerText = `ЗАБРАТЬ ${gameState.multiplier.toFixed(2)}x (${winAmount}🧩)`;
+            btn.classList.remove('disabled');
+            
+            GameStorage.updateUI();
+        }
+
+        function cashout() {
+            if (!gameState.hasRevealedAtLeastOne) {
+                showMessage('Нужно открыть хотя бы 1 клетку!', 'warning');
+                return;
+            }
+            const winAmount = Math.floor(gameState.betAmount * gameState.multiplier);
+            
+            if (GameStorage.updateStars(winAmount, 'mines_win')) {
+                GameStorage.addExp(gameState.betAmount / 10);
+                GameStorage.updateGameStats('mines', true);
+                
+                showMessage(`ВЫИГРЫШ +${winAmount.toLocaleString()} 🧩`, 'success');
+            }
+            
+            gameState.lastGameEndTime = Date.now();
+            gameState.gameActive = false;
+            gameState.canStartNewGame = true;
+            GameStorage.updateUI();
+            resetBoard();
+        }
+
+        function revealCell(index) {
+            if (!gameState.gameActive) return;
+            if (gameState.board[index].revealed) return;
+            
+            const cell = gameState.board[index];
+            cell.revealed = true;
+            
+            if (cell.type === 'mine') {
+                revealAllMines();
+                showMessage(`ПРОИГРЫШ -${gameState.betAmount.toLocaleString()} 🧩`, 'error');
+                GameStorage.updateGameStats('mines', false);
+                GameStorage.addExp(1);
+                
+                gameState.lastGameEndTime = Date.now();
+                gameState.gameActive = false;
+                gameState.canStartNewGame = true;
+                
+                const btn = document.getElementById('gameActionBtn');
+                btn.innerText = 'ИГРАТЬ';
+                btn.classList.remove('disabled');
+                
+                setTimeout(() => {
+                    resetBoard();
+                }, 1500);
+            } else {
+                gameState.revealedCount++;
+                gameState.hasRevealedAtLeastOne = true;
+                gameState.multiplier = calculateExactMultiplier(gameState.revealedCount, gameState.totalMines);
+                const btn = document.getElementById('gameActionBtn');
+                const winAmount = Math.floor(gameState.betAmount * gameState.multiplier);
+                btn.innerText = `ЗАБРАТЬ ${gameState.multiplier.toFixed(2)}x (${winAmount}🧩)`;
+                btn.classList.remove('disabled');
+                renderBoard();
+            }
+            
+            GameStorage.updateUI();
+        }
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        window.onload = function() {
+            GameStorage.updateUI();
+            gameState.board = initBoard(3);
+            renderBoard();
+            
+            document.getElementById('gameActionBtn').addEventListener('click', () => {
+                if (!gameState.gameActive && gameState.canStartNewGame) startGame();
+                else if (gameState.gameActive) cashout();
+            });
+            
+            document.getElementById('minesCount').addEventListener('input', (e) => {
+                let val = parseInt(e.target.value);
+                if (val < 2) e.target.value = 2;
+                if (val > 24) e.target.value = 24;
+                if (!gameState.gameActive) {
+                    gameState.minesCount = parseInt(e.target.value);
+                    resetBoard();
+                }
+            });
+            
+            document.getElementById('betAmount').addEventListener('input', (e) => {
+                let val = e.target.value;
+                if (val === '') return;
+                let num = parseInt(val);
+                if (!isNaN(num) && num > 100000) e.target.value = 100000;
+                if (!isNaN(num) && num < 10) e.target.value = 10;
+            });
+            
+            document.addEventListener('click', (e) => {
+                const cell = e.target.closest('.mine-cell');
+                if (cell && cell.closest('#minesGrid')) {
+                    const index = parseInt(cell.dataset.index);
+                    revealCell(index);
+                }
+            });
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>YETER · DICE</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #03050a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 0;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 40% 50%, #0a0e1a 0%, #03050a 70%, #000103 100%);
+            z-index: -2;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 15px 60px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+                radial-gradient(1.2px 1.2px at 72px 430px, rgba(255,245,200,0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 250px 120px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
+                radial-gradient(1.8px 1.8px at 120px 550px, rgba(210,230,255,0.9), rgba(0,0,0,0)),
+                radial-gradient(1.3px 1.3px at 380px 200px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 780px, rgba(200,220,255,0.7), rgba(0,0,0,0)),
+                radial-gradient(1.6px 1.6px at 310px 640px, rgba(255,255,240,0.8), rgba(0,0,0,0)),
+                radial-gradient(1.1px 1.1px at 190px 890px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 420px 350px, rgba(180,200,255,0.9), rgba(0,0,0,0)),
+                radial-gradient(1.4px 1.4px at 80px 920px, rgba(255,255,255,0.8), rgba(0,0,0,0));
+            background-size: 500px 1000px;
+            background-repeat: repeat;
+            opacity: 0.6;
+            z-index: -1;
+        }
+        .app { max-width: 440px; width: 100%; background: transparent; position: relative; min-height: 100vh; padding-bottom: 20px; }
+
+        .puzzle-icon {
+            display: inline-block;
+            font-size: 18px;
+            line-height: 1;
+            color: #ffd700;
+            text-shadow: 0 0 6px #ffaa00;
+            flex-shrink: 0;
+        }
+
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 20px 16px; background: transparent; }
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #b87aff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 8px 16px;
+            background: rgba(106, 13, 173, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 40px;
+            transition: 0.1s ease;
+        }
+        .back-button:hover { background: rgba(106, 13, 173, 0.3); }
+        .balance-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(10, 14, 22, 0.8);
+            padding: 4px 12px 4px 10px;
+            border-radius: 32px;
+            border: 1px solid rgba(138, 43, 226, 0.4);
+        }
+        .balance { 
+            display: flex; 
+            align-items: center; 
+            gap: 3px; 
+            font-weight: 800; 
+            font-size: 18px; 
+            color: white; 
+        }
+        
+        .player-profile {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(10, 14, 22, 0.6);
+            backdrop-filter: blur(5px);
+            padding: 16px 20px;
+            margin: 0 20px 20px;
+            border-radius: 24px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+        .avatar-small {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(145deg, #1e1a2a, #12101a);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #b87aff;
+            border: 2px solid #9b4dff;
+            flex-shrink: 0;
+        }
+        .profile-info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .profile-name { font-size: 18px; font-weight: 800; color: white; }
+        .profile-level-row { display: flex; align-items: center; gap: 8px; }
+        .level-number {
+            background: linear-gradient(145deg, #6a0dad, #4b0082);
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 3px 0 #2d0b4e;
+        }
+        .progress-small {
+            width: 80px;
+            height: 6px;
+            background: rgba(30, 38, 48, 0.8);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(155, 77, 255, 0.3);
+        }
+        .progress-fill-small { height: 100%; background: linear-gradient(90deg, #9b4dff, #b87aff); border-radius: 20px; }
+        .next-level { color: #b87aff; font-size: 14px; font-weight: 700; }
+        
+        .message-container {
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .game-message {
+            width: 100%;
+            padding: 16px 24px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.3);
+            animation: messagePop 0.3s ease;
+            min-height: 56px;
+        }
+        @keyframes messagePop {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .game-message.success {
+            background: linear-gradient(145deg, #2ecc71, #27ae60);
+            color: white;
+            border: 1px solid rgba(46, 204, 113, 0.5);
+        }
+        .game-message.error {
+            background: linear-gradient(145deg, #e74c3c, #c0392b);
+            color: white;
+            border: 1px solid rgba(231, 76, 60, 0.5);
+        }
+        .game-message.warning {
+            background: linear-gradient(145deg, #f39c12, #e67e22);
+            color: white;
+            border: 1px solid rgba(243, 156, 18, 0.5);
+        }
+        
+        .game-container { padding: 0 20px; }
+        
+        .controls-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+        .input-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .input-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #b87aff;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+        .input-field {
+            background: rgba(10, 14, 22, 0.8);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 20px;
+            padding: 12px 16px;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            outline: none;
+            transition: 0.1s ease;
+            width: 100%;
+        }
+        .input-field:focus { border-color: #9b4dff; background: rgba(20, 25, 35, 0.9); }
+        
+        .win-info {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .win-label {
+            color: #8e98a3;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        .win-amount {
+            color: #8e98a3;
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+        .win-multiplier {
+            color: #6b7280;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .buttons-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .dice-button {
+            flex: 1;
+            background: linear-gradient(145deg, #6a0dad, #4b0082);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #2d0b4e;
+            transition: all 0.1s ease;
+            min-height: 56px;
+        }
+        .dice-button:active { transform: translateY(6px); box-shadow: 0 0 0 #2d0b4e; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="header">
+            <div class="back-button" onclick="window.location.href='index.html'">
+                <i class="fas fa-arrow-left"></i>
+                <span>Назад</span>
+            </div>
+            <div class="balance-wrapper">
+                <div class="balance">
+                    <span class="puzzle-icon">🧩</span>
+                    <span id="balanceDisplay">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="player-profile">
+            <div class="avatar-small" id="playerAvatar">Y</div>
+            <div class="profile-info">
+                <div class="profile-name" id="playerName">@yeter</div>
+                <div class="profile-level-row">
+                    <div class="level-number" id="levelDisplay">1</div>
+                    <div class="progress-small">
+                        <div class="progress-fill-small" id="progressFill" style="width: 0%;"></div>
+                    </div>
+                    <span class="next-level" id="nextLevelDisplay">2</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-container">
+            <div class="controls-row">
+                <div class="input-group">
+                    <div class="input-label">
+                        <i class="fas fa-puzzle-piece"></i>
+                        Ставка
+                    </div>
+                    <input type="number" id="betAmount" class="input-field" placeholder="10-100k" value="50" min="10" max="100000">
+                </div>
+                <div class="input-group">
+                    <div class="input-label">
+                        <i class="fas fa-percent"></i>
+                        Шанс
+                    </div>
+                    <input type="number" id="chanceInput" class="input-field" placeholder="1-95%" value="50" min="1" max="95">
+                </div>
+            </div>
+            
+            <div class="win-info">
+                <div class="win-label">ВОЗМОЖНЫЙ ВЫИГРЫШ</div>
+                <div class="win-amount" id="winAmount">100</div>
+                <div class="win-multiplier" id="winMultiplier">x2.00</div>
+            </div>
+            
+            <div class="buttons-row">
+                <button class="dice-button" id="lessBtn">
+                    <i class="fas fa-arrow-down"></i>
+                    МЕНЬШЕ
+                </button>
+                <button class="dice-button" id="moreBtn">
+                    <i class="fas fa-arrow-up"></i>
+                    БОЛЬШЕ
+                </button>
+            </div>
+            
+            <div class="message-container" id="messageContainer"></div>
+        </div>
+    </div>
+    
+    <script>
+        // ========== ЖЕСТКАЯ ЗАЩИТА ==========
+        (function() {
+            // Защита от изменения объектов
+            const protectedMethods = ['getItem', 'setItem', 'removeItem'];
+            protectedMethods.forEach(method => {
+                const original = localStorage[method];
+                localStorage[method] = function() {
+                    if (new Error().stack.includes('debugger')) {
+                        throw new Error('Access denied');
+                    }
+                    return original.apply(this, arguments);
+                };
+            });
+            
+            // Анти-отладка
+            setInterval(function() {
+                const before = new Date();
+                debugger;
+                const after = new Date();
+                if (after - before > 100) {
+                    window.location.reload();
+                }
+            }, 1000);
+        })();
+
+        // ========== СИСТЕМА СОХРАНЕНИЯ ==========
+        const GameStorage = (function() {
+            let _data = null;
+            const _key = 'yeter_user_data';
+            
+            function _load() {
+                const saved = localStorage.getItem(_key);
+                if (saved) {
+                    try {
+                        _data = JSON.parse(saved);
+                        if (!_validate(_data)) {
+                            _createDefault();
+                        }
+                    } catch {
+                        _createDefault();
+                    }
+                } else {
+                    _createDefault();
+                }
+            }
+            
+            function _validate(data) {
+                return data && 
+                       typeof data.stars === 'number' && 
+                       data.stars >= 0 &&
+                       typeof data.level === 'number' &&
+                       data.level >= 1;
+            }
+            
+            function _createDefault() {
+                _data = {
+                    stars: 1250,
+                    level: 1,
+                    exp: 0,
+                    expToNext: 1000,
+                    games: { dice: { wins: 0, losses: 0 } },
+                    transactions: []
+                };
+            }
+            
+            function _save() {
+                localStorage.setItem(_key, JSON.stringify(_data));
+            }
+            
+            _load();
+            
+            return {
+                getStars: function() { return _data.stars; },
+                
+                updateStars: function(amount, reason) {
+                    if (_data.stars + amount < 0) return false;
+                    _data.stars += amount;
+                    
+                    _data.transactions.push({
+                        amount: amount,
+                        reason: reason,
+                        time: Date.now(),
+                        balance: _data.stars
+                    });
+                    
+                    if (_data.transactions.length > 50) {
+                        _data.transactions = _data.transactions.slice(-50);
+                    }
+                    
+                    _save();
+                    return true;
+                },
+                
+                addExp: function(amount) {
+                    _data.exp += amount;
+                    while (_data.exp >= _data.expToNext) {
+                        _data.exp -= _data.expToNext;
+                        _data.level++;
+                        _data.expToNext = Math.floor(_data.expToNext * 1.5);
+                    }
+                    _save();
+                },
+                
+                getLevel: function() { return _data.level; },
+                getExp: function() { return _data.exp; },
+                getExpToNext: function() { return _data.expToNext; },
+                
+                updateUI: function() {
+                    document.getElementById('balanceDisplay').innerText = _data.stars.toLocaleString();
+                    document.getElementById('levelDisplay').innerText = _data.level;
+                    document.getElementById('nextLevelDisplay').innerText = _data.level + 1;
+                    
+                    const progress = (_data.exp / _data.expToNext) * 100;
+                    document.getElementById('progressFill').style.width = progress + '%';
+                }
+            };
+        })();
+
+        // ========== ИНИЦИАЛИЗАЦИЯ TELEGRAM ==========
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+            const user = tg.initDataUnsafe?.user;
+            if (user) {
+                const name = user.username || (user.first_name || '').toLowerCase() || 'player';
+                const firstChar = (user.first_name || 'P').charAt(0).toUpperCase();
+                document.getElementById('playerAvatar').innerText = firstChar;
+                document.getElementById('playerName').innerText = '@' + name;
+            }
+        }
+
+        // ========== ИГРОВАЯ ЛОГИКА ==========
+        function showMessage(text, type = 'success') {
+            const container = document.getElementById('messageContainer');
+            container.innerHTML = '';
+            
+            const msg = document.createElement('div');
+            msg.className = `game-message ${type}`;
+            msg.innerHTML = `<span>${text}</span>`;
+            container.appendChild(msg);
+            
+            setTimeout(() => {
+                if (msg.parentNode) {
+                    msg.style.animation = 'messagePop 0.3s reverse';
+                    setTimeout(() => msg.remove(), 300);
+                }
+            }, 3000);
+        }
+
+        function showTwoLineMessage(top, bottom, type = 'error') {
+            const container = document.getElementById('messageContainer');
+            container.innerHTML = '';
+            
+            const msg = document.createElement('div');
+            msg.className = `game-message ${type}`;
+            msg.style.flexDirection = 'column';
+            msg.style.padding = '12px 16px';
+            msg.innerHTML = `
+                <span>${top}</span>
+                <div style="display: flex; align-items: center; gap: 4px; font-size: 20px;">
+                    <span>${bottom}</span>
+                    <span class="puzzle-icon">🧩</span>
+                </div>
+            `;
+            container.appendChild(msg);
+            
+            setTimeout(() => {
+                if (msg.parentNode) {
+                    msg.style.animation = 'messagePop 0.3s reverse';
+                    setTimeout(() => msg.remove(), 300);
+                }
+            }, 3000);
+        }
+
+        function calculateMultiplier(chance) {
+            if (chance <= 0) chance = 0.01;
+            if (chance > 95) chance = 95;
+            return Math.round((100 / chance) * 100) / 100;
+        }
+
+        function updateWinInfo() {
+            const bet = parseFloat(document.getElementById('betAmount').value) || 0;
+            const chance = parseFloat(document.getElementById('chanceInput').value) || 50;
+            
+            const validChance = Math.max(1, Math.min(95, chance));
+            const mult = calculateMultiplier(validChance);
+            const win = Math.floor(bet * mult);
+            
+            document.getElementById('winAmount').innerText = win.toLocaleString();
+            document.getElementById('winMultiplier').innerText = `x${mult.toFixed(2)}`;
+        }
+
+        function playGame(prediction) {
+            const bet = parseInt(document.getElementById('betAmount').value);
+            const chance = parseInt(document.getElementById('chanceInput').value);
+            
+            if (isNaN(bet) || bet < 10) {
+                showTwoLineMessage('Минимальная ставка', '10', 'error');
+                return;
+            }
+            if (bet > 100000) {
+                showTwoLineMessage('Максимальная ставка', '100000', 'error');
+                return;
+            }
+            if (isNaN(chance) || chance < 1 || chance > 95) {
+                showMessage('Шанс должен быть от 1% до 95%', 'warning');
+                return;
+            }
+            
+            const currentStars = GameStorage.getStars();
+            if (bet > currentStars) {
+                showMessage('Недостаточно средств', 'error');
+                return;
+            }
+            
+            // Списываем ставку
+            if (!GameStorage.updateStars(-bet, 'bet')) {
+                showMessage('Ошибка транзакции', 'error');
+                return;
+            }
+            
+            // Генерируем результат
+            const roll = Math.floor(Math.random() * 100) + 1;
+            const win = roll <= chance;
+            
+            if (win) {
+                const mult = calculateMultiplier(chance);
+                const winAmount = Math.floor(bet * mult);
+                
+                if (GameStorage.updateStars(winAmount, 'win')) {
+                    GameStorage.addExp(bet / 10); // Опыт за выигрыш
+                    
+                    showMessage(`ВЫИГРЫШ +${winAmount.toLocaleString()} 🧩`, 'success');
+                }
+            } else {
+                GameStorage.addExp(1); // Немного опыта за проигрыш
+                showMessage(`ПРОИГРЫШ -${bet.toLocaleString()} 🧩`, 'error');
+            }
+            
+            GameStorage.updateUI();
+            updateWinInfo();
+        }
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        window.onload = function() {
+            GameStorage.updateUI();
+            updateWinInfo();
+            
+            document.getElementById('betAmount').addEventListener('input', updateWinInfo);
+            document.getElementById('chanceInput').addEventListener('input', updateWinInfo);
+            
+            document.getElementById('lessBtn').addEventListener('click', () => playGame('less'));
+            document.getElementById('moreBtn').addEventListener('click', () => playGame('more'));
+        };
+    </script>
+</body>
+</html>
