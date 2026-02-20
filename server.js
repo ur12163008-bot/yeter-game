@@ -39,7 +39,7 @@ db.serialize(() => {
 // ========== MIDDLEWARE ==========
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
 // ========== API ==========
 app.get('/api/player/:telegramId', (req, res) => {
@@ -129,4 +129,5 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Сервер запущен на порту ${PORT}`);
   console.log(`✅ Webhook URL: ${WEBHOOK_URL}`);
 });
+
 
