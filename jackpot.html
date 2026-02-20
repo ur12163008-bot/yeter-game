@@ -31,27 +31,6 @@
             z-index: -2;
         }
 
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                radial-gradient(1.5px 1.5px at 15px 60px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.2px 1.2px at 72px 430px, rgba(255,245,200,0.8), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 250px 120px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(1.8px 1.8px at 120px 550px, rgba(210,230,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.3px 1.3px at 380px 200px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 40px 780px, rgba(200,220,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(1.6px 1.6px at 310px 640px, rgba(255,255,240,0.8), rgba(0,0,0,0)),
-                radial-gradient(1.1px 1.1px at 190px 890px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 420px 350px, rgba(180,200,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.4px 1.4px at 80px 920px, rgba(255,255,255,0.8), rgba(0,0,0,0));
-            background-size: 500px 1000px;
-            background-repeat: repeat;
-            opacity: 0.6;
-            z-index: -1;
-        }
-
         .app {
             max-width: 440px;
             width: 100%;
@@ -220,11 +199,6 @@
             box-shadow: none;
         }
 
-        .modal-submit.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
         .profile-header {
             display: flex;
             align-items: center;
@@ -256,8 +230,6 @@
             font-weight: 700;
             color: white;
             border: 2px solid #b87aff;
-            flex-shrink: 0;
-            object-fit: cover;
             background-size: cover;
             background-position: center;
         }
@@ -273,59 +245,6 @@
             font-size: 16px;
             font-weight: 700;
             color: white;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .level-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .level-badge {
-            background: linear-gradient(145deg, #6a0dad, #4b0082);
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 900;
-            color: white;
-            box-shadow: 0 3px 0 #2d0b4e;
-        }
-
-        .progress-wrap {
-            width: 60px;
-            height: 6px;
-            background: rgba(30, 38, 48, 0.8);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(155, 77, 255, 0.4);
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #9b4dff, #b87aff);
-            border-radius: 20px;
-            width: 0%;
-        }
-
-        .next-level {
-            background: rgba(42, 30, 58, 0.9);
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 900;
-            color: #b87aff;
-            border: 1px solid rgba(155, 77, 255, 0.4);
         }
 
         .balance-right {
@@ -350,29 +269,6 @@
         .puzzle-icon {
             color: #ffd700;
             font-size: 16px;
-            filter: drop-shadow(0 0 5px #ffaa00);
-        }
-
-        .add-balance-btn {
-            background: rgba(106, 13, 173, 0.4);
-            border: 2px solid rgba(138, 43, 226, 0.5);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #b87aff;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.1s;
-            margin-left: 5px;
-        }
-
-        .add-balance-btn:active {
-            background: rgba(106, 13, 173, 0.6);
-            transform: scale(0.95);
         }
 
         .stats-container {
@@ -388,7 +284,6 @@
             border-radius: 40px;
             padding: 16px 20px;
             backdrop-filter: blur(4px);
-            width: 100%;
         }
 
         .stat-block-top {
@@ -398,7 +293,6 @@
         .stat-block-bottom {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             gap: 10px;
         }
 
@@ -415,14 +309,12 @@
             font-size: 13px;
             color: #8e98a3;
             margin-bottom: 5px;
-            font-weight: 600;
         }
 
         .stat-value {
             font-size: 24px;
             font-weight: 800;
             color: #b87aff;
-            line-height: 1.2;
         }
 
         .stat-value-large {
@@ -441,7 +333,6 @@
         .roulette-header {
             display: flex;
             justify-content: center;
-            align-items: center;
             margin-bottom: 15px;
         }
 
@@ -460,7 +351,6 @@
         .timer.waiting {
             background: rgba(255, 165, 0, 0.2);
             color: #ffaa00;
-            border-color: rgba(255, 165, 0, 0.4);
         }
 
         .roulette-track {
@@ -525,14 +415,7 @@
             height: 42px;
             border-radius: 50%;
             background: linear-gradient(145deg, #6a0dad, #4b0082);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-            color: white;
             border: 2px solid #b87aff;
-            object-fit: cover;
             background-size: cover;
             background-position: center;
         }
@@ -544,10 +427,6 @@
             display: flex;
             align-items: center;
             gap: 3px;
-        }
-
-        .roulette-bet .puzzle-icon {
-            font-size: 12px;
         }
 
         .players-container {
@@ -564,8 +443,6 @@
             color: #b87aff;
             font-weight: 700;
             margin-bottom: 15px;
-            font-size: 15px;
-            letter-spacing: 0.5px;
         }
 
         .player-row {
@@ -580,7 +457,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            overflow: hidden;
             flex: 1;
         }
 
@@ -589,15 +465,7 @@
             height: 36px;
             border-radius: 50%;
             background: linear-gradient(145deg, #6a0dad, #4b0082);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 16px;
-            color: white;
             border: 2px solid #b87aff;
-            flex-shrink: 0;
-            object-fit: cover;
             background-size: cover;
             background-position: center;
         }
@@ -606,9 +474,6 @@
             font-weight: 600;
             color: white;
             font-size: 14px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .player-bet-small {
@@ -618,7 +483,6 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            flex-shrink: 0;
         }
 
         .no-players {
@@ -644,8 +508,6 @@
             cursor: pointer;
             box-shadow: 0 8px 0 #2d0b4e;
             transition: all 0.1s;
-            letter-spacing: 1px;
-            text-transform: uppercase;
         }
 
         .open-bet-btn:active {
@@ -656,16 +518,11 @@
         .open-bet-btn.disabled {
             opacity: 0.5;
             pointer-events: none;
-            transform: none;
-            box-shadow: 0 4px 0 #2d0b4e;
-            background: linear-gradient(145deg, #666, #444);
         }
 
         .open-bet-btn.waiting {
             opacity: 0.5;
             pointer-events: none;
-            transform: none;
-            box-shadow: 0 4px 0 #2d0b4e;
             background: linear-gradient(145deg, #666, #444);
         }
     </style>
@@ -697,13 +554,6 @@
                 <div class="avatar" id="avatar"></div>
                 <div class="nick-level">
                     <div class="nick" id="nickname">Загрузка...</div>
-                    <div class="level-row">
-                        <div class="level-badge" id="levelNumber">1</div>
-                        <div class="progress-wrap">
-                            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
-                        </div>
-                        <div class="next-level" id="nextLevel">2</div>
-                    </div>
                 </div>
             </div>
             <div class="balance-right">
@@ -711,7 +561,6 @@
                     <span class="puzzle-icon">🧩</span>
                     <span id="balanceDisplay">10000</span>
                 </div>
-                <div class="add-balance-btn" id="addBalanceBtn">+</div>
             </div>
         </div>
 
@@ -737,7 +586,7 @@
                 <div class="timer" id="rouletteTimer">0</div>
             </div>
             <div class="roulette-track">
-                <div class="pointer-container" id="pointer">
+                <div class="pointer-container">
                     <div class="pointer-line"></div>
                 </div>
                 <div class="roulette-items" id="rouletteItems"></div>
@@ -753,7 +602,7 @@
                 <span>ИГРОКИ</span>
                 <span>СТАВКА</span>
             </div>
-            <div id="playersList"></div>
+            <div id="playersList" class="players-list"></div>
         </div>
     </div>
 
@@ -765,74 +614,40 @@
             id: null,
             firstName: '',
             lastName: '',
-            username: '',
             avatarUrl: null
         };
         
         let players = [];
-        let userBet = 0;
         let userHasBet = false;
         let roundActive = true;
         let roundInProgress = false;
-        let timerInterval;
         let roundEndTime = null;
         let timerStarted = false;
 
         // Получаем данные из Telegram
         if (tg) {
             tg.ready();
-            tg.expand();
             
             const user = tg.initDataUnsafe?.user;
             if (user) {
                 userData.id = user.id;
                 userData.firstName = user.first_name || '';
                 userData.lastName = user.last_name || '';
-                userData.username = user.username || '';
                 
-                // Формируем полное имя
                 let fullName = userData.firstName;
-                if (userData.lastName) {
-                    fullName += ' ' + userData.lastName;
-                }
+                if (userData.lastName) fullName += ' ' + userData.lastName;
                 document.getElementById('nickname').innerText = fullName;
                 
-                // Пробуем получить аватарку
                 if (user.photo_url) {
                     userData.avatarUrl = user.photo_url;
-                    setAvatar(user.photo_url);
+                    document.getElementById('avatar').style.backgroundImage = `url(${user.photo_url})`;
                 } else {
-                    setInitialsAvatar(userData.firstName.charAt(0).toUpperCase());
+                    document.getElementById('avatar').innerText = userData.firstName.charAt(0).toUpperCase();
                 }
             }
         }
 
-        function setAvatar(url) {
-            const avatarEl = document.getElementById('avatar');
-            avatarEl.style.backgroundImage = `url(${url})`;
-            avatarEl.style.backgroundColor = 'transparent';
-            avatarEl.innerText = '';
-        }
-
-        function setInitialsAvatar(initial) {
-            const avatarEl = document.getElementById('avatar');
-            avatarEl.style.backgroundImage = 'none';
-            avatarEl.style.backgroundColor = '';
-            avatarEl.innerText = initial;
-        }
-
-        function setPlayerAvatar(element, player) {
-            if (player.avatarUrl) {
-                element.style.backgroundImage = `url(${player.avatarUrl})`;
-                element.style.backgroundColor = 'transparent';
-                element.innerText = '';
-            } else {
-                element.style.backgroundImage = 'none';
-                element.innerText = (player.firstName || player.username || '?').charAt(0).toUpperCase();
-            }
-        }
-
-        // ========== LIVE ОБНОВЛЕНИЯ ЧЕРЕЗ localStorage ==========
+        // ========== ХРАНИЛИЩЕ ==========
         const STATE_KEY = 'yeter_jackpot_live';
         
         function getGameState() {
@@ -861,14 +676,21 @@
             localStorage.setItem(STATE_KEY, JSON.stringify(state));
         }
 
-        // Загружаем начальное состояние
+        // Загружаем состояние
         let gameState = getGameState();
         players = gameState.players || [];
         roundActive = gameState.roundActive;
         timerStarted = gameState.timerStarted;
         roundEndTime = gameState.roundEndTime;
 
+        // ПРОВЕРЯЕМ, ЕСТЬ ЛИ УЖЕ СТАВКА У ЭТОГО ПОЛЬЗОВАТЕЛЯ
+        const existingPlayer = players.find(p => p.id === userData.id);
+        if (existingPlayer) {
+            userHasBet = true;
+        }
+
         function addPlayer(player) {
+            // Удаляем старую ставку этого пользователя если была
             players = players.filter(p => p.id !== player.id);
             players.push(player);
             
@@ -896,6 +718,7 @@
             timerStarted = false;
             roundEndTime = null;
             roundActive = true;
+            userHasBet = false;
             
             gameState = {
                 players: [],
@@ -906,11 +729,6 @@
             };
             
             saveGameState(gameState);
-            
-            const betBtn = document.getElementById('openBetBtn');
-            betBtn.classList.remove('disabled', 'waiting');
-            betBtn.innerText = 'СДЕЛАТЬ СТАВКУ';
-            
             updateAllDisplays();
         }
 
@@ -924,14 +742,16 @@
             
             let lotteryPool = [];
             players.forEach(p => {
-                for (let i = 0; i < p.bet; i++) {
-                    lotteryPool.push(p);
-                }
+                for (let i = 0; i < p.bet; i++) lotteryPool.push(p);
             });
             
             const winner = lotteryPool[Math.floor(Math.random() * lotteryPool.length)];
             
-            spinRoulette();
+            // Анимация
+            roundInProgress = true;
+            const roulette = document.getElementById('rouletteItems');
+            roulette.style.transition = 'left 5s cubic-bezier(0.25, 0.1, 0.2, 1)';
+            roulette.style.left = - (2500 + Math.random() * 2000) + 'px';
             
             setTimeout(() => {
                 if (winner && winner.id === userData.id) {
@@ -939,23 +759,11 @@
                     const winNotif = document.getElementById('winNotification');
                     winNotif.innerHTML = `🎉 ВЫИГРЫШ ${total} 🧩`;
                     winNotif.classList.add('show');
-                    
-                    setTimeout(() => {
-                        winNotif.classList.remove('show');
-                    }, 5000);
+                    setTimeout(() => winNotif.classList.remove('show'), 5000);
                 }
-                
+                roundInProgress = false;
                 setTimeout(startNewRound, 3000);
             }, 5000);
-        }
-
-        function spinRoulette() {
-            roundInProgress = true;
-            const roulette = document.getElementById('rouletteItems');
-            const spinDistance = 2500 + Math.random() * 2000;
-            
-            roulette.style.transition = 'left 5s cubic-bezier(0.25, 0.1, 0.2, 1)';
-            roulette.style.left = -spinDistance + 'px';
         }
 
         function generateRouletteItems() {
@@ -967,7 +775,6 @@
             for (let i = 0; i < TOTAL_ROULETTE_ITEMS; i++) {
                 const randomValue = Math.random() * total;
                 let cumulative = 0;
-                
                 for (const player of players) {
                     cumulative += player.bet;
                     if (randomValue < cumulative) {
@@ -976,27 +783,26 @@
                     }
                 }
             }
-            
             return items;
         }
 
         function updateAllDisplays() {
+            // Обновляем статистику
             document.getElementById('totalPot').innerText = gameState.totalPot;
             
             const userPlayer = players.find(p => p.id === userData.id);
             if (userPlayer) {
-                userBet = userPlayer.bet;
                 userHasBet = true;
+                document.getElementById('yourBet').innerText = userPlayer.bet;
+                let winPercent = ((userPlayer.bet / gameState.totalPot) * 100).toFixed(1);
+                document.getElementById('winPercent').innerText = winPercent;
             } else {
-                userBet = 0;
                 userHasBet = false;
+                document.getElementById('yourBet').innerText = '0';
+                document.getElementById('winPercent').innerText = '0';
             }
             
-            document.getElementById('yourBet').innerText = userBet;
-            
-            let winPercent = userBet > 0 ? ((userBet / gameState.totalPot) * 100).toFixed(1) : 0;
-            document.getElementById('winPercent').innerText = winPercent;
-            
+            // Обновляем таймер
             const timerEl = document.getElementById('rouletteTimer');
             if (timerStarted && roundEndTime) {
                 const remaining = Math.max(0, Math.floor((roundEndTime - Date.now()) / 1000));
@@ -1004,16 +810,32 @@
                 timerEl.classList.remove('waiting');
                 
                 if (remaining <= 0 && roundActive && !roundInProgress) {
-                    const betBtn = document.getElementById('openBetBtn');
-                    betBtn.classList.add('disabled');
-                    betBtn.classList.remove('waiting');
+                    document.getElementById('openBetBtn').classList.add('disabled');
                     pickWinner();
                 }
             } else {
                 timerEl.innerText = '0';
-                timerEl.classList.toggle('waiting', players.length >= 2);
+                if (players.length >= 2) {
+                    timerEl.classList.add('waiting');
+                } else {
+                    timerEl.classList.remove('waiting');
+                }
             }
             
+            // Обновляем кнопку
+            const betBtn = document.getElementById('openBetBtn');
+            if (userHasBet) {
+                betBtn.classList.add('waiting');
+                betBtn.innerText = 'ОЖИДАНИЕ РАУНДА';
+            } else if (!roundActive || roundInProgress) {
+                betBtn.classList.add('disabled');
+                betBtn.innerText = 'СДЕЛАТЬ СТАВКУ';
+            } else {
+                betBtn.classList.remove('disabled', 'waiting');
+                betBtn.innerText = 'СДЕЛАТЬ СТАВКУ';
+            }
+            
+            // Обновляем список игроков
             updatePlayersList();
             updateRoulette();
         }
@@ -1026,14 +848,14 @@
                 return;
             }
             
-            const sorted = [...players].sort((a, b) => b.bet - a.bet).slice(0, 10);
+            const sorted = [...players].sort((a, b) => b.bet - a.bet);
             
             listDiv.innerHTML = sorted.map(p => {
                 const displayName = p.firstName + (p.lastName ? ' ' + p.lastName : '');
                 return `
                 <div class="player-row">
                     <div class="player-info">
-                        <div class="player-avatar-small" id="avatar-${p.id}"></div>
+                        <div class="player-avatar-small" style="background-image: ${p.avatarUrl ? `url(${p.avatarUrl})` : 'none'}; background-size: cover;">${!p.avatarUrl ? (p.firstName?.charAt(0) || '?') : ''}</div>
                         <span class="player-name-small">${displayName}</span>
                     </div>
                     <div class="player-bet-small">
@@ -1041,11 +863,6 @@
                     </div>
                 </div>
             `}).join('');
-            
-            sorted.forEach(p => {
-                const avatarEl = document.getElementById(`avatar-${p.id}`);
-                if (avatarEl) setPlayerAvatar(avatarEl, p);
-            });
         }
 
         function updateRoulette() {
@@ -1058,20 +875,15 @@
             
             const items = generateRouletteItems();
             
-            roulette.innerHTML = items.map((p, index) => {
+            roulette.innerHTML = items.map(p => {
                 return `
-                <div class="roulette-item" data-id="${p.id}">
-                    <div class="roulette-avatar" id="roulette-${p.id}-${index}"></div>
+                <div class="roulette-item">
+                    <div class="roulette-avatar" style="background-image: ${p.avatarUrl ? `url(${p.avatarUrl})` : 'none'}; background-size: cover;">${!p.avatarUrl ? (p.firstName?.charAt(0) || '?') : ''}</div>
                     <div class="roulette-bet">
                         ${p.bet} <span class="puzzle-icon">🧩</span>
                     </div>
                 </div>
             `}).join('');
-            
-            items.forEach((p, index) => {
-                const avatarEl = document.getElementById(`roulette-${p.id}-${index}`);
-                if (avatarEl) setPlayerAvatar(avatarEl, p);
-            });
         }
 
         // Модальное окно
@@ -1083,7 +895,7 @@
         const modalSubmit = document.getElementById('modalSubmitBtn');
         
         openBtn.addEventListener('click', () => {
-            if (!roundActive || roundInProgress || userHasBet) return;
+            if (userHasBet || !roundActive || roundInProgress) return;
             modalBetInput.value = 100;
             modalError.innerText = '';
             modal.classList.add('active');
@@ -1116,9 +928,8 @@
                 return;
             }
             
-            if (!roundActive || roundInProgress || userHasBet) {
+            if (userHasBet || !roundActive || roundInProgress) {
                 modal.classList.remove('active');
-                modalError.innerText = '';
                 return;
             }
             
@@ -1126,20 +937,12 @@
                 id: userData.id,
                 firstName: userData.firstName,
                 lastName: userData.lastName,
-                username: userData.username,
                 avatarUrl: userData.avatarUrl,
                 bet: amount
             });
             
-            userBet = amount;
-            userHasBet = true;
-            openBtn.classList.add('waiting');
-            openBtn.innerText = 'ОЖИДАНИЕ РАУНДА';
             modal.classList.remove('active');
-            modalError.innerText = '';
         });
-
-        document.getElementById('addBalanceBtn').addEventListener('click', () => alert('Пополнение будет доступно позже'));
 
         // Обновление каждые 200мс
         setInterval(() => {
@@ -1150,20 +953,6 @@
                 timerStarted = gameState.timerStarted;
                 roundEndTime = gameState.roundEndTime;
                 roundActive = gameState.roundActive;
-                
-                const userPlayer = players.find(p => p.id === userData.id);
-                if (userPlayer) {
-                    userHasBet = true;
-                    userBet = userPlayer.bet;
-                    openBtn.classList.add('waiting');
-                    openBtn.innerText = 'ОЖИДАНИЕ РАУНДА';
-                } else {
-                    userHasBet = false;
-                    userBet = 0;
-                    openBtn.classList.remove('waiting');
-                    openBtn.innerText = 'СДЕЛАТЬ СТАВКУ';
-                }
-                
                 updateAllDisplays();
             }
             
@@ -1173,6 +962,7 @@
             }
         }, 200);
 
+        // Первое обновление
         updateAllDisplays();
     </script>
 </body>
