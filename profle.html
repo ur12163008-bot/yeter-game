@@ -31,27 +31,6 @@
             z-index: -2;
         }
 
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                radial-gradient(1.5px 1.5px at 15px 60px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.2px 1.2px at 72px 430px, rgba(255,245,200,0.8), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 250px 120px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(1.8px 1.8px at 120px 550px, rgba(210,230,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.3px 1.3px at 380px 200px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 40px 780px, rgba(200,220,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(1.6px 1.6px at 310px 640px, rgba(255,255,240,0.8), rgba(0,0,0,0)),
-                radial-gradient(1.1px 1.1px at 190px 890px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 420px 350px, rgba(180,200,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.4px 1.4px at 80px 920px, rgba(255,255,255,0.8), rgba(0,0,0,0));
-            background-size: 500px 1000px;
-            background-repeat: repeat;
-            opacity: 0.6;
-            z-index: -1;
-        }
-
         .app {
             max-width: 440px;
             width: 100%;
@@ -59,7 +38,7 @@
             position: relative;
         }
 
-        /* Верхняя плашка с балансом по середине */
+        /* Верхняя плашка с балансом */
         .top-header {
             display: flex;
             justify-content: center;
@@ -70,121 +49,100 @@
         .balance-wrapper {
             display: flex;
             align-items: center;
-            gap: 15px;
-            background: rgba(10, 14, 22, 0.9);
-            padding: 10px 30px;
-            border-radius: 50px;
-            border: 2px solid rgba(138, 43, 226, 0.5);
+            gap: 10px;
+            background: rgba(10, 14, 22, 0.8);
+            padding: 6px 20px;
+            border-radius: 40px;
+            border: 1px solid rgba(138, 43, 226, 0.4);
         }
 
         .balance-stars {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-weight: 900;
-            font-size: 22px;
+            gap: 6px;
+            font-weight: 800;
+            font-size: 18px;
             color: white;
         }
 
         .puzzle-icon {
             color: #ffd700;
-            font-size: 24px;
-            filter: drop-shadow(0 0 8px #ffaa00);
+            font-size: 18px;
         }
 
         .add-balance-btn {
-            background: rgba(106, 13, 173, 0.4);
-            border: 2px solid rgba(138, 43, 226, 0.6);
+            background: rgba(106, 13, 173, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.4);
             border-radius: 50%;
-            width: 36px;
-            height: 36px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #b87aff;
-            font-size: 26px;
-            font-weight: 800;
+            font-size: 20px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.1s;
-        }
-
-        .add-balance-btn:active {
-            background: rgba(106, 13, 173, 0.6);
-            transform: scale(0.95);
         }
 
         /* Профиль */
         .profile-full {
-            background: rgba(10, 14, 22, 0.7);
-            min-height: calc(100vh - 150px);
+            background: rgba(10, 14, 22, 0.6);
             margin: 5px 20px 0;
-            padding: 0;
-            border-top-left-radius: 32px;
-            border-top-right-radius: 32px;
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-bottom: none;
+            border-top-left-radius: 28px;
+            border-top-right-radius: 28px;
+            border: 1px solid rgba(138, 43, 226, 0.2);
         }
 
         .sticky-profile {
-            position: sticky;
-            top: 0;
-            background: rgba(10, 14, 22, 0.95);
-            z-index: 100;
-            padding: 30px 20px 20px;
-            border-top-left-radius: 32px;
-            border-top-right-radius: 32px;
+            padding: 24px 20px 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            border-bottom: 2px solid rgba(138, 43, 226, 0.3);
+            border-bottom: 1px solid rgba(138, 43, 226, 0.2);
         }
 
         .avatar-profile {
-            width: 120px;
-            height: 120px;
-            border-radius: 30px;
+            width: 100px;
+            height: 100px;
+            border-radius: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 56px;
+            font-size: 48px;
             font-weight: 700;
             color: white;
-            border: 3px solid #b87aff;
-            margin-bottom: 20px;
+            border: 2px solid #b87aff;
+            margin-bottom: 16px;
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             background-color: #6a0dad;
-            overflow: hidden;
-            box-shadow: 0 15px 25px rgba(106, 13, 173, 0.4);
         }
 
         .profile-name-center {
-            font-size: 30px;
+            font-size: 26px;
             font-weight: 800;
             color: white;
-            letter-spacing: -0.5px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             text-align: center;
-            width: 100%;
         }
 
         .profile-level-section {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             width: 100%;
         }
 
         .level-badge-profile {
             background: linear-gradient(145deg, #6a0dad, #4b0082);
-            width: 50px;
-            height: 50px;
+            width: 44px;
+            height: 44px;
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 900;
             color: white;
             box-shadow: 0 4px 0 #2d0b4e;
@@ -193,11 +151,11 @@
 
         .progress-bar-full {
             flex: 1;
-            height: 14px;
+            height: 12px;
             background: rgba(30, 38, 48, 0.8);
             border-radius: 20px;
             overflow: hidden;
-            border: 1px solid rgba(155, 77, 255, 0.4);
+            border: 1px solid rgba(155, 77, 255, 0.3);
         }
 
         .progress-fill-full {
@@ -209,135 +167,114 @@
 
         .next-level-number-profile {
             background: rgba(42, 30, 58, 0.9);
-            width: 50px;
-            height: 50px;
+            width: 44px;
+            height: 44px;
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 900;
             color: #b87aff;
-            box-shadow: 0 4px 0 #1a1428;
-            border: 1px solid rgba(155, 77, 255, 0.4);
+            border: 1px solid rgba(155, 77, 255, 0.3);
             flex-shrink: 0;
         }
 
         .profile-content {
-            padding: 25px 20px 40px;
-            width: 100%;
+            padding: 20px 20px 40px;
         }
 
         /* Секция подарков */
         .gifts-section {
             background: rgba(10, 14, 22, 0.7);
-            border: 2px solid rgba(138, 43, 226, 0.3);
-            border-radius: 32px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 28px;
             padding: 20px;
-            width: 100%;
         }
 
         .gifts-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .gifts-title {
-            color: #b87aff;
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: 1px;
+            color: #8e98a3;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         .view-all-btn {
-            background: rgba(106, 13, 173, 0.4);
-            border: 2px solid rgba(138, 43, 226, 0.6);
-            border-radius: 50px;
-            width: 55px;
-            height: 55px;
+            background: rgba(106, 13, 173, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 40px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #b87aff;
-            font-size: 32px;
-            font-weight: 800;
+            font-size: 22px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.1s;
-        }
-
-        .view-all-btn:active {
-            background: rgba(106, 13, 173, 0.6);
-            transform: scale(0.95);
         }
 
         .empty-gifts {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
-            padding: 30px 0;
+            gap: 15px;
+            padding: 20px 0;
         }
 
         .empty-gifts p {
             color: #8e98a3;
-            font-size: 16px;
-            font-weight: 500;
+            font-size: 14px;
         }
 
         .add-gift-btn {
             width: 100%;
-            background: rgba(106, 13, 173, 0.2);
-            border: 2px dashed rgba(138, 43, 226, 0.6);
-            border-radius: 60px;
-            padding: 18px;
+            background: rgba(106, 13, 173, 0.1);
+            border: 2px dashed rgba(138, 43, 226, 0.3);
+            border-radius: 40px;
+            padding: 14px;
             color: #b87aff;
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.1s;
             text-align: center;
-        }
-
-        .add-gift-btn:active {
-            background: rgba(106, 13, 173, 0.3);
-            transform: scale(0.98);
         }
 
         .gifts-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
         }
 
         .gift-card {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(138, 43, 226, 0.4);
-            border-radius: 24px;
-            padding: 15px 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 20px;
+            padding: 12px 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             cursor: pointer;
-            transition: all 0.1s;
-        }
-
-        .gift-card:active {
-            transform: scale(0.97);
         }
 
         .gift-image {
-            width: 70px;
-            height: 70px;
-            border-radius: 16px;
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
             object-fit: cover;
-            border: 2px solid rgba(155, 77, 255, 0.4);
+            border: 1px solid rgba(155, 77, 255, 0.3);
         }
 
         .gift-name {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             color: white;
             text-align: center;
@@ -350,231 +287,192 @@
         .gift-price {
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 16px;
-            font-weight: 800;
-            color: #ffd700;
+            gap: 3px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #b87aff;
         }
 
         .gift-price .puzzle-icon {
-            font-size: 14px;
+            font-size: 11px;
+            color: #b87aff;
         }
 
-        /* Модальное окно инвентаря */
-        .inventory-modal-overlay {
+        /* Модальное окно */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
             z-index: 2000;
             display: none;
             justify-content: center;
             align-items: center;
         }
 
-        .inventory-modal-overlay.active {
-            display: flex;
-        }
-
-        .inventory-modal {
-            width: 92%;
-            max-width: 400px;
-            max-height: 80vh;
-            background: linear-gradient(145deg, #1a1028, #0f0a18);
-            border: 2px solid rgba(155, 77, 255, 0.7);
-            border-radius: 40px;
-            padding: 30px 20px;
-            position: relative;
-            overflow-y: auto;
-        }
-
-        .inventory-modal-close {
-            position: absolute;
-            top: 18px;
-            right: 18px;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(155, 77, 255, 0.6);
-            color: #b87aff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 20px;
-            font-weight: 700;
-            z-index: 10;
-        }
-
-        .inventory-modal-title {
-            color: #b87aff;
-            font-size: 24px;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .inventory-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        /* Модальное окно подарка */
-        .gift-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            z-index: 2100;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .gift-modal-overlay.active {
+        .modal-overlay.active {
             display: flex;
         }
 
         .gift-modal {
-            width: 340px;
+            width: 300px;
             background: linear-gradient(145deg, #1a1028, #0f0a18);
-            border: 2px solid rgba(155, 77, 255, 0.7);
-            border-radius: 40px;
-            padding: 30px 20px;
+            border: 2px solid rgba(155, 77, 255, 0.5);
+            border-radius: 32px;
+            padding: 24px 20px;
             position: relative;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
         }
 
-        .gift-modal-close {
+        .modal-close {
             position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 32px;
-            height: 32px;
+            top: 12px;
+            right: 12px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(155, 77, 255, 0.6);
+            border: 1px solid rgba(155, 77, 255, 0.3);
             color: #b87aff;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 16px;
         }
 
-        .gift-modal-image {
-            width: 140px;
-            height: 140px;
+        .modal-image {
+            width: 120px;
+            height: 120px;
             border-radius: 24px;
             margin: 10px auto 15px;
             display: block;
-            border: 3px solid rgba(155, 77, 255, 0.5);
-            object-fit: cover;
+            border: 2px solid rgba(155, 77, 255, 0.3);
         }
 
-        .gift-modal-title {
-            font-size: 24px;
+        .modal-title {
+            font-size: 20px;
             font-weight: 800;
             color: white;
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
-        .gift-modal-price {
+        .modal-price {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            font-size: 26px;
-            font-weight: 900;
-            color: #ffd700;
-            margin-bottom: 25px;
+            gap: 6px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #b87aff;
+            margin-bottom: 20px;
         }
 
-        .gift-modal-price .puzzle-icon {
-            font-size: 24px;
+        .modal-price .puzzle-icon {
+            font-size: 18px;
+            color: #b87aff;
         }
 
-        .gift-modal-buttons {
+        .modal-buttons {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .withdraw-btn {
             width: 100%;
-            background: linear-gradient(145deg, #666, #444);
+            background: #2a2a2a;
             border: none;
-            border-radius: 60px;
-            padding: 18px;
-            color: white;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #333;
-            transition: all 0.1s;
+            border-radius: 40px;
+            padding: 14px;
+            color: #8e98a3;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: default;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .withdraw-btn.active {
             background: linear-gradient(145deg, #9b4dff, #6a0dad);
-            box-shadow: 0 6px 0 #2d0b4e;
-        }
-
-        .withdraw-btn .lock-icon {
-            font-size: 18px;
-        }
-
-        .withdraw-btn .timer-text {
-            font-size: 18px;
+            color: white;
             font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #2d0b4e;
         }
 
-        .withdraw-btn .minutes {
-            font-size: 16px;
-            font-weight: 600;
-            color: #ffaa00;
+        .lock-icon {
+            color: #8e98a3;
+            font-size: 14px;
+        }
+
+        .timer-text {
+            color: #8e98a3;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .minutes {
+            color: #8e98a3;
+            font-size: 12px;
             margin-left: 2px;
         }
 
         .withdraw-text-below {
             text-align: center;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 12px;
             color: #8e98a3;
-            margin-top: 5px;
-            letter-spacing: 0.5px;
+            margin-top: -5px;
         }
 
         .upgrade-btn {
             width: 100%;
             background: linear-gradient(145deg, #9b4dff, #6a0dad);
             border: none;
-            border-radius: 60px;
-            padding: 18px;
+            border-radius: 40px;
+            padding: 14px;
             color: white;
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 6px 0 #2d0b4e;
-            transition: all 0.1s;
+            box-shadow: 0 4px 0 #2d0b4e;
         }
 
-        .upgrade-btn:active {
-            transform: translateY(4px);
-            box-shadow: none;
+        /* Модальное окно инвентаря */
+        .inventory-modal {
+            width: 92%;
+            max-width: 380px;
+            max-height: 70vh;
+            background: linear-gradient(145deg, #1a1028, #0f0a18);
+            border: 2px solid rgba(155, 77, 255, 0.5);
+            border-radius: 32px;
+            padding: 20px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .inventory-modal .modal-close {
+            top: 12px;
+            right: 12px;
+        }
+
+        .inventory-title {
+            color: #8e98a3;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
 
         /* Нижняя навигация */
@@ -585,17 +483,16 @@
             right: 0;
             max-width: 440px;
             margin: 0 auto;
-            background: rgba(10, 14, 22, 0.95);
+            background: rgba(10, 14, 22, 0.9);
             display: flex;
             justify-content: space-around;
-            padding: 12px 8px;
-            border-radius: 40px 40px 40px 40px;
-            border: 2px solid rgba(138, 43, 226, 0.3);
+            padding: 10px 6px;
+            border-radius: 40px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
             margin-bottom: 16px;
             width: calc(100% - 40px);
             left: 20px;
             right: 20px;
-            backdrop-filter: blur(8px);
         }
 
         .nav-item {
@@ -604,10 +501,10 @@
             align-items: center;
             gap: 4px;
             color: #8e98a3;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
-            padding: 8px 12px;
+            padding: 6px 8px;
             border-radius: 30px;
             flex: 1;
             text-align: center;
@@ -615,7 +512,7 @@
         }
 
         .nav-item i {
-            font-size: 22px;
+            font-size: 20px;
             color: #8e98a3;
         }
 
@@ -631,7 +528,7 @@
 </head>
 <body>
     <div class="app">
-        <!-- Верхний баланс по середине с кнопкой + -->
+        <!-- Верхний баланс -->
         <div class="top-header">
             <div class="balance-wrapper">
                 <div class="balance-stars">
@@ -670,22 +567,22 @@
         </div>
 
         <!-- Модальное окно всех подарков -->
-        <div class="inventory-modal-overlay" id="inventoryModal">
+        <div class="modal-overlay" id="inventoryModal">
             <div class="inventory-modal">
-                <div class="inventory-modal-close" id="closeInventoryModal">✖</div>
-                <div class="inventory-modal-title">ВАШИ ПОДАРКИ</div>
+                <div class="modal-close" id="closeInventoryModal">✖</div>
+                <div class="inventory-title">ВСЕ ПОДАРКИ</div>
                 <div class="inventory-grid" id="inventoryGrid"></div>
             </div>
         </div>
 
         <!-- Модальное окно подарка -->
-        <div class="gift-modal-overlay" id="giftModal">
+        <div class="modal-overlay" id="giftModal">
             <div class="gift-modal">
-                <div class="gift-modal-close" id="closeGiftModal">✖</div>
-                <img src="" alt="" class="gift-modal-image" id="modalImage">
-                <div class="gift-modal-title" id="modalTitle"></div>
-                <div class="gift-modal-price" id="modalPrice"></div>
-                <div class="gift-modal-buttons">
+                <div class="modal-close" id="closeGiftModal">✖</div>
+                <img src="" alt="" class="modal-image" id="modalImage">
+                <div class="modal-title" id="modalTitle"></div>
+                <div class="modal-price" id="modalPrice"></div>
+                <div class="modal-buttons">
                     <button class="withdraw-btn" id="withdrawBtn"></button>
                     <div class="withdraw-text-below" id="withdrawText"></div>
                     <button class="upgrade-btn" id="upgradeBtn">УЛУЧШИТЬ</button>
@@ -720,35 +617,12 @@
         // Инвентарь подарков
         let inventory = [];
 
-        // Таймеры для вывода
+        // Таймеры
         let withdrawTimers = {};
 
-        // Защита от накрутки
-        const Security = (function() {
-            let _requestCount = 0;
-            let _lastReset = Date.now();
-            
-            function checkRateLimit() {
-                const now = Date.now();
-                if (now - _lastReset > 60000) {
-                    _requestCount = 0;
-                    _lastReset = now;
-                }
-                _requestCount++;
-                return _requestCount <= 30;
-            }
-            
-            return {
-                validateRequest: function() {
-                    return checkRateLimit();
-                }
-            };
-        })();
-
-        // Загрузка данных из localStorage
+        // Загрузка данных
         function loadData() {
             try {
-                // Загружаем инвентарь
                 const savedInventory = localStorage.getItem('yeter_inventory');
                 if (savedInventory) {
                     inventory = JSON.parse(savedInventory);
@@ -765,7 +639,6 @@
                     if (updated) saveInventory();
                 }
 
-                // Загружаем баланс и уровень
                 const savedData = localStorage.getItem('yeter_user_data');
                 if (savedData) {
                     const data = JSON.parse(savedData);
@@ -774,12 +647,9 @@
                     userData.exp = data.exp || 0;
                     userData.expToNext = data.expToNext || 1000;
                 }
-            } catch (e) {
-                console.error('Load error:', e);
-            }
+            } catch (e) {}
         }
 
-        // Сохранение инвентаря
         function saveInventory() {
             localStorage.setItem('yeter_inventory', JSON.stringify(inventory));
         }
@@ -797,12 +667,9 @@
                 document.getElementById('profileName').innerText = fullName;
                 
                 if (user.photo_url) {
-                    const avatarEl = document.getElementById('profileAvatar');
-                    avatarEl.style.backgroundImage = `url('${user.photo_url}')`;
-                    avatarEl.style.backgroundColor = 'transparent';
-                    avatarEl.style.backgroundSize = 'cover';
-                    avatarEl.style.backgroundPosition = 'center';
-                    avatarEl.innerHTML = '';
+                    document.getElementById('profileAvatar').style.backgroundImage = `url('${user.photo_url}')`;
+                    document.getElementById('profileAvatar').style.backgroundColor = 'transparent';
+                    document.getElementById('profileAvatar').innerHTML = '';
                 } else {
                     document.getElementById('profileAvatar').innerHTML = (userData.firstName.charAt(0) || 'П').toUpperCase();
                 }
@@ -811,7 +678,7 @@
 
         // Обновление UI
         function updateUI() {
-            document.getElementById('balanceDisplay').innerText = userData.balance.toLocaleString();
+            document.getElementById('balanceDisplay').innerText = userData.balance;
             document.getElementById('profileLevelNumber').innerText = userData.level;
             document.getElementById('profileNextLevel').innerText = userData.level + 1;
             
@@ -821,13 +688,8 @@
             renderGifts();
             renderInventoryGrid();
             
-            // Показываем или скрываем кнопку > в зависимости от наличия подарков
             const viewAllBtn = document.getElementById('viewAllBtn');
-            if (inventory.length > 0) {
-                viewAllBtn.style.display = 'flex';
-            } else {
-                viewAllBtn.style.display = 'none';
-            }
+            viewAllBtn.style.display = inventory.length > 0 ? 'flex' : 'none';
         }
 
         // Отрисовка первых 2 подарков
@@ -845,11 +707,10 @@
                 `;
             } else {
                 let html = '<div class="gifts-grid">';
-                // Показываем только первые 2 подарка
                 inventory.slice(0, 2).forEach((gift, index) => {
                     html += `
                         <div class="gift-card" onclick="openGiftModal(${index})">
-                            <img src="${gift.image || 'nft/placeholder.png'}" class="gift-image" alt="${gift.name}" onerror="this.src='nft/placeholder.png'">
+                            <img src="${gift.image || 'nft/placeholder.png'}" class="gift-image" alt="${gift.name}">
                             <span class="gift-name">${gift.name}</span>
                             <span class="gift-price">
                                 <span class="puzzle-icon">🧩</span>
@@ -863,18 +724,18 @@
             }
         }
 
-        // Отрисовка всех подарков в модалке
+        // Отрисовка всех подарков
         function renderInventoryGrid() {
             const grid = document.getElementById('inventoryGrid');
             
             if (inventory.length === 0) {
-                grid.innerHTML = '<div style="text-align: center; color: #8e98a3; grid-column: 1/3; padding: 30px;">Нет подарков</div>';
+                grid.innerHTML = '<div style="text-align: center; color: #8e98a3; grid-column: 1/3; padding: 20px;">Нет подарков</div>';
                 return;
             }
             
             grid.innerHTML = inventory.map((gift, index) => `
                 <div class="gift-card" onclick="openGiftModal(${index})">
-                    <img src="${gift.image || 'nft/placeholder.png'}" class="gift-image" alt="${gift.name}" onerror="this.src='nft/placeholder.png'">
+                    <img src="${gift.image || 'nft/placeholder.png'}" class="gift-image" alt="${gift.name}">
                     <span class="gift-name">${gift.name}</span>
                     <span class="gift-price">
                         <span class="puzzle-icon">🧩</span>
@@ -948,14 +809,8 @@
 
         // Пополнение баланса
         document.getElementById('addBalanceBtn').addEventListener('click', () => {
-            if (!Security.validateRequest()) {
-                alert('⚠️ Слишком много запросов');
-                return;
-            }
-            
             userData.balance += 1000;
             
-            // Обновляем данные в localStorage
             const savedData = JSON.parse(localStorage.getItem('yeter_user_data') || '{}');
             savedData.stars = userData.balance;
             localStorage.setItem('yeter_user_data', JSON.stringify(savedData));
@@ -963,7 +818,7 @@
             updateUI();
         });
 
-        // Открытие модалки всех подарков
+        // Открытие всех подарков
         document.getElementById('viewAllBtn').addEventListener('click', () => {
             if (inventory.length > 0) {
                 document.getElementById('inventoryModal').classList.add('active');
@@ -992,19 +847,11 @@
             }
         });
 
-        // Слушаем события из магазина
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'yeter_inventory' || e.key === 'yeter_user_data') {
-                loadData();
-                updateUI();
-            }
-        });
-
         // Инициализация
         loadData();
         updateUI();
 
-        // Обновление каждую секунду (для таймеров)
+        // Обновление таймеров
         setInterval(() => {
             let updated = false;
             inventory.forEach(gift => {
