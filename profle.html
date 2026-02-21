@@ -91,6 +91,28 @@
             filter: drop-shadow(0 0 5px #ffaa00);
         }
 
+        .add-balance-btn {
+            background: rgba(106, 13, 173, 0.4);
+            border: 2px solid rgba(138, 43, 226, 0.5);
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b87aff;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.1s;
+            margin-left: 5px;
+        }
+
+        .add-balance-btn:active {
+            background: rgba(106, 13, 173, 0.6);
+            transform: scale(0.95);
+        }
+
         /* Профиль */
         .profile-full {
             background: rgba(10, 14, 22, 0.6);
@@ -211,17 +233,42 @@
             background: rgba(10, 14, 22, 0.7);
             border: 1px solid rgba(138, 43, 226, 0.3);
             border-radius: 28px;
-            padding: 24px 20px;
+            padding: 20px;
             width: 100%;
+        }
+
+        .gifts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
         .gifts-title {
             color: #b87aff;
             font-size: 18px;
             font-weight: 700;
-            text-align: center;
-            margin-bottom: 20px;
             letter-spacing: 0.5px;
+        }
+
+        .view-all-btn {
+            background: rgba(106, 13, 173, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 30px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b87aff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .view-all-btn:active {
+            background: rgba(106, 13, 173, 0.5);
+            transform: scale(0.95);
         }
 
         .empty-gifts {
@@ -241,9 +288,9 @@
             background: rgba(106, 13, 173, 0.15);
             border: 2px dashed rgba(138, 43, 226, 0.5);
             border-radius: 60px;
-            padding: 16px;
+            padding: 14px;
             color: #b87aff;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.1s;
@@ -258,18 +305,18 @@
         .gifts-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
         }
 
         .gift-card {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 24px;
-            padding: 16px 12px;
+            border-radius: 20px;
+            padding: 12px 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             cursor: pointer;
             transition: all 0.1s;
         }
@@ -279,15 +326,15 @@
         }
 
         .gift-image {
-            width: 70px;
-            height: 70px;
-            border-radius: 16px;
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
             object-fit: cover;
             border: 2px solid rgba(155, 77, 255, 0.3);
         }
 
         .gift-name {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             color: white;
             text-align: center;
@@ -300,18 +347,18 @@
         .gift-price {
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 14px;
+            gap: 3px;
+            font-size: 12px;
             font-weight: 700;
             color: #ffd700;
         }
 
         .gift-price .puzzle-icon {
-            font-size: 12px;
+            font-size: 10px;
         }
 
-        /* Модальное окно */
-        .modal-overlay {
+        /* Модальное окно инвентаря */
+        .inventory-modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -325,7 +372,70 @@
             align-items: center;
         }
 
-        .modal-overlay.active {
+        .inventory-modal-overlay.active {
+            display: flex;
+        }
+
+        .inventory-modal {
+            width: 90%;
+            max-width: 380px;
+            max-height: 80vh;
+            background: linear-gradient(145deg, #1a1028, #0f0a18);
+            border: 2px solid rgba(155, 77, 255, 0.6);
+            border-radius: 32px;
+            padding: 24px 20px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .inventory-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(155, 77, 255, 0.6);
+            color: #b87aff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 10;
+        }
+
+        .inventory-modal-title {
+            color: #b87aff;
+            font-size: 20px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* Модальное окно подарка */
+        .gift-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 2100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gift-modal-overlay.active {
             display: flex;
         }
 
@@ -339,7 +449,7 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
         }
 
-        .modal-close {
+        .gift-modal-close {
             position: absolute;
             top: 12px;
             right: 12px;
@@ -354,15 +464,9 @@
             justify-content: center;
             cursor: pointer;
             font-size: 16px;
-            transition: all 0.2s;
         }
 
-        .modal-close:hover {
-            background: rgba(155, 77, 255, 0.2);
-            transform: scale(1.1);
-        }
-
-        .modal-image {
+        .gift-modal-image {
             width: 120px;
             height: 120px;
             border-radius: 24px;
@@ -372,7 +476,7 @@
             object-fit: cover;
         }
 
-        .modal-title {
+        .gift-modal-title {
             font-size: 20px;
             font-weight: 800;
             color: white;
@@ -380,7 +484,7 @@
             margin-bottom: 10px;
         }
 
-        .modal-price {
+        .gift-modal-price {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -391,11 +495,11 @@
             margin-bottom: 20px;
         }
 
-        .modal-price .puzzle-icon {
+        .gift-modal-price .puzzle-icon {
             font-size: 18px;
         }
 
-        .modal-buttons {
+        .gift-modal-buttons {
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -425,11 +529,6 @@
 
         .withdraw-btn i {
             font-size: 14px;
-        }
-
-        .withdraw-btn:active {
-            transform: translateY(4px);
-            box-shadow: none;
         }
 
         .upgrade-btn {
@@ -511,13 +610,14 @@
 </head>
 <body>
     <div class="app">
-        <!-- Верхний баланс -->
+        <!-- Верхний баланс с кнопкой + -->
         <div class="top-header">
             <div class="balance-wrapper">
                 <div class="balance-stars">
                     <span class="puzzle-icon">🧩</span>
                     <span id="balanceDisplay">0</span>
                 </div>
+                <div class="add-balance-btn" id="addBalanceBtn">+</div>
             </div>
         </div>
 
@@ -539,20 +639,32 @@
             <div class="profile-content">
                 <!-- Секция подарков -->
                 <div class="gifts-section">
-                    <div class="gifts-title">ВАШИ ПОДАРКИ</div>
+                    <div class="gifts-header">
+                        <span class="gifts-title">ВАШИ ПОДАРКИ</span>
+                        <div class="view-all-btn" id="viewAllBtn">></div>
+                    </div>
                     <div id="giftsContainer"></div>
                 </div>
             </div>
         </div>
 
+        <!-- Модальное окно всех подарков -->
+        <div class="inventory-modal-overlay" id="inventoryModal">
+            <div class="inventory-modal">
+                <div class="inventory-modal-close" id="closeInventoryModal">✖</div>
+                <div class="inventory-modal-title">ВАШИ ПОДАРКИ</div>
+                <div class="inventory-grid" id="inventoryGrid"></div>
+            </div>
+        </div>
+
         <!-- Модальное окно подарка -->
-        <div class="modal-overlay" id="giftModal">
+        <div class="gift-modal-overlay" id="giftModal">
             <div class="gift-modal">
-                <div class="modal-close" id="closeModal">✖</div>
-                <img src="" alt="" class="modal-image" id="modalImage">
-                <div class="modal-title" id="modalTitle"></div>
-                <div class="modal-price" id="modalPrice"></div>
-                <div class="modal-buttons">
+                <div class="gift-modal-close" id="closeGiftModal">✖</div>
+                <img src="" alt="" class="gift-modal-image" id="modalImage">
+                <div class="gift-modal-title" id="modalTitle"></div>
+                <div class="gift-modal-price" id="modalPrice"></div>
+                <div class="gift-modal-buttons">
                     <button class="withdraw-btn" id="withdrawBtn">
                         <i class="fas fa-clock"></i>
                         <span id="withdrawText">ВЫВЕСТИ</span>
@@ -592,22 +704,49 @@
         // Таймеры для вывода
         let withdrawTimers = {};
 
+        // Защита от накрутки
+        const Security = (function() {
+            let _requestCount = 0;
+            let _lastReset = Date.now();
+            
+            function checkRateLimit() {
+                const now = Date.now();
+                if (now - _lastReset > 60000) {
+                    _requestCount = 0;
+                    _lastReset = now;
+                }
+                _requestCount++;
+                return _requestCount <= 30;
+            }
+            
+            return {
+                validateRequest: function() {
+                    return checkRateLimit();
+                }
+            };
+        })();
+
         // Загрузка данных из localStorage
         function loadData() {
             try {
+                // Загружаем инвентарь
                 const savedInventory = localStorage.getItem('yeter_inventory');
                 if (savedInventory) {
                     inventory = JSON.parse(savedInventory);
                     
+                    // Проверяем таймеры
+                    let updated = false;
                     inventory = inventory.map(gift => {
-                        if (gift.withdrawEnd && gift.withdrawEnd < Date.now()) {
+                        if (gift.withdrawEnd && gift.withdrawEnd <= Date.now()) {
                             gift.withdrawEnd = null;
+                            updated = true;
                         }
                         return gift;
                     });
-                    saveInventory();
+                    if (updated) saveInventory();
                 }
 
+                // Загружаем баланс и уровень
                 const savedData = localStorage.getItem('yeter_user_data');
                 if (savedData) {
                     const data = JSON.parse(savedData);
@@ -661,9 +800,10 @@
             document.getElementById('profileProgressFill').style.width = progress + '%';
             
             renderGifts();
+            renderInventoryGrid();
         }
 
-        // Отрисовка подарков
+        // Отрисовка первых 2 подарков
         function renderGifts() {
             const container = document.getElementById('giftsContainer');
             
@@ -678,7 +818,8 @@
                 `;
             } else {
                 let html = '<div class="gifts-grid">';
-                inventory.forEach((gift, index) => {
+                // Показываем только первые 2 подарка
+                inventory.slice(0, 2).forEach((gift, index) => {
                     html += `
                         <div class="gift-card" onclick="openGiftModal(${index})">
                             <img src="${gift.image || 'nft/placeholder.png'}" class="gift-image" alt="${gift.name}" onerror="this.src='nft/placeholder.png'">
@@ -693,6 +834,27 @@
                 html += '</div>';
                 container.innerHTML = html;
             }
+        }
+
+        // Отрисовка всех подарков в модалке
+        function renderInventoryGrid() {
+            const grid = document.getElementById('inventoryGrid');
+            
+            if (inventory.length === 0) {
+                grid.innerHTML = '<div style="text-align: center; color: #8e98a3; grid-column: 1/3;">Нет подарков</div>';
+                return;
+            }
+            
+            grid.innerHTML = inventory.map((gift, index) => `
+                <div class="gift-card" onclick="openGiftModal(${index})">
+                    <img src="${gift.image || 'nft/placeholder.png'}" class="gift-image" alt="${gift.name}" onerror="this.src='nft/placeholder.png'">
+                    <span class="gift-name">${gift.name}</span>
+                    <span class="gift-price">
+                        <span class="puzzle-icon">🧩</span>
+                        ${gift.price}
+                    </span>
+                </div>
+            `).join('');
         }
 
         // Открытие модалки подарка
@@ -741,6 +903,9 @@
                         document.getElementById('withdrawBtn').classList.add('active');
                         document.getElementById('withdrawText').innerText = 'ВЫВЕСТИ';
                     }
+                    
+                    renderGifts();
+                    renderInventoryGrid();
                 } else {
                     const remaining = Math.ceil((gift.withdrawEnd - Date.now()) / 60000);
                     if (document.getElementById('modalTitle').innerText === gift.name) {
@@ -752,6 +917,11 @@
 
         // Вывод подарка
         function withdrawGift(index) {
+            if (!Security.validateRequest()) {
+                alert('⚠️ Слишком много запросов');
+                return;
+            }
+
             const gift = inventory[index];
             if (!gift) return;
 
@@ -760,11 +930,15 @@
                 return;
             }
 
+            // Запускаем таймер 30 минут
             gift.withdrawEnd = Date.now() + 30 * 60 * 1000;
             saveInventory();
             
             document.getElementById('withdrawBtn').classList.remove('active');
             startTimerUpdate(gift, index);
+            
+            renderGifts();
+            renderInventoryGrid();
         }
 
         // Улучшение подарка
@@ -774,20 +948,44 @@
             alert('Улучшение подарка появится позже');
         }
 
-        // Добавление подарка из магазина
-        window.addGiftFromShop = function(gift) {
-            inventory.push({
-                ...gift,
-                id: Date.now() + Math.random(),
-                withdrawEnd: null
-            });
-            saveInventory();
-            renderGifts();
-        };
+        // Пополнение баланса
+        document.getElementById('addBalanceBtn').addEventListener('click', () => {
+            if (!Security.validateRequest()) {
+                alert('⚠️ Слишком много запросов');
+                return;
+            }
+            
+            userData.balance += 1000;
+            
+            // Обновляем данные в localStorage
+            const savedData = JSON.parse(localStorage.getItem('yeter_user_data') || '{}');
+            savedData.stars = userData.balance;
+            localStorage.setItem('yeter_user_data', JSON.stringify(savedData));
+            
+            updateUI();
+        });
 
-        // Закрытие модалки
-        document.getElementById('closeModal').addEventListener('click', () => {
+        // Открытие модалки всех подарков
+        document.getElementById('viewAllBtn').addEventListener('click', () => {
+            if (inventory.length > 0) {
+                document.getElementById('inventoryModal').classList.add('active');
+                renderInventoryGrid();
+            }
+        });
+
+        // Закрытие модалок
+        document.getElementById('closeInventoryModal').addEventListener('click', () => {
+            document.getElementById('inventoryModal').classList.remove('active');
+        });
+
+        document.getElementById('closeGiftModal').addEventListener('click', () => {
             document.getElementById('giftModal').classList.remove('active');
+        });
+
+        document.getElementById('inventoryModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('inventoryModal')) {
+                e.target.classList.remove('active');
+            }
         });
 
         document.getElementById('giftModal').addEventListener('click', (e) => {
@@ -798,9 +996,9 @@
 
         // Слушаем события из магазина
         window.addEventListener('storage', (e) => {
-            if (e.key === 'yeter_inventory') {
+            if (e.key === 'yeter_inventory' || e.key === 'yeter_user_data') {
                 loadData();
-                renderGifts();
+                updateUI();
             }
         });
 
@@ -808,10 +1006,19 @@
         loadData();
         updateUI();
 
-        // Обновление каждую секунду
+        // Обновление каждую секунду (для таймеров)
         setInterval(() => {
-            loadData();
-            updateUI();
+            let updated = false;
+            inventory.forEach(gift => {
+                if (gift.withdrawEnd && gift.withdrawEnd <= Date.now()) {
+                    gift.withdrawEnd = null;
+                    updated = true;
+                }
+            });
+            if (updated) {
+                saveInventory();
+                updateUI();
+            }
         }, 1000);
     </script>
 </body>
