@@ -49,9 +49,9 @@
         .balance-wrapper {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             background: rgba(10, 14, 22, 0.8);
-            padding: 6px 20px;
+            padding: 6px 24px;
             border-radius: 40px;
             border: 1px solid rgba(138, 43, 226, 0.4);
         }
@@ -61,7 +61,7 @@
             align-items: center;
             gap: 6px;
             font-weight: 800;
-            font-size: 18px;
+            font-size: 20px;
             color: white;
         }
 
@@ -117,11 +117,12 @@
             background-size: cover;
             background-position: center;
             background-color: #6a0dad;
+            overflow: hidden;
         }
 
         .profile-name-center {
-            font-size: 26px;
-            font-weight: 800;
+            font-size: 24px;
+            font-weight: 700;
             color: white;
             margin-bottom: 20px;
             text-align: center;
@@ -184,12 +185,9 @@
             padding: 20px 20px 40px;
         }
 
-        /* Секция подарков */
+        /* Секция подарков - УБРАНА РАМКА */
         .gifts-section {
-            background: rgba(10, 14, 22, 0.7);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 28px;
-            padding: 20px;
+            margin-top: 10px;
         }
 
         .gifts-header {
@@ -201,8 +199,8 @@
 
         .gifts-title {
             color: #8e98a3;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 500;
             letter-spacing: 0.5px;
         }
 
@@ -217,7 +215,7 @@
             justify-content: center;
             color: #b87aff;
             font-size: 22px;
-            font-weight: 600;
+            font-weight: 400;
             cursor: pointer;
         }
 
@@ -242,7 +240,7 @@
             padding: 14px;
             color: #b87aff;
             font-size: 15px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             text-align: center;
         }
@@ -254,10 +252,9 @@
         }
 
         .gift-card {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 20px;
-            padding: 12px 8px;
+            background: transparent;
+            border: none;
+            padding: 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -266,16 +263,16 @@
         }
 
         .gift-image {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 12px;
             object-fit: cover;
-            border: 1px solid rgba(155, 77, 255, 0.3);
+            border: 1px solid rgba(155, 77, 255, 0.2);
         }
 
         .gift-name {
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 500;
             color: white;
             text-align: center;
             white-space: nowrap;
@@ -288,13 +285,13 @@
             display: flex;
             align-items: center;
             gap: 3px;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             color: #b87aff;
         }
 
         .gift-price .puzzle-icon {
-            font-size: 11px;
+            font-size: 12px;
             color: #b87aff;
         }
 
@@ -354,7 +351,7 @@
 
         .modal-title {
             font-size: 20px;
-            font-weight: 800;
+            font-weight: 700;
             color: white;
             text-align: center;
             margin-bottom: 10px;
@@ -365,14 +362,14 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 22px;
+            font-weight: 800;
             color: #b87aff;
             margin-bottom: 20px;
         }
 
         .modal-price .puzzle-icon {
-            font-size: 18px;
+            font-size: 20px;
             color: #b87aff;
         }
 
@@ -390,7 +387,7 @@
             padding: 14px;
             color: #8e98a3;
             font-size: 15px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: default;
             display: flex;
             align-items: center;
@@ -463,8 +460,8 @@
 
         .inventory-title {
             color: #8e98a3;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 500;
             text-align: center;
             margin-bottom: 20px;
         }
@@ -502,7 +499,7 @@
             gap: 4px;
             color: #8e98a3;
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             padding: 6px 8px;
             border-radius: 30px;
@@ -555,7 +552,7 @@
             </div>
 
             <div class="profile-content">
-                <!-- Секция подарков -->
+                <!-- Секция подарков БЕЗ РАМКИ -->
                 <div class="gifts-section">
                     <div class="gifts-header">
                         <span class="gifts-title">ВАШИ ПОДАРКИ</span>
@@ -627,7 +624,7 @@
                 if (savedInventory) {
                     inventory = JSON.parse(savedInventory);
                     
-                    // Проверяем таймеры
+                    // Проверяем таймеры - ЭТО РАБОТАЕТ!
                     let updated = false;
                     inventory = inventory.map(gift => {
                         if (gift.withdrawEnd && gift.withdrawEnd <= Date.now()) {
@@ -757,6 +754,7 @@
             const withdrawBtn = document.getElementById('withdrawBtn');
             const withdrawText = document.getElementById('withdrawText');
             
+            // ТУТ ТАЙМЕР РАБОТАЕТ
             if (gift.withdrawEnd && gift.withdrawEnd > Date.now()) {
                 withdrawBtn.classList.remove('active');
                 const remaining = Math.ceil((gift.withdrawEnd - Date.now()) / 60000);
@@ -785,6 +783,7 @@
                     gift.withdrawEnd = null;
                     saveInventory();
                     
+                    // Обновляем UI если модалка открыта
                     const activeModal = document.getElementById('giftModal').classList.contains('active');
                     if (activeModal && document.getElementById('modalTitle').innerText === gift.name) {
                         const withdrawBtn = document.getElementById('withdrawBtn');
@@ -798,6 +797,7 @@
                     renderGifts();
                     renderInventoryGrid();
                 } else {
+                    // Обновляем время
                     const remaining = Math.ceil((gift.withdrawEnd - Date.now()) / 60000);
                     if (document.getElementById('modalTitle').innerText === gift.name) {
                         const withdrawBtn = document.getElementById('withdrawBtn');
@@ -851,7 +851,7 @@
         loadData();
         updateUI();
 
-        // Обновление таймеров
+        // Обновление таймеров каждую секунду
         setInterval(() => {
             let updated = false;
             inventory.forEach(gift => {
