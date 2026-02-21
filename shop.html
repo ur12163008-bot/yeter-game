@@ -311,20 +311,18 @@
             height: 75px;
             border-radius: 14px;
             object-fit: cover;
-            border: 1px solid rgba(155, 77, 255, 0.2);
             margin-bottom: 6px;
             transition: all 0.2s ease;
         }
 
         .product-card:hover .product-image {
-            border-color: #b87aff;
-            box-shadow: 0 0 12px rgba(155, 77, 255, 0.5);
+            filter: brightness(1.1);
         }
 
-        /* Специально для Spiced Wine */
+        /* Специально для Spiced Wine - чуть левее */
         .product-image[alt="Spiced Wine"] {
             object-fit: contain;
-            transform: scale(1.1);
+            transform: scale(1.1) translateX(-2px);
         }
 
         .product-name {
@@ -342,7 +340,7 @@
 
         .price-frame {
             background: linear-gradient(145deg, #2a1e3a, #1a1028);
-            border: 1px solid rgba(155, 77, 255, 0.4);
+            border: 1px solid rgba(155, 77, 255, 0.3);
             border-radius: 30px;
             padding: 4px 10px;
             display: inline-flex;
@@ -361,13 +359,13 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 800;
             color: #b87aff;
         }
 
         .price-icon {
-            font-size: 12px;
+            font-size: 13px;
             color: #b87aff;
         }
 
@@ -422,10 +420,10 @@
             object-fit: cover;
         }
 
-        /* Для Spiced Wine в модалке */
+        /* Для Spiced Wine в модалке - тоже левее */
         .modal-image[alt="Spiced Wine"] {
             object-fit: contain;
-            transform: scale(1.2);
+            transform: scale(1.2) translateX(-3px);
         }
 
         .modal-title {
