@@ -313,6 +313,12 @@
             object-fit: cover;
             margin-bottom: 6px;
             transition: all 0.2s ease;
+            opacity: 0;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
 
         .product-card:hover .product-image {
@@ -518,6 +524,14 @@
         .nav-item.active i {
             color: #b87aff;
         }
+
+        .loader {
+            grid-column: 1/3;
+            text-align: center;
+            padding: 40px;
+            color: #b87aff;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -559,7 +573,9 @@
         </div>
 
         <!-- Сетка товаров -->
-        <div class="products-grid" id="productsGrid"></div>
+        <div class="products-grid" id="productsGrid">
+            <div class="loader">Загрузка магазина...</div>
+        </div>
 
         <!-- Модальное окно -->
         <div class="modal-overlay" id="modalOverlay">
@@ -748,11 +764,28 @@
             { name: "Trapped Heart", price: 129, image: "nft/Trapped Heart.png" }
         ];
 
+        // ========== ПРЕДЗАГРУЗКА ВСЕХ ИЗОБРАЖЕНИЙ ==========
+        function preloadImages() {
+            const promises = [];
+            
+            nftGifts.forEach(item => {
+                const promise = new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = resolve;
+                    img.onerror = resolve; // даже если ошибка - идем дальше
+                    img.src = item.image;
+                });
+                promises.push(promise);
+            });
+            
+            return Promise.all(promises);
+        }
+
         // Состояние
         let currentSearchTerm = '';
         let currentSort = 'random';
 
-        // Функция перемешивания массива (рандомный порядок)
+        // Функция перемешивания массива
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -765,29 +798,30 @@
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
             
-            // Копируем массив
             let filtered = [...nftGifts];
             
-            // Фильтруем по поиску
             if (currentSearchTerm) {
                 filtered = filtered.filter(item => 
                     item.name.toLowerCase().includes(currentSearchTerm.toLowerCase())
                 );
             }
             
-            // Сортировка
             if (currentSort === 'asc') {
                 filtered.sort((a, b) => a.price - b.price);
             } else if (currentSort === 'desc') {
                 filtered.sort((a, b) => b.price - a.price);
             } else {
-                // Рандомный порядок
                 filtered = shuffleArray(filtered);
             }
             
             grid.innerHTML = filtered.map(item => `
                 <div class="product-card" onclick="openModal('${item.name}', ${item.price}, '${item.image}')">
-                    <img src="${item.image}" class="product-image" alt="${item.name}" onerror="this.src='nft/placeholder.png'">
+                    <img src="${item.image}" 
+                         class="product-image" 
+                         alt="${item.name}" 
+                         onload="this.style.opacity=1"
+                         onerror="this.src='nft/placeholder.png'; this.style.opacity=1"
+                         style="opacity: 0;">
                     <div class="product-name">${item.name}</div>
                     <div class="price-frame">
                         <div class="product-price">
@@ -828,7 +862,7 @@
                         price: price,
                         image: image,
                         id: Date.now() + Math.random(),
-                        withdrawEnd: Date.now() + 30 * 60 * 1000 // 30 минут таймер
+                        withdrawEnd: Date.now() + 30 * 60 * 1000
                     });
                     localStorage.setItem('yeter_inventory', JSON.stringify(inventory));
                     
@@ -1041,8 +1075,10 @@
             renderProducts();
         });
 
-        // Первая отрисовка (с рандомным порядком)
-        renderProducts();
+        // Запускаем предзагрузку и потом отрисовку
+        preloadImages().then(() => {
+            renderProducts();
+        });
     </script>
 </body>
 </html>
