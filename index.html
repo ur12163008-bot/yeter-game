@@ -949,6 +949,7 @@
             </div>
         </div>
 
+        <!-- ВАЖНО: исправленные ссылки -->
         <div class="bottom-nav">
             <a href="index.html" class="nav-item active">
                 <i class="fas fa-gamepad"></i>
@@ -962,7 +963,7 @@
                 <i class="fas fa-trophy"></i>
                 <span>Лидеры</span>
             </a>
-            <a href="profile.html" class="nav-item">
+            <a href="profle.html" class="nav-item">
                 <i class="fas fa-user"></i>
                 <span>Профиль</span>
             </a>
@@ -1141,7 +1142,6 @@
                 document.getElementById('gamesNickname').innerText = fullName;
                 document.getElementById('profileName').innerText = fullName;
                 
-                // Аватарка
                 if (user.photo_url) {
                     const avatars = ['gamesAvatar', 'profileAvatar'];
                     avatars.forEach(id => {
@@ -1158,20 +1158,10 @@
             }
         }
 
-        // Загружаем данные
         Storage.updateUI();
-
-        // ========== НАВИГАЦИЯ ==========
         document.getElementById('globalHeader').style.display = 'none';
 
-        // Кнопки теперь просто ссылки, но оставим для активного состояния
-        document.querySelectorAll('.nav-item').forEach(nav => {
-            nav.addEventListener('click', function() {
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
+        // Просто убираем обработчики - ссылки и так работают
         document.getElementById('walletBtn').addEventListener('click', () => {
             alert('Кошелек появится позже');
         });
@@ -1187,7 +1177,7 @@
             alert('Подарок добавлен!');
         });
 
-        // ========== ПОДСКАЗКА ==========
+        // Подсказка
         const overlay = document.getElementById('hintOverlay');
         const dontShowCheckbox = document.getElementById('dontShowCheckbox');
         const checkIcon = document.getElementById('checkIcon');
