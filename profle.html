@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>YETER · PROFILE</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #03050a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 40% 50%, #0a0e1a 0%, #03050a 70%, #000103 100%);
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 15px 60px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+                radial-gradient(1.2px 1.2px at 72px 430px, rgba(255,245,200,0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 250px 120px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
+                radial-gradient(1.8px 1.8px at 120px 550px, rgba(210,230,255,0.9), rgba(0,0,0,0)),
+                radial-gradient(1.3px 1.3px at 380px 200px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 780px, rgba(200,220,255,0.7), rgba(0,0,0,0)),
+                radial-gradient(1.6px 1.6px at 310px 640px, rgba(255,255,240,0.8), rgba(0,0,0,0)),
+                radial-gradient(1.1px 1.1px at 190px 890px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 420px 350px, rgba(180,200,255,0.9), rgba(0,0,0,0)),
+                radial-gradient(1.4px 1.4px at 80px 920px, rgba(255,255,255,0.8), rgba(0,0,0,0));
+            background-size: 500px 1000px;
+            background-repeat: repeat;
+            opacity: 0.6;
+            z-index: -1;
+        }
+
+        .app {
+            max-width: 440px;
+            width: 100%;
+            padding-bottom: 90px;
+            position: relative;
+        }
+
+        /* Верхняя плашка с балансом */
+        .top-header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px 20px 0;
+        }
+
+        .balance-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(10, 14, 22, 0.8);
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid rgba(138, 43, 226, 0.4);
+        }
+
+        .balance-stars {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 900;
+            font-size: 18px;
+            color: white;
+        }
+
+        .puzzle-icon {
+            color: #ffd700;
+            font-size: 18px;
+            filter: drop-shadow(0 0 5px #ffaa00);
+        }
+
+        /* Профиль */
+        .profile-full {
+            background: rgba(10, 14, 22, 0.6);
+            min-height: calc(100vh - 150px);
+            margin: 10px 20px 0;
+            padding: 0;
+            border-top-left-radius: 28px;
+            border-top-right-radius: 28px;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            border-bottom: none;
+        }
+
+        .sticky-profile {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 14, 22, 0.9);
+            z-index: 100;
+            padding: 24px 20px 16px;
+            border-top-left-radius: 28px;
+            border-top-right-radius: 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        .avatar-profile {
+            width: 100px;
+            height: 100px;
+            border-radius: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            border: 2px solid #b87aff;
+            margin-bottom: 16px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: none;
+            background: linear-gradient(145deg, #6a0dad, #4b0082);
+        }
+
+        .profile-name-center {
+            font-size: 26px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.5px;
+            margin-bottom: 24px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .profile-level-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        .level-badge-profile {
+            background: linear-gradient(145deg, #6a0dad, #4b0082);
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 4px 0 #2d0b4e;
+            flex-shrink: 0;
+        }
+
+        .progress-bar-full {
+            flex: 1;
+            height: 12px;
+            background: rgba(30, 38, 48, 0.8);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(155, 77, 255, 0.3);
+        }
+
+        .progress-fill-full {
+            height: 100%;
+            background: linear-gradient(90deg, #9b4dff, #b87aff);
+            border-radius: 20px;
+            transition: width 0.2s ease;
+        }
+
+        .next-level-number-profile {
+            background: rgba(42, 30, 58, 0.9);
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 900;
+            color: #b87aff;
+            box-shadow: 0 4px 0 #1a1428;
+            border: 1px solid rgba(155, 77, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        .profile-content {
+            padding: 20px 20px 40px;
+            width: 100%;
+        }
+
+        /* Секция подарков */
+        .gifts-section {
+            background: rgba(10, 14, 22, 0.7);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 28px;
+            padding: 24px 20px;
+            width: 100%;
+        }
+
+        .gifts-title {
+            color: #b87aff;
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .empty-gifts {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .empty-gifts p {
+            color: #8e98a3;
+            font-size: 14px;
+        }
+
+        .add-gift-btn {
+            width: 100%;
+            background: rgba(106, 13, 173, 0.15);
+            border: 2px dashed rgba(138, 43, 226, 0.5);
+            border-radius: 60px;
+            padding: 16px;
+            color: #b87aff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.1s;
+            text-align: center;
+        }
+
+        .add-gift-btn:active {
+            background: rgba(106, 13, 173, 0.25);
+            transform: scale(0.98);
+        }
+
+        .gifts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .gift-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 24px;
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .gift-card:active {
+            transform: scale(0.98);
+        }
+
+        .gift-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            object-fit: cover;
+            border: 2px solid rgba(155, 77, 255, 0.3);
+        }
+
+        .gift-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .gift-price {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        .gift-price .puzzle-icon {
+            font-size: 12px;
+        }
+
+        /* Модальное окно */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .gift-modal {
+            width: 300px;
+            background: linear-gradient(145deg, #1a1028, #0f0a18);
+            border: 2px solid rgba(155, 77, 255, 0.6);
+            border-radius: 40px;
+            padding: 24px 20px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(155, 77, 255, 0.6);
+            color: #b87aff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: rgba(155, 77, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .modal-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            margin: 10px auto 15px;
+            display: block;
+            border: 3px solid rgba(155, 77, 255, 0.5);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .modal-price {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+
+        .modal-price .puzzle-icon {
+            font-size: 18px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .withdraw-btn {
+            background: linear-gradient(145deg, #666, #444);
+            border: none;
+            border-radius: 60px;
+            padding: 16px;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #333;
+            transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .withdraw-btn.active {
+            background: linear-gradient(145deg, #9b4dff, #6a0dad);
+            box-shadow: 0 6px 0 #2d0b4e;
+        }
+
+        .withdraw-btn i {
+            font-size: 14px;
+        }
+
+        .withdraw-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .upgrade-btn {
+            background: linear-gradient(145deg, #9b4dff, #6a0dad);
+            border: none;
+            border-radius: 60px;
+            padding: 16px;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #2d0b4e;
+            transition: all 0.1s;
+        }
+
+        .upgrade-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .timer-text {
+            color: #ffaa00;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Нижняя навигация */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 440px;
+            margin: 0 auto;
+            background: rgba(10, 14, 22, 0.9);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 6px;
+            border-radius: 40px 40px 40px 40px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            margin-bottom: 16px;
+            width: calc(100% - 40px);
+            left: 20px;
+            right: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #8e98a3;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 30px;
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            color: #8e98a3;
+        }
+
+        .nav-item.active {
+            color: #b87aff;
+            background: rgba(106, 13, 173, 0.2);
+        }
+
+        .nav-item.active i {
+            color: #b87aff;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Верхний баланс -->
+        <div class="top-header">
+            <div class="balance-wrapper">
+                <div class="balance-stars">
+                    <span class="puzzle-icon">🧩</span>
+                    <span id="balanceDisplay">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Профиль -->
+        <div class="profile-full">
+            <div class="sticky-profile">
+                <div class="avatar-profile" id="profileAvatar"></div>
+                <div class="profile-name-center" id="profileName">Загрузка...</div>
+
+                <div class="profile-level-section">
+                    <div class="level-badge-profile" id="profileLevelNumber">1</div>
+                    <div class="progress-bar-full">
+                        <div class="progress-fill-full" id="profileProgressFill" style="width: 0%;"></div>
+                    </div>
+                    <div class="next-level-number-profile" id="profileNextLevel">2</div>
+                </div>
+            </div>
+
+            <div class="profile-content">
+                <!-- Секция подарков -->
+                <div class="gifts-section">
+                    <div class="gifts-title">ВАШИ ПОДАРКИ</div>
+                    <div id="giftsContainer"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно подарка -->
+        <div class="modal-overlay" id="giftModal">
+            <div class="gift-modal">
+                <div class="modal-close" id="closeModal">✖</div>
+                <img src="" alt="" class="modal-image" id="modalImage">
+                <div class="modal-title" id="modalTitle"></div>
+                <div class="modal-price" id="modalPrice"></div>
+                <div class="modal-buttons">
+                    <button class="withdraw-btn" id="withdrawBtn">
+                        <i class="fas fa-clock"></i>
+                        <span id="withdrawText">ВЫВЕСТИ</span>
+                    </button>
+                    <button class="upgrade-btn" id="upgradeBtn">УЛУЧШИТЬ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Нижняя навигация -->
+        <div class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fas fa-gamepad"></i><span>ИГРЫ</span></a>
+            <a href="shop.html" class="nav-item"><i class="fas fa-store"></i><span>МАГАЗИН</span></a>
+            <a href="leaders.html" class="nav-item"><i class="fas fa-trophy"></i><span>ЛИДЕРЫ</span></a>
+            <a href="profile.html" class="nav-item active"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram?.WebApp;
+        
+        // Данные пользователя
+        let userData = {
+            id: null,
+            firstName: '',
+            lastName: '',
+            avatarUrl: null,
+            balance: 1250,
+            level: 1,
+            exp: 0,
+            expToNext: 1000
+        };
+
+        // Инвентарь подарков
+        let inventory = [];
+
+        // Таймеры для вывода
+        let withdrawTimers = {};
+
+        // Загрузка данных из localStorage
+        function loadData() {
+            try {
+                const savedInventory = localStorage.getItem('yeter_inventory');
+                if (savedInventory) {
+                    inventory = JSON.parse(savedInventory);
+                    
+                    inventory = inventory.map(gift => {
+                        if (gift.withdrawEnd && gift.withdrawEnd < Date.now()) {
+                            gift.withdrawEnd = null;
+                        }
+                        return gift;
+                    });
+                    saveInventory();
+                }
+
+                const savedData = localStorage.getItem('yeter_user_data');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    userData.balance = data.stars || 1250;
+                    userData.level = data.level || 1;
+                    userData.exp = data.exp || 0;
+                    userData.expToNext = data.expToNext || 1000;
+                }
+            } catch (e) {
+                console.error('Load error:', e);
+            }
+        }
+
+        // Сохранение инвентаря
+        function saveInventory() {
+            localStorage.setItem('yeter_inventory', JSON.stringify(inventory));
+        }
+
+        // Telegram данные
+        if (tg) {
+            tg.ready();
+            const user = tg.initDataUnsafe?.user;
+            if (user) {
+                userData.id = user.id;
+                userData.firstName = user.first_name || '';
+                userData.lastName = user.last_name || '';
+                
+                const fullName = (userData.firstName + ' ' + userData.lastName).trim() || 'Игрок';
+                document.getElementById('profileName').innerText = fullName;
+                
+                if (user.photo_url) {
+                    userData.avatarUrl = user.photo_url;
+                    document.getElementById('profileAvatar').style.backgroundImage = `url(${user.photo_url})`;
+                    document.getElementById('profileAvatar').style.backgroundColor = 'transparent';
+                    document.getElementById('profileAvatar').innerText = '';
+                } else {
+                    document.getElementById('profileAvatar').innerText = (userData.firstName.charAt(0) || 'П').toUpperCase();
+                }
+            }
+        }
+
+        // Обновление UI
+        function updateUI() {
+            document.getElementById('balanceDisplay').innerText = userData.balance.toLocaleString();
+            document.getElementById('profileLevelNumber').innerText = userData.level;
+            document.getElementById('profileNextLevel').innerText = userData.level + 1;
+            
+            const progress = (userData.exp / userData.expToNext) * 100;
+            document.getElementById('profileProgressFill').style.width = progress + '%';
+            
+            renderGifts();
+        }
+
+        // Отрисовка подарков
+        function renderGifts() {
+            const container = document.getElementById('giftsContainer');
+            
+            if (inventory.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-gifts">
+                        <p>У вас пока нет подарков</p>
+                        <button class="add-gift-btn" onclick="window.location.href='shop.html'">
+                            + Добавить подарок
+                        </button>
+                    </div>
+                `;
+            } else {
+                let html = '<div class="gifts-grid">';
+                inventory.forEach((gift, index) => {
+                    html += `
+                        <div class="gift-card" onclick="openGiftModal(${index})">
+                            <img src="${gift.image || 'nft/placeholder.png'}" class="gift-image" alt="${gift.name}" onerror="this.src='nft/placeholder.png'">
+                            <span class="gift-name">${gift.name}</span>
+                            <span class="gift-price">
+                                <span class="puzzle-icon">🧩</span>
+                                ${gift.price}
+                            </span>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                container.innerHTML = html;
+            }
+        }
+
+        // Открытие модалки подарка
+        function openGiftModal(index) {
+            const gift = inventory[index];
+            if (!gift) return;
+
+            document.getElementById('modalImage').src = gift.image || 'nft/placeholder.png';
+            document.getElementById('modalTitle').innerText = gift.name;
+            document.getElementById('modalPrice').innerHTML = `<span class="puzzle-icon">🧩</span> ${gift.price}`;
+
+            const withdrawBtn = document.getElementById('withdrawBtn');
+            const withdrawText = document.getElementById('withdrawText');
+            
+            if (gift.withdrawEnd && gift.withdrawEnd > Date.now()) {
+                withdrawBtn.classList.remove('active');
+                const remaining = Math.ceil((gift.withdrawEnd - Date.now()) / 60000);
+                withdrawText.innerHTML = `<i class="fas fa-lock"></i> ${remaining} мин`;
+                startTimerUpdate(gift, index);
+            } else {
+                gift.withdrawEnd = null;
+                withdrawBtn.classList.add('active');
+                withdrawText.innerText = 'ВЫВЕСТИ';
+            }
+
+            document.getElementById('giftModal').classList.add('active');
+            
+            document.getElementById('withdrawBtn').onclick = () => withdrawGift(index);
+            document.getElementById('upgradeBtn').onclick = () => upgradeGift(index);
+        }
+
+        // Обновление таймера
+        function startTimerUpdate(gift, index) {
+            if (withdrawTimers[index]) clearInterval(withdrawTimers[index]);
+            
+            withdrawTimers[index] = setInterval(() => {
+                if (!gift.withdrawEnd || gift.withdrawEnd <= Date.now()) {
+                    clearInterval(withdrawTimers[index]);
+                    delete withdrawTimers[index];
+                    
+                    gift.withdrawEnd = null;
+                    saveInventory();
+                    
+                    const activeModal = document.getElementById('giftModal').classList.contains('active');
+                    if (activeModal && document.getElementById('modalTitle').innerText === gift.name) {
+                        document.getElementById('withdrawBtn').classList.add('active');
+                        document.getElementById('withdrawText').innerText = 'ВЫВЕСТИ';
+                    }
+                } else {
+                    const remaining = Math.ceil((gift.withdrawEnd - Date.now()) / 60000);
+                    if (document.getElementById('modalTitle').innerText === gift.name) {
+                        document.getElementById('withdrawText').innerHTML = `<i class="fas fa-lock"></i> ${remaining} мин`;
+                    }
+                }
+            }, 1000);
+        }
+
+        // Вывод подарка
+        function withdrawGift(index) {
+            const gift = inventory[index];
+            if (!gift) return;
+
+            if (gift.withdrawEnd && gift.withdrawEnd > Date.now()) {
+                alert(`Подождите еще ${Math.ceil((gift.withdrawEnd - Date.now()) / 60000)} минут`);
+                return;
+            }
+
+            gift.withdrawEnd = Date.now() + 30 * 60 * 1000;
+            saveInventory();
+            
+            document.getElementById('withdrawBtn').classList.remove('active');
+            startTimerUpdate(gift, index);
+        }
+
+        // Улучшение подарка
+        function upgradeGift(index) {
+            const gift = inventory[index];
+            if (!gift) return;
+            alert('Улучшение подарка появится позже');
+        }
+
+        // Добавление подарка из магазина
+        window.addGiftFromShop = function(gift) {
+            inventory.push({
+                ...gift,
+                id: Date.now() + Math.random(),
+                withdrawEnd: null
+            });
+            saveInventory();
+            renderGifts();
+        };
+
+        // Закрытие модалки
+        document.getElementById('closeModal').addEventListener('click', () => {
+            document.getElementById('giftModal').classList.remove('active');
+        });
+
+        document.getElementById('giftModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('giftModal')) {
+                e.target.classList.remove('active');
+            }
+        });
+
+        // Слушаем события из магазина
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'yeter_inventory') {
+                loadData();
+                renderGifts();
+            }
+        });
+
+        // Инициализация
+        loadData();
+        updateUI();
+
+        // Обновление каждую секунду
+        setInterval(() => {
+            loadData();
+            updateUI();
+        }, 1000);
+    </script>
+</body>
+</html>
