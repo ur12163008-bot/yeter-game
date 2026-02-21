@@ -139,16 +139,19 @@
         .avatar-small {
             width: 64px;
             height: 64px;
-            background: linear-gradient(145deg, #1e1a2a, #12101a);
             border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 30px;
             font-weight: 700;
-            color: #b87aff;
-            border: 2px solid #9b4dff;
+            color: white;
+            border: 2px solid #b87aff;
             flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: none;
         }
 
         .games-info-wrapper {
@@ -435,16 +438,19 @@
         .avatar-profile {
             width: 100px;
             height: 100px;
-            background: linear-gradient(145deg, #1e1a2a, #12101a);
             border-radius: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 48px;
             font-weight: 700;
-            color: #b87aff;
-            border: 2px solid #9b4dff;
+            color: white;
+            border: 2px solid #b87aff;
             margin-bottom: 16px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: none;
         }
 
         .profile-name-center {
@@ -626,6 +632,7 @@
             border-radius: 30px;
             flex: 1;
             text-align: center;
+            text-decoration: none;
         }
 
         .nav-item i {
@@ -766,7 +773,7 @@
             <div id="sectionGames" class="section active">
                 <div class="games-top">
                     <div class="games-header">
-                        <div class="avatar-small" id="gamesAvatar">?</div>
+                        <div class="avatar-small" id="gamesAvatar"></div>
                         
                         <div class="games-info-wrapper">
                             <div class="games-nickname" id="gamesNickname">Загрузка...</div>
@@ -907,7 +914,7 @@
                             </button>
                         </div>
 
-                        <div class="avatar-profile" id="profileAvatar">?</div>
+                        <div class="avatar-profile" id="profileAvatar"></div>
                         <div class="profile-name-center" id="profileName">Загрузка...</div>
 
                         <div class="profile-level-section">
@@ -943,22 +950,22 @@
         </div>
 
         <div class="bottom-nav">
-            <div class="nav-item active" data-nav="games">
+            <a href="index.html" class="nav-item active" data-nav="games">
                 <i class="fas fa-gamepad"></i>
                 <span>Игры</span>
-            </div>
-            <div class="nav-item" data-nav="shop" id="shopNavItem">
+            </a>
+            <a href="shop.html" class="nav-item" data-nav="shop">
                 <i class="fas fa-store"></i>
                 <span>Магазин</span>
-            </div>
-            <div class="nav-item" data-nav="leaders">
+            </a>
+            <a href="leaders.html" class="nav-item" data-nav="leaders">
                 <i class="fas fa-trophy"></i>
                 <span>Лидеры</span>
-            </div>
-            <div class="nav-item" data-nav="profile">
+            </a>
+            <a href="profile.html" class="nav-item" data-nav="profile">
                 <i class="fas fa-user"></i>
                 <span>Профиль</span>
-            </div>
+            </a>
         </div>
     </div>
 
@@ -1008,10 +1015,47 @@
             }, 1000);
         })();
 
-        // ========== СИСТЕМА СОХРАНЕНИЯ ==========
+        // ========== ЗАЩИТА ОТ НАКРУТКИ БАЛАНСА ==========
+        const Security = (function() {
+            let _requestCount = 0;
+            let _lastReset = Date.now();
+            let _validTokens = new Set();
+            
+            function generateToken() {
+                return 'token_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+            }
+            
+            function checkRateLimit() {
+                const now = Date.now();
+                if (now - _lastReset > 60000) {
+                    _requestCount = 0;
+                    _lastReset = now;
+                }
+                _requestCount++;
+                return _requestCount <= 30;
+            }
+            
+            return {
+                validateRequest: function() {
+                    return checkRateLimit();
+                },
+                createToken: function() {
+                    const token = generateToken();
+                    _validTokens.add(token);
+                    setTimeout(() => _validTokens.delete(token), 30000);
+                    return token;
+                },
+                verifyToken: function(token) {
+                    return _validTokens.has(token);
+                }
+            };
+        })();
+
+        // ========== СИСТЕМА СОХРАНЕНИЯ С ЗАЩИТОЙ ==========
         const Storage = (function() {
             let _data = null;
             const _key = 'yeter_user_data';
+            const _backupKey = 'yeter_user_data_backup';
             
             function _init() {
                 const saved = localStorage.getItem(_key);
@@ -1019,23 +1063,37 @@
                     try {
                         _data = JSON.parse(saved);
                         if (!_validate(_data)) {
-                            _createNew();
+                            _restoreFromBackup();
                         }
                     } catch {
-                        _createNew();
+                        _restoreFromBackup();
                     }
                 } else {
                     _createNew();
                 }
                 _save();
+                _createBackup();
             }
             
             function _validate(data) {
-                return data && 
-                       typeof data.stars === 'number' && 
-                       data.stars >= 0 &&
-                       typeof data.level === 'number' &&
-                       data.level >= 1;
+                if (!data || typeof data !== 'object') return false;
+                if (typeof data.stars !== 'number' || data.stars < 0 || data.stars > 1000000) return false;
+                if (typeof data.level !== 'number' || data.level < 1 || data.level > 100) return false;
+                if (typeof data.exp !== 'number' || data.exp < 0) return false;
+                if (typeof data.expToNext !== 'number' || data.expToNext < 100) return false;
+                if (!Array.isArray(data.gifts)) return false;
+                if (!data.games || typeof data.games !== 'object') return false;
+                if (!Array.isArray(data.transactions)) return false;
+                
+                // Проверка на слишком быстрый рост
+                if (data.transactions.length > 0) {
+                    const lastTx = data.transactions[data.transactions.length - 1];
+                    if (lastTx && typeof lastTx.amount === 'number' && lastTx.amount > 10000) {
+                        return false; // Подозрительно большой транзакции
+                    }
+                }
+                
+                return true;
             }
             
             function _createNew() {
@@ -1056,34 +1114,83 @@
             }
             
             function _save() {
-                localStorage.setItem(_key, JSON.stringify(_data));
+                try {
+                    localStorage.setItem(_key, JSON.stringify(_data));
+                } catch (e) {
+                    console.error('Save failed:', e);
+                }
+            }
+            
+            function _createBackup() {
+                try {
+                    localStorage.setItem(_backupKey, JSON.stringify(_data));
+                } catch (e) {}
+            }
+            
+            function _restoreFromBackup() {
+                const backup = localStorage.getItem(_backupKey);
+                if (backup) {
+                    try {
+                        _data = JSON.parse(backup);
+                    } catch {
+                        _createNew();
+                    }
+                } else {
+                    _createNew();
+                }
+            }
+            
+            function _logTransaction(amount, reason, success) {
+                if (!_data.transactions) _data.transactions = [];
+                _data.transactions.push({
+                    amount: amount,
+                    reason: reason,
+                    time: Date.now(),
+                    balance: _data.stars,
+                    success: success,
+                    token: Security.createToken()
+                });
+                
+                if (_data.transactions.length > 100) {
+                    _data.transactions = _data.transactions.slice(-100);
+                }
             }
             
             _init();
             
             return {
                 getStars: function() { return _data.stars; },
+                getLevel: function() { return _data.level; },
+                getExp: function() { return _data.exp; },
+                getExpToNext: function() { return _data.expToNext; },
                 
                 updateStars: function(amount, reason) {
-                    if (_data.stars + amount < 0) return false;
-                    _data.stars += amount;
+                    if (!Security.validateRequest()) {
+                        _logTransaction(amount, reason, false);
+                        return false;
+                    }
                     
-                    _data.transactions.push({
-                        amount: amount,
-                        reason: reason,
-                        time: Date.now(),
-                        balance: _data.stars
-                    });
+                    if (_data.stars + amount < 0) return false;
+                    if (amount > 5000 && !Security.verifyToken(reason)) {
+                        _logTransaction(amount, reason, false);
+                        return false;
+                    }
+                    
+                    _data.stars += amount;
+                    _logTransaction(amount, reason, true);
                     
                     if (_data.transactions.length > 50) {
                         _data.transactions = _data.transactions.slice(-50);
                     }
                     
                     _save();
+                    _createBackup();
                     return true;
                 },
                 
                 addExp: function(amount) {
+                    if (amount > 1000) return false;
+                    
                     _data.exp += amount;
                     while (_data.exp >= _data.expToNext) {
                         _data.exp -= _data.expToNext;
@@ -1091,14 +1198,18 @@
                         _data.expToNext = Math.floor(_data.expToNext * 1.5);
                     }
                     _save();
+                    _createBackup();
                 },
                 
                 getGifts: function() { return [..._data.gifts]; },
                 
                 addGift: function(gift) {
+                    if (!gift || typeof gift !== 'object') return false;
                     _data.gifts.push(gift);
                     _save();
+                    _createBackup();
                     this.updateUI();
+                    return true;
                 },
                 
                 getUserData: function() {
@@ -1117,6 +1228,10 @@
                     const progress = (_data.exp / _data.expToNext) * 100;
                     document.getElementById('gamesProgressFill').style.width = progress + '%';
                     document.getElementById('profileProgressFill').style.width = progress + '%';
+                },
+                
+                validateTransaction: function(amount, token) {
+                    return Security.verifyToken(token) && amount <= 5000;
                 }
             };
         })();
@@ -1129,13 +1244,27 @@
             
             const user = tg.initDataUnsafe?.user;
             if (user) {
-                const name = user.username || (user.first_name || '').toLowerCase() || 'player';
-                const firstChar = (user.first_name || 'P').charAt(0).toUpperCase();
+                const firstName = user.first_name || '';
+                const lastName = user.last_name || '';
+                const fullName = (firstName + ' ' + lastName).trim() || 'Player';
                 
-                document.getElementById('gamesAvatar').innerText = firstChar;
-                document.getElementById('profileAvatar').innerText = firstChar;
-                document.getElementById('gamesNickname').innerText = '@' + name;
-                document.getElementById('profileName').innerText = '@' + name;
+                document.getElementById('gamesNickname').innerText = fullName;
+                document.getElementById('profileName').innerText = fullName;
+                
+                // Аватарка
+                if (user.photo_url) {
+                    const avatars = ['gamesAvatar', 'profileAvatar'];
+                    avatars.forEach(id => {
+                        const el = document.getElementById(id);
+                        el.style.backgroundImage = `url(${user.photo_url})`;
+                        el.style.backgroundColor = 'transparent';
+                        el.innerText = '';
+                    });
+                } else {
+                    const initial = (firstName.charAt(0) || 'P').toUpperCase();
+                    document.getElementById('gamesAvatar').innerText = initial;
+                    document.getElementById('profileAvatar').innerText = initial;
+                }
             }
         }
 
@@ -1148,22 +1277,16 @@
         // Обработчик для всех кнопок навигации
         document.querySelectorAll('.nav-item').forEach(nav => {
             nav.addEventListener('click', function(e) {
-                // Если это кнопка магазина - переходим на shop.html
-                if (this.dataset.nav === 'shop') {
-                    e.preventDefault();
-                    window.location.href = 'shop.html';
-                    return;
+                e.preventDefault();
+                const section = this.dataset.nav;
+                
+                if (section === 'games') {
+                    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                    document.getElementById('sectionGames').classList.add('active');
+                    document.getElementById('globalHeader').style.display = 'none';
+                } else {
+                    window.location.href = section + '.html';
                 }
-                
-                // Для остальных кнопок - обычная внутренняя навигация
-                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-                document.getElementById('section' + this.dataset.nav.charAt(0).toUpperCase() + this.dataset.nav.slice(1)).classList.add('active');
-                
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                this.classList.add('active');
-                
-                const header = document.getElementById('globalHeader');
-                header.style.display = this.dataset.nav === 'games' ? 'none' : 'flex';
             });
         });
 
@@ -1172,13 +1295,18 @@
         });
 
         document.getElementById('giftAddBtn').addEventListener('click', () => {
+            const token = Security.createToken();
             const newGift = { 
                 id: 'gift' + Date.now(), 
                 name: 'Новый подарок', 
-                count: 1 
+                count: 1,
+                token: token
             };
-            Storage.addGift(newGift);
-            alert('Подарок добавлен!');
+            if (Storage.addGift(newGift)) {
+                alert('Подарок добавлен!');
+            } else {
+                alert('Ошибка добавления');
+            }
         });
 
         // ========== ПОДСКАЗКА ==========
