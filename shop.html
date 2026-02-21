@@ -62,6 +62,7 @@
             min-height: 100vh;
         }
 
+        /* Плашка профиля сверху */
         .shop-profile-header {
             display: flex;
             align-items: center;
@@ -188,6 +189,28 @@
             font-weight: 900;
             font-size: 16px;
             color: white;
+        }
+
+        .add-balance-btn {
+            background: rgba(106, 13, 173, 0.4);
+            border: 2px solid rgba(138, 43, 226, 0.5);
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b87aff;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.1s;
+            margin-left: 5px;
+        }
+
+        .add-balance-btn:active {
+            background: rgba(106, 13, 173, 0.6);
+            transform: scale(0.95);
         }
 
         .puzzle-icon {
@@ -531,6 +554,7 @@
                     <span class="puzzle-icon">🧩</span>
                     <span id="shopBalanceDisplay">0</span>
                 </div>
+                <div class="add-balance-btn" id="addBalanceBtn">+</div>
             </div>
         </div>
 
@@ -579,7 +603,7 @@
                 <i class="fas fa-trophy"></i>
                 <span>Лидеры</span>
             </a>
-            <a href="profile.html" class="nav-item" data-nav="profile">
+            <a href="profle.html" class="nav-item" data-nav="profile">
                 <i class="fas fa-user"></i>
                 <span>Профиль</span>
             </a>
@@ -587,7 +611,7 @@
     </div>
 
     <script>
-        // Защита
+        // ========== ЖЕСТКАЯ ЗАЩИТА ==========
         (function() {
             const protectedMethods = ['getItem', 'setItem', 'removeItem'];
             protectedMethods.forEach(method => {
@@ -599,12 +623,51 @@
                     return original.apply(this, arguments);
                 };
             });
+            
             setInterval(function() {
                 const before = new Date();
                 debugger;
                 const after = new Date();
-                if (after - before > 100) window.location.reload();
+                if (after - before > 100) {
+                    window.location.reload();
+                }
             }, 1000);
+        })();
+
+        // ========== ЗАЩИТА ОТ НАКРУТКИ ==========
+        const Security = (function() {
+            let _requestCount = 0;
+            let _lastReset = Date.now();
+            let _validTokens = new Set();
+            
+            function generateToken() {
+                return 'token_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+            }
+            
+            function checkRateLimit() {
+                const now = Date.now();
+                if (now - _lastReset > 60000) {
+                    _requestCount = 0;
+                    _lastReset = now;
+                }
+                _requestCount++;
+                return _requestCount <= 30; // максимум 30 запросов в минуту
+            }
+            
+            return {
+                validateRequest: function() {
+                    return checkRateLimit();
+                },
+                createToken: function() {
+                    const token = generateToken();
+                    _validTokens.add(token);
+                    setTimeout(() => _validTokens.delete(token), 30000);
+                    return token;
+                },
+                verifyToken: function(token) {
+                    return _validTokens.has(token);
+                }
+            };
         })();
 
         // ========== ВСЕ 103 NFT С РЕАЛЬНЫМИ ЦЕНАМИ ==========
@@ -726,19 +789,16 @@
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
             
-            // Фильтруем по поиску
             let filtered = nftGifts.filter(item => 
                 item.name.toLowerCase().includes(currentSearchTerm.toLowerCase())
             );
             
-            // Сортируем
             if (sortState === 'asc') {
                 filtered.sort((a, b) => a.price - b.price);
             } else if (sortState === 'desc') {
                 filtered.sort((a, b) => b.price - a.price);
             }
             
-            // Отрисовываем
             grid.innerHTML = filtered.map(item => `
                 <div class="product-card" onclick="openModal('${item.name}', ${item.price}, '${item.image}')">
                     <img src="${item.image}" class="product-image" alt="${item.name}" onerror="this.src='nft/placeholder.png'">
@@ -761,18 +821,36 @@
             document.getElementById('modalOverlay').style.display = 'flex';
             
             document.getElementById('modalBuyBtn').onclick = function() {
-                buyItem(name, price);
+                buyItem(name, price, image);
             };
         }
 
-        // Функция покупки
-        function buyItem(name, price) {
+        // Функция покупки с защитой
+        function buyItem(name, price, image) {
+            if (!Security.validateRequest()) {
+                alert('⚠️ Слишком много запросов. Подождите минуту.');
+                return;
+            }
+
             if (Storage.getStars() >= price) {
-                if (confirm(`Купить ${name} за ${price} пазлов?`)) {
-                    Storage.updateStars(-price, `Покупка: ${name}`);
-                    Storage.addGift({ name: name, price: price });
+                const token = Security.createToken();
+                
+                if (Storage.updateStars(-price, `Покупка: ${name}`, token)) {
+                    // Добавляем подарок в инвентарь
+                    const inventory = JSON.parse(localStorage.getItem('yeter_inventory') || '[]');
+                    inventory.push({
+                        name: name,
+                        price: price,
+                        image: image,
+                        id: Date.now() + Math.random(),
+                        withdrawEnd: null
+                    });
+                    localStorage.setItem('yeter_inventory', JSON.stringify(inventory));
+                    
                     alert('✅ Покупка совершена! Подарок в профиле');
                     document.getElementById('modalOverlay').style.display = 'none';
+                    
+                    // Обновляем баланс
                     updateUIDisplay();
                 }
             } else {
@@ -780,25 +858,49 @@
             }
         }
 
-        // Хранилище
+        // Хранилище с защитой
         const Storage = (function() {
             let _data = null;
             const _key = 'yeter_user_data';
+            const _backupKey = 'yeter_user_data_backup';
             
             function _init() {
                 const saved = localStorage.getItem(_key);
                 if (saved) {
                     try {
                         _data = JSON.parse(saved);
-                        if (!_validate(_data)) _createNew();
-                    } catch { _createNew(); }
-                } else { _createNew(); }
+                        if (!_validate(_data)) {
+                            _restoreFromBackup();
+                        }
+                    } catch { 
+                        _restoreFromBackup();
+                    }
+                } else {
+                    _createNew();
+                }
                 _save();
+                _createBackup();
             }
             
             function _validate(data) {
-                return data && typeof data.stars === 'number' && data.stars >= 0 && 
-                       typeof data.level === 'number' && data.level >= 1;
+                if (!data || typeof data !== 'object') return false;
+                if (typeof data.stars !== 'number' || data.stars < 0 || data.stars > 1000000) return false;
+                if (typeof data.level !== 'number' || data.level < 1 || data.level > 100) return false;
+                if (typeof data.exp !== 'number' || data.exp < 0) return false;
+                if (typeof data.expToNext !== 'number' || data.expToNext < 100) return false;
+                if (!Array.isArray(data.gifts)) return false;
+                if (!data.games || typeof data.games !== 'object') return false;
+                if (!Array.isArray(data.transactions)) return false;
+                
+                // Проверка на подозрительные транзакции
+                if (data.transactions.length > 0) {
+                    const lastTx = data.transactions[data.transactions.length - 1];
+                    if (lastTx && lastTx.amount > 10000 && lastTx.amount > data.stars) {
+                        return false;
+                    }
+                }
+                
+                return true;
             }
             
             function _createNew() {
@@ -813,30 +915,72 @@
                 };
             }
             
-            function _save() { localStorage.setItem(_key, JSON.stringify(_data)); }
+            function _save() {
+                localStorage.setItem(_key, JSON.stringify(_data));
+            }
+            
+            function _createBackup() {
+                localStorage.setItem(_backupKey, JSON.stringify(_data));
+            }
+            
+            function _restoreFromBackup() {
+                const backup = localStorage.getItem(_backupKey);
+                if (backup) {
+                    try {
+                        _data = JSON.parse(backup);
+                    } catch {
+                        _createNew();
+                    }
+                } else {
+                    _createNew();
+                }
+            }
+            
+            function _logTransaction(amount, reason, token, success) {
+                if (!_data.transactions) _data.transactions = [];
+                _data.transactions.push({
+                    amount: amount,
+                    reason: reason,
+                    time: Date.now(),
+                    balance: _data.stars,
+                    success: success,
+                    token: token
+                });
+                
+                if (_data.transactions.length > 100) {
+                    _data.transactions = _data.transactions.slice(-100);
+                }
+            }
+            
             _init();
             
             return {
                 getStars: function() { return _data.stars; },
                 getGifts: function() { return [..._data.gifts]; },
                 
-                updateStars: function(amount, reason) {
+                updateStars: function(amount, reason, token) {
+                    if (!Security.validateRequest()) return false;
+                    
                     if (_data.stars + amount < 0) return false;
+                    
+                    // Защита от слишком больших транзакций
+                    if (amount < -10000 && !Security.verifyToken(token)) {
+                        _logTransaction(amount, reason, token, false);
+                        return false;
+                    }
+                    
                     _data.stars += amount;
-                    _data.transactions.push({
-                        amount: amount,
-                        reason: reason,
-                        time: Date.now(),
-                        balance: _data.stars
-                    });
+                    _logTransaction(amount, reason, token, true);
+                    
                     _save();
-                    updateUIDisplay();
+                    _createBackup();
                     return true;
                 },
                 
                 addGift: function(gift) {
                     _data.gifts.push(gift);
                     _save();
+                    _createBackup();
                 },
                 
                 getUserData: function() { return { ..._data }; }
@@ -853,6 +997,14 @@
             document.getElementById('shopProgressFill').style.width = progress + '%';
         }
 
+        // Кнопка пополнения баланса
+        document.getElementById('addBalanceBtn').addEventListener('click', () => {
+            const token = Security.createToken();
+            if (Storage.updateStars(1000, 'Пополнение', token)) {
+                updateUIDisplay();
+            }
+        });
+
         // Telegram
         const tg = window.Telegram?.WebApp;
         if (tg) {
@@ -860,14 +1012,24 @@
             tg.expand();
             const user = tg.initDataUnsafe?.user;
             if (user) {
-                const name = user.username || (user.first_name || '').toLowerCase() || 'player';
-                const firstChar = (user.first_name || 'P').charAt(0).toUpperCase();
+                const firstName = user.first_name || '';
+                const lastName = user.last_name || '';
+                const fullName = (firstName + ' ' + lastName).trim() || 'Player';
+                const firstChar = (firstName.charAt(0) || 'П').toUpperCase();
+                
                 document.getElementById('shopAvatar').innerText = firstChar;
-                document.getElementById('shopNickname').innerText = '@' + name;
+                document.getElementById('shopNickname').innerText = fullName;
+                
+                if (user.photo_url) {
+                    document.getElementById('shopAvatar').style.backgroundImage = `url('${user.photo_url}')`;
+                    document.getElementById('shopAvatar').style.backgroundColor = 'transparent';
+                    document.getElementById('shopAvatar').style.backgroundSize = 'cover';
+                    document.getElementById('shopAvatar').innerText = '';
+                }
             }
         } else {
-            document.getElementById('shopAvatar').innerText = 'P';
-            document.getElementById('shopNickname').innerText = '@player';
+            document.getElementById('shopAvatar').innerText = 'П';
+            document.getElementById('shopNickname').innerText = 'Игрок';
         }
 
         updateUIDisplay();
