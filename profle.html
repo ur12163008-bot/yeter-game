@@ -230,6 +230,7 @@
         .empty-gifts p {
             color: #8e98a3;
             font-size: 14px;
+            font-weight: 500;
         }
 
         .add-gift-btn {
@@ -252,14 +253,20 @@
         }
 
         .gift-card {
-            background: transparent;
-            border: none;
-            padding: 8px;
+            background: rgba(20, 25, 35, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            border-radius: 16px;
+            padding: 12px 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .gift-card:active {
+            background: rgba(30, 35, 45, 0.5);
         }
 
         .gift-image {
@@ -267,11 +274,10 @@
             height: 70px;
             border-radius: 12px;
             object-fit: cover;
-            /* РАМКА УБРАНА - нет border */
         }
 
         .gift-name {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             color: white;
             text-align: center;
@@ -279,20 +285,22 @@
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 100%;
+            padding: 0 2px;
         }
 
         .gift-price {
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 15px;
+            justify-content: center;
+            gap: 5px;
+            font-size: 16px;
             font-weight: 800;
             color: #b87aff;
         }
 
         .gift-price .puzzle-icon {
-            font-size: 13px;
-            color: #b87aff;
+            font-size: 15px;
+            color: #ffd700;
         }
 
         /* Модальное окно */
@@ -346,7 +354,6 @@
             border-radius: 24px;
             margin: 10px auto 15px;
             display: block;
-            /* РАМКА УБРАНА У ФОТКИ */
         }
 
         .modal-title {
@@ -370,7 +377,7 @@
 
         .modal-price .puzzle-icon {
             font-size: 22px;
-            color: #b87aff;
+            color: #ffd700;
         }
 
         .modal-buttons {
