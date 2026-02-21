@@ -59,7 +59,7 @@
             position: relative;
         }
 
-        /* Верхняя плашка с балансом */
+        /* Верхний баланс */
         .top-header {
             display: flex;
             justify-content: flex-end;
@@ -132,8 +132,8 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-image: none;
-            background: linear-gradient(145deg, #6a0dad, #4b0082);
+            background-color: #6a0dad;
+            overflow: hidden;
         }
 
         .profile-name-center {
@@ -369,6 +369,7 @@
             margin: 10px auto 15px;
             display: block;
             border: 3px solid rgba(155, 77, 255, 0.5);
+            object-fit: cover;
         }
 
         .modal-title {
@@ -566,7 +567,7 @@
             <a href="index.html" class="nav-item"><i class="fas fa-gamepad"></i><span>ИГРЫ</span></a>
             <a href="shop.html" class="nav-item"><i class="fas fa-store"></i><span>МАГАЗИН</span></a>
             <a href="leaders.html" class="nav-item"><i class="fas fa-trophy"></i><span>ЛИДЕРЫ</span></a>
-            <a href="profile.html" class="nav-item active"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
+            <a href="profle.html" class="nav-item active"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
         </div>
     </div>
 
@@ -638,12 +639,14 @@
                 document.getElementById('profileName').innerText = fullName;
                 
                 if (user.photo_url) {
-                    userData.avatarUrl = user.photo_url;
-                    document.getElementById('profileAvatar').style.backgroundImage = `url(${user.photo_url})`;
-                    document.getElementById('profileAvatar').style.backgroundColor = 'transparent';
-                    document.getElementById('profileAvatar').innerText = '';
+                    const avatarEl = document.getElementById('profileAvatar');
+                    avatarEl.style.backgroundImage = `url('${user.photo_url}')`;
+                    avatarEl.style.backgroundColor = 'transparent';
+                    avatarEl.style.backgroundSize = 'cover';
+                    avatarEl.style.backgroundPosition = 'center';
+                    avatarEl.innerHTML = '';
                 } else {
-                    document.getElementById('profileAvatar').innerText = (userData.firstName.charAt(0) || 'П').toUpperCase();
+                    document.getElementById('profileAvatar').innerHTML = (userData.firstName.charAt(0) || 'П').toUpperCase();
                 }
             }
         }
