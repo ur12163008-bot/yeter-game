@@ -151,7 +151,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-image: none;
+            background: linear-gradient(145deg, #6a0dad, #4b0082);
         }
 
         .games-info-wrapper {
@@ -450,7 +450,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-image: none;
+            background: linear-gradient(145deg, #6a0dad, #4b0082);
         }
 
         .profile-name-center {
@@ -950,19 +950,19 @@
         </div>
 
         <div class="bottom-nav">
-            <a href="index.html" class="nav-item active" data-nav="games">
+            <a href="index.html" class="nav-item active">
                 <i class="fas fa-gamepad"></i>
                 <span>Игры</span>
             </a>
-            <a href="shop.html" class="nav-item" data-nav="shop">
+            <a href="shop.html" class="nav-item">
                 <i class="fas fa-store"></i>
                 <span>Магазин</span>
             </a>
-            <a href="leaders.html" class="nav-item" data-nav="leaders">
+            <a href="leaders.html" class="nav-item">
                 <i class="fas fa-trophy"></i>
                 <span>Лидеры</span>
             </a>
-            <a href="profile.html" class="nav-item" data-nav="profile">
+            <a href="profile.html" class="nav-item">
                 <i class="fas fa-user"></i>
                 <span>Профиль</span>
             </a>
@@ -992,7 +992,6 @@
     <script>
         // ========== ЖЕСТКАЯ ЗАЩИТА ==========
         (function() {
-            // Защита от изменения глобальных объектов
             const protectedMethods = ['getItem', 'setItem', 'removeItem'];
             protectedMethods.forEach(method => {
                 const original = localStorage[method];
@@ -1004,7 +1003,6 @@
                 };
             });
             
-            // Анти-отладка
             setInterval(function() {
                 const before = new Date();
                 debugger;
@@ -1015,47 +1013,10 @@
             }, 1000);
         })();
 
-        // ========== ЗАЩИТА ОТ НАКРУТКИ БАЛАНСА ==========
-        const Security = (function() {
-            let _requestCount = 0;
-            let _lastReset = Date.now();
-            let _validTokens = new Set();
-            
-            function generateToken() {
-                return 'token_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
-            }
-            
-            function checkRateLimit() {
-                const now = Date.now();
-                if (now - _lastReset > 60000) {
-                    _requestCount = 0;
-                    _lastReset = now;
-                }
-                _requestCount++;
-                return _requestCount <= 30;
-            }
-            
-            return {
-                validateRequest: function() {
-                    return checkRateLimit();
-                },
-                createToken: function() {
-                    const token = generateToken();
-                    _validTokens.add(token);
-                    setTimeout(() => _validTokens.delete(token), 30000);
-                    return token;
-                },
-                verifyToken: function(token) {
-                    return _validTokens.has(token);
-                }
-            };
-        })();
-
-        // ========== СИСТЕМА СОХРАНЕНИЯ С ЗАЩИТОЙ ==========
+        // ========== СИСТЕМА СОХРАНЕНИЯ ==========
         const Storage = (function() {
             let _data = null;
             const _key = 'yeter_user_data';
-            const _backupKey = 'yeter_user_data_backup';
             
             function _init() {
                 const saved = localStorage.getItem(_key);
@@ -1063,37 +1024,23 @@
                     try {
                         _data = JSON.parse(saved);
                         if (!_validate(_data)) {
-                            _restoreFromBackup();
+                            _createNew();
                         }
                     } catch {
-                        _restoreFromBackup();
+                        _createNew();
                     }
                 } else {
                     _createNew();
                 }
                 _save();
-                _createBackup();
             }
             
             function _validate(data) {
-                if (!data || typeof data !== 'object') return false;
-                if (typeof data.stars !== 'number' || data.stars < 0 || data.stars > 1000000) return false;
-                if (typeof data.level !== 'number' || data.level < 1 || data.level > 100) return false;
-                if (typeof data.exp !== 'number' || data.exp < 0) return false;
-                if (typeof data.expToNext !== 'number' || data.expToNext < 100) return false;
-                if (!Array.isArray(data.gifts)) return false;
-                if (!data.games || typeof data.games !== 'object') return false;
-                if (!Array.isArray(data.transactions)) return false;
-                
-                // Проверка на слишком быстрый рост
-                if (data.transactions.length > 0) {
-                    const lastTx = data.transactions[data.transactions.length - 1];
-                    if (lastTx && typeof lastTx.amount === 'number' && lastTx.amount > 10000) {
-                        return false; // Подозрительно большой транзакции
-                    }
-                }
-                
-                return true;
+                return data && 
+                       typeof data.stars === 'number' && 
+                       data.stars >= 0 &&
+                       typeof data.level === 'number' &&
+                       data.level >= 1;
             }
             
             function _createNew() {
@@ -1114,83 +1061,34 @@
             }
             
             function _save() {
-                try {
-                    localStorage.setItem(_key, JSON.stringify(_data));
-                } catch (e) {
-                    console.error('Save failed:', e);
-                }
-            }
-            
-            function _createBackup() {
-                try {
-                    localStorage.setItem(_backupKey, JSON.stringify(_data));
-                } catch (e) {}
-            }
-            
-            function _restoreFromBackup() {
-                const backup = localStorage.getItem(_backupKey);
-                if (backup) {
-                    try {
-                        _data = JSON.parse(backup);
-                    } catch {
-                        _createNew();
-                    }
-                } else {
-                    _createNew();
-                }
-            }
-            
-            function _logTransaction(amount, reason, success) {
-                if (!_data.transactions) _data.transactions = [];
-                _data.transactions.push({
-                    amount: amount,
-                    reason: reason,
-                    time: Date.now(),
-                    balance: _data.stars,
-                    success: success,
-                    token: Security.createToken()
-                });
-                
-                if (_data.transactions.length > 100) {
-                    _data.transactions = _data.transactions.slice(-100);
-                }
+                localStorage.setItem(_key, JSON.stringify(_data));
             }
             
             _init();
             
             return {
                 getStars: function() { return _data.stars; },
-                getLevel: function() { return _data.level; },
-                getExp: function() { return _data.exp; },
-                getExpToNext: function() { return _data.expToNext; },
                 
                 updateStars: function(amount, reason) {
-                    if (!Security.validateRequest()) {
-                        _logTransaction(amount, reason, false);
-                        return false;
-                    }
-                    
                     if (_data.stars + amount < 0) return false;
-                    if (amount > 5000 && !Security.verifyToken(reason)) {
-                        _logTransaction(amount, reason, false);
-                        return false;
-                    }
-                    
                     _data.stars += amount;
-                    _logTransaction(amount, reason, true);
+                    
+                    _data.transactions.push({
+                        amount: amount,
+                        reason: reason,
+                        time: Date.now(),
+                        balance: _data.stars
+                    });
                     
                     if (_data.transactions.length > 50) {
                         _data.transactions = _data.transactions.slice(-50);
                     }
                     
                     _save();
-                    _createBackup();
                     return true;
                 },
                 
                 addExp: function(amount) {
-                    if (amount > 1000) return false;
-                    
                     _data.exp += amount;
                     while (_data.exp >= _data.expToNext) {
                         _data.exp -= _data.expToNext;
@@ -1198,18 +1096,14 @@
                         _data.expToNext = Math.floor(_data.expToNext * 1.5);
                     }
                     _save();
-                    _createBackup();
                 },
                 
                 getGifts: function() { return [..._data.gifts]; },
                 
                 addGift: function(gift) {
-                    if (!gift || typeof gift !== 'object') return false;
                     _data.gifts.push(gift);
                     _save();
-                    _createBackup();
                     this.updateUI();
-                    return true;
                 },
                 
                 getUserData: function() {
@@ -1228,10 +1122,6 @@
                     const progress = (_data.exp / _data.expToNext) * 100;
                     document.getElementById('gamesProgressFill').style.width = progress + '%';
                     document.getElementById('profileProgressFill').style.width = progress + '%';
-                },
-                
-                validateTransaction: function(amount, token) {
-                    return Security.verifyToken(token) && amount <= 5000;
                 }
             };
         })();
@@ -1261,7 +1151,7 @@
                         el.innerText = '';
                     });
                 } else {
-                    const initial = (firstName.charAt(0) || 'P').toUpperCase();
+                    const initial = (firstName.charAt(0) || 'П').toUpperCase();
                     document.getElementById('gamesAvatar').innerText = initial;
                     document.getElementById('profileAvatar').innerText = initial;
                 }
@@ -1274,19 +1164,11 @@
         // ========== НАВИГАЦИЯ ==========
         document.getElementById('globalHeader').style.display = 'none';
 
-        // Обработчик для всех кнопок навигации
+        // Кнопки теперь просто ссылки, но оставим для активного состояния
         document.querySelectorAll('.nav-item').forEach(nav => {
-            nav.addEventListener('click', function(e) {
-                e.preventDefault();
-                const section = this.dataset.nav;
-                
-                if (section === 'games') {
-                    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-                    document.getElementById('sectionGames').classList.add('active');
-                    document.getElementById('globalHeader').style.display = 'none';
-                } else {
-                    window.location.href = section + '.html';
-                }
+            nav.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                this.classList.add('active');
             });
         });
 
@@ -1295,18 +1177,14 @@
         });
 
         document.getElementById('giftAddBtn').addEventListener('click', () => {
-            const token = Security.createToken();
             const newGift = { 
                 id: 'gift' + Date.now(), 
                 name: 'Новый подарок', 
                 count: 1,
-                token: token
+                price: 100
             };
-            if (Storage.addGift(newGift)) {
-                alert('Подарок добавлен!');
-            } else {
-                alert('Ошибка добавления');
-            }
+            Storage.addGift(newGift);
+            alert('Подарок добавлен!');
         });
 
         // ========== ПОДСКАЗКА ==========
