@@ -38,7 +38,7 @@
             position: relative;
         }
 
-        /* Верхняя плашка с балансом - УМЕНЬШЕНО */
+        /* Верхняя плашка с балансом */
         .top-header {
             display: flex;
             justify-content: center;
@@ -279,10 +279,14 @@
             height: 70px;
             border-radius: 12px;
             object-fit: cover;
-            object-position: center;
+            opacity: 0;
+            animation: fadeIn 0.3s ease forwards;
         }
 
-        /* Специально для Spiced Wine - делаем выше */
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
         .gift-image[alt*="Spiced Wine"],
         .gift-image[src*="Spiced Wine"] {
             object-fit: contain;
@@ -370,7 +374,6 @@
             object-fit: cover;
         }
 
-        /* Для Spiced Wine в модалке */
         .gift-modal-image[src*="Spiced Wine"] {
             object-fit: contain;
             transform: scale(1.2);
@@ -701,7 +704,29 @@
         // Таймеры
         let withdrawTimers = {};
 
-        // Загрузка данных
+        // Защита от накрутки
+        const Security = (function() {
+            let _requestCount = 0;
+            let _lastReset = Date.now();
+            
+            function checkRateLimit() {
+                const now = Date.now();
+                if (now - _lastReset > 60000) {
+                    _requestCount = 0;
+                    _lastReset = now;
+                }
+                _requestCount++;
+                return _requestCount <= 30;
+            }
+            
+            return {
+                validateRequest: function() {
+                    return checkRateLimit();
+                }
+            };
+        })();
+
+        // Загрузка данных из localStorage
         function loadData() {
             try {
                 const savedInventory = localStorage.getItem('yeter_inventory');
@@ -750,6 +775,7 @@
                 if (user.photo_url) {
                     document.getElementById('profileAvatar').style.backgroundImage = `url('${user.photo_url}')`;
                     document.getElementById('profileAvatar').style.backgroundColor = 'transparent';
+                    document.getElementById('profileAvatar').style.backgroundSize = 'cover';
                     document.getElementById('profileAvatar').innerHTML = '';
                 } else {
                     document.getElementById('profileAvatar').innerHTML = (userData.firstName.charAt(0) || 'П').toUpperCase();
@@ -791,7 +817,13 @@
                 inventory.slice(0, 2).forEach((gift, index) => {
                     html += `
                         <div class="gift-card" onclick="openGiftModal(${index})">
-                            <img src="${gift.image || 'nft/placeholder.png'}" class="gift-image" alt="${gift.name}">
+                            <img src="${gift.image || 'nft/placeholder.png'}" 
+                                 class="gift-image" 
+                                 alt="${gift.name}"
+                                 loading="eager"
+                                 onload="this.style.opacity=1"
+                                 onerror="this.src='nft/placeholder.png'; this.style.opacity=1"
+                                 style="opacity: 0;">
                             <span class="gift-name">${gift.name}</span>
                             <span class="gift-price">
                                 <span class="puzzle-icon">🧩</span>
@@ -810,13 +842,19 @@
             const grid = document.getElementById('inventoryGrid');
             
             if (inventory.length === 0) {
-                grid.innerHTML = '<div style="text-align: center; color: #8e98a3; grid-column: 1/3; padding: 20px;">Нет подарков</div>';
+                grid.innerHTML = '<div style="text-align: center; color: #8e98a3; grid-column: 1/3; padding: 30px;">Нет подарков</div>';
                 return;
             }
             
             grid.innerHTML = inventory.map((gift, index) => `
                 <div class="gift-card" onclick="openGiftModal(${index})">
-                    <img src="${gift.image || 'nft/placeholder.png'}" class="gift-image" alt="${gift.name}">
+                    <img src="${gift.image || 'nft/placeholder.png'}" 
+                         class="gift-image" 
+                         alt="${gift.name}"
+                         loading="eager"
+                         onload="this.style.opacity=1"
+                         onerror="this.src='nft/placeholder.png'; this.style.opacity=1"
+                         style="opacity: 0;">
                     <span class="gift-name">${gift.name}</span>
                     <span class="gift-price">
                         <span class="puzzle-icon">🧩</span>
@@ -838,7 +876,6 @@
             const withdrawBtn = document.getElementById('withdrawBtn');
             const withdrawText = document.getElementById('withdrawText');
             
-            // ТАЙМЕР РАБОТАЕТ
             if (gift.withdrawEnd && gift.withdrawEnd > Date.now()) {
                 withdrawBtn.classList.remove('active');
                 const remaining = Math.ceil((gift.withdrawEnd - Date.now()) / 60000);
@@ -867,7 +904,6 @@
                     gift.withdrawEnd = null;
                     saveInventory();
                     
-                    // Обновляем UI если модалка открыта
                     const activeModal = document.getElementById('giftModal').classList.contains('active');
                     if (activeModal && document.getElementById('modalTitle').innerText === gift.name) {
                         const withdrawBtn = document.getElementById('withdrawBtn');
@@ -881,7 +917,6 @@
                     renderGifts();
                     renderInventoryGrid();
                 } else {
-                    // Обновляем время
                     const remaining = Math.ceil((gift.withdrawEnd - Date.now()) / 60000);
                     if (document.getElementById('modalTitle').innerText === gift.name) {
                         const withdrawBtn = document.getElementById('withdrawBtn');
@@ -893,6 +928,11 @@
 
         // Пополнение баланса
         document.getElementById('addBalanceBtn').addEventListener('click', () => {
+            if (!Security.validateRequest()) {
+                alert('⚠️ Слишком много запросов');
+                return;
+            }
+            
             userData.balance += 1000;
             
             const savedData = JSON.parse(localStorage.getItem('yeter_user_data') || '{}');
