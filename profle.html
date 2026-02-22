@@ -23,6 +23,7 @@
             min-height: 100vh;
         }
 
+        /* Космический фон */
         body::before {
             content: '';
             position: fixed;
@@ -31,6 +32,7 @@
             z-index: -2;
         }
 
+        /* Оптимизированные звезды (меньше, без анимации) */
         .stars {
             position: fixed;
             top: 0;
@@ -45,21 +47,21 @@
             position: absolute;
             background: white;
             border-radius: 50%;
-            width: 2px;
-            height: 2px;
-            opacity: 0.7;
+            width: 1px;
+            height: 1px;
+            opacity: 0.5;
         }
 
         .star.medium {
-            width: 3px;
-            height: 3px;
-            opacity: 0.8;
+            width: 2px;
+            height: 2px;
+            opacity: 0.6;
         }
 
         .star.large {
-            width: 4px;
-            height: 4px;
-            opacity: 0.9;
+            width: 2px;
+            height: 2px;
+            opacity: 0.7;
         }
 
         .app {
@@ -70,6 +72,7 @@
             z-index: 1;
         }
 
+        /* Верхняя плашка с балансом */
         .top-header {
             display: flex;
             justify-content: center;
@@ -115,8 +118,15 @@
             font-size: 22px;
             font-weight: 700;
             cursor: pointer;
+            transition: all 0.1s;
         }
 
+        .add-balance-btn:active {
+            background: rgba(106, 13, 173, 0.5);
+            transform: scale(0.95);
+        }
+
+        /* Профиль */
         .profile-full {
             background: rgba(10, 14, 22, 0.6);
             margin: 5px 20px 0;
@@ -168,6 +178,7 @@
             text-align: center;
         }
 
+        /* Уровень в виде ромба */
         .profile-level-section {
             display: flex;
             align-items: center;
@@ -236,6 +247,7 @@
             padding: 20px 20px 40px;
         }
 
+        /* Секция подарков */
         .gifts-section {
             background: rgba(10, 14, 22, 0.7);
             border: 2px solid rgba(138, 43, 226, 0.3);
@@ -426,9 +438,9 @@
         }
 
         .add-gift-modal-title {
-            color: #b87aff;
-            font-size: 22px;
-            font-weight: 800;
+            color: #8e98a3;
+            font-size: 20px;
+            font-weight: 600;
             text-align: center;
             margin-bottom: 24px;
             padding-right: 20px;
@@ -505,6 +517,7 @@
             font-size: 12px;
         }
 
+        /* Модальное окно подарка */
         .gift-modal-overlay {
             position: fixed;
             top: 0;
@@ -785,21 +798,10 @@
         .nav-item.active i {
             color: #b87aff;
         }
-
-        .preloader {
-            position: fixed;
-            top: -9999px;
-            left: -9999px;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            pointer-events: none;
-        }
     </style>
 </head>
 <body>
     <div class="stars" id="stars"></div>
-    <div class="preloader" id="preloader"></div>
 
     <div class="app">
         <div class="top-header">
@@ -843,7 +845,7 @@
             </div>
         </div>
 
-        <!-- Модальное окно "Добавить подарок" (ПОЛНОСТЬЮ ВОССТАНОВЛЕНО) -->
+        <!-- Модальное окно "Добавить подарок" -->
         <div class="add-gift-modal-overlay" id="addGiftModal">
             <div class="add-gift-modal">
                 <div class="add-gift-modal-close" id="closeAddGiftModal">✖</div>
@@ -914,14 +916,14 @@
     </div>
 
     <script>
+        // ========== ОПТИМИЗИРОВАННЫЕ ЗВЕЗДЫ (меньше, без анимации) ==========
         function createStars() {
             const starsContainer = document.getElementById('stars');
             starsContainer.innerHTML = '';
             
-            for (let i = 0; i < 100; i++) {
+            // Создаем 50 звезд вместо 100 для производительности
+            for (let i = 0; i < 50; i++) {
                 const star = document.createElement('div');
-                star.className = 'star';
-                
                 const size = Math.random();
                 if (size < 0.7) {
                     star.className = 'star';
@@ -933,15 +935,70 @@
                 
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
-                star.style.opacity = 0.3 + Math.random() * 0.6;
+                star.style.opacity = 0.3 + Math.random() * 0.4;
                 
                 starsContainer.appendChild(star);
             }
         }
-        
         createStars();
 
         const tg = window.Telegram?.WebApp;
+
+        // ========== ЗАЩИТА ОТ ВСЕГО ==========
+        (function() {
+            const protectedMethods = ['getItem', 'setItem', 'removeItem'];
+            protectedMethods.forEach(method => {
+                const original = localStorage[method];
+                localStorage[method] = function() {
+                    if (new Error().stack.includes('debugger')) {
+                        throw new Error('Access denied');
+                    }
+                    return original.apply(this, arguments);
+                };
+            });
+            
+            // Упрощенная анти-отладка (реже)
+            let debugCounter = 0;
+            setInterval(function() {
+                debugCounter++;
+                if (debugCounter % 10 === 0) { // Проверяем реже
+                    const before = new Date();
+                    debugger;
+                    const after = new Date();
+                    if (after - before > 100) {
+                        window.location.reload();
+                    }
+                }
+            }, 2000); // Каждые 2 секунды
+        })();
+
+        // ========== ЗАЩИТА ОТ НАКРУТКИ ==========
+        const Security = (function() {
+            let _requestCount = 0;
+            let _lastReset = Date.now();
+            let _requestTimestamps = [];
+            
+            function checkRateLimit() {
+                const now = Date.now();
+                
+                // Очищаем старые запросы (старше 1 минуты)
+                _requestTimestamps = _requestTimestamps.filter(t => now - t < 60000);
+                
+                // Проверяем количество запросов за минуту
+                if (_requestTimestamps.length > 25) {
+                    return false;
+                }
+                
+                _requestTimestamps.push(now);
+                return true;
+            }
+            
+            return {
+                validateRequest: function() {
+                    return checkRateLimit();
+                }
+            };
+        })();
 
         // ========== ЕДИНОЕ ХРАНИЛИЩЕ ==========
         const Storage = (function() {
@@ -985,11 +1042,11 @@
                 getLevel: function() { return _data.level; },
                 getExp: function() { return _data.exp; },
                 getExpToNext: function() { return _data.expToNext; },
-                getGifts: function() { return _data.gifts || []; },
                 
                 updateStars: function(amount, reason) {
                     if (_data.stars + amount < 0) return false;
                     _data.stars += amount;
+                    if (!_data.transactions) _data.transactions = [];
                     _data.transactions.push({ amount, reason, time: Date.now(), balance: _data.stars });
                     if (_data.transactions.length > 50) _data.transactions = _data.transactions.slice(-50);
                     _save();
@@ -1006,40 +1063,8 @@
                     _save();
                 },
                 
-                addGift: function(gift) {
-                    if (!_data.gifts) _data.gifts = [];
-                    _data.gifts.push({
-                        ...gift,
-                        id: Date.now() + Math.random(),
-                        withdrawEnd: gift.withdrawEnd || null
-                    });
-                    _save();
-                },
-                
                 getUserData: function() {
                     return { ..._data };
-                }
-            };
-        })();
-
-        // Защита от накрутки (упрощенная)
-        const Security = (function() {
-            let _requestCount = 0;
-            let _lastReset = Date.now();
-            
-            function checkRateLimit() {
-                const now = Date.now();
-                if (now - _lastReset > 60000) {
-                    _requestCount = 0;
-                    _lastReset = now;
-                }
-                _requestCount++;
-                return _requestCount <= 30;
-            }
-            
-            return {
-                validateRequest: function() {
-                    return checkRateLimit();
                 }
             };
         })();
@@ -1049,7 +1074,11 @@
             firstName: '',
             lastName: '',
             username: '',
-            avatarUrl: null
+            avatarUrl: null,
+            balance: 12500,
+            level: 1,
+            exp: 0,
+            expToNext: 1000
         };
 
         let inventory = [];
@@ -1064,14 +1093,19 @@
             
             const savedInventory = localStorage.getItem('yeter_inventory');
             if (savedInventory) {
-                inventory = JSON.parse(savedInventory);
-                
-                inventory = inventory.map(gift => {
-                    if (gift.withdrawEnd && gift.withdrawEnd <= Date.now()) {
-                        gift.withdrawEnd = null;
-                    }
-                    return gift;
-                });
+                try {
+                    inventory = JSON.parse(savedInventory);
+                    
+                    // Проверяем таймеры
+                    inventory = inventory.map(gift => {
+                        if (gift.withdrawEnd && gift.withdrawEnd <= Date.now()) {
+                            gift.withdrawEnd = null;
+                        }
+                        return gift;
+                    });
+                } catch (e) {
+                    inventory = [];
+                }
             }
         }
 
@@ -1079,6 +1113,7 @@
             localStorage.setItem('yeter_inventory', JSON.stringify(inventory));
         }
 
+        // Telegram данные
         if (tg) {
             tg.ready();
             const user = tg.initDataUnsafe?.user;
@@ -1133,6 +1168,7 @@
                             <img src="${gift.image || 'nft/placeholder.png'}" 
                                  class="gift-image" 
                                  alt="${gift.name}"
+                                 loading="lazy"
                                  onerror="this.src='nft/placeholder.png'">
                             <span class="gift-name">${gift.name}</span>
                             <span class="gift-price">
@@ -1160,6 +1196,7 @@
                     <img src="${gift.image || 'nft/placeholder.png'}" 
                          class="gift-image" 
                          alt="${gift.name}"
+                         loading="lazy"
                          onerror="this.src='nft/placeholder.png'">
                     <span class="gift-name">${gift.name}</span>
                     <span class="gift-price">
@@ -1211,20 +1248,19 @@
                     gift.withdrawEnd = null;
                     saveInventory();
                     
-                    const activeModal = document.getElementById('giftModal').classList.contains('active');
-                    if (activeModal && document.getElementById('modalTitle').innerText === gift.name) {
-                        const withdrawBtn = document.getElementById('withdrawBtn');
-                        withdrawBtn.classList.add('active');
-                        withdrawBtn.innerHTML = 'ВЫВЕСТИ';
+                    if (document.getElementById('giftModal').classList.contains('active') && 
+                        document.getElementById('modalTitle').innerText === gift.name) {
+                        document.getElementById('withdrawBtn').classList.add('active');
+                        document.getElementById('withdrawBtn').innerHTML = 'ВЫВЕСТИ';
                     }
                     
                     renderGifts();
                     renderInventoryGrid();
                 } else {
                     const remaining = Math.ceil((gift.withdrawEnd - Date.now()) / 60000);
-                    if (document.getElementById('modalTitle').innerText === gift.name) {
-                        const withdrawBtn = document.getElementById('withdrawBtn');
-                        withdrawBtn.innerHTML = `
+                    if (document.getElementById('giftModal').classList.contains('active') && 
+                        document.getElementById('modalTitle').innerText === gift.name) {
+                        document.getElementById('withdrawBtn').innerHTML = `
                             <div class="timer-left">
                                 <i class="fas fa-lock"></i>
                                 <span class="timer-text">${remaining} МИН</span>
@@ -1236,6 +1272,7 @@
             }, 1000);
         }
 
+        // Пополнение баланса
         document.getElementById('addBalanceBtn').addEventListener('click', () => {
             if (!Security.validateRequest()) {
                 alert('⚠️ Слишком много запросов');
@@ -1248,27 +1285,16 @@
             }
         });
 
+        // Открытие модалки "Добавить подарок"
         document.getElementById('openAddGiftModal').addEventListener('click', () => {
             if (Security.validateRequest()) {
                 document.getElementById('addGiftModal').classList.add('active');
             }
         });
 
+        // Закрытие модалок
         document.getElementById('closeAddGiftModal').addEventListener('click', () => {
             document.getElementById('addGiftModal').classList.remove('active');
-        });
-
-        document.getElementById('addGiftModal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('addGiftModal')) {
-                e.target.classList.remove('active');
-            }
-        });
-
-        document.getElementById('viewAllBtn').addEventListener('click', () => {
-            if (inventory.length > 0) {
-                document.getElementById('inventoryModal').classList.add('active');
-                renderInventoryGrid();
-            }
         });
 
         document.getElementById('closeInventoryModal').addEventListener('click', () => {
@@ -1277,6 +1303,12 @@
 
         document.getElementById('closeGiftModal').addEventListener('click', () => {
             document.getElementById('giftModal').classList.remove('active');
+        });
+
+        document.getElementById('addGiftModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('addGiftModal')) {
+                e.target.classList.remove('active');
+            }
         });
 
         document.getElementById('inventoryModal').addEventListener('click', (e) => {
@@ -1291,6 +1323,14 @@
             }
         });
 
+        document.getElementById('viewAllBtn').addEventListener('click', () => {
+            if (inventory.length > 0) {
+                document.getElementById('inventoryModal').classList.add('active');
+                renderInventoryGrid();
+            }
+        });
+
+        // Слушаем изменения
         window.addEventListener('storage', (e) => {
             if (e.key === 'yeter_user_data' || e.key === 'yeter_inventory') {
                 loadData();
@@ -1298,9 +1338,11 @@
             }
         });
 
+        // Инициализация
         loadData();
         updateUI();
 
+        // Обновление таймеров (реже, для производительности)
         setInterval(() => {
             let updated = false;
             inventory.forEach(gift => {
@@ -1311,9 +1353,10 @@
             });
             if (updated) {
                 saveInventory();
-                updateUI();
+                renderGifts();
+                renderInventoryGrid();
             }
-        }, 1000);
+        }, 2000); // Каждые 2 секунды вместо 1
     </script>
 </body>
 </html>
