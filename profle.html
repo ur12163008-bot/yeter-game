@@ -23,7 +23,7 @@
             min-height: 100vh;
         }
 
-        /* Космический фон со звездами (без анимации) */
+        /* Космический фон со звездами */
         body::before {
             content: '';
             position: fixed;
@@ -32,7 +32,6 @@
             z-index: -2;
         }
 
-        /* Звезды — статичные, без анимации */
         .stars {
             position: fixed;
             top: 0;
@@ -366,23 +365,28 @@
             background: rgba(106, 13, 173, 0.15);
             border: 2px dashed rgba(138, 43, 226, 0.4);
             border-radius: 40px;
-            padding: 14px;
-            color: #b87aff;
-            font-size: 16px;
-            font-weight: 600;
+            padding: 12px;
+            color: #8e98a3;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
             text-align: center;
             transition: all 0.1s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             backdrop-filter: blur(2px);
         }
 
         .add-gift-wide-btn:active {
             background: rgba(106, 13, 173, 0.25);
             transform: scale(0.98);
+        }
+
+        .add-gift-wide-btn i {
+            color: #8e98a3;
+            font-size: 14px;
         }
 
         /* Модальное окно "Добавить подарок" */
@@ -816,7 +820,7 @@
     </style>
 </head>
 <body>
-    <!-- Статичные звезды (без анимации) -->
+    <!-- Статичные звезды -->
     <div class="stars" id="stars"></div>
 
     <!-- Невидимый прелоадер -->
@@ -861,9 +865,9 @@
                     
                     <div id="giftsContainer"></div>
                     
-                    <!-- Кнопка "Добавить подарок +" -->
+                    <!-- Кнопка "Добавить подарок" (серая, мелкая) -->
                     <button class="add-gift-wide-btn" id="openAddGiftModal">
-                        + Добавить подарок
+                        <i class="fas fa-plus"></i> добавить подарок
                     </button>
                 </div>
             </div>
@@ -875,13 +879,13 @@
                 <div class="add-gift-modal-close" id="closeAddGiftModal">✖</div>
                 <div class="add-gift-modal-title">ДОБАВИТЬ ПОДАРОК</div>
                 
-                <!-- Красный блок предупреждения (без восклицательного знака) -->
+                <!-- Красный блок предупреждения -->
                 <div class="warning-block">
                     <div class="warning-title">Не дарите подарки с Telegram Маркета</div>
                     <div class="warning-text">Дарите подарки только напрямую со своего аккаунта</div>
                 </div>
                 
-                <!-- Пункт 1 -->
+                <!-- Пункт 1 - все иконки серые -->
                 <div class="instruction-item">
                     <div class="instruction-icon">🤖</div>
                     <div class="instruction-content">
@@ -892,7 +896,7 @@
                     </div>
                 </div>
                 
-                <!-- Пункт 2 -->
+                <!-- Пункт 2 - все иконки серые -->
                 <div class="instruction-item">
                     <div class="instruction-icon">🎁</div>
                     <div class="instruction-content">
@@ -901,7 +905,7 @@
                     </div>
                 </div>
                 
-                <!-- Пункт 3 -->
+                <!-- Пункт 3 - все иконки серые -->
                 <div class="instruction-item">
                     <div class="instruction-icon">⏱️</div>
                     <div class="instruction-content">
@@ -947,17 +951,15 @@
     </div>
 
     <script>
-        // Создание звезд (статичных, без анимации)
+        // Создание звезд
         function createStars() {
             const starsContainer = document.getElementById('stars');
             starsContainer.innerHTML = '';
             
-            // Создаем 100 звезд
             for (let i = 0; i < 100; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 
-                // Случайный размер
                 const size = Math.random();
                 if (size < 0.7) {
                     star.className = 'star';
@@ -967,18 +969,14 @@
                     star.className = 'star large';
                 }
                 
-                // Случайное положение
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
-                
-                // Случайная прозрачность
                 star.style.opacity = 0.3 + Math.random() * 0.6;
                 
                 starsContainer.appendChild(star);
             }
         }
         
-        // Вызываем создание звезд сразу
         createStars();
 
         const tg = window.Telegram?.WebApp;
