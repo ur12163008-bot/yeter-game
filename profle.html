@@ -280,7 +280,6 @@
             border-radius: 12px;
             object-fit: cover;
             display: block;
-            /* Убрана рамка у фото */
         }
 
         .gift-image[src*="Spiced Wine"] {
@@ -339,11 +338,6 @@
             transform: scale(0.98);
         }
 
-        .add-gift-wide-btn i {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
         /* Модальное окно подарка */
         .gift-modal-overlay {
             position: fixed;
@@ -397,7 +391,6 @@
             display: block;
             object-fit: cover;
             background-color: #1a1028;
-            /* Убрана рамка у фото в модалке */
         }
 
         .gift-modal-image[src*="Spiced Wine"] {
@@ -435,19 +428,20 @@
             gap: 10px;
         }
 
+        /* Кнопка с таймером (как раньше) */
         .withdraw-btn {
             width: 100%;
             background: #2a2a2a;
             border: none;
             border-radius: 40px;
-            padding: 14px;
+            padding: 14px 20px;
             color: #8e98a3;
             font-size: 15px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: default;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             gap: 8px;
         }
 
@@ -457,32 +451,35 @@
             font-weight: 700;
             cursor: pointer;
             box-shadow: 0 4px 0 #2d0b4e;
+            justify-content: center;
         }
 
-        .lock-icon {
+        .withdraw-btn.active span {
+            color: white;
+        }
+
+        .timer-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             color: #8e98a3;
-            font-size: 14px;
+        }
+
+        .timer-left i {
+            color: #8e98a3;
+            font-size: 16px;
         }
 
         .timer-text {
             color: #8e98a3;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .minutes {
-            color: #8e98a3;
-            font-size: 12px;
-            font-weight: 600;
-            margin-left: 2px;
-        }
-
-        .withdraw-text-below {
-            text-align: center;
-            font-size: 12px;
-            color: #8e98a3;
+            font-size: 15px;
             font-weight: 500;
-            margin-top: -5px;
+        }
+
+        .withdraw-right {
+            color: #8e98a3;
+            font-size: 15px;
+            font-weight: 500;
         }
 
         .upgrade-btn {
@@ -629,7 +626,7 @@
             color: #b87aff;
         }
 
-        /* Прелоадер для ускорения загрузки */
+        /* Прелоадер */
         .preloader {
             position: fixed;
             top: -9999px;
@@ -642,7 +639,7 @@
     </style>
 </head>
 <body>
-    <!-- Невидимый прелоадер для мгновенной загрузки -->
+    <!-- Невидимый прелоадер -->
     <div class="preloader" id="preloader"></div>
 
     <div class="app">
@@ -681,12 +678,11 @@
                         <div class="view-all-btn" id="viewAllBtn">›</div>
                     </div>
                     
-                    <!-- Контейнер для первых 2 подарков -->
                     <div id="giftsContainer"></div>
                     
-                    <!-- Кнопка "Добавить подарок +" на всю ширину -->
+                    <!-- Кнопка "Добавить подарок +" -->
                     <button class="add-gift-wide-btn" onclick="window.location.href='shop.html'">
-                        <i class="fas fa-plus"></i> Добавить подарок
+                        + Добавить подарок
                     </button>
                 </div>
             </div>
@@ -712,7 +708,6 @@
                 <div class="gift-modal-price" id="modalPrice"></div>
                 <div class="gift-modal-buttons">
                     <button class="withdraw-btn" id="withdrawBtn"></button>
-                    <div class="withdraw-text-below" id="withdrawText"></div>
                     <button class="upgrade-btn" id="upgradeBtn">УЛУЧШИТЬ</button>
                 </div>
             </div>
@@ -770,7 +765,7 @@
             };
         })();
 
-        // ========== УСКОРЕННАЯ ЗАГРУЗКА ДЛЯ МОБИЛЬНЫХ ==========
+        // Предзагрузка
         function preloadAllImages() {
             const preloader = document.getElementById('preloader');
             preloader.innerHTML = '';
@@ -781,26 +776,11 @@
                     imageUrls.add(gift.image);
                     const img = new Image();
                     img.src = gift.image;
-                    // Добавляем атрибут для приоритетной загрузки
                     img.loading = 'eager';
                     preloader.appendChild(img);
                 }
             });
         }
-
-        // Принудительная загрузка при старте
-        window.addEventListener('load', function() {
-            // Дополнительно грузим все картинки из инвентаря
-            if (inventory.length > 0) {
-                inventory.forEach(gift => {
-                    if (gift.image) {
-                        const img = new Image();
-                        img.src = gift.image;
-                        img.loading = 'eager';
-                    }
-                });
-            }
-        });
 
         // Загрузка данных
         function loadData() {
@@ -819,7 +799,6 @@
                     });
                     if (updated) saveInventory();
                     
-                    // Сразу начинаем предзагрузку
                     setTimeout(() => preloadAllImages(), 10);
                 }
 
@@ -856,7 +835,6 @@
                     document.getElementById('profileAvatar').style.backgroundSize = 'cover';
                     document.getElementById('profileAvatar').innerHTML = '';
                     
-                    // Принудительная загрузка аватарки
                     const avatarImg = new Image();
                     avatarImg.src = user.photo_url;
                     avatarImg.loading = 'eager';
@@ -950,19 +928,22 @@
             document.getElementById('modalPrice').innerHTML = `<span class="puzzle-icon">🧩</span> ${gift.price}`;
 
             const withdrawBtn = document.getElementById('withdrawBtn');
-            const withdrawText = document.getElementById('withdrawText');
             
             if (gift.withdrawEnd && gift.withdrawEnd > Date.now()) {
                 withdrawBtn.classList.remove('active');
                 const remaining = Math.ceil((gift.withdrawEnd - Date.now()) / 60000);
-                withdrawBtn.innerHTML = `<span class="lock-icon">🔒</span> <span class="timer-text">${remaining}</span><span class="minutes"> МИН</span>`;
-                withdrawText.innerText = 'ВЫВЕСТИ';
+                withdrawBtn.innerHTML = `
+                    <div class="timer-left">
+                        <i class="fas fa-lock"></i>
+                        <span class="timer-text">${remaining} МИН</span>
+                    </div>
+                    <span class="withdraw-right">ВЫВЕСТИ</span>
+                `;
                 startTimerUpdate(gift, index);
             } else {
                 gift.withdrawEnd = null;
                 withdrawBtn.classList.add('active');
                 withdrawBtn.innerHTML = 'ВЫВЕСТИ';
-                withdrawText.innerText = '';
             }
 
             document.getElementById('giftModal').classList.add('active');
@@ -983,11 +964,8 @@
                     const activeModal = document.getElementById('giftModal').classList.contains('active');
                     if (activeModal && document.getElementById('modalTitle').innerText === gift.name) {
                         const withdrawBtn = document.getElementById('withdrawBtn');
-                        const withdrawText = document.getElementById('withdrawText');
-                        
                         withdrawBtn.classList.add('active');
                         withdrawBtn.innerHTML = 'ВЫВЕСТИ';
-                        withdrawText.innerText = '';
                     }
                     
                     renderGifts();
@@ -996,7 +974,13 @@
                     const remaining = Math.ceil((gift.withdrawEnd - Date.now()) / 60000);
                     if (document.getElementById('modalTitle').innerText === gift.name) {
                         const withdrawBtn = document.getElementById('withdrawBtn');
-                        withdrawBtn.innerHTML = `<span class="lock-icon">🔒</span> <span class="timer-text">${remaining}</span><span class="minutes"> МИН</span>`;
+                        withdrawBtn.innerHTML = `
+                            <div class="timer-left">
+                                <i class="fas fa-lock"></i>
+                                <span class="timer-text">${remaining} МИН</span>
+                            </div>
+                            <span class="withdraw-right">ВЫВЕСТИ</span>
+                        `;
                     }
                 }
             }, 1000);
