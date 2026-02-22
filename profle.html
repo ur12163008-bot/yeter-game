@@ -23,7 +23,6 @@
             min-height: 100vh;
         }
 
-        /* Космический фон */
         body::before {
             content: '';
             position: fixed;
@@ -32,7 +31,6 @@
             z-index: -2;
         }
 
-        /* Статичные звезды */
         .stars {
             position: fixed;
             top: 0;
@@ -72,7 +70,6 @@
             z-index: 1;
         }
 
-        /* Верхняя плашка с балансом */
         .top-header {
             display: flex;
             justify-content: center;
@@ -120,7 +117,6 @@
             cursor: pointer;
         }
 
-        /* Профиль */
         .profile-full {
             background: rgba(10, 14, 22, 0.6);
             margin: 5px 20px 0;
@@ -172,7 +168,6 @@
             text-align: center;
         }
 
-        /* Уровень в виде ромба */
         .profile-level-section {
             display: flex;
             align-items: center;
@@ -241,7 +236,6 @@
             padding: 20px 20px 40px;
         }
 
-        /* Секция подарков */
         .gifts-section {
             background: rgba(10, 14, 22, 0.7);
             border: 2px solid rgba(138, 43, 226, 0.3);
@@ -301,7 +295,6 @@
             margin-bottom: 15px;
         }
 
-        /* Рамка вокруг фото + название + цена */
         .gift-card {
             background: rgba(20, 25, 35, 0.3);
             border: 1px solid rgba(138, 43, 226, 0.2);
@@ -360,7 +353,6 @@
             color: #ffd700;
         }
 
-        /* Кнопка Добавить подарок */
         .add-gift-wide-btn {
             width: 100%;
             background: rgba(106, 13, 173, 0.15);
@@ -385,7 +377,134 @@
             transform: scale(0.98);
         }
 
-        /* Модальное окно подарка */
+        /* Модальное окно "Добавить подарок" */
+        .add-gift-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 2200;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .add-gift-modal-overlay.active {
+            display: flex;
+        }
+
+        .add-gift-modal {
+            width: 92%;
+            max-width: 380px;
+            background: linear-gradient(145deg, #1a1028, #0f0a18);
+            border: 2px solid rgba(155, 77, 255, 0.5);
+            border-radius: 32px;
+            padding: 28px 20px 24px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .add-gift-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(155, 77, 255, 0.3);
+            color: #b87aff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 1;
+        }
+
+        .add-gift-modal-title {
+            color: #b87aff;
+            font-size: 22px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 24px;
+            padding-right: 20px;
+        }
+
+        .warning-block {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.2);
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .warning-title {
+            color: #ff8a8a;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .warning-text {
+            color: #8e98a3;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .instruction-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .instruction-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(106, 13, 173, 0.1);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8e98a3;
+            font-size: 20px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 0 #1a1428;
+        }
+
+        .instruction-content {
+            flex: 1;
+        }
+
+        .instruction-title {
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .instruction-subtitle {
+            color: #8e98a3;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .instruction-subtitle a {
+            color: #b87aff;
+            text-decoration: none;
+        }
+
+        .instruction-subtitle.small {
+            font-size: 12px;
+        }
+
         .gift-modal-overlay {
             position: fixed;
             top: 0;
@@ -475,7 +594,6 @@
             gap: 10px;
         }
 
-        /* Кнопка с таймером */
         .withdraw-btn {
             width: 100%;
             background: #2a2a2a;
@@ -538,7 +656,6 @@
             box-shadow: 0 4px 0 #2d0b4e;
         }
 
-        /* Модальное окно всех подарков */
         .inventory-modal-overlay {
             position: fixed;
             top: 0;
@@ -619,7 +736,6 @@
             border-radius: 10px;
         }
 
-        /* Нижняя навигация */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -670,7 +786,6 @@
             color: #b87aff;
         }
 
-        /* Прелоадер */
         .preloader {
             position: fixed;
             top: -9999px;
@@ -683,14 +798,10 @@
     </style>
 </head>
 <body>
-    <!-- Статичные звезды -->
     <div class="stars" id="stars"></div>
-
-    <!-- Невидимый прелоадер -->
     <div class="preloader" id="preloader"></div>
 
     <div class="app">
-        <!-- Верхний баланс -->
         <div class="top-header">
             <div class="balance-wrapper">
                 <div class="balance-stars">
@@ -701,14 +812,12 @@
             </div>
         </div>
 
-        <!-- Профиль -->
         <div class="profile-full">
             <div class="sticky-profile">
                 <div class="avatar-profile" id="profileAvatar"></div>
                 <div class="profile-name-center" id="profileName">Загрузка...</div>
                 <div class="profile-username" id="profileUsername"></div>
 
-                <!-- Уровень в ромбах -->
                 <div class="profile-level-section">
                     <div class="level-badge-profile"><span id="profileLevelNumber">1</span></div>
                     <div class="progress-bar-full">
@@ -719,7 +828,6 @@
             </div>
 
             <div class="profile-content">
-                <!-- Секция подарков -->
                 <div class="gifts-section">
                     <div class="gifts-header">
                         <span class="gifts-title">ВАШИ ПОДАРКИ</span>
@@ -728,7 +836,6 @@
                     
                     <div id="giftsContainer"></div>
                     
-                    <!-- Кнопка "Добавить подарок" -->
                     <button class="add-gift-wide-btn" id="openAddGiftModal">
                         + Добавить подарок
                     </button>
@@ -736,10 +843,45 @@
             </div>
         </div>
 
-        <!-- Модальное окно "Добавить подарок" (убираем, но оставляем для совместимости) -->
-        <div class="add-gift-modal-overlay" id="addGiftModal" style="display: none;"></div>
+        <!-- Модальное окно "Добавить подарок" (ПОЛНОСТЬЮ ВОССТАНОВЛЕНО) -->
+        <div class="add-gift-modal-overlay" id="addGiftModal">
+            <div class="add-gift-modal">
+                <div class="add-gift-modal-close" id="closeAddGiftModal">✖</div>
+                <div class="add-gift-modal-title">ДОБАВИТЬ ПОДАРОК</div>
+                
+                <div class="warning-block">
+                    <div class="warning-title">Не дарите подарки с Telegram Маркета</div>
+                    <div class="warning-text">Дарите подарки только напрямую со своего аккаунта</div>
+                </div>
+                
+                <div class="instruction-item">
+                    <div class="instruction-icon"><i class="fas fa-robot"></i></div>
+                    <div class="instruction-content">
+                        <div class="instruction-title">перейдите в бота</div>
+                        <div class="instruction-subtitle">
+                            <a href="https://t.me/monelder39" target="_blank">@monelder39</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="instruction-item">
+                    <div class="instruction-icon"><i class="fas fa-gift"></i></div>
+                    <div class="instruction-content">
+                        <div class="instruction-title">Отправьте ему подарок</div>
+                        <div class="instruction-subtitle small">модель, фон, узор не учитываются!</div>
+                    </div>
+                </div>
+                
+                <div class="instruction-item">
+                    <div class="instruction-icon"><i class="fas fa-clock"></i></div>
+                    <div class="instruction-content">
+                        <div class="instruction-title">подарок добавится в профиль</div>
+                        <div class="instruction-subtitle small">в течении нескольких минут</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <!-- Модальное окно всех подарков -->
         <div class="inventory-modal-overlay" id="inventoryModal">
             <div class="inventory-modal">
                 <div class="inventory-modal-header">
@@ -750,7 +892,6 @@
             </div>
         </div>
 
-        <!-- Модальное окно подарка -->
         <div class="gift-modal-overlay" id="giftModal">
             <div class="gift-modal">
                 <div class="gift-modal-close" id="closeGiftModal">✖</div>
@@ -764,7 +905,6 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a href="index.html" class="nav-item"><i class="fas fa-gamepad"></i><span>ИГРЫ</span></a>
             <a href="shop.html" class="nav-item"><i class="fas fa-store"></i><span>МАГАЗИН</span></a>
@@ -774,7 +914,6 @@
     </div>
 
     <script>
-        // Создание звезд
         function createStars() {
             const starsContainer = document.getElementById('stars');
             starsContainer.innerHTML = '';
@@ -803,27 +942,8 @@
         createStars();
 
         const tg = window.Telegram?.WebApp;
-        
-        // Данные пользователя
-        let userData = {
-            id: null,
-            firstName: '',
-            lastName: '',
-            username: '',
-            avatarUrl: null,
-            balance: 1250,
-            level: 1,
-            exp: 0,
-            expToNext: 1000
-        };
 
-        // Инвентарь подарков
-        let inventory = [];
-
-        // Таймеры
-        let withdrawTimers = {};
-
-        // ========== ЕДИНОЕ ХРАНИЛИЩЕ ДЛЯ БАЛАНСА И УРОВНЯ ==========
+        // ========== ЕДИНОЕ ХРАНИЛИЩЕ ==========
         const Storage = (function() {
             let _data = null;
             const _key = 'yeter_user_data';
@@ -833,9 +953,6 @@
                 if (saved) {
                     try {
                         _data = JSON.parse(saved);
-                        if (!_validate(_data)) {
-                            _createNew();
-                        }
                     } catch {
                         _createNew();
                     }
@@ -843,14 +960,6 @@
                     _createNew();
                 }
                 _save();
-            }
-            
-            function _validate(data) {
-                return data && 
-                       typeof data.stars === 'number' && 
-                       data.stars >= 0 &&
-                       typeof data.level === 'number' &&
-                       data.level >= 1;
             }
             
             function _createNew() {
@@ -881,19 +990,8 @@
                 updateStars: function(amount, reason) {
                     if (_data.stars + amount < 0) return false;
                     _data.stars += amount;
-                    
-                    if (!_data.transactions) _data.transactions = [];
-                    _data.transactions.push({
-                        amount: amount,
-                        reason: reason,
-                        time: Date.now(),
-                        balance: _data.stars
-                    });
-                    
-                    if (_data.transactions.length > 50) {
-                        _data.transactions = _data.transactions.slice(-50);
-                    }
-                    
+                    _data.transactions.push({ amount, reason, time: Date.now(), balance: _data.stars });
+                    if (_data.transactions.length > 50) _data.transactions = _data.transactions.slice(-50);
                     _save();
                     return true;
                 },
@@ -946,7 +1044,17 @@
             };
         })();
 
-        // Загрузка данных
+        let userData = {
+            id: null,
+            firstName: '',
+            lastName: '',
+            username: '',
+            avatarUrl: null
+        };
+
+        let inventory = [];
+        let withdrawTimers = {};
+
         function loadData() {
             const data = Storage.getUserData();
             userData.balance = data.stars;
@@ -954,12 +1062,10 @@
             userData.exp = data.exp;
             userData.expToNext = data.expToNext;
             
-            // Загружаем инвентарь из отдельного хранилища
             const savedInventory = localStorage.getItem('yeter_inventory');
             if (savedInventory) {
                 inventory = JSON.parse(savedInventory);
                 
-                // Проверяем таймеры
                 inventory = inventory.map(gift => {
                     if (gift.withdrawEnd && gift.withdrawEnd <= Date.now()) {
                         gift.withdrawEnd = null;
@@ -973,7 +1079,6 @@
             localStorage.setItem('yeter_inventory', JSON.stringify(inventory));
         }
 
-        // Telegram данные
         if (tg) {
             tg.ready();
             const user = tg.initDataUnsafe?.user;
@@ -1001,7 +1106,6 @@
             }
         }
 
-        // Обновление UI
         function updateUI() {
             document.getElementById('balanceDisplay').innerText = userData.balance;
             document.getElementById('profileLevelNumber').innerText = userData.level;
@@ -1016,7 +1120,6 @@
             document.getElementById('viewAllBtn').style.display = inventory.length > 0 ? 'flex' : 'none';
         }
 
-        // Отрисовка первых 2 подарков
         function renderGifts() {
             const container = document.getElementById('giftsContainer');
             
@@ -1044,7 +1147,6 @@
             }
         }
 
-        // Отрисовка всех подарков
         function renderInventoryGrid() {
             const grid = document.getElementById('inventoryGrid');
             
@@ -1068,7 +1170,6 @@
             `).join('');
         }
 
-        // Открытие модалки подарка
         function openGiftModal(index) {
             const gift = inventory[index];
             if (!gift) return;
@@ -1099,7 +1200,6 @@
             document.getElementById('giftModal').classList.add('active');
         }
 
-        // Обновление таймера
         function startTimerUpdate(gift, index) {
             if (withdrawTimers[index]) clearInterval(withdrawTimers[index]);
             
@@ -1136,7 +1236,6 @@
             }, 1000);
         }
 
-        // Пополнение баланса
         document.getElementById('addBalanceBtn').addEventListener('click', () => {
             if (!Security.validateRequest()) {
                 alert('⚠️ Слишком много запросов');
@@ -1149,12 +1248,22 @@
             }
         });
 
-        // Открытие магазина
         document.getElementById('openAddGiftModal').addEventListener('click', () => {
-            window.location.href = 'shop.html';
+            if (Security.validateRequest()) {
+                document.getElementById('addGiftModal').classList.add('active');
+            }
         });
 
-        // Открытие всех подарков
+        document.getElementById('closeAddGiftModal').addEventListener('click', () => {
+            document.getElementById('addGiftModal').classList.remove('active');
+        });
+
+        document.getElementById('addGiftModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('addGiftModal')) {
+                e.target.classList.remove('active');
+            }
+        });
+
         document.getElementById('viewAllBtn').addEventListener('click', () => {
             if (inventory.length > 0) {
                 document.getElementById('inventoryModal').classList.add('active');
@@ -1162,7 +1271,6 @@
             }
         });
 
-        // Закрытие модалок
         document.getElementById('closeInventoryModal').addEventListener('click', () => {
             document.getElementById('inventoryModal').classList.remove('active');
         });
@@ -1183,7 +1291,6 @@
             }
         });
 
-        // Слушаем изменения в localStorage
         window.addEventListener('storage', (e) => {
             if (e.key === 'yeter_user_data' || e.key === 'yeter_inventory') {
                 loadData();
@@ -1191,11 +1298,9 @@
             }
         });
 
-        // Инициализация
         loadData();
         updateUI();
 
-        // Обновление таймеров
         setInterval(() => {
             let updated = false;
             inventory.forEach(gift => {
