@@ -172,7 +172,7 @@
             gap: 6px;
         }
 
-        /* Ромбы для уровня */
+        /* Ромбы для уровня - ИСПРАВЛЕНО */
         .level-number-small {
             background: linear-gradient(145deg, #6a0dad, #4b0082);
             width: 26px;
@@ -261,11 +261,11 @@
             cursor: pointer;
         }
 
-        /* LIVE лента */
+        /* LIVE лента - ИСПРАВЛЕНО */
         .live-banner {
-            background: rgba(30, 38, 48, 0.8);
-            border-radius: 30px;
-            height: 70px;
+            background: #808080; /* Серая рамка */
+            border-radius: 8px; /* Меньше закругление */
+            height: 80px;
             width: 100%;
             display: flex;
             align-items: center;
@@ -284,11 +284,13 @@
         .live-banner::before {
             content: "LIVE";
             color: white;
-            font-weight: 800;
-            font-size: 18px;
-            margin-right: 10px;
+            font-weight: 900; /* Жирнее */
+            font-size: 24px; /* Больше */
+            margin-right: 15px;
             flex-shrink: 0;
             letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .live-item {
@@ -303,20 +305,21 @@
         }
 
         .live-item-image {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 10px;
             object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
         .live-item-name {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             color: white;
         }
 
         .live-item-price {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             color: #ffd700;
         }
@@ -521,7 +524,7 @@
             transform: rotate(15deg) translateY(8px);
         }
 
-        /* Апгрейд - круг с процентом */
+        /* Апгрейд - ИСПРАВЛЕНО (убрал 2.5х) */
         .upgrade-bg {
             display: flex;
             flex-direction: column;
@@ -570,7 +573,6 @@
         .upgrade-stats i {
             font-size: 16px;
             color: #b87aff;
-            transform: rotate(45deg);
         }
 
         .bottom-nav {
@@ -762,7 +764,7 @@
                     </div>
                 </div>
 
-                <!-- LIVE лента -->
+                <!-- LIVE лента (ИСПРАВЛЕНО) -->
                 <div class="live-banner" id="liveBanner"></div>
             </div>
 
@@ -849,7 +851,7 @@
                     </div>
                 </div>
 
-                <!-- Апгрейд -->
+                <!-- Апгрейд (ИСПРАВЛЕНО - убрал 2.5х) -->
                 <div class="game-card" onclick="window.location.href='upgrade.html'">
                     <div class="game-left">
                         <div class="game-icon">
@@ -872,7 +874,7 @@
                                 <span>75%</span>
                             </div>
                             <div class="upgrade-stats">
-                                <span>x2.5</span>
+                                <span>x2.0</span> <!-- Убрал 2.5, теперь x2 -->
                                 <i class="fas fa-arrow-right"></i>
                             </div>
                         </div>
@@ -963,13 +965,21 @@
             }
         });
 
-        // LIVE лента
+        // LIVE лента (ИСПРАВЛЕНО - теперь показывает фото NFT)
         function addToLiveBanner(purchase) {
             const banner = document.getElementById('liveBanner');
+            
+            // Проверяем путь к изображению
+            let imagePath = purchase.image;
+            // Если изображение не начинается с 'nft/', добавляем путь
+            if (!imagePath.startsWith('nft/')) {
+                imagePath = 'nft/' + imagePath;
+            }
+            
             const item = document.createElement('div');
             item.className = 'live-item';
             item.innerHTML = `
-                <img src="${purchase.image}" class="live-item-image" onerror="this.src='nft/placeholder.png'">
+                <img src="${imagePath}" class="live-item-image" onerror="this.src='nft/placeholder.png'">
                 <span class="live-item-name">${purchase.name}</span>
                 <span class="live-item-price">${purchase.price} 🧩</span>
             `;
