@@ -197,28 +197,6 @@
             padding: 20px 20px 40px;
         }
 
-        /* Кнопка + над Ваши подарки */
-        .add-above-btn {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 10px;
-        }
-
-        .add-above-btn .add-gift-above {
-            background: rgba(106, 13, 173, 0.2);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 30px;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #b87aff;
-            font-size: 24px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
         /* Секция подарков */
         .gifts-section {
             background: rgba(10, 14, 22, 0.7);
@@ -271,23 +249,11 @@
             font-weight: 500;
         }
 
-        .add-gift-btn {
-            width: 100%;
-            background: rgba(106, 13, 173, 0.1);
-            border: 2px dashed rgba(138, 43, 226, 0.3);
-            border-radius: 40px;
-            padding: 14px;
-            color: #b87aff;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-        }
-
         .gifts-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
+            margin-bottom: 15px;
         }
 
         /* Рамка вокруг фото + название + цена */
@@ -347,6 +313,35 @@
         .gift-price .puzzle-icon {
             font-size: 13px;
             color: #ffd700;
+        }
+
+        /* Кнопка Добавить подарок на всю ширину */
+        .add-gift-wide-btn {
+            width: 100%;
+            background: rgba(106, 13, 173, 0.15);
+            border: 2px dashed rgba(138, 43, 226, 0.4);
+            border-radius: 40px;
+            padding: 14px;
+            color: #b87aff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .add-gift-wide-btn:active {
+            background: rgba(106, 13, 173, 0.25);
+            transform: scale(0.98);
+        }
+
+        .add-gift-wide-btn i {
+            font-size: 18px;
+            font-weight: 700;
         }
 
         /* Модальное окно подарка */
@@ -634,7 +629,7 @@
             color: #b87aff;
         }
 
-        /* Прелоадер */
+        /* Прелоадер для ускорения загрузки */
         .preloader {
             position: fixed;
             top: -9999px;
@@ -647,7 +642,7 @@
     </style>
 </head>
 <body>
-    <!-- Невидимый прелоадер -->
+    <!-- Невидимый прелоадер для мгновенной загрузки -->
     <div class="preloader" id="preloader"></div>
 
     <div class="app">
@@ -679,18 +674,20 @@
             </div>
 
             <div class="profile-content">
-                <!-- Кнопка + над Ваши подарки -->
-                <div class="add-above-btn">
-                    <div class="add-gift-above" onclick="window.location.href='shop.html'">+</div>
-                </div>
-
                 <!-- Секция подарков -->
                 <div class="gifts-section">
                     <div class="gifts-header">
                         <span class="gifts-title">ВАШИ ПОДАРКИ</span>
                         <div class="view-all-btn" id="viewAllBtn">›</div>
                     </div>
+                    
+                    <!-- Контейнер для первых 2 подарков -->
                     <div id="giftsContainer"></div>
+                    
+                    <!-- Кнопка "Добавить подарок +" на всю ширину -->
+                    <button class="add-gift-wide-btn" onclick="window.location.href='shop.html'">
+                        <i class="fas fa-plus"></i> Добавить подарок
+                    </button>
                 </div>
             </div>
         </div>
@@ -773,7 +770,7 @@
             };
         })();
 
-        // ========== ПРЕДЗАГРУЗКА ==========
+        // ========== УСКОРЕННАЯ ЗАГРУЗКА ДЛЯ МОБИЛЬНЫХ ==========
         function preloadAllImages() {
             const preloader = document.getElementById('preloader');
             preloader.innerHTML = '';
@@ -784,10 +781,26 @@
                     imageUrls.add(gift.image);
                     const img = new Image();
                     img.src = gift.image;
+                    // Добавляем атрибут для приоритетной загрузки
+                    img.loading = 'eager';
                     preloader.appendChild(img);
                 }
             });
         }
+
+        // Принудительная загрузка при старте
+        window.addEventListener('load', function() {
+            // Дополнительно грузим все картинки из инвентаря
+            if (inventory.length > 0) {
+                inventory.forEach(gift => {
+                    if (gift.image) {
+                        const img = new Image();
+                        img.src = gift.image;
+                        img.loading = 'eager';
+                    }
+                });
+            }
+        });
 
         // Загрузка данных
         function loadData() {
@@ -806,7 +819,8 @@
                     });
                     if (updated) saveInventory();
                     
-                    preloadAllImages();
+                    // Сразу начинаем предзагрузку
+                    setTimeout(() => preloadAllImages(), 10);
                 }
 
                 const savedData = localStorage.getItem('yeter_user_data');
@@ -842,8 +856,10 @@
                     document.getElementById('profileAvatar').style.backgroundSize = 'cover';
                     document.getElementById('profileAvatar').innerHTML = '';
                     
+                    // Принудительная загрузка аватарки
                     const avatarImg = new Image();
                     avatarImg.src = user.photo_url;
+                    avatarImg.loading = 'eager';
                 } else {
                     document.getElementById('profileAvatar').innerHTML = (userData.firstName.charAt(0) || 'П').toUpperCase();
                 }
@@ -874,9 +890,6 @@
                 container.innerHTML = `
                     <div class="empty-gifts">
                         <p>У вас пока нет подарков</p>
-                        <button class="add-gift-btn" onclick="window.location.href='shop.html'">
-                            + Добавить подарок
-                        </button>
                     </div>
                 `;
             } else {
@@ -887,6 +900,7 @@
                             <img src="${gift.image || 'nft/placeholder.png'}" 
                                  class="gift-image" 
                                  alt="${gift.name}"
+                                 loading="eager"
                                  onerror="this.src='nft/placeholder.png'">
                             <span class="gift-name">${gift.name}</span>
                             <span class="gift-price">
@@ -915,6 +929,7 @@
                     <img src="${gift.image || 'nft/placeholder.png'}" 
                          class="gift-image" 
                          alt="${gift.name}"
+                         loading="eager"
                          onerror="this.src='nft/placeholder.png'">
                     <span class="gift-name">${gift.name}</span>
                     <span class="gift-price">
