@@ -35,48 +35,6 @@
             z-index: -2;
         }
 
-        /* Уведомление LIVE */
-        .live-notification {
-            position: fixed;
-            top: 70px;
-            right: 20px;
-            background: rgba(30, 38, 48, 0.9);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 40px;
-            padding: 8px 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 100;
-            backdrop-filter: blur(4px);
-            max-width: 280px;
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-        }
-
-        .live-notification.show {
-            transform: translateX(0);
-        }
-
-        .live-notification-image {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            object-fit: cover;
-            border: 1px solid rgba(138, 43, 226, 0.3);
-        }
-
-        .live-notification-text {
-            font-size: 13px;
-            font-weight: 500;
-            color: white;
-        }
-
-        .live-notification-text span {
-            color: #ffd700;
-            font-weight: 700;
-        }
-
         .stars {
             position: fixed;
             top: 0;
@@ -91,9 +49,9 @@
             position: absolute;
             background: white;
             border-radius: 50%;
-            width: 1px;
-            height: 1px;
-            opacity: 0.5;
+            width: 2px;
+            height: 2px;
+            opacity: 0.6;
         }
 
         .app {
@@ -172,23 +130,26 @@
             gap: 6px;
         }
 
-        /* РОМБ ДЛЯ УРОВНЯ - ЧУТЬ МЕНЬШЕ */
+        /* РОМБ ДЛЯ УРОВНЯ - ИСПРАВЛЕНО */
         .level-number-small {
             background: linear-gradient(145deg, #6a0dad, #4b0082);
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             transform: rotate(45deg);
-            border-radius: 4px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 2px 8px rgba(106, 13, 173, 0.5);
         }
 
         .level-number-small span {
             transform: rotate(-45deg);
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 800;
             color: white;
+            display: block;
+            line-height: 1;
         }
 
         .games-progress-small {
@@ -208,11 +169,11 @@
         }
 
         .next-level-number-games {
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             transform: rotate(45deg);
             background: rgba(42, 30, 58, 0.9);
-            border-radius: 4px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -221,9 +182,11 @@
 
         .next-level-number-games span {
             transform: rotate(-45deg);
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 800;
             color: #b87aff;
+            display: block;
+            line-height: 1;
         }
 
         .games-balance-wrapper {
@@ -261,17 +224,17 @@
             cursor: pointer;
         }
 
-        /* LIVE ЛЕНТА - ТЕМНО-СЕРАЯ, НОРМАЛЬНОЕ ЗАКРУГЛЕНИЕ */
+        /* LIVE ЛЕНТА - ИСПРАВЛЕНО */
         .live-banner {
-            background: #2a2a2a;
+            background: #1a1a1a;
             border-radius: 30px;
-            height: 80px;
+            height: 90px;
             width: 100%;
             display: flex;
             align-items: center;
             border: 1px solid rgba(138, 43, 226, 0.3);
             padding: 0 15px;
-            gap: 10px;
+            gap: 12px;
             overflow-x: auto;
             white-space: nowrap;
             scrollbar-width: none;
@@ -285,7 +248,7 @@
             content: "LIVE";
             color: white;
             font-weight: 900;
-            font-size: 24px;
+            font-size: 26px;
             margin-right: 15px;
             flex-shrink: 0;
             letter-spacing: 1px;
@@ -296,30 +259,36 @@
         .live-item {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(20, 25, 35, 0.8);
-            border: 1px solid rgba(155, 77, 255, 0.3);
-            border-radius: 30px;
-            padding: 5px 12px 5px 5px;
+            gap: 10px;
+            background: rgba(30, 35, 45, 0.9);
+            border: 1px solid rgba(155, 77, 255, 0.4);
+            border-radius: 40px;
+            padding: 6px 16px 6px 6px;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
         .live-item-image {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
             object-fit: cover;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 2px solid rgba(155, 77, 255, 0.5);
+            background: #2a2a2a;
         }
 
         .live-item-name {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
             color: white;
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .live-item-price {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             color: #ffd700;
         }
@@ -412,14 +381,13 @@
             z-index: 2;
         }
 
-        /* Фоновые изображения для игр */
         .game-bg {
             position: absolute;
             top: 0;
             right: 0;
-            width: 150px;
+            width: 180px;
             height: 100%;
-            opacity: 0.2;
+            opacity: 0.25;
             pointer-events: none;
             z-index: 1;
             display: flex;
@@ -427,71 +395,71 @@
             justify-content: center;
         }
 
-        /* Джекпот - рулетка */
+        /* ДЖЕКПОТ - УВЕЛИЧЕНО */
         .jackpot-bg {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            padding: 10px;
-            background: linear-gradient(90deg, transparent, rgba(155, 77, 255, 0.2));
-            width: 140px;
+            gap: 8px;
+            padding: 15px;
+            background: linear-gradient(90deg, transparent, rgba(155, 77, 255, 0.25));
+            width: 180px;
         }
 
         .jackpot-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.1);
-            padding: 4px 10px;
-            border-radius: 30px;
-            font-size: 11px;
+            gap: 12px;
+            background: rgba(255,255,255,0.15);
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 14px;
             color: white;
             transform: translateX(15px);
             width: fit-content;
+            border: 1px solid rgba(255,215,0,0.2);
         }
 
         .jackpot-item i {
             color: #ffd700;
-            font-size: 10px;
+            font-size: 14px;
         }
 
         .jackpot-item:first-child { transform: translateX(0); }
         .jackpot-item:last-child { transform: translateX(30px); }
 
-        /* Мины - игровое поле (ВЕРНУЛ КАК БЫЛО) */
         .mines-bg {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
-            padding: 10px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            width: 110px;
-            height: 110px;
+            gap: 6px;
+            padding: 12px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 18px;
+            width: 130px;
+            height: 130px;
             transform: rotate(5deg);
         }
 
         .mine-cell {
-            width: 22px;
-            height: 22px;
-            background: rgba(155, 77, 255, 0.3);
-            border-radius: 6px;
+            width: 26px;
+            height: 26px;
+            background: rgba(155, 77, 255, 0.4);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 14px;
         }
 
         .mine-cell i {
             color: #ff4444;
-            font-size: 11px;
+            font-size: 13px;
         }
 
         .puzzle-cell {
-            width: 22px;
-            height: 22px;
-            background: rgba(255, 215, 0, 0.3);
-            border-radius: 6px;
+            width: 26px;
+            height: 26px;
+            background: rgba(255, 215, 0, 0.4);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -499,21 +467,20 @@
 
         .puzzle-cell i {
             color: #ffd700;
-            font-size: 11px;
+            font-size: 13px;
         }
 
-        /* Dice - кубики большие */
         .dice-bg {
             display: flex;
-            gap: 12px;
-            padding: 10px;
+            gap: 15px;
+            padding: 12px;
             transform: rotate(5deg);
         }
 
         .dice-bg i {
-            font-size: 42px;
+            font-size: 48px;
             color: #b87aff;
-            filter: drop-shadow(0 0 8px #9b4dff);
+            filter: drop-shadow(0 0 10px #9b4dff);
         }
 
         .dice-bg i:first-child {
@@ -521,36 +488,36 @@
         }
 
         .dice-bg i:last-child {
-            transform: rotate(15deg) translateY(8px);
+            transform: rotate(15deg) translateY(10px);
         }
 
-        /* Апгрейд - ТОЛЬКО КРУГ БОЛЬШЕ (убрал стрелку и множитель) */
         .upgrade-bg {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 140px;
-            height: 120px;
+            width: 160px;
+            height: 130px;
         }
 
         .upgrade-circle {
-            width: 90px;
-            height: 90px;
+            width: 95px;
+            height: 95px;
             border-radius: 50%;
             background: linear-gradient(145deg, #9b4dff, #6a0dad);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 30px rgba(155, 77, 255, 0.7);
+            box-shadow: 0 0 35px rgba(155, 77, 255, 0.8);
         }
 
         .upgrade-circle span {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 800;
             color: white;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
+        /* НИЖНЯЯ НАВИГАЦИЯ - НЕ ПРОЗРАЧНАЯ */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -558,26 +525,26 @@
             right: 0;
             max-width: 440px;
             margin: 0 auto;
-            background: rgba(10, 14, 22, 0.9);
+            background: #0a0e16; /* Темный фон без прозрачности */
             display: flex;
             justify-content: space-around;
-            padding: 10px 6px;
+            padding: 12px 6px;
             border-radius: 40px;
-            border: 1px solid rgba(138, 43, 226, 0.3);
+            border: 1px solid #2a1e3a;
             margin-bottom: 16px;
             width: calc(100% - 40px);
             left: 20px;
             right: 20px;
-            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
             color: #8e98a3;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             padding: 6px 8px;
@@ -585,134 +552,26 @@
             flex: 1;
             text-align: center;
             text-decoration: none;
+            transition: all 0.2s;
         }
 
         .nav-item i {
-            font-size: 20px;
+            font-size: 22px;
             color: #8e98a3;
         }
 
         .nav-item.active {
             color: #b87aff;
-            background: rgba(106, 13, 173, 0.2);
+            background: rgba(106, 13, 173, 0.3);
         }
 
         .nav-item.active i {
             color: #b87aff;
         }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .hint-modal {
-            width: 280px;
-            background: #f0f0f0;
-            border-radius: 28px;
-            padding: 28px 24px 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            position: relative;
-            color: #222;
-            border: 1px solid #ddd;
-        }
-        
-        .hint-close {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            font-size: 22px;
-            color: #555;
-            cursor: pointer;
-            background: rgba(0,0,0,0.05);
-            border: none;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: 0.1s ease;
-        }
-        
-        .hint-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #111;
-            padding-right: 20px;
-        }
-        
-        .hint-text {
-            font-size: 16px;
-            line-height: 1.5;
-            color: #333;
-            margin-bottom: 28px;
-        }
-        
-        .hint-footer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 18px;
-        }
-        
-        .hint-checkbox {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: #e0e0e0;
-            padding: 12px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            width: fit-content;
-            margin: 0 auto;
-            font-size: 15px;
-            color: #222;
-            transition: 0.1s ease;
-        }
-        
-        .hint-done-btn {
-            background: #2c2c2c;
-            border: none;
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            padding: 14px 20px;
-            border-radius: 60px;
-            width: 100%;
-            cursor: pointer;
-            box-shadow: 0 4px 0 #111;
-            transition: 0.05s linear;
-            letter-spacing: 0.5px;
-        }
-        
-        .hint-done-btn:active {
-            transform: translateY(4px);
-            box-shadow: none;
-        }
     </style>
 </head>
 <body>
-    <!-- Звезды -->
     <div class="stars" id="stars"></div>
-
-    <!-- LIVE уведомление -->
-    <div class="live-notification" id="liveNotification">
-        <img src="" alt="" class="live-notification-image" id="liveImage">
-        <div class="live-notification-text" id="liveText"></div>
-    </div>
 
     <div class="app">
         <div class="content">
@@ -723,7 +582,7 @@
                     <div class="games-info-wrapper">
                         <div class="games-nickname" id="gamesNickname">Загрузка...</div>
                         <div class="games-level-row">
-                            <!-- РОМБ для уровня (чуть меньше) -->
+                            <!-- РОМБ для уровня -->
                             <div class="level-number-small"><span id="gamesLevelNumber">1</span></div>
                             <div class="games-progress-small">
                                 <div class="games-progress-fill-small" id="gamesProgressFill" style="width: 0%;"></div>
@@ -735,7 +594,7 @@
                     <div class="games-balance-wrapper">
                         <div class="games-stars">
                             <span class="puzzle-icon">🧩</span>
-                            <span id="gamesBalanceDisplay">0</span>
+                            <span id="gamesBalanceDisplay">12500</span>
                         </div>
                         <div class="add-balance-btn" id="addBalanceBtn">+</div>
                     </div>
@@ -770,7 +629,7 @@
                     </div>
                 </div>
 
-                <!-- Мины (ВЕРНУЛ КАК БЫЛО - с пазлами) -->
+                <!-- Мины -->
                 <div class="game-card" onclick="window.location.href='MINES.html'">
                     <div class="game-left">
                         <div class="game-icon">
@@ -828,7 +687,7 @@
                     </div>
                 </div>
 
-                <!-- Апгрейд (ТОЛЬКО КРУГ, убрал стрелку и множитель) -->
+                <!-- Апгрейд -->
                 <div class="game-card" onclick="window.location.href='upgrade.html'">
                     <div class="game-left">
                         <div class="game-icon">
@@ -856,7 +715,7 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация -->
+        <!-- Нижняя навигация - НЕ ПРОЗРАЧНАЯ -->
         <div class="bottom-nav">
             <a href="index.html" class="nav-item active">
                 <i class="fas fa-gamepad"></i>
@@ -877,109 +736,76 @@
         </div>
     </div>
 
-    <!-- Хинт (подсказка) -->
-    <div class="overlay" id="hintOverlay" style="display: none;">
-        <div class="hint-modal">
-            <button class="hint-close" id="hintCloseBtn"><i class="fas fa-times"></i></button>
-            <div class="hint-title">Добро пожаловать!</div>
-            <div class="hint-text">
-                <p>🔹 <strong>1 пазл = 1 Telegram звезда</strong></p>
-                <p>🔹 Покупайте наборы пазлов в магазине</p>
-                <p>🔹 Повышайте свой уровень и открывайте NFT</p>
-                <p>🔹 Выигрывайте в играх и поднимайтесь в топе</p>
-            </div>
-            <div class="hint-footer">
-                <div class="hint-checkbox" id="dontShowCheckbox">
-                    <i class="far fa-square" id="checkIcon"></i>
-                    <span>Не показывать снова</span>
-                </div>
-                <button class="hint-done-btn" id="hintDoneBtn">Понятно</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // Звезды
+        // Создание звезд
         function createStars() {
             const starsContainer = document.getElementById('stars');
             starsContainer.innerHTML = '';
-            for (let i = 0; i < 40; i++) {
+            for (let i = 0; i < 60; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
-                star.style.opacity = 0.3 + Math.random() * 0.4;
+                star.style.animationDelay = Math.random() * 3 + 's';
                 starsContainer.appendChild(star);
             }
         }
         createStars();
 
-        // LIVE уведомление
-        const LiveNotification = {
-            show: function(image, name, price) {
-                const notif = document.getElementById('liveNotification');
-                document.getElementById('liveImage').src = image;
-                document.getElementById('liveText').innerHTML = `<span>${name}</span> куплен за ${price} 🧩`;
-                notif.classList.add('show');
-                
-                setTimeout(() => {
-                    notif.classList.remove('show');
-                }, 5000);
-            }
-        };
-
-        // Слушаем покупки из магазина
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'yeter_live_purchase') {
-                try {
-                    const data = JSON.parse(e.newValue);
-                    LiveNotification.show(data.image, data.name, data.price);
-                    addToLiveBanner(data);
-                } catch (e) {}
-            }
-        });
-
-        // Функция для добавления покупки в LIVE ленту
-        function addToLiveBanner(purchase) {
+        // Функция для добавления в LIVE ленту
+        function addToLiveBanner(nftName, nftPrice, nftImage) {
             const banner = document.getElementById('liveBanner');
             
-            // Проверяем путь к изображению
-            let imagePath = purchase.image;
+            // Создаем элемент
+            const item = document.createElement('div');
+            item.className = 'live-item';
+            
+            // Формируем путь к изображению
+            let imagePath = nftImage;
             if (!imagePath.startsWith('nft/')) {
                 imagePath = 'nft/' + imagePath;
             }
             
-            const item = document.createElement('div');
-            item.className = 'live-item';
             item.innerHTML = `
-                <img src="${imagePath}" class="live-item-image" onerror="this.src='nft/placeholder.png'">
-                <span class="live-item-name">${purchase.name}</span>
-                <span class="live-item-price">${purchase.price} 🧩</span>
+                <img src="${imagePath}" class="live-item-image" 
+                     onerror="this.src='https://via.placeholder.com/45/2a2a2a/9b4dff?text=NFT'">
+                <span class="live-item-name">${nftName}</span>
+                <span class="live-item-price">${nftPrice} 🧩</span>
             `;
             
             banner.appendChild(item);
             
-            // Оставляем только последние 10 покупок
-            while (banner.children.length > 10) {
-                banner.removeChild(banner.children[1]);
+            // Удаляем старые записи (оставляем 8)
+            while (banner.children.length > 9) {
+                if (banner.children[1]) {
+                    banner.removeChild(banner.children[1]);
+                }
             }
             
             // Сохраняем в localStorage
             const purchases = JSON.parse(localStorage.getItem('live_purchases') || '[]');
-            purchases.unshift({ name: purchase.name, price: purchase.price, image: imagePath });
-            if (purchases.length > 10) purchases.pop();
+            purchases.unshift({ name: nftName, price: nftPrice, image: imagePath });
+            if (purchases.length > 8) purchases.pop();
             localStorage.setItem('live_purchases', JSON.stringify(purchases));
         }
 
-        // Загружаем сохраненные покупки
+        // Загрузка сохраненных покупок
         function loadLiveBanner() {
+            const banner = document.getElementById('liveBanner');
             const purchases = JSON.parse(localStorage.getItem('live_purchases') || '[]');
+            
+            // Очищаем баннер кроме первого элемента (LIVE)
+            while (banner.children.length > 1) {
+                banner.removeChild(banner.lastChild);
+            }
+            
+            // Добавляем сохраненные покупки
             purchases.forEach(p => {
-                const banner = document.getElementById('liveBanner');
                 const item = document.createElement('div');
                 item.className = 'live-item';
                 item.innerHTML = `
-                    <img src="${p.image}" class="live-item-image" onerror="this.src='nft/placeholder.png'">
+                    <img src="${p.image}" class="live-item-image" 
+                         onerror="this.src='https://via.placeholder.com/45/2a2a2a/9b4dff?text=NFT'">
                     <span class="live-item-name">${p.name}</span>
                     <span class="live-item-price">${p.price} 🧩</span>
                 `;
@@ -987,95 +813,31 @@
             });
         }
 
-        // Сохраняем покупку
-        window.saveLivePurchase = function(name, price, image) {
-            const purchase = { name, price, image, time: Date.now() };
-            const purchases = JSON.parse(localStorage.getItem('yeter_live_purchases') || '[]');
-            purchases.unshift(purchase);
-            if (purchases.length > 10) purchases.pop();
-            localStorage.setItem('yeter_live_purchases', JSON.stringify(purchases));
-            
-            localStorage.setItem('yeter_live_purchase', JSON.stringify(purchase));
-            setTimeout(() => localStorage.removeItem('yeter_live_purchase'), 100);
-        };
+        // Слушаем покупки из shop.html
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'new_purchase') {
+                try {
+                    const purchase = JSON.parse(e.newValue);
+                    addToLiveBanner(purchase.name, purchase.price, purchase.image);
+                } catch (err) {
+                    console.error('Ошибка:', err);
+                }
+            }
+        });
 
-        // Хранилище
-        const Storage = (function() {
-            let _data = null;
-            const _key = 'yeter_user_data';
-            
-            function _init() {
-                const saved = localStorage.getItem(_key);
-                if (saved) {
-                    try {
-                        _data = JSON.parse(saved);
-                    } catch {
-                        _createNew();
-                    }
-                } else {
-                    _createNew();
-                }
-                _save();
-            }
-            
-            function _createNew() {
-                _data = {
-                    stars: 12500,
-                    level: 1,
-                    exp: 0,
-                    expToNext: 1000,
-                    gifts: [],
-                    games: {},
-                    transactions: []
-                };
-            }
-            
-            function _save() {
-                localStorage.setItem(_key, JSON.stringify(_data));
-            }
-            
-            _init();
-            
-            return {
-                getStars: function() { return _data.stars; },
-                getLevel: function() { return _data.level; },
-                getExp: function() { return _data.exp; },
-                getExpToNext: function() { return _data.expToNext; },
-                
-                updateStars: function(amount, reason) {
-                    if (_data.stars + amount < 0) return false;
-                    _data.stars += amount;
-                    if (!_data.transactions) _data.transactions = [];
-                    _data.transactions.push({ amount, reason, time: Date.now(), balance: _data.stars });
-                    if (_data.transactions.length > 50) _data.transactions = _data.transactions.slice(-50);
-                    _save();
-                    return true;
-                },
-                
-                addExp: function(amount) {
-                    _data.exp += amount;
-                    while (_data.exp >= _data.expToNext) {
-                        _data.exp -= _data.expToNext;
-                        _data.level++;
-                        _data.expToNext = Math.floor(_data.expToNext * 1.5);
-                    }
-                    _save();
-                },
-                
-                getUserData: function() {
-                    return { ..._data };
-                },
-                
-                updateUI: function() {
-                    document.getElementById('gamesBalanceDisplay').innerText = _data.stars;
-                    document.getElementById('gamesLevelNumber').innerText = _data.level;
-                    document.getElementById('gamesNextLevel').innerText = _data.level + 1;
-                    
-                    const progress = (_data.exp / _data.expToNext) * 100;
-                    document.getElementById('gamesProgressFill').style.width = progress + '%';
-                }
-            };
-        })();
+        // Тестовая функция для демонстрации
+        function addTestPurchase() {
+            const testNFTs = [
+                { name: "Diamond Ring", price: 2400, image: "nft/Diamond Ring.png" },
+                { name: "Swiss Watch", price: 1850, image: "nft/Swiss Watch.png" },
+                { name: "Crystal Ball", price: 590, image: "nft/Crystal Ball.png" }
+            ];
+            const random = testNFTs[Math.floor(Math.random() * testNFTs.length)];
+            addToLiveBanner(random.name, random.price, random.image);
+        }
+
+        // Кнопка для теста (можно убрать)
+        document.getElementById('addBalanceBtn').addEventListener('click', addTestPurchase);
 
         // Telegram
         const tg = window.Telegram?.WebApp;
@@ -1088,7 +850,6 @@
                 const firstName = user.first_name || '';
                 const lastName = user.last_name || '';
                 const fullName = (firstName + ' ' + lastName).trim() || 'Player';
-                
                 document.getElementById('gamesNickname').innerText = fullName;
                 
                 if (user.photo_url) {
@@ -1101,42 +862,7 @@
             }
         }
 
-        // Пополнение баланса
-        document.getElementById('addBalanceBtn').addEventListener('click', () => {
-            Storage.updateStars(1000, 'Пополнение');
-            Storage.updateUI();
-        });
-
-        // Подсказка
-        if (localStorage.getItem('yeter_hint_shown') !== 'false') {
-            document.getElementById('hintOverlay').style.display = 'flex';
-        }
-
-        document.getElementById('hintCloseBtn').addEventListener('click', () => {
-            document.getElementById('hintOverlay').style.display = 'none';
-            if (document.getElementById('dontShowCheckbox').classList.contains('fa-check-square')) {
-                localStorage.setItem('yeter_hint_shown', 'false');
-            }
-        });
-
-        document.getElementById('hintDoneBtn').addEventListener('click', () => {
-            document.getElementById('hintOverlay').style.display = 'none';
-            if (document.getElementById('dontShowCheckbox').classList.contains('fa-check-square')) {
-                localStorage.setItem('yeter_hint_shown', 'false');
-            }
-        });
-
-        document.getElementById('dontShowCheckbox').addEventListener('click', () => {
-            const icon = document.getElementById('checkIcon');
-            if (icon.className.includes('fa-square')) {
-                icon.className = 'fas fa-check-square';
-            } else {
-                icon.className = 'far fa-square';
-            }
-        });
-
-        // Инициализация
-        Storage.updateUI();
+        // Загружаем сохраненные покупки
         loadLiveBanner();
     </script>
 </body>
