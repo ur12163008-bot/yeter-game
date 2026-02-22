@@ -465,7 +465,7 @@
             line-height: 1.4;
         }
 
-        /* Пункты инструкции - ВСЕ ИКОНКИ СЕРЫЕ И КРАСИВЫЕ */
+        /* Пункты инструкции - ВСЕ ИКОНКИ СЕРЫЕ */
         .instruction-item {
             display: flex;
             gap: 16px;
@@ -861,7 +861,7 @@
                     
                     <div id="giftsContainer"></div>
                     
-                    <!-- Кнопка "Добавить подарок" (КАК РАНЬШЕ) -->
+                    <!-- Кнопка "Добавить подарок" -->
                     <button class="add-gift-wide-btn" id="openAddGiftModal">
                         + Добавить подарок
                     </button>
@@ -947,9 +947,7 @@
     </div>
 
     <script>
-        // ========== ЖЕСТКАЯ ЗАЩИТА ОТ ВСЕГО ==========
-        
-        // Защита от отладки
+        // ========== ЖЕСТКАЯ ЗАЩИТА ==========
         (function() {
             const protectedMethods = ['getItem', 'setItem', 'removeItem'];
             protectedMethods.forEach(method => {
@@ -972,17 +970,139 @@
             }, 1000);
         })();
 
-        // Защита от накрутки баланса и фейк запросов
+        // ========== ЕДИНОЕ ХРАНИЛИЩЕ (ДЛЯ ВСЕХ HTML) ==========
+        const Storage = (function() {
+            let _data = null;
+            const _key = 'yeter_user_data';
+            const _backupKey = 'yeter_user_data_backup';
+            
+            function _init() {
+                const saved = localStorage.getItem(_key);
+                if (saved) {
+                    try {
+                        _data = JSON.parse(saved);
+                        if (!_validate(_data)) {
+                            _restoreFromBackup();
+                        }
+                    } catch { 
+                        _restoreFromBackup();
+                    }
+                } else {
+                    _createNew();
+                }
+                _save();
+                _createBackup();
+            }
+            
+            function _validate(data) {
+                return data && 
+                       typeof data.stars === 'number' && 
+                       data.stars >= 0 &&
+                       typeof data.level === 'number' &&
+                       data.level >= 1 &&
+                       typeof data.exp === 'number' &&
+                       typeof data.expToNext === 'number';
+            }
+            
+            function _createNew() {
+                _data = {
+                    stars: 1250,
+                    level: 1,
+                    exp: 0,
+                    expToNext: 1000,
+                    gifts: [],
+                    games: {},
+                    transactions: []
+                };
+            }
+            
+            function _save() {
+                localStorage.setItem(_key, JSON.stringify(_data));
+            }
+            
+            function _createBackup() {
+                localStorage.setItem(_backupKey, JSON.stringify(_data));
+            }
+            
+            function _restoreFromBackup() {
+                const backup = localStorage.getItem(_backupKey);
+                if (backup) {
+                    try {
+                        _data = JSON.parse(backup);
+                    } catch {
+                        _createNew();
+                    }
+                } else {
+                    _createNew();
+                }
+            }
+            
+            _init();
+            
+            return {
+                getStars: function() { return _data.stars; },
+                getLevel: function() { return _data.level; },
+                getExp: function() { return _data.exp; },
+                getExpToNext: function() { return _data.expToNext; },
+                getGifts: function() { return [..._data.gifts]; },
+                
+                updateStars: function(amount, reason) {
+                    if (_data.stars + amount < 0) return false;
+                    _data.stars += amount;
+                    
+                    _data.transactions.push({
+                        amount: amount,
+                        reason: reason,
+                        time: Date.now(),
+                        balance: _data.stars
+                    });
+                    
+                    if (_data.transactions.length > 50) {
+                        _data.transactions = _data.transactions.slice(-50);
+                    }
+                    
+                    _save();
+                    _createBackup();
+                    return true;
+                },
+                
+                addExp: function(amount) {
+                    _data.exp += amount;
+                    while (_data.exp >= _data.expToNext) {
+                        _data.exp -= _data.expToNext;
+                        _data.level++;
+                        _data.expToNext = Math.floor(_data.expToNext * 1.5);
+                    }
+                    _save();
+                    _createBackup();
+                },
+                
+                addGift: function(gift) {
+                    _data.gifts.push(gift);
+                    _save();
+                    _createBackup();
+                },
+                
+                removeGift: function(index) {
+                    if (index >= 0 && index < _data.gifts.length) {
+                        _data.gifts.splice(index, 1);
+                        _save();
+                        _createBackup();
+                        return true;
+                    }
+                    return false;
+                },
+                
+                getUserData: function() {
+                    return { ..._data };
+                }
+            };
+        })();
+
+        // Защита от накрутки
         const Security = (function() {
             let _requestCount = 0;
             let _lastReset = Date.now();
-            let _validTokens = new Set();
-            let _lastTransactions = [];
-            let _userIP = 'unknown';
-            
-            function generateToken() {
-                return 'token_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
-            }
             
             function checkRateLimit() {
                 const now = Date.now();
@@ -991,57 +1111,12 @@
                     _lastReset = now;
                 }
                 _requestCount++;
-                return _requestCount <= 20; // максимум 20 запросов в минуту
-            }
-            
-            function checkTransactionAmount(amount) {
-                if (Math.abs(amount) > 5000) {
-                    return false; // слишком большая транзакция
-                }
-                
-                const now = Date.now();
-                _lastTransactions = _lastTransactions.filter(t => now - t.time < 300000); // последние 5 минут
-                
-                const userTransactions = _lastTransactions.filter(t => t.id === userData.id);
-                const totalAmount = userTransactions.reduce((sum, t) => sum + t.amount, 0);
-                
-                if (Math.abs(totalAmount + amount) > 10000) {
-                    return false; // слишком много за 5 минут
-                }
-                
-                return true;
-            }
-            
-            function addTransaction(amount) {
-                _lastTransactions.push({
-                    id: userData.id,
-                    amount: amount,
-                    time: Date.now()
-                });
+                return _requestCount <= 20;
             }
             
             return {
                 validateRequest: function() {
                     return checkRateLimit();
-                },
-                validateTransaction: function(amount) {
-                    return checkTransactionAmount(amount);
-                },
-                createToken: function() {
-                    const token = generateToken();
-                    _validTokens.add(token);
-                    setTimeout(() => _validTokens.delete(token), 60000);
-                    return token;
-                },
-                verifyToken: function(token) {
-                    return _validTokens.has(token);
-                },
-                addTransaction: addTransaction,
-                getSecurityStatus: function() {
-                    return {
-                        requestCount: _requestCount,
-                        lastReset: _lastReset
-                    };
                 }
             };
         })();
@@ -1076,77 +1151,45 @@
 
         const tg = window.Telegram?.WebApp;
         
-        // Данные пользователя
+        // Данные пользователя из Telegram
         let userData = {
             id: null,
             firstName: '',
             lastName: '',
             username: '',
-            avatarUrl: null,
-            balance: 1250,
-            level: 1,
-            exp: 0,
-            expToNext: 1000
+            avatarUrl: null
         };
 
-        // Инвентарь подарков
+        // Инвентарь подарков (синхронизирован с Storage)
         let inventory = [];
 
         // Таймеры
         let withdrawTimers = {};
 
-        // Предзагрузка
-        function preloadAllImages() {
-            const preloader = document.getElementById('preloader');
-            preloader.innerHTML = '';
+        // Загрузка данных
+        function loadData() {
+            const userDataFromStorage = Storage.getUserData();
+            inventory = userDataFromStorage.gifts || [];
             
-            const imageUrls = new Set();
-            inventory.forEach(gift => {
-                if (gift.image && !imageUrls.has(gift.image)) {
-                    imageUrls.add(gift.image);
-                    const img = new Image();
-                    img.src = gift.image;
-                    img.loading = 'eager';
-                    preloader.appendChild(img);
+            // Добавляем withdrawEnd если нет
+            inventory = inventory.map(gift => {
+                if (!gift.withdrawEnd) {
+                    gift.withdrawEnd = null;
                 }
+                return gift;
             });
         }
 
-        // Загрузка данных
-        function loadData() {
-            try {
-                const savedInventory = localStorage.getItem('yeter_inventory');
-                if (savedInventory) {
-                    inventory = JSON.parse(savedInventory);
-                    
-                    let updated = false;
-                    inventory = inventory.map(gift => {
-                        if (gift.withdrawEnd && gift.withdrawEnd <= Date.now()) {
-                            gift.withdrawEnd = null;
-                            updated = true;
-                        }
-                        return gift;
-                    });
-                    if (updated) saveInventory();
-                    
-                    setTimeout(() => preloadAllImages(), 10);
-                }
-
-                const savedData = localStorage.getItem('yeter_user_data');
-                if (savedData) {
-                    const data = JSON.parse(savedData);
-                    if (Security.validateTransaction(data.stars - userData.balance)) {
-                        userData.balance = data.stars || 1250;
-                        userData.level = data.level || 1;
-                        userData.exp = data.exp || 0;
-                        userData.expToNext = data.expToNext || 1000;
-                    }
-                }
-            } catch (e) {}
-        }
-
         function saveInventory() {
-            localStorage.setItem('yeter_inventory', JSON.stringify(inventory));
+            // Удаляем все подарки и добавляем заново
+            const currentData = Storage.getUserData();
+            currentData.gifts = inventory;
+            
+            // Обновляем через Storage (костыль, но работает)
+            while (Storage.getUserData().gifts.length > 0) {
+                Storage.removeGift(0);
+            }
+            inventory.forEach(gift => Storage.addGift(gift));
         }
 
         // Telegram данные
@@ -1173,10 +1216,6 @@
                     document.getElementById('profileAvatar').style.backgroundColor = 'transparent';
                     document.getElementById('profileAvatar').style.backgroundSize = 'cover';
                     document.getElementById('profileAvatar').innerHTML = '';
-                    
-                    const avatarImg = new Image();
-                    avatarImg.src = user.photo_url;
-                    avatarImg.loading = 'eager';
                 } else {
                     document.getElementById('profileAvatar').innerHTML = (userData.firstName.charAt(0) || 'П').toUpperCase();
                 }
@@ -1185,13 +1224,16 @@
 
         // Обновление UI
         function updateUI() {
-            document.getElementById('balanceDisplay').innerText = userData.balance;
-            document.getElementById('profileLevelNumber').innerText = userData.level;
-            document.getElementById('profileNextLevel').innerText = userData.level + 1;
+            const userDataFromStorage = Storage.getUserData();
+            document.getElementById('balanceDisplay').innerText = userDataFromStorage.stars;
+            document.getElementById('profileLevelNumber').innerText = userDataFromStorage.level;
+            document.getElementById('profileNextLevel').innerText = userDataFromStorage.level + 1;
             
-            const progress = (userData.exp / userData.expToNext) * 100;
+            const progress = (userDataFromStorage.exp / userDataFromStorage.expToNext) * 100;
             document.getElementById('profileProgressFill').style.width = progress + '%';
             
+            // Обновляем инвентарь
+            loadData();
             renderGifts();
             renderInventoryGrid();
             
@@ -1332,18 +1374,8 @@
                 return;
             }
             
-            const token = Security.createToken();
-            if (Security.validateTransaction(1000)) {
-                userData.balance += 1000;
-                Security.addTransaction(1000);
-                
-                const savedData = JSON.parse(localStorage.getItem('yeter_user_data') || '{}');
-                savedData.stars = userData.balance;
-                localStorage.setItem('yeter_user_data', JSON.stringify(savedData));
-                
+            if (Storage.updateStars(1000, 'Пополнение')) {
                 updateUI();
-            } else {
-                alert('⚠️ Превышен лимит транзакций');
             }
         });
 
@@ -1391,6 +1423,13 @@
         document.getElementById('giftModal').addEventListener('click', (e) => {
             if (e.target === document.getElementById('giftModal')) {
                 e.target.classList.remove('active');
+            }
+        });
+
+        // Слушаем изменения в localStorage
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'yeter_user_data') {
+                updateUI();
             }
         });
 
