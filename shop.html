@@ -24,7 +24,6 @@
             min-height: 100vh;
         }
 
-        /* Космический фон как в профиле */
         body::before {
             content: '';
             position: fixed;
@@ -33,7 +32,6 @@
             z-index: -2;
         }
 
-        /* Оптимизированные звезды */
         .stars {
             position: fixed;
             top: 0;
@@ -53,18 +51,6 @@
             opacity: 0.5;
         }
 
-        .star.medium {
-            width: 2px;
-            height: 2px;
-            opacity: 0.6;
-        }
-
-        .star.large {
-            width: 2px;
-            height: 2px;
-            opacity: 0.7;
-        }
-
         .app {
             max-width: 440px;
             width: 100%;
@@ -82,8 +68,8 @@
             right: 20px;
             padding: 12px 20px;
             border-radius: 60px;
-            font-weight: 700;
-            font-size: 15px;
+            font-weight: 600;
+            font-size: 14px;
             z-index: 3000;
             transform: translateX(150%);
             transition: transform 0.3s ease;
@@ -103,9 +89,11 @@
         }
 
         .notification.error {
-            background: linear-gradient(145deg, #ff4444, #cc0000);
+            background: #ff4444;
             color: white;
             box-shadow: 0 4px 0 #8b0000;
+            padding: 10px 16px;
+            font-size: 13px;
         }
 
         .shop-profile-header {
@@ -165,25 +153,30 @@
             text-overflow: ellipsis;
         }
 
+        /* Уровень в виде ромба (как в профиле) */
         .shop-level-row {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
 
         .shop-level-badge {
             background: linear-gradient(145deg, #6a0dad, #4b0082);
             width: 24px;
             height: 24px;
-            border-radius: 7px;
+            transform: rotate(45deg);
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 0 2px;
+        }
+
+        .shop-level-badge span {
+            transform: rotate(-45deg);
             font-size: 13px;
             font-weight: 800;
             color: white;
-            box-shadow: 0 2px 0 #2d0b4e;
-            flex-shrink: 0;
         }
 
         .shop-progress-wrap {
@@ -204,18 +197,23 @@
         }
 
         .shop-next-level {
-            background: rgba(42, 30, 58, 0.9);
             width: 24px;
             height: 24px;
-            border-radius: 7px;
+            transform: rotate(45deg);
+            background: rgba(42, 30, 58, 0.9);
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border: 1px solid rgba(155, 77, 255, 0.3);
+            margin: 0 2px;
+        }
+
+        .shop-next-level span {
+            transform: rotate(-45deg);
             font-size: 13px;
             font-weight: 800;
             color: #b87aff;
-            border: 1px solid rgba(155, 77, 255, 0.3);
-            flex-shrink: 0;
         }
 
         .shop-balance-right {
@@ -319,7 +317,6 @@
             flex-shrink: 0;
         }
 
-        /* Загрузчик */
         .loader-container {
             grid-column: 1/3;
             text-align: center;
@@ -390,14 +387,22 @@
             transition: all 0.2s ease;
         }
 
-        .product-card:hover .product-image {
-            filter: brightness(1.1);
+        /* Low Rider чуть правее */
+        .product-image[alt="Low Rider"] {
+            object-fit: contain;
+            transform: scale(1.1) translateX(2px);
         }
 
-        /* Специально для Spiced Wine */
+        /* Genie Lamp чуть правее */
+        .product-image[alt="Genie Lamp"] {
+            object-fit: contain;
+            transform: scale(1.1) translateX(2px);
+        }
+
+        /* Spiced Wine чуть левее (как было) */
         .product-image[alt="Spiced Wine"] {
             object-fit: contain;
-            transform: scale(1.1);
+            transform: scale(1.1) translateX(-2px);
         }
 
         .product-name {
@@ -495,13 +500,23 @@
             margin: 15px auto;
             display: block;
             border-radius: 24px;
-            border: 2px solid rgba(155, 77, 255, 0.5);
             object-fit: cover;
+            /* РАМКА УБРАНА */
         }
 
         .modal-image[alt="Spiced Wine"] {
             object-fit: contain;
             transform: scale(1.2);
+        }
+
+        .modal-image[alt="Low Rider"] {
+            object-fit: contain;
+            transform: scale(1.2) translateX(3px);
+        }
+
+        .modal-image[alt="Genie Lamp"] {
+            object-fit: contain;
+            transform: scale(1.2) translateX(3px);
         }
 
         .modal-title {
@@ -600,25 +615,22 @@
     </style>
 </head>
 <body>
-    <!-- Звезды -->
     <div class="stars" id="stars"></div>
 
-    <!-- Уведомления -->
     <div class="notification" id="notification"></div>
 
     <div class="app">
-        <!-- Плашка профиля -->
         <div class="shop-profile-header">
             <div class="shop-profile-left">
                 <div class="shop-avatar-small" id="shopAvatar">?</div>
                 <div class="shop-nick-level">
                     <div class="shop-nick" id="shopNickname">Загрузка...</div>
                     <div class="shop-level-row">
-                        <div class="shop-level-badge" id="shopLevelNumber">0</div>
+                        <div class="shop-level-badge"><span id="shopLevelNumber">1</span></div>
                         <div class="shop-progress-wrap">
                             <div class="shop-progress-fill" id="shopProgressFill" style="width: 0%;"></div>
                         </div>
-                        <div class="shop-next-level" id="shopNextLevel">1</div>
+                        <div class="shop-next-level"><span id="shopNextLevel">2</span></div>
                     </div>
                 </div>
             </div>
@@ -631,7 +643,6 @@
             </div>
         </div>
 
-        <!-- Поиск и сортировка -->
         <div class="search-section">
             <div class="search-wrapper">
                 <i class="fas fa-search search-icon"></i>
@@ -643,7 +654,6 @@
             </div>
         </div>
 
-        <!-- Сетка товаров -->
         <div class="products-grid" id="productsGrid">
             <div class="loader-container">
                 <div class="loader-spinner"></div>
@@ -651,7 +661,6 @@
             </div>
         </div>
 
-        <!-- Модальное окно -->
         <div class="modal-overlay" id="modalOverlay">
             <div class="modal-content" id="modalContent">
                 <div class="modal-close" id="modalClose">
@@ -667,7 +676,6 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a href="index.html" class="nav-item"><i class="fas fa-gamepad"></i><span>Игры</span></a>
             <a href="shop.html" class="nav-item active"><i class="fas fa-store"></i><span>Магазин</span></a>
@@ -677,20 +685,13 @@
     </div>
 
     <script>
-        // ========== ОПТИМИЗИРОВАННЫЕ ЗВЕЗДЫ ==========
+        // Звезды
         function createStars() {
             const starsContainer = document.getElementById('stars');
             starsContainer.innerHTML = '';
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 40; i++) {
                 const star = document.createElement('div');
-                const size = Math.random();
-                if (size < 0.7) {
-                    star.className = 'star';
-                } else if (size < 0.9) {
-                    star.className = 'star medium';
-                } else {
-                    star.className = 'star large';
-                }
+                star.className = 'star';
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
                 star.style.opacity = 0.3 + Math.random() * 0.4;
@@ -699,34 +700,7 @@
         }
         createStars();
 
-        // ========== ЗАЩИТА ==========
-        (function() {
-            const protectedMethods = ['getItem', 'setItem', 'removeItem'];
-            protectedMethods.forEach(method => {
-                const original = localStorage[method];
-                localStorage[method] = function() {
-                    if (new Error().stack.includes('debugger')) {
-                        throw new Error('Access denied');
-                    }
-                    return original.apply(this, arguments);
-                };
-            });
-            
-            let debugCounter = 0;
-            setInterval(function() {
-                debugCounter++;
-                if (debugCounter % 10 === 0) {
-                    const before = new Date();
-                    debugger;
-                    const after = new Date();
-                    if (after - before > 100) {
-                        window.location.reload();
-                    }
-                }
-            }, 2000);
-        })();
-
-        // ========== УВЕДОМЛЕНИЯ ==========
+        // Уведомления
         const Notification = {
             show: function(message, type) {
                 const notif = document.getElementById('notification');
@@ -748,14 +722,14 @@
             }
         };
 
-        // ========== ЗАЩИТА ОТ НАКРУТКИ ==========
+        // Защита от накрутки
         const Security = (function() {
             let _requestTimestamps = [];
             
             function checkRateLimit() {
                 const now = Date.now();
                 _requestTimestamps = _requestTimestamps.filter(t => now - t < 60000);
-                if (_requestTimestamps.length > 30) return false;
+                if (_requestTimestamps.length > 40) return false;
                 _requestTimestamps.push(now);
                 return true;
             }
@@ -767,7 +741,7 @@
             };
         })();
 
-        // ========== ВСЕ NFT ==========
+        // Все NFT
         const nftGifts = [
             { name: "Khabib's Papakha", price: 10100, image: "nft/Khabibs Papakha.png" },
             { name: "Snoop Cigar", price: 12500, image: "nft/Snoop Cigar.png" },
@@ -869,44 +843,7 @@
             { name: "Trapped Heart", price: 129, image: "nft/Trapped Heart.png" }
         ];
 
-        // ========== ПРЕДЗАГРУЗКА С КЕШИРОВАНИЕМ ==========
-        const ImageCache = (function() {
-            const cache = new Map();
-            let loadedCount = 0;
-            let totalImages = nftGifts.length;
-            
-            function preloadAll() {
-                return new Promise((resolve) => {
-                    nftGifts.forEach(item => {
-                        if (cache.has(item.image)) {
-                            loadedCount++;
-                            if (loadedCount === totalImages) resolve();
-                            return;
-                        }
-                        
-                        const img = new Image();
-                        img.onload = () => {
-                            cache.set(item.image, true);
-                            loadedCount++;
-                            if (loadedCount === totalImages) resolve();
-                        };
-                        img.onerror = () => {
-                            cache.set(item.image, false);
-                            loadedCount++;
-                            if (loadedCount === totalImages) resolve();
-                        };
-                        img.src = item.image;
-                    });
-                });
-            }
-            
-            return {
-                preloadAll,
-                isLoaded: (src) => cache.has(src)
-            };
-        })();
-
-        // ========== ХРАНИЛИЩЕ ==========
+        // Хранилище
         const Storage = (function() {
             let _data = null;
             const _key = 'yeter_user_data';
@@ -922,7 +859,6 @@
                 } else {
                     _createNew();
                 }
-                _save();
             }
             
             function _createNew() {
@@ -969,7 +905,6 @@
         let currentSearchTerm = '';
         let currentSort = 'random';
 
-        // Перемешивание
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -978,7 +913,6 @@
             return array;
         }
 
-        // Отрисовка товаров
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
             
@@ -1016,7 +950,6 @@
             `).join('');
         }
 
-        // Открытие модалки
         function openModal(name, price, image) {
             document.getElementById('modalImage').src = image;
             document.getElementById('modalTitle').innerText = name;
@@ -1028,7 +961,6 @@
             };
         }
 
-        // Покупка
         function buyItem(name, price, image) {
             if (!Security.validateRequest()) {
                 Notification.error('⚠️ Слишком много запросов');
@@ -1047,21 +979,17 @@
                     });
                     localStorage.setItem('yeter_inventory', JSON.stringify(inventory));
                     
-                    // Закрываем модалку и показываем уведомление
                     document.getElementById('modalOverlay').classList.remove('active');
-                    Notification.success('✅ Покупка совершена!');
+                    Notification.success('✅ Подарок успешно куплен. Он появился в вашем профиле');
                     
-                    // Обновляем баланс
                     updateUIDisplay();
                 }
             } else {
-                // Закрываем модалку и показываем ошибку
                 document.getElementById('modalOverlay').classList.remove('active');
                 Notification.error('❌ Недостаточно средств');
             }
         }
 
-        // Обновление интерфейса
         function updateUIDisplay() {
             const data = Storage.getUserData();
             document.getElementById('shopBalanceDisplay').innerText = data.stars;
@@ -1071,20 +999,17 @@
             document.getElementById('shopProgressFill').style.width = progress + '%';
         }
 
-        // Пополнение баланса
         document.getElementById('addBalanceBtn').addEventListener('click', () => {
             if (!Security.validateRequest()) {
                 Notification.error('⚠️ Слишком много запросов');
                 return;
             }
             
-            if (Storage.updateStars(1000, 'Пополнение')) {
-                updateUIDisplay();
-                Notification.success('✅ Баланс пополнен');
-            }
+            Storage.updateStars(1000, 'Пополнение');
+            updateUIDisplay();
+            // Убрано уведомление о пополнении
         });
 
-        // Telegram
         const tg = window.Telegram?.WebApp;
         if (tg) {
             tg.ready();
@@ -1108,7 +1033,6 @@
             }
         }
 
-        // Закрытие модалки
         document.getElementById('modalClose').addEventListener('click', () => {
             document.getElementById('modalOverlay').classList.remove('active');
         });
@@ -1119,7 +1043,6 @@
             }
         });
 
-        // Сортировка
         document.getElementById('sortBtn').addEventListener('click', () => {
             if (!Security.validateRequest()) return;
             
@@ -1133,32 +1056,18 @@
             renderProducts();
         });
 
-        // Поиск
         document.getElementById('searchInput').addEventListener('input', (e) => {
             currentSearchTerm = e.target.value;
             renderProducts();
         });
 
-        // Инициализация с предзагрузкой
-        async function init() {
-            updateUIDisplay();
-            
-            // Показываем загрузку
-            document.getElementById('productsGrid').innerHTML = `
-                <div class="loader-container">
-                    <div class="loader-spinner"></div>
-                    <div>Загрузка магазина...</div>
-                </div>
-            `;
-            
-            // Предзагружаем все картинки (они закешируются)
-            await ImageCache.preloadAll();
-            
-            // Отрисовываем товары
+        // Быстрая инициализация
+        updateUIDisplay();
+        
+        // Убираем загрузчик и сразу показываем товары
+        setTimeout(() => {
             renderProducts();
-        }
-
-        init();
+        }, 100); // Минимальная задержка для плавности
     </script>
 </body>
 </html>
