@@ -24,6 +24,7 @@
             min-height: 100vh;
         }
 
+        /* Космический фон как в профиле */
         body::before {
             content: '';
             position: fixed;
@@ -32,25 +33,36 @@
             z-index: -2;
         }
 
-        body::after {
-            content: '';
+        /* Оптимизированные звезды */
+        .stars {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                radial-gradient(1.5px 1.5px at 15px 60px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.2px 1.2px at 72px 430px, rgba(255,245,200,0.8), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 250px 120px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(1.8px 1.8px at 120px 550px, rgba(210,230,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.3px 1.3px at 380px 200px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 40px 780px, rgba(200,220,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(1.6px 1.6px at 310px 640px, rgba(255,255,240,0.8), rgba(0,0,0,0)),
-                radial-gradient(1.1px 1.1px at 190px 890px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 420px 350px, rgba(180,200,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.4px 1.4px at 80px 920px, rgba(255,255,255,0.8), rgba(0,0,0,0));
-            background-size: 500px 1000px;
-            background-repeat: repeat;
-            opacity: 0.6;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -1;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 1px;
+            height: 1px;
+            opacity: 0.5;
+        }
+
+        .star.medium {
+            width: 2px;
+            height: 2px;
+            opacity: 0.6;
+        }
+
+        .star.large {
+            width: 2px;
+            height: 2px;
+            opacity: 0.7;
         }
 
         .app {
@@ -60,6 +72,40 @@
             position: relative;
             padding-bottom: 90px;
             min-height: 100vh;
+            z-index: 1;
+        }
+
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 15px;
+            z-index: 3000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+            max-width: 280px;
+            pointer-events: none;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: linear-gradient(145deg, #00c853, #009624);
+            color: white;
+            box-shadow: 0 4px 0 #00691e;
+        }
+
+        .notification.error {
+            background: linear-gradient(145deg, #ff4444, #cc0000);
+            color: white;
+            box-shadow: 0 4px 0 #8b0000;
         }
 
         .shop-profile-header {
@@ -273,6 +319,30 @@
             flex-shrink: 0;
         }
 
+        /* Загрузчик */
+        .loader-container {
+            grid-column: 1/3;
+            text-align: center;
+            padding: 40px;
+            color: #b87aff;
+            font-size: 16px;
+        }
+
+        .loader-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(138, 43, 226, 0.2);
+            border-top: 3px solid #b87aff;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .products-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -292,6 +362,12 @@
             cursor: pointer;
             transition: all 0.2s ease;
             position: relative;
+            opacity: 0;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
 
         .product-card:hover {
@@ -312,21 +388,16 @@
             object-fit: cover;
             margin-bottom: 6px;
             transition: all 0.2s ease;
-            opacity: 0;
-            animation: fadeIn 0.3s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
         }
 
         .product-card:hover .product-image {
             filter: brightness(1.1);
         }
 
+        /* Специально для Spiced Wine */
         .product-image[alt="Spiced Wine"] {
             object-fit: contain;
-            transform: scale(1.1) translateX(-2px);
+            transform: scale(1.1);
         }
 
         .product-name {
@@ -387,6 +458,10 @@
             align-items: center;
         }
 
+        .modal-overlay.active {
+            display: flex;
+        }
+
         .modal-content {
             background: linear-gradient(145deg, #1a1028, #0f0a18);
             border: 2px solid rgba(155, 77, 255, 0.5);
@@ -426,7 +501,7 @@
 
         .modal-image[alt="Spiced Wine"] {
             object-fit: contain;
-            transform: scale(1.2) translateX(-3px);
+            transform: scale(1.2);
         }
 
         .modal-title {
@@ -463,7 +538,7 @@
             font-size: 17px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.1s;
             box-shadow: 0 6px 0 #2d0b4e;
         }
 
@@ -483,12 +558,13 @@
             display: flex;
             justify-content: space-around;
             padding: 8px 6px;
-            border-radius: 40px 40px 40px 40px;
+            border-radius: 40px;
             border: 1px solid rgba(138, 43, 226, 0.3);
             margin-bottom: 16px;
             width: calc(100% - 40px);
             left: 20px;
             right: 20px;
+            backdrop-filter: blur(8px);
         }
 
         .nav-item {
@@ -524,7 +600,14 @@
     </style>
 </head>
 <body>
+    <!-- Звезды -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Уведомления -->
+    <div class="notification" id="notification"></div>
+
     <div class="app">
+        <!-- Плашка профиля -->
         <div class="shop-profile-header">
             <div class="shop-profile-left">
                 <div class="shop-avatar-small" id="shopAvatar">?</div>
@@ -548,6 +631,7 @@
             </div>
         </div>
 
+        <!-- Поиск и сортировка -->
         <div class="search-section">
             <div class="search-wrapper">
                 <i class="fas fa-search search-icon"></i>
@@ -559,8 +643,15 @@
             </div>
         </div>
 
-        <div class="products-grid" id="productsGrid"></div>
+        <!-- Сетка товаров -->
+        <div class="products-grid" id="productsGrid">
+            <div class="loader-container">
+                <div class="loader-spinner"></div>
+                <div>Загрузка магазина...</div>
+            </div>
+        </div>
 
+        <!-- Модальное окно -->
         <div class="modal-overlay" id="modalOverlay">
             <div class="modal-content" id="modalContent">
                 <div class="modal-close" id="modalClose">
@@ -576,6 +667,7 @@
             </div>
         </div>
 
+        <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a href="index.html" class="nav-item"><i class="fas fa-gamepad"></i><span>Игры</span></a>
             <a href="shop.html" class="nav-item active"><i class="fas fa-store"></i><span>Магазин</span></a>
@@ -585,7 +677,29 @@
     </div>
 
     <script>
-        // ========== ЖЕСТКАЯ ЗАЩИТА ==========
+        // ========== ОПТИМИЗИРОВАННЫЕ ЗВЕЗДЫ ==========
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                const size = Math.random();
+                if (size < 0.7) {
+                    star.className = 'star';
+                } else if (size < 0.9) {
+                    star.className = 'star medium';
+                } else {
+                    star.className = 'star large';
+                }
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.opacity = 0.3 + Math.random() * 0.4;
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+
+        // ========== ЗАЩИТА ==========
         (function() {
             const protectedMethods = ['getItem', 'setItem', 'removeItem'];
             protectedMethods.forEach(method => {
@@ -598,53 +712,62 @@
                 };
             });
             
+            let debugCounter = 0;
             setInterval(function() {
-                const before = new Date();
-                debugger;
-                const after = new Date();
-                if (after - before > 100) {
-                    window.location.reload();
+                debugCounter++;
+                if (debugCounter % 10 === 0) {
+                    const before = new Date();
+                    debugger;
+                    const after = new Date();
+                    if (after - before > 100) {
+                        window.location.reload();
+                    }
                 }
-            }, 1000);
+            }, 2000);
         })();
+
+        // ========== УВЕДОМЛЕНИЯ ==========
+        const Notification = {
+            show: function(message, type) {
+                const notif = document.getElementById('notification');
+                notif.className = 'notification ' + type;
+                notif.innerText = message;
+                notif.classList.add('show');
+                
+                setTimeout(() => {
+                    notif.classList.remove('show');
+                }, 3000);
+            },
+            
+            success: function(message) {
+                this.show(message, 'success');
+            },
+            
+            error: function(message) {
+                this.show(message, 'error');
+            }
+        };
 
         // ========== ЗАЩИТА ОТ НАКРУТКИ ==========
         const Security = (function() {
-            let _requestCount = 0;
-            let _lastReset = Date.now();
-            let _validTokens = new Set();
-            
-            function generateToken() {
-                return 'token_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
-            }
+            let _requestTimestamps = [];
             
             function checkRateLimit() {
                 const now = Date.now();
-                if (now - _lastReset > 60000) {
-                    _requestCount = 0;
-                    _lastReset = now;
-                }
-                _requestCount++;
-                return _requestCount <= 30;
+                _requestTimestamps = _requestTimestamps.filter(t => now - t < 60000);
+                if (_requestTimestamps.length > 30) return false;
+                _requestTimestamps.push(now);
+                return true;
             }
             
             return {
                 validateRequest: function() {
                     return checkRateLimit();
-                },
-                createToken: function() {
-                    const token = generateToken();
-                    _validTokens.add(token);
-                    setTimeout(() => _validTokens.delete(token), 30000);
-                    return token;
-                },
-                verifyToken: function(token) {
-                    return _validTokens.has(token);
                 }
             };
         })();
 
-        // ========== ВСЕ 103 NFT ==========
+        // ========== ВСЕ NFT ==========
         const nftGifts = [
             { name: "Khabib's Papakha", price: 10100, image: "nft/Khabibs Papakha.png" },
             { name: "Snoop Cigar", price: 12500, image: "nft/Snoop Cigar.png" },
@@ -746,11 +869,107 @@
             { name: "Trapped Heart", price: 129, image: "nft/Trapped Heart.png" }
         ];
 
+        // ========== ПРЕДЗАГРУЗКА С КЕШИРОВАНИЕМ ==========
+        const ImageCache = (function() {
+            const cache = new Map();
+            let loadedCount = 0;
+            let totalImages = nftGifts.length;
+            
+            function preloadAll() {
+                return new Promise((resolve) => {
+                    nftGifts.forEach(item => {
+                        if (cache.has(item.image)) {
+                            loadedCount++;
+                            if (loadedCount === totalImages) resolve();
+                            return;
+                        }
+                        
+                        const img = new Image();
+                        img.onload = () => {
+                            cache.set(item.image, true);
+                            loadedCount++;
+                            if (loadedCount === totalImages) resolve();
+                        };
+                        img.onerror = () => {
+                            cache.set(item.image, false);
+                            loadedCount++;
+                            if (loadedCount === totalImages) resolve();
+                        };
+                        img.src = item.image;
+                    });
+                });
+            }
+            
+            return {
+                preloadAll,
+                isLoaded: (src) => cache.has(src)
+            };
+        })();
+
+        // ========== ХРАНИЛИЩЕ ==========
+        const Storage = (function() {
+            let _data = null;
+            const _key = 'yeter_user_data';
+            
+            function _init() {
+                const saved = localStorage.getItem(_key);
+                if (saved) {
+                    try {
+                        _data = JSON.parse(saved);
+                    } catch {
+                        _createNew();
+                    }
+                } else {
+                    _createNew();
+                }
+                _save();
+            }
+            
+            function _createNew() {
+                _data = {
+                    stars: 12500,
+                    level: 1,
+                    exp: 0,
+                    expToNext: 1000,
+                    gifts: [],
+                    games: {},
+                    transactions: []
+                };
+            }
+            
+            function _save() {
+                localStorage.setItem(_key, JSON.stringify(_data));
+            }
+            
+            _init();
+            
+            return {
+                getStars: function() { return _data.stars; },
+                getLevel: function() { return _data.level; },
+                getExp: function() { return _data.exp; },
+                getExpToNext: function() { return _data.expToNext; },
+                
+                updateStars: function(amount, reason) {
+                    if (_data.stars + amount < 0) return false;
+                    _data.stars += amount;
+                    if (!_data.transactions) _data.transactions = [];
+                    _data.transactions.push({ amount, reason, time: Date.now(), balance: _data.stars });
+                    if (_data.transactions.length > 50) _data.transactions = _data.transactions.slice(-50);
+                    _save();
+                    return true;
+                },
+                
+                getUserData: function() {
+                    return { ..._data };
+                }
+            };
+        })();
+
         // Состояние
         let currentSearchTerm = '';
         let currentSort = 'random';
 
-        // Функция перемешивания
+        // Перемешивание
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -759,7 +978,7 @@
             return array;
         }
 
-        // Функция отображения товаров - БЕЗ ПРЕДЗАГРУЗКИ
+        // Отрисовка товаров
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
             
@@ -779,16 +998,13 @@
                 filtered = shuffleArray(filtered);
             }
             
-            // Сразу показываем HTML - картинки берутся из кеша браузера
             grid.innerHTML = filtered.map(item => `
                 <div class="product-card" onclick="openModal('${item.name}', ${item.price}, '${item.image}')">
                     <img src="${item.image}" 
                          class="product-image" 
                          alt="${item.name}"
                          loading="eager"
-                         onload="this.style.opacity=1"
-                         onerror="this.src='nft/placeholder.png'; this.style.opacity=1"
-                         style="opacity: 0;">
+                         onerror="this.src='nft/placeholder.png'">
                     <div class="product-name">${item.name}</div>
                     <div class="price-frame">
                         <div class="product-price">
@@ -800,29 +1016,27 @@
             `).join('');
         }
 
-        // Открытие модального окна
+        // Открытие модалки
         function openModal(name, price, image) {
             document.getElementById('modalImage').src = image;
             document.getElementById('modalTitle').innerText = name;
             document.getElementById('modalPrice').innerText = price;
-            document.getElementById('modalOverlay').style.display = 'flex';
+            document.getElementById('modalOverlay').classList.add('active');
             
             document.getElementById('modalBuyBtn').onclick = function() {
                 buyItem(name, price, image);
             };
         }
 
-        // Функция покупки
+        // Покупка
         function buyItem(name, price, image) {
             if (!Security.validateRequest()) {
-                alert('⚠️ Слишком много запросов. Подождите минуту.');
+                Notification.error('⚠️ Слишком много запросов');
                 return;
             }
 
             if (Storage.getStars() >= price) {
-                const token = Security.createToken();
-                
-                if (Storage.updateStars(-price, `Покупка: ${name}`, token)) {
+                if (Storage.updateStars(-price, `Покупка: ${name}`)) {
                     const inventory = JSON.parse(localStorage.getItem('yeter_inventory') || '[]');
                     inventory.push({
                         name: name,
@@ -833,141 +1047,19 @@
                     });
                     localStorage.setItem('yeter_inventory', JSON.stringify(inventory));
                     
-                    alert('✅ Покупка совершена! Подарок в профиле');
-                    document.getElementById('modalOverlay').style.display = 'none';
+                    // Закрываем модалку и показываем уведомление
+                    document.getElementById('modalOverlay').classList.remove('active');
+                    Notification.success('✅ Покупка совершена!');
+                    
+                    // Обновляем баланс
                     updateUIDisplay();
                 }
             } else {
-                alert(`❌ Не хватает пазлов! Нужно ${price}`);
+                // Закрываем модалку и показываем ошибку
+                document.getElementById('modalOverlay').classList.remove('active');
+                Notification.error('❌ Недостаточно средств');
             }
         }
-
-        // Хранилище
-        const Storage = (function() {
-            let _data = null;
-            const _key = 'yeter_user_data';
-            const _backupKey = 'yeter_user_data_backup';
-            
-            function _init() {
-                const saved = localStorage.getItem(_key);
-                if (saved) {
-                    try {
-                        _data = JSON.parse(saved);
-                        if (!_validate(_data)) {
-                            _restoreFromBackup();
-                        }
-                    } catch { 
-                        _restoreFromBackup();
-                    }
-                } else {
-                    _createNew();
-                }
-                _save();
-                _createBackup();
-            }
-            
-            function _validate(data) {
-                if (!data || typeof data !== 'object') return false;
-                if (typeof data.stars !== 'number' || data.stars < 0 || data.stars > 1000000) return false;
-                if (typeof data.level !== 'number' || data.level < 1 || data.level > 100) return false;
-                if (typeof data.exp !== 'number' || data.exp < 0) return false;
-                if (typeof data.expToNext !== 'number' || data.expToNext < 100) return false;
-                if (!Array.isArray(data.gifts)) return false;
-                if (!data.games || typeof data.games !== 'object') return false;
-                if (!Array.isArray(data.transactions)) return false;
-                
-                if (data.transactions.length > 0) {
-                    const lastTx = data.transactions[data.transactions.length - 1];
-                    if (lastTx && lastTx.amount > 10000 && lastTx.amount > data.stars) {
-                        return false;
-                    }
-                }
-                
-                return true;
-            }
-            
-            function _createNew() {
-                _data = {
-                    stars: 12500,
-                    level: 1,
-                    exp: 0,
-                    expToNext: 1000,
-                    gifts: [],
-                    games: {},
-                    transactions: []
-                };
-            }
-            
-            function _save() {
-                localStorage.setItem(_key, JSON.stringify(_data));
-            }
-            
-            function _createBackup() {
-                localStorage.setItem(_backupKey, JSON.stringify(_data));
-            }
-            
-            function _restoreFromBackup() {
-                const backup = localStorage.getItem(_backupKey);
-                if (backup) {
-                    try {
-                        _data = JSON.parse(backup);
-                    } catch {
-                        _createNew();
-                    }
-                } else {
-                    _createNew();
-                }
-            }
-            
-            function _logTransaction(amount, reason, token, success) {
-                if (!_data.transactions) _data.transactions = [];
-                _data.transactions.push({
-                    amount: amount,
-                    reason: reason,
-                    time: Date.now(),
-                    balance: _data.stars,
-                    success: success,
-                    token: token
-                });
-                
-                if (_data.transactions.length > 100) {
-                    _data.transactions = _data.transactions.slice(-100);
-                }
-            }
-            
-            _init();
-            
-            return {
-                getStars: function() { return _data.stars; },
-                getGifts: function() { return [..._data.gifts]; },
-                
-                updateStars: function(amount, reason, token) {
-                    if (!Security.validateRequest()) return false;
-                    
-                    if (_data.stars + amount < 0) return false;
-                    
-                    if (amount < -10000 && !Security.verifyToken(token)) {
-                        _logTransaction(amount, reason, token, false);
-                        return false;
-                    }
-                    
-                    _data.stars += amount;
-                    _logTransaction(amount, reason, token, true);
-                    
-                    _save();
-                    _createBackup();
-                    return true;
-                },
-                
-                addGift: function(gift) {
-                    _data.gifts.push(gift);
-                    _save();
-                    _createBackup();
-                },
-                
-                getUserData: function() { return { ..._data }; }
-            };
-        })();
 
         // Обновление интерфейса
         function updateUIDisplay() {
@@ -979,11 +1071,16 @@
             document.getElementById('shopProgressFill').style.width = progress + '%';
         }
 
-        // Кнопка пополнения баланса
+        // Пополнение баланса
         document.getElementById('addBalanceBtn').addEventListener('click', () => {
-            const token = Security.createToken();
-            if (Storage.updateStars(1000, 'Пополнение', token)) {
+            if (!Security.validateRequest()) {
+                Notification.error('⚠️ Слишком много запросов');
+                return;
+            }
+            
+            if (Storage.updateStars(1000, 'Пополнение')) {
                 updateUIDisplay();
+                Notification.success('✅ Баланс пополнен');
             }
         });
 
@@ -1011,21 +1108,21 @@
             }
         }
 
-        updateUIDisplay();
-
         // Закрытие модалки
         document.getElementById('modalClose').addEventListener('click', () => {
-            document.getElementById('modalOverlay').style.display = 'none';
+            document.getElementById('modalOverlay').classList.remove('active');
         });
 
         document.getElementById('modalOverlay').addEventListener('click', (e) => {
             if (e.target === document.getElementById('modalOverlay')) {
-                document.getElementById('modalOverlay').style.display = 'none';
+                e.target.classList.remove('active');
             }
         });
 
         // Сортировка
         document.getElementById('sortBtn').addEventListener('click', () => {
+            if (!Security.validateRequest()) return;
+            
             if (currentSort === 'random') {
                 currentSort = 'desc';
             } else if (currentSort === 'desc') {
@@ -1042,8 +1139,26 @@
             renderProducts();
         });
 
-        // Просто рендерим сразу - картинки уже в кеше браузера
-        renderProducts();
+        // Инициализация с предзагрузкой
+        async function init() {
+            updateUIDisplay();
+            
+            // Показываем загрузку
+            document.getElementById('productsGrid').innerHTML = `
+                <div class="loader-container">
+                    <div class="loader-spinner"></div>
+                    <div>Загрузка магазина...</div>
+                </div>
+            `;
+            
+            // Предзагружаем все картинки (они закешируются)
+            await ImageCache.preloadAll();
+            
+            // Отрисовываем товары
+            renderProducts();
+        }
+
+        init();
     </script>
 </body>
 </html>
