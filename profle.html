@@ -268,6 +268,7 @@
             gap: 8px;
             cursor: pointer;
             transition: all 0.1s;
+            min-height: 130px;
         }
 
         .gift-card:active {
@@ -279,15 +280,10 @@
             height: 70px;
             border-radius: 12px;
             object-fit: cover;
-            opacity: 0;
-            animation: fadeIn 0.3s ease forwards;
+            background-color: #1a1028;
+            display: block;
         }
 
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        .gift-image[alt*="Spiced Wine"],
         .gift-image[src*="Spiced Wine"] {
             object-fit: contain;
             transform: scale(1.1);
@@ -372,6 +368,7 @@
             margin: 10px auto 15px;
             display: block;
             object-fit: cover;
+            background-color: #1a1028;
         }
 
         .gift-modal-image[src*="Spiced Wine"] {
@@ -606,9 +603,23 @@
         .nav-item.active i {
             color: #b87aff;
         }
+
+        /* Прелоадер для картинок */
+        .image-preloader {
+            position: fixed;
+            top: -9999px;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
+    <!-- Невидимый прелоадер для всех картинок -->
+    <div class="image-preloader" id="preloader"></div>
+
     <div class="app">
         <!-- Верхний баланс -->
         <div class="top-header">
@@ -726,6 +737,24 @@
             };
         })();
 
+        // ========== ПРЕДЗАГРУЗКА ВСЕХ КАРТИНОК ==========
+        function preloadAllImages() {
+            const preloader = document.getElementById('preloader');
+            
+            // Собираем все уникальные URL картинок из инвентаря
+            const imageUrls = new Set();
+            inventory.forEach(gift => {
+                if (gift.image && !imageUrls.has(gift.image)) {
+                    imageUrls.add(gift.image);
+                    
+                    // Создаем невидимый img для предзагрузки
+                    const img = new Image();
+                    img.src = gift.image;
+                    preloader.appendChild(img);
+                }
+            });
+        }
+
         // Загрузка данных из localStorage
         function loadData() {
             try {
@@ -743,6 +772,9 @@
                         return gift;
                     });
                     if (updated) saveInventory();
+                    
+                    // Предзагружаем все картинки после загрузки инвентаря
+                    setTimeout(() => preloadAllImages(), 100);
                 }
 
                 const savedData = localStorage.getItem('yeter_user_data');
@@ -777,6 +809,10 @@
                     document.getElementById('profileAvatar').style.backgroundColor = 'transparent';
                     document.getElementById('profileAvatar').style.backgroundSize = 'cover';
                     document.getElementById('profileAvatar').innerHTML = '';
+                    
+                    // Предзагружаем аватарку
+                    const avatarImg = new Image();
+                    avatarImg.src = user.photo_url;
                 } else {
                     document.getElementById('profileAvatar').innerHTML = (userData.firstName.charAt(0) || 'П').toUpperCase();
                 }
@@ -821,9 +857,7 @@
                                  class="gift-image" 
                                  alt="${gift.name}"
                                  loading="eager"
-                                 onload="this.style.opacity=1"
-                                 onerror="this.src='nft/placeholder.png'; this.style.opacity=1"
-                                 style="opacity: 0;">
+                                 onerror="this.src='nft/placeholder.png'">
                             <span class="gift-name">${gift.name}</span>
                             <span class="gift-price">
                                 <span class="puzzle-icon">🧩</span>
@@ -852,9 +886,7 @@
                          class="gift-image" 
                          alt="${gift.name}"
                          loading="eager"
-                         onload="this.style.opacity=1"
-                         onerror="this.src='nft/placeholder.png'; this.style.opacity=1"
-                         style="opacity: 0;">
+                         onerror="this.src='nft/placeholder.png'">
                     <span class="gift-name">${gift.name}</span>
                     <span class="gift-price">
                         <span class="puzzle-icon">🧩</span>
