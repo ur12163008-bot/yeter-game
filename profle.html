@@ -95,7 +95,7 @@
         }
 
         .sticky-profile {
-            padding: 24px 20px 16px;
+            padding: 24px 20px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -128,30 +128,33 @@
             text-align: center;
         }
 
+        /* Уровень в виде ромба */
         .profile-level-section {
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: center;
+            gap: 15px;
             width: 100%;
-            background: rgba(20, 25, 35, 0.3);
-            padding: 8px 12px;
-            border-radius: 30px;
-            border: 1px solid rgba(138, 43, 226, 0.2);
+            margin-top: 5px;
         }
 
         .level-badge-profile {
             background: linear-gradient(145deg, #6a0dad, #4b0082);
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
+            width: 42px;
+            height: 42px;
+            transform: rotate(45deg);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 0 10px;
+        }
+
+        .level-badge-profile span {
+            transform: rotate(-45deg);
             font-size: 20px;
             font-weight: 900;
             color: white;
-            box-shadow: 0 3px 0 #2d0b4e;
-            flex-shrink: 0;
         }
 
         .progress-bar-full {
@@ -171,55 +174,37 @@
         }
 
         .next-level-number-profile {
+            width: 42px;
+            height: 42px;
+            transform: rotate(45deg);
             background: rgba(42, 30, 58, 0.9);
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border: 1px solid rgba(155, 77, 255, 0.3);
+            margin: 0 10px;
+        }
+
+        .next-level-number-profile span {
+            transform: rotate(-45deg);
             font-size: 20px;
             font-weight: 900;
             color: #b87aff;
-            border: 1px solid rgba(155, 77, 255, 0.3);
-            flex-shrink: 0;
         }
 
         .profile-content {
             padding: 20px 20px 40px;
         }
 
-        /* Секция подарков */
-        .gifts-section {
-            background: rgba(10, 14, 22, 0.7);
-            border: 2px solid rgba(138, 43, 226, 0.3);
-            border-radius: 28px;
-            padding: 20px 18px;
-            width: 100%;
-            margin-top: 8px;
-        }
-
-        .gifts-header {
+        /* Кнопка + над Ваши подарки */
+        .add-above-btn {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
+            justify-content: flex-end;
+            margin-bottom: 10px;
         }
 
-        .gifts-title-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .gifts-title {
-            color: #8e98a3;
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .add-gift-small-btn {
+        .add-above-btn .add-gift-above {
             background: rgba(106, 13, 173, 0.2);
             border: 1px solid rgba(138, 43, 226, 0.3);
             border-radius: 30px;
@@ -232,12 +217,29 @@
             font-size: 24px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.1s;
         }
 
-        .add-gift-small-btn:active {
-            background: rgba(106, 13, 173, 0.4);
-            transform: scale(0.95);
+        /* Секция подарков */
+        .gifts-section {
+            background: rgba(10, 14, 22, 0.7);
+            border: 2px solid rgba(138, 43, 226, 0.3);
+            border-radius: 28px;
+            padding: 20px 18px;
+            width: 100%;
+        }
+
+        .gifts-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .gifts-title {
+            color: #8e98a3;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .view-all-btn {
@@ -288,10 +290,12 @@
             gap: 12px;
         }
 
+        /* Рамка вокруг фото + название + цена */
         .gift-card {
-            background: transparent;
-            border: none;
-            padding: 8px 4px;
+            background: rgba(20, 25, 35, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            border-radius: 16px;
+            padding: 12px 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -301,7 +305,7 @@
         }
 
         .gift-card:active {
-            transform: scale(0.97);
+            background: rgba(30, 35, 45, 0.5);
         }
 
         .gift-image {
@@ -310,7 +314,7 @@
             border-radius: 12px;
             object-fit: cover;
             display: block;
-            background-color: #1a1028;
+            /* Убрана рамка у фото */
         }
 
         .gift-image[src*="Spiced Wine"] {
@@ -398,6 +402,7 @@
             display: block;
             object-fit: cover;
             background-color: #1a1028;
+            /* Убрана рамка у фото в модалке */
         }
 
         .gift-modal-image[src*="Spiced Wine"] {
@@ -629,7 +634,7 @@
             color: #b87aff;
         }
 
-        /* Прелоадер (невидимый) */
+        /* Прелоадер */
         .preloader {
             position: fixed;
             top: -9999px;
@@ -642,7 +647,7 @@
     </style>
 </head>
 <body>
-    <!-- Невидимый прелоадер для мгновенной загрузки -->
+    <!-- Невидимый прелоадер -->
     <div class="preloader" id="preloader"></div>
 
     <div class="app">
@@ -663,23 +668,26 @@
                 <div class="avatar-profile" id="profileAvatar"></div>
                 <div class="profile-name-center" id="profileName">Загрузка...</div>
 
+                <!-- Уровень в ромбах -->
                 <div class="profile-level-section">
-                    <div class="level-badge-profile" id="profileLevelNumber">1</div>
+                    <div class="level-badge-profile"><span id="profileLevelNumber">1</span></div>
                     <div class="progress-bar-full">
                         <div class="progress-fill-full" id="profileProgressFill" style="width: 0%;"></div>
                     </div>
-                    <div class="next-level-number-profile" id="profileNextLevel">2</div>
+                    <div class="next-level-number-profile"><span id="profileNextLevel">2</span></div>
                 </div>
             </div>
 
             <div class="profile-content">
+                <!-- Кнопка + над Ваши подарки -->
+                <div class="add-above-btn">
+                    <div class="add-gift-above" onclick="window.location.href='shop.html'">+</div>
+                </div>
+
                 <!-- Секция подарков -->
                 <div class="gifts-section">
                     <div class="gifts-header">
-                        <div class="gifts-title-wrapper">
-                            <span class="gifts-title">ВАШИ ПОДАРКИ</span>
-                            <div class="add-gift-small-btn" onclick="window.location.href='shop.html'">+</div>
-                        </div>
+                        <span class="gifts-title">ВАШИ ПОДАРКИ</span>
                         <div class="view-all-btn" id="viewAllBtn">›</div>
                     </div>
                     <div id="giftsContainer"></div>
@@ -765,7 +773,7 @@
             };
         })();
 
-        // ========== МГНОВЕННАЯ ЗАГРУЗКА ВСЕХ КАРТИНОК ==========
+        // ========== ПРЕДЗАГРУЗКА ==========
         function preloadAllImages() {
             const preloader = document.getElementById('preloader');
             preloader.innerHTML = '';
@@ -779,11 +787,6 @@
                     preloader.appendChild(img);
                 }
             });
-            
-            // Заглушка
-            const placeholderImg = new Image();
-            placeholderImg.src = 'nft/placeholder.png';
-            preloader.appendChild(placeholderImg);
         }
 
         // Загрузка данных
@@ -803,7 +806,6 @@
                     });
                     if (updated) saveInventory();
                     
-                    // Мгновенно грузим все картинки
                     preloadAllImages();
                 }
 
