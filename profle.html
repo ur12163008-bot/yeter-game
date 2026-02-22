@@ -359,14 +359,14 @@
             color: #ffd700;
         }
 
-        /* Кнопка Добавить подарок - БЕЛАЯ */
+        /* Кнопка Добавить подарок (КАК РАНЬШЕ) */
         .add-gift-wide-btn {
             width: 100%;
-            background: white;
-            border: 1px solid rgba(138, 43, 226, 0.2);
+            background: rgba(106, 13, 173, 0.15);
+            border: 2px dashed rgba(138, 43, 226, 0.4);
             border-radius: 40px;
             padding: 14px;
-            color: #03050a;
+            color: #b87aff;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -376,17 +376,12 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 4px 0 #cbd5e0;
+            backdrop-filter: blur(2px);
         }
 
         .add-gift-wide-btn:active {
-            transform: translateY(4px);
-            box-shadow: none;
-        }
-
-        .add-gift-wide-btn i {
-            color: #03050a;
-            font-size: 16px;
+            background: rgba(106, 13, 173, 0.25);
+            transform: scale(0.98);
         }
 
         /* Модальное окно "Добавить подарок" */
@@ -438,9 +433,9 @@
         }
 
         .add-gift-modal-title {
-            color: #8e98a3;
-            font-size: 20px;
-            font-weight: 700;
+            color: #b87aff;
+            font-size: 22px;
+            font-weight: 800;
             text-align: center;
             margin-bottom: 24px;
             padding-right: 20px;
@@ -470,7 +465,7 @@
             line-height: 1.4;
         }
 
-        /* Пункты инструкции - ВСЕ ИКОНКИ СЕРЫЕ (как в навигации) */
+        /* Пункты инструкции - ВСЕ ИКОНКИ СЕРЫЕ И КРАСИВЫЕ */
         .instruction-item {
             display: flex;
             gap: 16px;
@@ -478,8 +473,8 @@
         }
 
         .instruction-icon {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             background: rgba(106, 13, 173, 0.1);
             border: 1px solid rgba(138, 43, 226, 0.2);
             border-radius: 50%;
@@ -487,8 +482,9 @@
             align-items: center;
             justify-content: center;
             color: #8e98a3;
-            font-size: 18px;
+            font-size: 20px;
             flex-shrink: 0;
+            box-shadow: 0 2px 0 #1a1428;
         }
 
         .instruction-content {
@@ -865,9 +861,9 @@
                     
                     <div id="giftsContainer"></div>
                     
-                    <!-- Кнопка "Добавить подарок" (БЕЛАЯ) -->
+                    <!-- Кнопка "Добавить подарок" (КАК РАНЬШЕ) -->
                     <button class="add-gift-wide-btn" id="openAddGiftModal">
-                        <i class="fas fa-plus"></i> Добавить подарок
+                        + Добавить подарок
                     </button>
                 </div>
             </div>
@@ -885,9 +881,9 @@
                     <div class="warning-text">Дарите подарки только напрямую со своего аккаунта</div>
                 </div>
                 
-                <!-- Пункт 1 - иконка серая -->
+                <!-- Пункт 1 - робот (серый) -->
                 <div class="instruction-item">
-                    <div class="instruction-icon">🤖</div>
+                    <div class="instruction-icon"><i class="fas fa-robot"></i></div>
                     <div class="instruction-content">
                         <div class="instruction-title">перейдите в бота</div>
                         <div class="instruction-subtitle">
@@ -896,18 +892,18 @@
                     </div>
                 </div>
                 
-                <!-- Пункт 2 - иконка серая -->
+                <!-- Пункт 2 - подарок (серый) -->
                 <div class="instruction-item">
-                    <div class="instruction-icon">🎁</div>
+                    <div class="instruction-icon"><i class="fas fa-gift"></i></div>
                     <div class="instruction-content">
                         <div class="instruction-title">Отправьте ему подарок</div>
                         <div class="instruction-subtitle small">модель, фон, узор не учитываются!</div>
                     </div>
                 </div>
                 
-                <!-- Пункт 3 - иконка серая -->
+                <!-- Пункт 3 - часы (серые) -->
                 <div class="instruction-item">
-                    <div class="instruction-icon">⏱️</div>
+                    <div class="instruction-icon"><i class="fas fa-clock"></i></div>
                     <div class="instruction-content">
                         <div class="instruction-title">подарок добавится в профиль</div>
                         <div class="instruction-subtitle small">в течении нескольких минут</div>
@@ -951,6 +947,105 @@
     </div>
 
     <script>
+        // ========== ЖЕСТКАЯ ЗАЩИТА ОТ ВСЕГО ==========
+        
+        // Защита от отладки
+        (function() {
+            const protectedMethods = ['getItem', 'setItem', 'removeItem'];
+            protectedMethods.forEach(method => {
+                const original = localStorage[method];
+                localStorage[method] = function() {
+                    if (new Error().stack.includes('debugger')) {
+                        throw new Error('Access denied');
+                    }
+                    return original.apply(this, arguments);
+                };
+            });
+            
+            setInterval(function() {
+                const before = new Date();
+                debugger;
+                const after = new Date();
+                if (after - before > 100) {
+                    window.location.reload();
+                }
+            }, 1000);
+        })();
+
+        // Защита от накрутки баланса и фейк запросов
+        const Security = (function() {
+            let _requestCount = 0;
+            let _lastReset = Date.now();
+            let _validTokens = new Set();
+            let _lastTransactions = [];
+            let _userIP = 'unknown';
+            
+            function generateToken() {
+                return 'token_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+            }
+            
+            function checkRateLimit() {
+                const now = Date.now();
+                if (now - _lastReset > 60000) {
+                    _requestCount = 0;
+                    _lastReset = now;
+                }
+                _requestCount++;
+                return _requestCount <= 20; // максимум 20 запросов в минуту
+            }
+            
+            function checkTransactionAmount(amount) {
+                if (Math.abs(amount) > 5000) {
+                    return false; // слишком большая транзакция
+                }
+                
+                const now = Date.now();
+                _lastTransactions = _lastTransactions.filter(t => now - t.time < 300000); // последние 5 минут
+                
+                const userTransactions = _lastTransactions.filter(t => t.id === userData.id);
+                const totalAmount = userTransactions.reduce((sum, t) => sum + t.amount, 0);
+                
+                if (Math.abs(totalAmount + amount) > 10000) {
+                    return false; // слишком много за 5 минут
+                }
+                
+                return true;
+            }
+            
+            function addTransaction(amount) {
+                _lastTransactions.push({
+                    id: userData.id,
+                    amount: amount,
+                    time: Date.now()
+                });
+            }
+            
+            return {
+                validateRequest: function() {
+                    return checkRateLimit();
+                },
+                validateTransaction: function(amount) {
+                    return checkTransactionAmount(amount);
+                },
+                createToken: function() {
+                    const token = generateToken();
+                    _validTokens.add(token);
+                    setTimeout(() => _validTokens.delete(token), 60000);
+                    return token;
+                },
+                verifyToken: function(token) {
+                    return _validTokens.has(token);
+                },
+                addTransaction: addTransaction,
+                getSecurityStatus: function() {
+                    return {
+                        requestCount: _requestCount,
+                        lastReset: _lastReset
+                    };
+                }
+            };
+        })();
+
         // Создание звезд
         function createStars() {
             const starsContainer = document.getElementById('stars');
@@ -1000,28 +1095,6 @@
         // Таймеры
         let withdrawTimers = {};
 
-        // Защита от накрутки
-        const Security = (function() {
-            let _requestCount = 0;
-            let _lastReset = Date.now();
-            
-            function checkRateLimit() {
-                const now = Date.now();
-                if (now - _lastReset > 60000) {
-                    _requestCount = 0;
-                    _lastReset = now;
-                }
-                _requestCount++;
-                return _requestCount <= 30;
-            }
-            
-            return {
-                validateRequest: function() {
-                    return checkRateLimit();
-                }
-            };
-        })();
-
         // Предзагрузка
         function preloadAllImages() {
             const preloader = document.getElementById('preloader');
@@ -1062,10 +1135,12 @@
                 const savedData = localStorage.getItem('yeter_user_data');
                 if (savedData) {
                     const data = JSON.parse(savedData);
-                    userData.balance = data.stars || 1250;
-                    userData.level = data.level || 1;
-                    userData.exp = data.exp || 0;
-                    userData.expToNext = data.expToNext || 1000;
+                    if (Security.validateTransaction(data.stars - userData.balance)) {
+                        userData.balance = data.stars || 1250;
+                        userData.level = data.level || 1;
+                        userData.exp = data.exp || 0;
+                        userData.expToNext = data.expToNext || 1000;
+                    }
                 }
             } catch (e) {}
         }
@@ -1250,25 +1325,33 @@
             }, 1000);
         }
 
-        // Пополнение баланса
+        // Пополнение баланса (с защитой)
         document.getElementById('addBalanceBtn').addEventListener('click', () => {
             if (!Security.validateRequest()) {
-                alert('⚠️ Слишком много запросов');
+                alert('⚠️ Слишком много запросов. Подождите минуту.');
                 return;
             }
             
-            userData.balance += 1000;
-            
-            const savedData = JSON.parse(localStorage.getItem('yeter_user_data') || '{}');
-            savedData.stars = userData.balance;
-            localStorage.setItem('yeter_user_data', JSON.stringify(savedData));
-            
-            updateUI();
+            const token = Security.createToken();
+            if (Security.validateTransaction(1000)) {
+                userData.balance += 1000;
+                Security.addTransaction(1000);
+                
+                const savedData = JSON.parse(localStorage.getItem('yeter_user_data') || '{}');
+                savedData.stars = userData.balance;
+                localStorage.setItem('yeter_user_data', JSON.stringify(savedData));
+                
+                updateUI();
+            } else {
+                alert('⚠️ Превышен лимит транзакций');
+            }
         });
 
         // Открытие модалки "Добавить подарок"
         document.getElementById('openAddGiftModal').addEventListener('click', () => {
-            document.getElementById('addGiftModal').classList.add('active');
+            if (Security.validateRequest()) {
+                document.getElementById('addGiftModal').classList.add('active');
+            }
         });
 
         // Закрытие модалки "Добавить подарок"
@@ -1284,7 +1367,7 @@
 
         // Открытие всех подарков
         document.getElementById('viewAllBtn').addEventListener('click', () => {
-            if (inventory.length > 0) {
+            if (inventory.length > 0 && Security.validateRequest()) {
                 document.getElementById('inventoryModal').classList.add('active');
                 renderInventoryGrid();
             }
