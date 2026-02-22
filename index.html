@@ -172,13 +172,13 @@
             gap: 6px;
         }
 
-        /* Ромбы для уровня - ИСПРАВЛЕНО */
+        /* РОМБ ДЛЯ УРОВНЯ - ЧУТЬ МЕНЬШЕ */
         .level-number-small {
             background: linear-gradient(145deg, #6a0dad, #4b0082);
             width: 26px;
             height: 26px;
             transform: rotate(45deg);
-            border-radius: 5px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -212,7 +212,7 @@
             height: 26px;
             transform: rotate(45deg);
             background: rgba(42, 30, 58, 0.9);
-            border-radius: 5px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -261,10 +261,10 @@
             cursor: pointer;
         }
 
-        /* LIVE лента - ИСПРАВЛЕНО */
+        /* LIVE ЛЕНТА - ТЕМНО-СЕРАЯ, НОРМАЛЬНОЕ ЗАКРУГЛЕНИЕ */
         .live-banner {
-            background: #808080; /* Серая рамка */
-            border-radius: 8px; /* Меньше закругление */
+            background: #2a2a2a;
+            border-radius: 30px;
             height: 80px;
             width: 100%;
             display: flex;
@@ -284,13 +284,13 @@
         .live-banner::before {
             content: "LIVE";
             color: white;
-            font-weight: 900; /* Жирнее */
-            font-size: 24px; /* Больше */
+            font-weight: 900;
+            font-size: 24px;
             margin-right: 15px;
             flex-shrink: 0;
             letter-spacing: 1px;
             text-transform: uppercase;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .live-item {
@@ -458,7 +458,7 @@
         .jackpot-item:first-child { transform: translateX(0); }
         .jackpot-item:last-child { transform: translateX(30px); }
 
-        /* Мины - игровое поле */
+        /* Мины - игровое поле (ВЕРНУЛ КАК БЫЛО) */
         .mines-bg {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -524,55 +524,31 @@
             transform: rotate(15deg) translateY(8px);
         }
 
-        /* Апгрейд - ИСПРАВЛЕНО (убрал 2.5х) */
+        /* Апгрейд - ТОЛЬКО КРУГ БОЛЬШЕ (убрал стрелку и множитель) */
         .upgrade-bg {
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            width: 120px;
+            width: 140px;
             height: 120px;
         }
 
         .upgrade-circle {
-            width: 70px;
-            height: 70px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             background: linear-gradient(145deg, #9b4dff, #6a0dad);
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            box-shadow: 0 0 20px rgba(155, 77, 255, 0.5);
+            box-shadow: 0 0 30px rgba(155, 77, 255, 0.7);
         }
 
         .upgrade-circle span {
-            font-size: 20px;
+            font-size: 26px;
             font-weight: 800;
             color: white;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .upgrade-stats {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0,0,0,0.4);
-            padding: 5px 12px;
-            border-radius: 30px;
-            margin-top: 5px;
-        }
-
-        .upgrade-stats span {
-            font-size: 14px;
-            font-weight: 700;
-            color: #ffd700;
-        }
-
-        .upgrade-stats i {
-            font-size: 16px;
-            color: #b87aff;
         }
 
         .bottom-nav {
@@ -747,6 +723,7 @@
                     <div class="games-info-wrapper">
                         <div class="games-nickname" id="gamesNickname">Загрузка...</div>
                         <div class="games-level-row">
+                            <!-- РОМБ для уровня (чуть меньше) -->
                             <div class="level-number-small"><span id="gamesLevelNumber">1</span></div>
                             <div class="games-progress-small">
                                 <div class="games-progress-fill-small" id="gamesProgressFill" style="width: 0%;"></div>
@@ -764,7 +741,7 @@
                     </div>
                 </div>
 
-                <!-- LIVE лента (ИСПРАВЛЕНО) -->
+                <!-- LIVE лента -->
                 <div class="live-banner" id="liveBanner"></div>
             </div>
 
@@ -793,7 +770,7 @@
                     </div>
                 </div>
 
-                <!-- Мины -->
+                <!-- Мины (ВЕРНУЛ КАК БЫЛО - с пазлами) -->
                 <div class="game-card" onclick="window.location.href='MINES.html'">
                     <div class="game-left">
                         <div class="game-icon">
@@ -851,7 +828,7 @@
                     </div>
                 </div>
 
-                <!-- Апгрейд (ИСПРАВЛЕНО - убрал 2.5х) -->
+                <!-- Апгрейд (ТОЛЬКО КРУГ, убрал стрелку и множитель) -->
                 <div class="game-card" onclick="window.location.href='upgrade.html'">
                     <div class="game-left">
                         <div class="game-icon">
@@ -872,10 +849,6 @@
                         <div class="upgrade-bg">
                             <div class="upgrade-circle">
                                 <span>75%</span>
-                            </div>
-                            <div class="upgrade-stats">
-                                <span>x2.0</span> <!-- Убрал 2.5, теперь x2 -->
-                                <i class="fas fa-arrow-right"></i>
                             </div>
                         </div>
                     </div>
@@ -904,6 +877,7 @@
         </div>
     </div>
 
+    <!-- Хинт (подсказка) -->
     <div class="overlay" id="hintOverlay" style="display: none;">
         <div class="hint-modal">
             <button class="hint-close" id="hintCloseBtn"><i class="fas fa-times"></i></button>
@@ -965,13 +939,12 @@
             }
         });
 
-        // LIVE лента (ИСПРАВЛЕНО - теперь показывает фото NFT)
+        // Функция для добавления покупки в LIVE ленту
         function addToLiveBanner(purchase) {
             const banner = document.getElementById('liveBanner');
             
             // Проверяем путь к изображению
             let imagePath = purchase.image;
-            // Если изображение не начинается с 'nft/', добавляем путь
             if (!imagePath.startsWith('nft/')) {
                 imagePath = 'nft/' + imagePath;
             }
@@ -983,17 +956,35 @@
                 <span class="live-item-name">${purchase.name}</span>
                 <span class="live-item-price">${purchase.price} 🧩</span>
             `;
+            
             banner.appendChild(item);
             
+            // Оставляем только последние 10 покупок
             while (banner.children.length > 10) {
-                banner.removeChild(banner.firstChild);
+                banner.removeChild(banner.children[1]);
             }
+            
+            // Сохраняем в localStorage
+            const purchases = JSON.parse(localStorage.getItem('live_purchases') || '[]');
+            purchases.unshift({ name: purchase.name, price: purchase.price, image: imagePath });
+            if (purchases.length > 10) purchases.pop();
+            localStorage.setItem('live_purchases', JSON.stringify(purchases));
         }
 
         // Загружаем сохраненные покупки
         function loadLiveBanner() {
-            const purchases = JSON.parse(localStorage.getItem('yeter_live_purchases') || '[]');
-            purchases.forEach(p => addToLiveBanner(p));
+            const purchases = JSON.parse(localStorage.getItem('live_purchases') || '[]');
+            purchases.forEach(p => {
+                const banner = document.getElementById('liveBanner');
+                const item = document.createElement('div');
+                item.className = 'live-item';
+                item.innerHTML = `
+                    <img src="${p.image}" class="live-item-image" onerror="this.src='nft/placeholder.png'">
+                    <span class="live-item-name">${p.name}</span>
+                    <span class="live-item-price">${p.price} 🧩</span>
+                `;
+                banner.appendChild(item);
+            });
         }
 
         // Сохраняем покупку
