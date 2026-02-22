@@ -23,7 +23,7 @@
             min-height: 100vh;
         }
 
-        /* Космический фон со звездами */
+        /* Космический фон */
         body::before {
             content: '';
             position: fixed;
@@ -359,34 +359,34 @@
             color: #ffd700;
         }
 
-        /* Кнопка Добавить подарок на всю ширину */
+        /* Кнопка Добавить подарок - БЕЛАЯ */
         .add-gift-wide-btn {
             width: 100%;
-            background: rgba(106, 13, 173, 0.15);
-            border: 2px dashed rgba(138, 43, 226, 0.4);
+            background: white;
+            border: 1px solid rgba(138, 43, 226, 0.2);
             border-radius: 40px;
-            padding: 12px;
-            color: #8e98a3;
-            font-size: 14px;
-            font-weight: 500;
+            padding: 14px;
+            color: #03050a;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
             text-align: center;
             transition: all 0.1s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            backdrop-filter: blur(2px);
+            gap: 8px;
+            box-shadow: 0 4px 0 #cbd5e0;
         }
 
         .add-gift-wide-btn:active {
-            background: rgba(106, 13, 173, 0.25);
-            transform: scale(0.98);
+            transform: translateY(4px);
+            box-shadow: none;
         }
 
         .add-gift-wide-btn i {
-            color: #8e98a3;
-            font-size: 14px;
+            color: #03050a;
+            font-size: 16px;
         }
 
         /* Модальное окно "Добавить подарок" */
@@ -438,9 +438,9 @@
         }
 
         .add-gift-modal-title {
-            color: #b87aff;
-            font-size: 22px;
-            font-weight: 800;
+            color: #8e98a3;
+            font-size: 20px;
+            font-weight: 700;
             text-align: center;
             margin-bottom: 24px;
             padding-right: 20px;
@@ -470,7 +470,7 @@
             line-height: 1.4;
         }
 
-        /* Пункты инструкции - все иконки серые */
+        /* Пункты инструкции - ВСЕ ИКОНКИ СЕРЫЕ (как в навигации) */
         .instruction-item {
             display: flex;
             gap: 16px;
@@ -480,8 +480,8 @@
         .instruction-icon {
             width: 36px;
             height: 36px;
-            background: rgba(106, 13, 173, 0.15);
-            border: 1px solid rgba(138, 43, 226, 0.3);
+            background: rgba(106, 13, 173, 0.1);
+            border: 1px solid rgba(138, 43, 226, 0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -865,9 +865,9 @@
                     
                     <div id="giftsContainer"></div>
                     
-                    <!-- Кнопка "Добавить подарок" (серая, мелкая) -->
+                    <!-- Кнопка "Добавить подарок" (БЕЛАЯ) -->
                     <button class="add-gift-wide-btn" id="openAddGiftModal">
-                        <i class="fas fa-plus"></i> добавить подарок
+                        <i class="fas fa-plus"></i> Добавить подарок
                     </button>
                 </div>
             </div>
@@ -885,7 +885,7 @@
                     <div class="warning-text">Дарите подарки только напрямую со своего аккаунта</div>
                 </div>
                 
-                <!-- Пункт 1 - все иконки серые -->
+                <!-- Пункт 1 - иконка серая -->
                 <div class="instruction-item">
                     <div class="instruction-icon">🤖</div>
                     <div class="instruction-content">
@@ -896,7 +896,7 @@
                     </div>
                 </div>
                 
-                <!-- Пункт 2 - все иконки серые -->
+                <!-- Пункт 2 - иконка серая -->
                 <div class="instruction-item">
                     <div class="instruction-icon">🎁</div>
                     <div class="instruction-content">
@@ -905,7 +905,7 @@
                     </div>
                 </div>
                 
-                <!-- Пункт 3 - все иконки серые -->
+                <!-- Пункт 3 - иконка серая -->
                 <div class="instruction-item">
                     <div class="instruction-icon">⏱️</div>
                     <div class="instruction-content">
