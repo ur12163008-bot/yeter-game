@@ -23,7 +23,6 @@
             min-height: 100vh;
         }
 
-        /* Космический фон */
         body::before {
             content: '';
             position: fixed;
@@ -32,7 +31,6 @@
             z-index: -2;
         }
 
-        /* Статичные звезды (без анимации) */
         .stars {
             position: fixed;
             top: 0;
@@ -50,18 +48,6 @@
             width: 2px;
             height: 2px;
             opacity: 0.7;
-        }
-
-        .star.medium {
-            width: 3px;
-            height: 3px;
-            opacity: 0.8;
-        }
-
-        .star.large {
-            width: 4px;
-            height: 4px;
-            opacity: 0.9;
         }
 
         .app {
@@ -241,7 +227,7 @@
             padding: 20px 20px 40px;
         }
 
-        /* Секция подарков - КАК БЫЛО */
+        /* Секция подарков */
         .gifts-section {
             background: rgba(10, 14, 22, 0.7);
             border: 2px solid rgba(138, 43, 226, 0.3);
@@ -301,7 +287,7 @@
             margin-bottom: 15px;
         }
 
-        /* Рамка вокруг фото + название + цена - КАК БЫЛО */
+        /* Рамка вокруг фото + название + цена */
         .gift-card {
             background: rgba(20, 25, 35, 0.3);
             border: 1px solid rgba(138, 43, 226, 0.2);
@@ -360,7 +346,7 @@
             color: #ffd700;
         }
 
-        /* Кнопка Добавить подарок - КАК БЫЛО */
+        /* Кнопка Добавить подарок */
         .add-gift-wide-btn {
             width: 100%;
             background: rgba(106, 13, 173, 0.15);
@@ -383,136 +369,6 @@
         .add-gift-wide-btn:active {
             background: rgba(106, 13, 173, 0.25);
             transform: scale(0.98);
-        }
-
-        /* Модальное окно "Добавить подарок" */
-        .add-gift-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: 2200;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .add-gift-modal-overlay.active {
-            display: flex;
-        }
-
-        .add-gift-modal {
-            width: 92%;
-            max-width: 380px;
-            background: linear-gradient(145deg, #1a1028, #0f0a18);
-            border: 2px solid rgba(155, 77, 255, 0.5);
-            border-radius: 32px;
-            padding: 28px 20px 24px;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
-        }
-
-        .add-gift-modal-close {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(155, 77, 255, 0.3);
-            color: #b87aff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 18px;
-            z-index: 1;
-        }
-
-        .add-gift-modal-title {
-            color: #b87aff;
-            font-size: 22px;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 24px;
-            padding-right: 20px;
-        }
-
-        /* Красный блок предупреждения */
-        .warning-block {
-            background: rgba(255, 68, 68, 0.1);
-            border: 1px solid rgba(255, 68, 68, 0.2);
-            border-radius: 24px;
-            padding: 16px;
-            margin-bottom: 24px;
-            text-align: center;
-        }
-
-        .warning-title {
-            color: #ff8a8a;
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .warning-text {
-            color: #8e98a3;
-            font-size: 13px;
-            font-weight: 400;
-            line-height: 1.4;
-        }
-
-        /* Пункты инструкции - иконки серые */
-        .instruction-item {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .instruction-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(106, 13, 173, 0.1);
-            border: 1px solid rgba(138, 43, 226, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #8e98a3;
-            font-size: 20px;
-            flex-shrink: 0;
-            box-shadow: 0 2px 0 #1a1428;
-        }
-
-        .instruction-content {
-            flex: 1;
-        }
-
-        .instruction-title {
-            color: white;
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .instruction-subtitle {
-            color: #8e98a3;
-            font-size: 13px;
-            font-weight: 400;
-            line-height: 1.4;
-        }
-
-        .instruction-subtitle a {
-            color: #b87aff;
-            text-decoration: none;
-        }
-
-        .instruction-subtitle.small {
-            font-size: 12px;
         }
 
         /* Модальное окно подарка */
@@ -605,7 +461,6 @@
             gap: 10px;
         }
 
-        /* Кнопка с таймером */
         .withdraw-btn {
             width: 100%;
             background: #2a2a2a;
@@ -629,10 +484,6 @@
             cursor: pointer;
             box-shadow: 0 4px 0 #2d0b4e;
             justify-content: center;
-        }
-
-        .withdraw-btn.active span {
-            color: white;
         }
 
         .timer-left {
@@ -753,7 +604,6 @@
             border-radius: 10px;
         }
 
-        /* Нижняя навигация */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -804,7 +654,6 @@
             color: #b87aff;
         }
 
-        /* Прелоадер */
         .preloader {
             position: fixed;
             top: -9999px;
@@ -817,14 +666,10 @@
     </style>
 </head>
 <body>
-    <!-- Статичные звезды (без анимации) -->
     <div class="stars" id="stars"></div>
-
-    <!-- Невидимый прелоадер -->
     <div class="preloader" id="preloader"></div>
 
     <div class="app">
-        <!-- Верхний баланс -->
         <div class="top-header">
             <div class="balance-wrapper">
                 <div class="balance-stars">
@@ -835,14 +680,12 @@
             </div>
         </div>
 
-        <!-- Профиль -->
         <div class="profile-full">
             <div class="sticky-profile">
                 <div class="avatar-profile" id="profileAvatar"></div>
                 <div class="profile-name-center" id="profileName">Загрузка...</div>
                 <div class="profile-username" id="profileUsername"></div>
 
-                <!-- Уровень в ромбах -->
                 <div class="profile-level-section">
                     <div class="level-badge-profile"><span id="profileLevelNumber">1</span></div>
                     <div class="progress-bar-full">
@@ -853,7 +696,6 @@
             </div>
 
             <div class="profile-content">
-                <!-- Секция подарков -->
                 <div class="gifts-section">
                     <div class="gifts-header">
                         <span class="gifts-title">ВАШИ ПОДАРКИ</span>
@@ -862,7 +704,6 @@
                     
                     <div id="giftsContainer"></div>
                     
-                    <!-- Кнопка "Добавить подарок" -->
                     <button class="add-gift-wide-btn" id="openAddGiftModal">
                         + Добавить подарок
                     </button>
@@ -870,50 +711,6 @@
             </div>
         </div>
 
-        <!-- Модальное окно "Добавить подарок" -->
-        <div class="add-gift-modal-overlay" id="addGiftModal">
-            <div class="add-gift-modal">
-                <div class="add-gift-modal-close" id="closeAddGiftModal">✖</div>
-                <div class="add-gift-modal-title">ДОБАВИТЬ ПОДАРОК</div>
-                
-                <!-- Красный блок предупреждения -->
-                <div class="warning-block">
-                    <div class="warning-title">Не дарите подарки с Telegram Маркета</div>
-                    <div class="warning-text">Дарите подарки только напрямую со своего аккаунта</div>
-                </div>
-                
-                <!-- Пункт 1 - робот -->
-                <div class="instruction-item">
-                    <div class="instruction-icon"><i class="fas fa-robot"></i></div>
-                    <div class="instruction-content">
-                        <div class="instruction-title">перейдите в бота</div>
-                        <div class="instruction-subtitle">
-                            <a href="https://t.me/monelder39" target="_blank">@monelder39</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Пункт 2 - подарок -->
-                <div class="instruction-item">
-                    <div class="instruction-icon"><i class="fas fa-gift"></i></div>
-                    <div class="instruction-content">
-                        <div class="instruction-title">Отправьте ему подарок</div>
-                        <div class="instruction-subtitle small">модель, фон, узор не учитываются!</div>
-                    </div>
-                </div>
-                
-                <!-- Пункт 3 - часы -->
-                <div class="instruction-item">
-                    <div class="instruction-icon"><i class="fas fa-clock"></i></div>
-                    <div class="instruction-content">
-                        <div class="instruction-title">подарок добавится в профиль</div>
-                        <div class="instruction-subtitle small">в течении нескольких минут</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Модальное окно всех подарков -->
         <div class="inventory-modal-overlay" id="inventoryModal">
             <div class="inventory-modal">
                 <div class="inventory-modal-header">
@@ -924,7 +721,6 @@
             </div>
         </div>
 
-        <!-- Модальное окно подарка -->
         <div class="gift-modal-overlay" id="giftModal">
             <div class="gift-modal">
                 <div class="gift-modal-close" id="closeGiftModal">✖</div>
@@ -938,7 +734,6 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a href="index.html" class="nav-item"><i class="fas fa-gamepad"></i><span>ИГРЫ</span></a>
             <a href="shop.html" class="nav-item"><i class="fas fa-store"></i><span>МАГАЗИН</span></a>
@@ -948,66 +743,44 @@
     </div>
 
     <script>
-        // ========== ЖЕСТКАЯ ЗАЩИТА ==========
-        (function() {
-            const protectedMethods = ['getItem', 'setItem', 'removeItem'];
-            protectedMethods.forEach(method => {
-                const original = localStorage[method];
-                localStorage[method] = function() {
-                    if (new Error().stack.includes('debugger')) {
-                        throw new Error('Access denied');
-                    }
-                    return original.apply(this, arguments);
-                };
-            });
-            
-            setInterval(function() {
-                const before = new Date();
-                debugger;
-                const after = new Date();
-                if (after - before > 100) {
-                    window.location.reload();
-                }
-            }, 1000);
-        })();
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.opacity = 0.3 + Math.random() * 0.6;
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+
+        const tg = window.Telegram?.WebApp;
 
         // ========== ЕДИНОЕ ХРАНИЛИЩЕ ==========
         const Storage = (function() {
             let _data = null;
             const _key = 'yeter_user_data';
-            const _backupKey = 'yeter_user_data_backup';
             
             function _init() {
                 const saved = localStorage.getItem(_key);
                 if (saved) {
                     try {
                         _data = JSON.parse(saved);
-                        if (!_validate(_data)) {
-                            _restoreFromBackup();
-                        }
-                    } catch { 
-                        _restoreFromBackup();
+                    } catch {
+                        _createNew();
                     }
                 } else {
                     _createNew();
                 }
                 _save();
-                _createBackup();
-            }
-            
-            function _validate(data) {
-                return data && 
-                       typeof data.stars === 'number' && 
-                       data.stars >= 0 &&
-                       typeof data.level === 'number' &&
-                       data.level >= 1 &&
-                       typeof data.exp === 'number' &&
-                       typeof data.expToNext === 'number';
             }
             
             function _createNew() {
                 _data = {
-                    stars: 1250,
+                    stars: 12500,
                     level: 1,
                     exp: 0,
                     expToNext: 1000,
@@ -1021,23 +794,6 @@
                 localStorage.setItem(_key, JSON.stringify(_data));
             }
             
-            function _createBackup() {
-                localStorage.setItem(_backupKey, JSON.stringify(_data));
-            }
-            
-            function _restoreFromBackup() {
-                const backup = localStorage.getItem(_backupKey);
-                if (backup) {
-                    try {
-                        _data = JSON.parse(backup);
-                    } catch {
-                        _createNew();
-                    }
-                } else {
-                    _createNew();
-                }
-            }
-            
             _init();
             
             return {
@@ -1045,43 +801,25 @@
                 getLevel: function() { return _data.level; },
                 getExp: function() { return _data.exp; },
                 getExpToNext: function() { return _data.expToNext; },
-                getGifts: function() { return [..._data.gifts]; },
+                getGifts: function() { return _data.gifts || []; },
                 
                 updateStars: function(amount, reason) {
                     if (_data.stars + amount < 0) return false;
                     _data.stars += amount;
-                    
-                    _data.transactions.push({
-                        amount: amount,
-                        reason: reason,
-                        time: Date.now(),
-                        balance: _data.stars
-                    });
-                    
-                    if (_data.transactions.length > 50) {
-                        _data.transactions = _data.transactions.slice(-50);
-                    }
-                    
+                    _data.transactions.push({ amount, reason, time: Date.now(), balance: _data.stars });
+                    if (_data.transactions.length > 50) _data.transactions = _data.transactions.slice(-50);
                     _save();
-                    _createBackup();
                     return true;
                 },
                 
-                addExp: function(amount) {
-                    _data.exp += amount;
-                    while (_data.exp >= _data.expToNext) {
-                        _data.exp -= _data.expToNext;
-                        _data.level++;
-                        _data.expToNext = Math.floor(_data.expToNext * 1.5);
-                    }
-                    _save();
-                    _createBackup();
-                },
-                
                 addGift: function(gift) {
-                    _data.gifts.push(gift);
+                    if (!_data.gifts) _data.gifts = [];
+                    _data.gifts.push({
+                        ...gift,
+                        id: Date.now() + Math.random(),
+                        withdrawEnd: gift.withdrawEnd || null
+                    });
                     _save();
-                    _createBackup();
                 },
                 
                 getUserData: function() {
@@ -1112,37 +850,6 @@
             };
         })();
 
-        // Создание звезд (статичных)
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            starsContainer.innerHTML = '';
-            
-            for (let i = 0; i < 100; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                
-                const size = Math.random();
-                if (size < 0.7) {
-                    star.className = 'star';
-                } else if (size < 0.9) {
-                    star.className = 'star medium';
-                } else {
-                    star.className = 'star large';
-                }
-                
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.opacity = 0.3 + Math.random() * 0.6;
-                
-                starsContainer.appendChild(star);
-            }
-        }
-        
-        createStars();
-
-        const tg = window.Telegram?.WebApp;
-        
-        // Данные пользователя
         let userData = {
             id: null,
             firstName: '',
@@ -1151,26 +858,17 @@
             avatarUrl: null
         };
 
-        // Инвентарь подарков
         let inventory = [];
-
-        // Таймеры
         let withdrawTimers = {};
 
-        // Загрузка данных
         function loadData() {
-            const userDataFromStorage = Storage.getUserData();
-            inventory = userDataFromStorage.gifts || [];
-            
+            inventory = Storage.getGifts() || [];
             inventory = inventory.map(gift => {
-                if (!gift.withdrawEnd) {
-                    gift.withdrawEnd = null;
-                }
+                if (!gift.withdrawEnd) gift.withdrawEnd = null;
                 return gift;
             });
         }
 
-        // Telegram данные
         if (tg) {
             tg.ready();
             const user = tg.initDataUnsafe?.user;
@@ -1185,8 +883,6 @@
                 
                 if (userData.username) {
                     document.getElementById('profileUsername').innerText = '@' + userData.username;
-                } else {
-                    document.getElementById('profileUsername').innerText = '';
                 }
                 
                 if (user.photo_url) {
@@ -1200,34 +896,27 @@
             }
         }
 
-        // Обновление UI
         function updateUI() {
-            const userDataFromStorage = Storage.getUserData();
-            document.getElementById('balanceDisplay').innerText = userDataFromStorage.stars;
-            document.getElementById('profileLevelNumber').innerText = userDataFromStorage.level;
-            document.getElementById('profileNextLevel').innerText = userDataFromStorage.level + 1;
+            const data = Storage.getUserData();
+            document.getElementById('balanceDisplay').innerText = data.stars;
+            document.getElementById('profileLevelNumber').innerText = data.level;
+            document.getElementById('profileNextLevel').innerText = data.level + 1;
             
-            const progress = (userDataFromStorage.exp / userDataFromStorage.expToNext) * 100;
+            const progress = (data.exp / data.expToNext) * 100;
             document.getElementById('profileProgressFill').style.width = progress + '%';
             
             loadData();
             renderGifts();
             renderInventoryGrid();
             
-            const viewAllBtn = document.getElementById('viewAllBtn');
-            viewAllBtn.style.display = inventory.length > 0 ? 'flex' : 'none';
+            document.getElementById('viewAllBtn').style.display = inventory.length > 0 ? 'flex' : 'none';
         }
 
-        // Отрисовка первых 2 подарков (КАК БЫЛО)
         function renderGifts() {
             const container = document.getElementById('giftsContainer');
             
             if (inventory.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-gifts">
-                        <p>У вас пока нет подарков</p>
-                    </div>
-                `;
+                container.innerHTML = `<div class="empty-gifts"><p>У вас пока нет подарков</p></div>`;
             } else {
                 let html = '<div class="gifts-grid">';
                 inventory.slice(0, 2).forEach((gift, index) => {
@@ -1250,12 +939,11 @@
             }
         }
 
-        // Отрисовка всех подарков
         function renderInventoryGrid() {
             const grid = document.getElementById('inventoryGrid');
             
             if (inventory.length === 0) {
-                grid.innerHTML = '<div style="text-align: center; color: #8e98a3; grid-column: 1/3; padding: 30px;">Нет подарков</div>';
+                grid.innerHTML = '<div style="text-align: center; color: #8e98a3; padding: 30px;">Нет подарков</div>';
                 return;
             }
             
@@ -1274,7 +962,6 @@
             `).join('');
         }
 
-        // Открытие модалки подарка
         function openGiftModal(index) {
             const gift = inventory[index];
             if (!gift) return;
@@ -1305,7 +992,6 @@
             document.getElementById('giftModal').classList.add('active');
         }
 
-        // Обновление таймера
         function startTimerUpdate(gift, index) {
             if (withdrawTimers[index]) clearInterval(withdrawTimers[index]);
             
@@ -1313,20 +999,19 @@
                 if (!gift.withdrawEnd || gift.withdrawEnd <= Date.now()) {
                     clearInterval(withdrawTimers[index]);
                     delete withdrawTimers[index];
-                    
                     gift.withdrawEnd = null;
                     
-                    const activeModal = document.getElementById('giftModal').classList.contains('active');
-                    if (activeModal && document.getElementById('modalTitle').innerText === gift.name) {
-                        const withdrawBtn = document.getElementById('withdrawBtn');
-                        withdrawBtn.classList.add('active');
-                        withdrawBtn.innerHTML = 'ВЫВЕСТИ';
+                    if (document.getElementById('giftModal').classList.contains('active') && 
+                        document.getElementById('modalTitle').innerText === gift.name) {
+                        document.getElementById('withdrawBtn').classList.add('active');
+                        document.getElementById('withdrawBtn').innerHTML = 'ВЫВЕСТИ';
                     }
                     
                     updateUI();
                 } else {
                     const remaining = Math.ceil((gift.withdrawEnd - Date.now()) / 60000);
-                    if (document.getElementById('modalTitle').innerText === gift.name) {
+                    if (document.getElementById('giftModal').classList.contains('active') && 
+                        document.getElementById('modalTitle').innerText === gift.name) {
                         const withdrawBtn = document.getElementById('withdrawBtn');
                         withdrawBtn.innerHTML = `
                             <div class="timer-left">
@@ -1340,28 +1025,25 @@
             }, 1000);
         }
 
-        // Пополнение баланса
         document.getElementById('addBalanceBtn').addEventListener('click', () => {
             if (!Security.validateRequest()) {
                 alert('⚠️ Слишком много запросов');
                 return;
             }
-            
             if (Storage.updateStars(1000, 'Пополнение')) {
                 updateUI();
             }
         });
 
-        // Открытие модалки "Добавить подарок"
         document.getElementById('openAddGiftModal').addEventListener('click', () => {
-            if (Security.validateRequest()) {
-                document.getElementById('addGiftModal').classList.add('active');
-            }
+            window.location.href = 'shop.html';
         });
 
-        // Закрытие модалок
-        document.getElementById('closeAddGiftModal').addEventListener('click', () => {
-            document.getElementById('addGiftModal').classList.remove('active');
+        document.getElementById('viewAllBtn').addEventListener('click', () => {
+            if (inventory.length > 0) {
+                document.getElementById('inventoryModal').classList.add('active');
+                renderInventoryGrid();
+            }
         });
 
         document.getElementById('closeInventoryModal').addEventListener('click', () => {
@@ -1370,12 +1052,6 @@
 
         document.getElementById('closeGiftModal').addEventListener('click', () => {
             document.getElementById('giftModal').classList.remove('active');
-        });
-
-        document.getElementById('addGiftModal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('addGiftModal')) {
-                e.target.classList.remove('active');
-            }
         });
 
         document.getElementById('inventoryModal').addEventListener('click', (e) => {
@@ -1390,19 +1066,16 @@
             }
         });
 
-        // Открытие всех подарков
-        document.getElementById('viewAllBtn').addEventListener('click', () => {
-            if (inventory.length > 0 && Security.validateRequest()) {
-                document.getElementById('inventoryModal').classList.add('active');
-                renderInventoryGrid();
+        // Слушаем изменения в localStorage
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'yeter_inventory' || e.key === 'yeter_user_data') {
+                updateUI();
             }
         });
 
-        // Инициализация
         loadData();
         updateUI();
 
-        // Обновление таймеров
         setInterval(() => {
             let updated = false;
             inventory.forEach(gift => {
