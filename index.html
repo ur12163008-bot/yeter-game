@@ -114,47 +114,6 @@
             flex-shrink: 0;
         }
 
-        .header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px 20px 10px;
-        }
-
-        .balance-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(10, 14, 22, 0.8);
-            padding: 6px 20px;
-            border-radius: 40px;
-            border: 1px solid rgba(138, 43, 226, 0.4);
-        }
-
-        .balance-stars {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 800;
-            font-size: 20px;
-            color: white;
-        }
-
-        .add-balance-btn {
-            background: rgba(106, 13, 173, 0.3);
-            border: 1px solid rgba(138, 43, 226, 0.4);
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #b87aff;
-            font-size: 20px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
         .content {
             padding: 8px 20px 20px;
         }
@@ -162,7 +121,7 @@
         .games-top {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
             margin-bottom: 20px;
             background: rgba(5, 7, 12, 0.2);
             border-radius: 18px;
@@ -270,9 +229,9 @@
         .games-balance-wrapper {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             background: rgba(10, 14, 22, 0.8);
-            padding: 5px 12px;
+            padding: 6px 16px;
             border-radius: 40px;
             border: 1px solid rgba(138, 43, 226, 0.4);
             flex-shrink: 0;
@@ -281,16 +240,32 @@
         .games-stars {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             font-weight: 800;
-            font-size: 16px;
+            font-size: 18px;
             color: white;
         }
 
+        .add-balance-btn {
+            background: rgba(106, 13, 173, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b87aff;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* LIVE лента */
         .live-banner {
             background: rgba(30, 38, 48, 0.8);
             border-radius: 30px;
-            height: 80px;
+            height: 70px;
             width: 100%;
             display: flex;
             align-items: center;
@@ -308,11 +283,12 @@
 
         .live-banner::before {
             content: "LIVE";
-            color: #b87aff;
-            font-weight: 700;
-            font-size: 14px;
-            margin-right: 5px;
+            color: white;
+            font-weight: 800;
+            font-size: 18px;
+            margin-right: 10px;
             flex-shrink: 0;
+            letter-spacing: 1px;
         }
 
         .live-item {
@@ -452,21 +428,23 @@
         .jackpot-bg {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             padding: 10px;
             background: linear-gradient(90deg, transparent, rgba(155, 77, 255, 0.2));
+            width: 140px;
         }
 
         .jackpot-item {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
             background: rgba(255,255,255,0.1);
-            padding: 4px 8px;
-            border-radius: 20px;
+            padding: 4px 10px;
+            border-radius: 30px;
             font-size: 11px;
             color: white;
-            transform: translateX(20px);
+            transform: translateX(15px);
+            width: fit-content;
         }
 
         .jackpot-item i {
@@ -474,24 +452,27 @@
             font-size: 10px;
         }
 
+        .jackpot-item:first-child { transform: translateX(0); }
+        .jackpot-item:last-child { transform: translateX(30px); }
+
         /* Мины - игровое поле */
         .mines-bg {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
+            gap: 5px;
             padding: 10px;
             background: rgba(0,0,0,0.3);
             border-radius: 15px;
-            width: 100px;
-            height: 100px;
+            width: 110px;
+            height: 110px;
             transform: rotate(5deg);
         }
 
         .mine-cell {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             background: rgba(155, 77, 255, 0.3);
-            border-radius: 5px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -500,14 +481,14 @@
 
         .mine-cell i {
             color: #ff4444;
-            font-size: 10px;
+            font-size: 11px;
         }
 
         .puzzle-cell {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             background: rgba(255, 215, 0, 0.3);
-            border-radius: 5px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -515,21 +496,21 @@
 
         .puzzle-cell i {
             color: #ffd700;
-            font-size: 10px;
+            font-size: 11px;
         }
 
-        /* Dice - кубики */
+        /* Dice - кубики большие */
         .dice-bg {
             display: flex;
-            gap: 8px;
+            gap: 12px;
             padding: 10px;
             transform: rotate(5deg);
         }
 
         .dice-bg i {
-            font-size: 32px;
+            font-size: 42px;
             color: #b87aff;
-            filter: drop-shadow(0 0 5px #9b4dff);
+            filter: drop-shadow(0 0 8px #9b4dff);
         }
 
         .dice-bg i:first-child {
@@ -537,37 +518,47 @@
         }
 
         .dice-bg i:last-child {
-            transform: rotate(15deg) translateY(5px);
+            transform: rotate(15deg) translateY(8px);
         }
 
-        /* Апгрейд - круг со стрелкой */
+        /* Апгрейд - круг с процентом */
         .upgrade-bg {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 5px;
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
         }
 
         .upgrade-circle {
-            width: 50px;
-            height: 50px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            border: 3px solid #b87aff;
-            border-top-color: transparent;
-            animation: spin 2s linear infinite;
-            margin-bottom: 5px;
+            background: linear-gradient(145deg, #9b4dff, #6a0dad);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 20px rgba(155, 77, 255, 0.5);
+        }
+
+        .upgrade-circle span {
+            font-size: 20px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .upgrade-stats {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(0,0,0,0.3);
-            padding: 5px 10px;
-            border-radius: 20px;
+            background: rgba(0,0,0,0.4);
+            padding: 5px 12px;
+            border-radius: 30px;
+            margin-top: 5px;
         }
 
         .upgrade-stats span {
@@ -580,11 +571,6 @@
             font-size: 16px;
             color: #b87aff;
             transform: rotate(45deg);
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         .bottom-nav {
@@ -751,16 +737,6 @@
     </div>
 
     <div class="app">
-        <div class="header">
-            <div class="balance-wrapper">
-                <div class="balance-stars">
-                    <span class="puzzle-icon">🧩</span>
-                    <span id="balanceDisplay">0</span>
-                </div>
-                <div class="add-balance-btn" id="addBalanceBtn">+</div>
-            </div>
-        </div>
-
         <div class="content">
             <div class="games-top">
                 <div class="games-header">
@@ -782,6 +758,7 @@
                             <span class="puzzle-icon">🧩</span>
                             <span id="gamesBalanceDisplay">0</span>
                         </div>
+                        <div class="add-balance-btn" id="addBalanceBtn">+</div>
                     </div>
                 </div>
 
@@ -808,9 +785,9 @@
                         <i class="fas fa-chevron-right"></i>
                     </div>
                     <div class="game-bg jackpot-bg">
-                        <div class="jackpot-item"><i class="fas fa-user"></i> 2,500</div>
-                        <div class="jackpot-item"><i class="fas fa-user"></i> 1,800</div>
-                        <div class="jackpot-item"><i class="fas fa-user"></i> 1,200</div>
+                        <div class="jackpot-item"><i class="fas fa-user"></i> 2.5k</div>
+                        <div class="jackpot-item"><i class="fas fa-user"></i> 1.8k</div>
+                        <div class="jackpot-item"><i class="fas fa-user"></i> 1.2k</div>
                     </div>
                 </div>
 
@@ -866,7 +843,8 @@
                     <div class="game-bg">
                         <div class="dice-bg">
                             <i class="fas fa-dice-six"></i>
-                            <i class="fas fa-dice-twenty"></i>
+                            <i class="fas fa-dice-six"></i>
+                            <i class="fas fa-dice-six"></i>
                         </div>
                     </div>
                 </div>
@@ -890,9 +868,11 @@
                     </div>
                     <div class="game-bg">
                         <div class="upgrade-bg">
-                            <div class="upgrade-circle"></div>
-                            <div class="upgrade-stats">
+                            <div class="upgrade-circle">
                                 <span>75%</span>
+                            </div>
+                            <div class="upgrade-stats">
+                                <span>x2.5</span>
                                 <i class="fas fa-arrow-right"></i>
                             </div>
                         </div>
@@ -1086,7 +1066,6 @@
                 },
                 
                 updateUI: function() {
-                    document.getElementById('balanceDisplay').innerText = _data.stars;
                     document.getElementById('gamesBalanceDisplay').innerText = _data.stars;
                     document.getElementById('gamesLevelNumber').innerText = _data.level;
                     document.getElementById('gamesNextLevel').innerText = _data.level + 1;
