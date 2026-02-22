@@ -32,6 +32,7 @@
             z-index: -2;
         }
 
+        /* Статичные звезды (без анимации) */
         .stars {
             position: fixed;
             top: 0;
@@ -240,7 +241,7 @@
             padding: 20px 20px 40px;
         }
 
-        /* Секция подарков */
+        /* Секция подарков - КАК БЫЛО */
         .gifts-section {
             background: rgba(10, 14, 22, 0.7);
             border: 2px solid rgba(138, 43, 226, 0.3);
@@ -300,7 +301,7 @@
             margin-bottom: 15px;
         }
 
-        /* Рамка вокруг фото + название + цена */
+        /* Рамка вокруг фото + название + цена - КАК БЫЛО */
         .gift-card {
             background: rgba(20, 25, 35, 0.3);
             border: 1px solid rgba(138, 43, 226, 0.2);
@@ -359,7 +360,7 @@
             color: #ffd700;
         }
 
-        /* Кнопка Добавить подарок (КАК РАНЬШЕ) */
+        /* Кнопка Добавить подарок - КАК БЫЛО */
         .add-gift-wide-btn {
             width: 100%;
             background: rgba(106, 13, 173, 0.15);
@@ -465,7 +466,7 @@
             line-height: 1.4;
         }
 
-        /* Пункты инструкции - ВСЕ ИКОНКИ СЕРЫЕ */
+        /* Пункты инструкции - иконки серые */
         .instruction-item {
             display: flex;
             gap: 16px;
@@ -816,7 +817,7 @@
     </style>
 </head>
 <body>
-    <!-- Статичные звезды -->
+    <!-- Статичные звезды (без анимации) -->
     <div class="stars" id="stars"></div>
 
     <!-- Невидимый прелоадер -->
@@ -881,7 +882,7 @@
                     <div class="warning-text">Дарите подарки только напрямую со своего аккаунта</div>
                 </div>
                 
-                <!-- Пункт 1 - робот (серый) -->
+                <!-- Пункт 1 - робот -->
                 <div class="instruction-item">
                     <div class="instruction-icon"><i class="fas fa-robot"></i></div>
                     <div class="instruction-content">
@@ -892,7 +893,7 @@
                     </div>
                 </div>
                 
-                <!-- Пункт 2 - подарок (серый) -->
+                <!-- Пункт 2 - подарок -->
                 <div class="instruction-item">
                     <div class="instruction-icon"><i class="fas fa-gift"></i></div>
                     <div class="instruction-content">
@@ -901,7 +902,7 @@
                     </div>
                 </div>
                 
-                <!-- Пункт 3 - часы (серые) -->
+                <!-- Пункт 3 - часы -->
                 <div class="instruction-item">
                     <div class="instruction-icon"><i class="fas fa-clock"></i></div>
                     <div class="instruction-content">
@@ -970,7 +971,7 @@
             }, 1000);
         })();
 
-        // ========== ЕДИНОЕ ХРАНИЛИЩЕ (ДЛЯ ВСЕХ HTML) ==========
+        // ========== ЕДИНОЕ ХРАНИЛИЩЕ ==========
         const Storage = (function() {
             let _data = null;
             const _key = 'yeter_user_data';
@@ -1083,16 +1084,6 @@
                     _createBackup();
                 },
                 
-                removeGift: function(index) {
-                    if (index >= 0 && index < _data.gifts.length) {
-                        _data.gifts.splice(index, 1);
-                        _save();
-                        _createBackup();
-                        return true;
-                    }
-                    return false;
-                },
-                
                 getUserData: function() {
                     return { ..._data };
                 }
@@ -1121,7 +1112,7 @@
             };
         })();
 
-        // Создание звезд
+        // Создание звезд (статичных)
         function createStars() {
             const starsContainer = document.getElementById('stars');
             starsContainer.innerHTML = '';
@@ -1151,7 +1142,7 @@
 
         const tg = window.Telegram?.WebApp;
         
-        // Данные пользователя из Telegram
+        // Данные пользователя
         let userData = {
             id: null,
             firstName: '',
@@ -1160,7 +1151,7 @@
             avatarUrl: null
         };
 
-        // Инвентарь подарков (синхронизирован с Storage)
+        // Инвентарь подарков
         let inventory = [];
 
         // Таймеры
@@ -1171,25 +1162,12 @@
             const userDataFromStorage = Storage.getUserData();
             inventory = userDataFromStorage.gifts || [];
             
-            // Добавляем withdrawEnd если нет
             inventory = inventory.map(gift => {
                 if (!gift.withdrawEnd) {
                     gift.withdrawEnd = null;
                 }
                 return gift;
             });
-        }
-
-        function saveInventory() {
-            // Удаляем все подарки и добавляем заново
-            const currentData = Storage.getUserData();
-            currentData.gifts = inventory;
-            
-            // Обновляем через Storage (костыль, но работает)
-            while (Storage.getUserData().gifts.length > 0) {
-                Storage.removeGift(0);
-            }
-            inventory.forEach(gift => Storage.addGift(gift));
         }
 
         // Telegram данные
@@ -1232,7 +1210,6 @@
             const progress = (userDataFromStorage.exp / userDataFromStorage.expToNext) * 100;
             document.getElementById('profileProgressFill').style.width = progress + '%';
             
-            // Обновляем инвентарь
             loadData();
             renderGifts();
             renderInventoryGrid();
@@ -1241,7 +1218,7 @@
             viewAllBtn.style.display = inventory.length > 0 ? 'flex' : 'none';
         }
 
-        // Отрисовка первых 2 подарков
+        // Отрисовка первых 2 подарков (КАК БЫЛО)
         function renderGifts() {
             const container = document.getElementById('giftsContainer');
             
@@ -1259,7 +1236,6 @@
                             <img src="${gift.image || 'nft/placeholder.png'}" 
                                  class="gift-image" 
                                  alt="${gift.name}"
-                                 loading="eager"
                                  onerror="this.src='nft/placeholder.png'">
                             <span class="gift-name">${gift.name}</span>
                             <span class="gift-price">
@@ -1288,7 +1264,6 @@
                     <img src="${gift.image || 'nft/placeholder.png'}" 
                          class="gift-image" 
                          alt="${gift.name}"
-                         loading="eager"
                          onerror="this.src='nft/placeholder.png'">
                     <span class="gift-name">${gift.name}</span>
                     <span class="gift-price">
@@ -1340,7 +1315,6 @@
                     delete withdrawTimers[index];
                     
                     gift.withdrawEnd = null;
-                    saveInventory();
                     
                     const activeModal = document.getElementById('giftModal').classList.contains('active');
                     if (activeModal && document.getElementById('modalTitle').innerText === gift.name) {
@@ -1349,8 +1323,7 @@
                         withdrawBtn.innerHTML = 'ВЫВЕСТИ';
                     }
                     
-                    renderGifts();
-                    renderInventoryGrid();
+                    updateUI();
                 } else {
                     const remaining = Math.ceil((gift.withdrawEnd - Date.now()) / 60000);
                     if (document.getElementById('modalTitle').innerText === gift.name) {
@@ -1367,10 +1340,10 @@
             }, 1000);
         }
 
-        // Пополнение баланса (с защитой)
+        // Пополнение баланса
         document.getElementById('addBalanceBtn').addEventListener('click', () => {
             if (!Security.validateRequest()) {
-                alert('⚠️ Слишком много запросов. Подождите минуту.');
+                alert('⚠️ Слишком много запросов');
                 return;
             }
             
@@ -1386,32 +1359,23 @@
             }
         });
 
-        // Закрытие модалки "Добавить подарок"
+        // Закрытие модалок
         document.getElementById('closeAddGiftModal').addEventListener('click', () => {
             document.getElementById('addGiftModal').classList.remove('active');
         });
 
-        document.getElementById('addGiftModal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('addGiftModal')) {
-                e.target.classList.remove('active');
-            }
-        });
-
-        // Открытие всех подарков
-        document.getElementById('viewAllBtn').addEventListener('click', () => {
-            if (inventory.length > 0 && Security.validateRequest()) {
-                document.getElementById('inventoryModal').classList.add('active');
-                renderInventoryGrid();
-            }
-        });
-
-        // Закрытие модалок
         document.getElementById('closeInventoryModal').addEventListener('click', () => {
             document.getElementById('inventoryModal').classList.remove('active');
         });
 
         document.getElementById('closeGiftModal').addEventListener('click', () => {
             document.getElementById('giftModal').classList.remove('active');
+        });
+
+        document.getElementById('addGiftModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('addGiftModal')) {
+                e.target.classList.remove('active');
+            }
         });
 
         document.getElementById('inventoryModal').addEventListener('click', (e) => {
@@ -1426,10 +1390,11 @@
             }
         });
 
-        // Слушаем изменения в localStorage
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'yeter_user_data') {
-                updateUI();
+        // Открытие всех подарков
+        document.getElementById('viewAllBtn').addEventListener('click', () => {
+            if (inventory.length > 0 && Security.validateRequest()) {
+                document.getElementById('inventoryModal').classList.add('active');
+                renderInventoryGrid();
             }
         });
 
@@ -1447,7 +1412,6 @@
                 }
             });
             if (updated) {
-                saveInventory();
                 updateUI();
             }
         }, 1000);
