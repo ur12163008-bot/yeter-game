@@ -258,21 +258,20 @@
         }
 
         .gift-card {
-            background: rgba(20, 25, 35, 0.3);
-            border: 1px solid rgba(138, 43, 226, 0.2);
-            border-radius: 16px;
-            padding: 12px 8px;
+            background: transparent;
+            border: none;
+            padding: 8px 4px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             cursor: pointer;
             transition: all 0.1s;
-            min-height: 130px;
+            min-height: auto;
         }
 
         .gift-card:active {
-            background: rgba(30, 35, 45, 0.5);
+            transform: scale(0.97);
         }
 
         .gift-image {
@@ -280,7 +279,6 @@
             height: 70px;
             border-radius: 12px;
             object-fit: cover;
-            background-color: #1a1028;
             display: block;
         }
 
@@ -306,13 +304,13 @@
             align-items: center;
             justify-content: center;
             gap: 4px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 800;
             color: #b87aff;
         }
 
         .gift-price .puzzle-icon {
-            font-size: 14px;
+            font-size: 12px;
             color: #ffd700;
         }
 
@@ -368,7 +366,6 @@
             margin: 10px auto 15px;
             display: block;
             object-fit: cover;
-            background-color: #1a1028;
         }
 
         .gift-modal-image[src*="Spiced Wine"] {
@@ -491,7 +488,7 @@
         .inventory-modal {
             width: 92%;
             max-width: 400px;
-            height: 80vh;
+            max-height: 80vh;
             background: linear-gradient(145deg, #1a1028, #0f0a18);
             border: 2px solid rgba(155, 77, 255, 0.5);
             border-radius: 32px;
@@ -533,11 +530,10 @@
         }
 
         .inventory-grid {
-            flex: 1;
-            overflow-y: auto;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
+            overflow-y: auto;
             padding-right: 5px;
         }
 
@@ -604,8 +600,8 @@
             color: #b87aff;
         }
 
-        /* Прелоадер для картинок */
-        .image-preloader {
+        /* Прелоадер (невидимый) */
+        .preloader {
             position: fixed;
             top: -9999px;
             left: -9999px;
@@ -617,8 +613,8 @@
     </style>
 </head>
 <body>
-    <!-- Невидимый прелоадер для всех картинок -->
-    <div class="image-preloader" id="preloader"></div>
+    <!-- Невидимый прелоадер для мгновенной загрузки -->
+    <div class="preloader" id="preloader"></div>
 
     <div class="app">
         <!-- Верхний баланс -->
@@ -737,9 +733,12 @@
             };
         })();
 
-        // ========== ПРЕДЗАГРУЗКА ВСЕХ КАРТИНОК ==========
+        // ========== МГНОВЕННАЯ ПРЕДЗАГРУЗКА ВСЕХ КАРТИНОК ==========
         function preloadAllImages() {
             const preloader = document.getElementById('preloader');
+            
+            // Очищаем прелоадер
+            preloader.innerHTML = '';
             
             // Собираем все уникальные URL картинок из инвентаря
             const imageUrls = new Set();
@@ -747,12 +746,17 @@
                 if (gift.image && !imageUrls.has(gift.image)) {
                     imageUrls.add(gift.image);
                     
-                    // Создаем невидимый img для предзагрузки
+                    // Создаем невидимый img для принудительной загрузки
                     const img = new Image();
                     img.src = gift.image;
                     preloader.appendChild(img);
                 }
             });
+            
+            // Добавляем заглушку на всякий случай
+            const placeholderImg = new Image();
+            placeholderImg.src = 'nft/placeholder.png';
+            preloader.appendChild(placeholderImg);
         }
 
         // Загрузка данных из localStorage
@@ -773,8 +777,8 @@
                     });
                     if (updated) saveInventory();
                     
-                    // Предзагружаем все картинки после загрузки инвентаря
-                    setTimeout(() => preloadAllImages(), 100);
+                    // МГНОВЕННО предзагружаем все картинки
+                    preloadAllImages();
                 }
 
                 const savedData = localStorage.getItem('yeter_user_data');
@@ -835,7 +839,7 @@
             viewAllBtn.style.display = inventory.length > 0 ? 'flex' : 'none';
         }
 
-        // Отрисовка первых 2 подарков
+        // Отрисовка первых 2 подарков (БЕЗ РАМОК У ФОТО)
         function renderGifts() {
             const container = document.getElementById('giftsContainer');
             
@@ -856,7 +860,6 @@
                             <img src="${gift.image || 'nft/placeholder.png'}" 
                                  class="gift-image" 
                                  alt="${gift.name}"
-                                 loading="eager"
                                  onerror="this.src='nft/placeholder.png'">
                             <span class="gift-name">${gift.name}</span>
                             <span class="gift-price">
@@ -871,7 +874,7 @@
             }
         }
 
-        // Отрисовка всех подарков
+        // Отрисовка всех подарков (БЕЗ РАМОК У ФОТО)
         function renderInventoryGrid() {
             const grid = document.getElementById('inventoryGrid');
             
@@ -885,7 +888,6 @@
                     <img src="${gift.image || 'nft/placeholder.png'}" 
                          class="gift-image" 
                          alt="${gift.name}"
-                         loading="eager"
                          onerror="this.src='nft/placeholder.png'">
                     <span class="gift-name">${gift.name}</span>
                     <span class="gift-price">
