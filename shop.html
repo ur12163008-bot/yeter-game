@@ -61,11 +61,6 @@
             z-index: 1;
         }
 
-        /* ЗАЩИТА ОТ НАКРУТКИ - как в index */
-        .security-overlay {
-            display: none;
-        }
-
         /* Уведомления */
         .notification {
             position: fixed;
@@ -103,19 +98,17 @@
             font-size: 13px;
         }
 
-        /* Шапка профиля - ТАКАЯ ЖЕ КАК В INDEX */
+        /* ШАПКА ПРОФИЛЯ - БЕЗ РАМКИ */
         .shop-profile-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(5, 7, 12, 0.5);
             margin: 10px 20px 20px;
             padding: 8px 16px;
-            border-radius: 38px;
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            backdrop-filter: blur(4px);
             width: auto;
             gap: 8px;
+            background: transparent; /* УБРАЛ РАМКУ */
+            border: none; /* УБРАЛ РАМКУ */
         }
 
         .shop-profile-left {
@@ -127,13 +120,13 @@
         }
 
         .shop-avatar-small {
-            width: 48px;  /* Как в index */
-            height: 48px; /* Как в index */
+            width: 48px;
+            height: 48px;
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px; /* Как в index */
+            font-size: 24px;
             font-weight: 700;
             color: white;
             border: 2px solid #b87aff;
@@ -152,7 +145,7 @@
         }
 
         .shop-nick {
-            font-size: 16px; /* Как в index */
+            font-size: 16px;
             font-weight: 700;
             color: white;
             line-height: 1.2;
@@ -161,7 +154,7 @@
             text-overflow: ellipsis;
         }
 
-        /* Уровень - такой же как в index */
+        /* УРОВЕНЬ - КРУГЛЫЙ (НЕ ОВАЛ) */
         .shop-level-row {
             display: flex;
             align-items: center;
@@ -170,22 +163,22 @@
 
         .shop-level-badge {
             background: linear-gradient(145deg, #6a0dad, #4b0082);
-            width: 28px;  /* Как в index */
-            height: 28px; /* Как в index */
-            border-radius: 50%; /* Круглый как в index */
+            width: 28px;
+            height: 28px;
+            border-radius: 50%; /* КРУГЛЫЙ */
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .shop-level-badge span {
-            font-size: 15px; /* Как в index */
+            font-size: 14px;
             font-weight: 800;
             color: white;
         }
 
         .shop-progress-wrap {
-            width: 60px; /* Как в index */
+            width: 60px;
             height: 5px;
             background: rgba(30, 38, 48, 0.8);
             border-radius: 20px;
@@ -202,9 +195,9 @@
         }
 
         .shop-next-level {
-            width: 28px; /* Как в index */
-            height: 28px; /* Как в index */
-            border-radius: 50%; /* Круглый как в index */
+            width: 28px;
+            height: 28px;
+            border-radius: 50%; /* КРУГЛЫЙ */
             background: rgba(42, 30, 58, 0.9);
             display: flex;
             align-items: center;
@@ -213,20 +206,19 @@
         }
 
         .shop-next-level span {
-            font-size: 15px; /* Как в index */
+            font-size: 14px;
             font-weight: 800;
             color: #b87aff;
         }
 
-        /* Баланс - такой же как в index */
+        /* БАЛАНС - БЕЗ РАМКИ */
         .shop-balance-right {
             display: flex;
             align-items: center;
             gap: 6px;
-            background: rgba(10, 14, 22, 0.8);
-            padding: 6px 14px; /* Как в index */
-            border-radius: 30px;
-            border: 1px solid rgba(138, 43, 226, 0.4);
+            background: transparent; /* УБРАЛ РАМКУ */
+            padding: 0;
+            border: none; /* УБРАЛ РАМКУ */
             flex-shrink: 0;
         }
 
@@ -235,7 +227,7 @@
             align-items: center;
             gap: 4px;
             font-weight: 700;
-            font-size: 16px; /* Как в index */
+            font-size: 16px;
             color: white;
         }
 
@@ -251,13 +243,13 @@
             background: rgba(106, 13, 173, 0.3);
             border: 1px solid rgba(138, 43, 226, 0.4);
             border-radius: 50%;
-            width: 24px; /* Как в index */
-            height: 24px; /* Как в index */
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #b87aff;
-            font-size: 18px; /* Как в index */
+            font-size: 18px;
             font-weight: 700;
             cursor: pointer;
             opacity: 0.7;
@@ -391,25 +383,21 @@
             transition: all 0.2s ease;
         }
 
-        /* Eternal Candle - поменьше */
         .product-image[alt="Eternal Candle"] {
             object-fit: contain;
             transform: scale(0.9);
         }
 
-        /* Spy Agaric - поменьше */
         .product-image[alt="Spy Agaric"] {
             object-fit: contain;
             transform: scale(0.85);
         }
 
-        /* Mini Oscar - ниже по высоте */
         .product-image[alt="Mini Oscar"] {
             object-fit: contain;
             transform: scale(0.9) translateY(2px);
         }
 
-        /* Kissed Frog - правее */
         .product-image[alt="Kissed Frog"] {
             object-fit: contain;
             transform: scale(1) translateX(3px);
@@ -556,12 +544,7 @@
             box-shadow: none;
         }
 
-        /* Кеширование изображений */
-        .image-cache {
-            display: none;
-        }
-
-        /* Нижняя навигация - ИСПРАВЛЕНА */
+        /* Нижняя навигация */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -569,7 +552,7 @@
             right: 0;
             max-width: 440px;
             margin: 0 auto;
-            background: #0c0f16; /* Непрозрачная */
+            background: #0c0f16;
             display: flex;
             justify-content: space-around;
             padding: 10px 4px;
@@ -633,12 +616,10 @@
 <body>
     <div class="stars" id="stars"></div>
 
-    <!-- Скрытый div для предзагрузки изображений -->
-    <div class="image-cache" id="imageCache"></div>
-
     <div class="notification" id="notification"></div>
 
     <div class="app">
+        <!-- ШАПКА - БЕЗ РАМКИ -->
         <div class="shop-profile-header">
             <div class="shop-profile-left">
                 <div class="shop-avatar-small" id="shopAvatar">?</div>
@@ -653,6 +634,7 @@
                     </div>
                 </div>
             </div>
+            <!-- БАЛАНС - БЕЗ РАМКИ -->
             <div class="shop-balance-right">
                 <div class="shop-balance-stars">
                     <span class="puzzle-icon">🧩</span>
@@ -695,7 +677,7 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация - ИСПРАВЛЕННАЯ -->
+        <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a href="index.html" class="nav-item" onclick="window.location.href='index.html'; return false;"><i class="fas fa-gamepad"></i><span>ИГРЫ</span></a>
             <a href="shop.html" class="nav-item active" onclick="window.location.href='shop.html'; return false;"><i class="fas fa-store"></i><span>МАГАЗИН</span></a>
@@ -705,42 +687,109 @@
     </div>
 
     <script>
-        // ЗАЩИТА ОТ НАКРУТКИ - как в index
+        // ЗАЩИТА И ГЛОБАЛЬНОЕ ХРАНИЛИЩЕ
         (function() {
             // Проверка на запуск в Telegram WebApp
             const tg = window.Telegram?.WebApp;
             
-            // Если не в Telegram, блокируем функционал
             if (!tg || !tg.initData || !tg.initDataUnsafe?.user) {
-                console.error('Доступ запрещен: приложение работает только в Telegram');
-                
-                // Блокируем все клики и показываем сообщение
+                console.error('Доступ запрещен');
                 document.body.innerHTML = `
                     <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #03050a; color: white; text-align: center; padding: 20px;">
                         <div>
                             <h2 style="margin-bottom: 20px; color: #ff4444;">❌ Доступ запрещен</h2>
-                            <p style="color: #8e98a3; margin-bottom: 20px;">Приложение работает только в Telegram WebApp</p>
-                            <a href="https://t.me/your_bot" style="background: linear-gradient(145deg, #6a0dad, #4b0082); color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: 600;">Открыть в Telegram</a>
+                            <p style="color: #8e98a3; margin-bottom: 20px;">Приложение работает только в Telegram</p>
                         </div>
                     </div>
                 `;
                 throw new Error('Not in Telegram');
             }
 
-            // Проверка на открытые инструменты разработчика
-            setInterval(() => {
-                const widthThreshold = window.outerWidth - window.innerWidth > 160;
-                const heightThreshold = window.outerHeight - window.innerHeight > 160;
+            // Получаем ID пользователя Telegram
+            const userId = tg.initDataUnsafe.user.id;
+            
+            // Глобальное хранилище для одного пользователя на всех устройствах
+            window.UserStorage = (function() {
+                const STORAGE_KEY = `yeter_user_${userId}`;
                 
-                if (widthThreshold || heightThreshold) {
-                    document.body.innerHTML = '<div style="color: white; background: #03050a; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; text-align: center;">🔒 Инструменты разработчика отключены</div>';
+                function loadUserData() {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        try {
+                            return JSON.parse(saved);
+                        } catch {
+                            return createDefaultData();
+                        }
+                    }
+                    return createDefaultData();
                 }
-            }, 1000);
-
-            // Защита от фреймов
-            if (window.self !== window.top) {
-                throw new Error('Запуск во фрейме запрещен');
-            }
+                
+                function createDefaultData() {
+                    return {
+                        stars: 12500,
+                        level: 1,
+                        exp: 0,
+                        expToNext: 1000,
+                        gifts: [],
+                        games: {},
+                        transactions: [],
+                        lastSync: Date.now()
+                    };
+                }
+                
+                let userData = loadUserData();
+                
+                function saveUserData() {
+                    userData.lastSync = Date.now();
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+                }
+                
+                // Синхронизация между вкладками
+                window.addEventListener('storage', (e) => {
+                    if (e.key === STORAGE_KEY && e.newValue) {
+                        try {
+                            const newData = JSON.parse(e.newValue);
+                            if (newData.lastSync > userData.lastSync) {
+                                userData = newData;
+                                updateUIDisplay();
+                            }
+                        } catch {}
+                    }
+                });
+                
+                return {
+                    getStars: function() { return userData.stars; },
+                    getLevel: function() { return userData.level; },
+                    getExp: function() { return userData.exp; },
+                    getExpToNext: function() { return userData.expToNext; },
+                    getUserData: function() { return { ...userData }; },
+                    
+                    updateStars: function(amount, reason) {
+                        if (userData.stars + amount < 0) return false;
+                        userData.stars += amount;
+                        if (!userData.transactions) userData.transactions = [];
+                        userData.transactions.push({ 
+                            amount, 
+                            reason, 
+                            time: Date.now(), 
+                            balance: userData.stars
+                        });
+                        if (userData.transactions.length > 50) userData.transactions = userData.transactions.slice(-50);
+                        saveUserData();
+                        return true;
+                    },
+                    
+                    addExp: function(amount) {
+                        userData.exp += amount;
+                        while (userData.exp >= userData.expToNext) {
+                            userData.exp -= userData.expToNext;
+                            userData.level++;
+                            userData.expToNext = Math.floor(userData.expToNext * 1.5);
+                        }
+                        saveUserData();
+                    }
+                };
+            })();
         })();
 
         // Звезды
@@ -752,13 +801,12 @@
                 star.className = 'star';
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
-                star.style.opacity = 0.3 + Math.random() * 0.4;
                 starsContainer.appendChild(star);
             }
         }
         createStars();
 
-        // Функция форматирования чисел (1.5к, 2.3м)
+        // Форматирование чисел
         function formatNumber(num) {
             if (num >= 1000000) {
                 return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'м';
@@ -769,6 +817,16 @@
             return num.toString();
         }
 
+        // Обновление UI
+        function updateUIDisplay() {
+            const data = window.UserStorage.getUserData();
+            document.getElementById('shopBalanceDisplay').innerText = formatNumber(data.stars);
+            document.getElementById('shopLevelNumber').innerText = data.level;
+            document.getElementById('shopNextLevel').innerText = data.level + 1;
+            const progress = (data.exp / data.expToNext) * 100;
+            document.getElementById('shopProgressFill').style.width = progress + '%';
+        }
+
         // Уведомления
         const Notification = {
             show: function(message, type) {
@@ -776,25 +834,15 @@
                 notif.className = 'notification ' + type;
                 notif.innerText = message;
                 notif.classList.add('show');
-                
-                setTimeout(() => {
-                    notif.classList.remove('show');
-                }, 3000);
+                setTimeout(() => notif.classList.remove('show'), 3000);
             },
-            
-            success: function(message) {
-                this.show(message, 'success');
-            },
-            
-            error: function(message) {
-                this.show(message, 'error');
-            }
+            success: function(message) { this.show(message, 'success'); },
+            error: function(message) { this.show(message, 'error'); }
         };
 
         // Защита от накрутки
         const Security = (function() {
             let _requestTimestamps = [];
-            
             function checkRateLimit() {
                 const now = Date.now();
                 _requestTimestamps = _requestTimestamps.filter(t => now - t < 60000);
@@ -802,25 +850,8 @@
                 _requestTimestamps.push(now);
                 return true;
             }
-            
-            return {
-                validateRequest: function() {
-                    return checkRateLimit();
-                }
-            };
+            return { validateRequest: checkRateLimit };
         })();
-
-        // Кеширование изображений
-        function preloadImages() {
-            const imageCache = document.getElementById('imageCache');
-            nftGifts.forEach(item => {
-                const img = new Image();
-                img.src = item.image;
-                img.onerror = () => {
-                    console.log('Ошибка загрузки:', item.image);
-                };
-            });
-        }
 
         // Все NFT
         const nftGifts = [
@@ -924,64 +955,6 @@
             { name: "Trapped Heart", price: 129, image: "nft/Trapped Heart.png" }
         ];
 
-        // Хранилище
-        const Storage = (function() {
-            let _data = null;
-            const _key = 'yeter_user_data';
-            
-            function _init() {
-                const saved = localStorage.getItem(_key);
-                if (saved) {
-                    try {
-                        _data = JSON.parse(saved);
-                    } catch {
-                        _createNew();
-                    }
-                } else {
-                    _createNew();
-                }
-            }
-            
-            function _createNew() {
-                _data = {
-                    stars: 12500,
-                    level: 1,
-                    exp: 0,
-                    expToNext: 1000,
-                    gifts: [],
-                    games: {},
-                    transactions: []
-                };
-            }
-            
-            function _save() {
-                localStorage.setItem(_key, JSON.stringify(_data));
-            }
-            
-            _init();
-            
-            return {
-                getStars: function() { return _data.stars; },
-                getLevel: function() { return _data.level; },
-                getExp: function() { return _data.exp; },
-                getExpToNext: function() { return _data.expToNext; },
-                
-                updateStars: function(amount, reason) {
-                    if (_data.stars + amount < 0) return false;
-                    _data.stars += amount;
-                    if (!_data.transactions) _data.transactions = [];
-                    _data.transactions.push({ amount, reason, time: Date.now(), balance: _data.stars });
-                    if (_data.transactions.length > 50) _data.transactions = _data.transactions.slice(-50);
-                    _save();
-                    return true;
-                },
-                
-                getUserData: function() {
-                    return { ..._data };
-                }
-            };
-        })();
-
         // Состояние
         let currentSearchTerm = '';
         let currentSort = 'random';
@@ -1048,8 +1021,8 @@
                 return;
             }
 
-            if (Storage.getStars() >= price) {
-                if (Storage.updateStars(-price, `Покупка: ${name}`)) {
+            if (window.UserStorage.getStars() >= price) {
+                if (window.UserStorage.updateStars(-price, `Покупка: ${name}`)) {
                     const inventory = JSON.parse(localStorage.getItem('yeter_inventory') || '[]');
                     inventory.push({
                         name: name,
@@ -1069,7 +1042,7 @@
                     setTimeout(() => localStorage.removeItem('new_purchase'), 100);
                     
                     document.getElementById('modalOverlay').classList.remove('active');
-                    Notification.success('Подарок успешно куплен\nОн появился в вашем профиле');
+                    Notification.success('Подарок успешно куплен');
                     
                     updateUIDisplay();
                 }
@@ -1079,19 +1052,9 @@
             }
         }
 
-        function updateUIDisplay() {
-            const data = Storage.getUserData();
-            document.getElementById('shopBalanceDisplay').innerText = formatNumber(data.stars);
-            document.getElementById('shopLevelNumber').innerText = data.level;
-            document.getElementById('shopNextLevel').innerText = data.level + 1;
-            const progress = (data.exp / data.expToNext) * 100;
-            document.getElementById('shopProgressFill').style.width = progress + '%';
-        }
-
-        // Кнопка + не работает (только для вида)
+        // Кнопка + не работает
         document.getElementById('addBalanceBtn').addEventListener('click', (e) => {
             e.preventDefault();
-            // Ничего не делаем
         });
 
         const tg = window.Telegram?.WebApp;
@@ -1130,13 +1093,9 @@
         document.getElementById('sortBtn').addEventListener('click', () => {
             if (!Security.validateRequest()) return;
             
-            if (currentSort === 'random') {
-                currentSort = 'desc';
-            } else if (currentSort === 'desc') {
-                currentSort = 'asc';
-            } else {
-                currentSort = 'random';
-            }
+            if (currentSort === 'random') currentSort = 'desc';
+            else if (currentSort === 'desc') currentSort = 'asc';
+            else currentSort = 'random';
             renderProducts();
         });
 
@@ -1145,31 +1104,24 @@
             renderProducts();
         });
 
-        // Обработчики для навигации (чтобы работало с первого раза)
+        // Обработчики навигации
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
                 const href = this.getAttribute('href');
-                if (href) {
-                    window.location.href = href;
-                }
+                if (href) window.location.href = href;
             });
         });
 
-        // Принудительная установка активного пункта меню
+        // Активный пункт меню
         const currentPage = window.location.pathname.split('/').pop() || 'shop.html';
         document.querySelectorAll('.nav-item').forEach(item => {
             item.classList.remove('active');
-            if (item.getAttribute('href') === currentPage) {
-                item.classList.add('active');
-            }
+            if (item.getAttribute('href') === currentPage) item.classList.add('active');
         });
 
         // Инициализация
         updateUIDisplay();
-        
-        // Предзагрузка изображений
-        preloadImages();
         
         setTimeout(() => {
             renderProducts();
