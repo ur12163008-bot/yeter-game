@@ -183,12 +183,13 @@
             color: #b87aff;
         }
 
+        /* БАЛАНС - ЧУТЬ ПОБОЛЬШЕ */
         .games-balance-wrapper {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             background: rgba(10, 14, 22, 0.8);
-            padding: 4px 10px;
+            padding: 6px 14px;
             border-radius: 30px;
             border: 1px solid rgba(138, 43, 226, 0.4);
             flex-shrink: 0;
@@ -198,9 +199,9 @@
         .games-stars {
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 16px;
             color: white;
         }
 
@@ -208,15 +209,17 @@
             background: rgba(106, 13, 173, 0.3);
             border: 1px solid rgba(138, 43, 226, 0.4);
             border-radius: 50%;
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #b87aff;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             cursor: pointer;
+            opacity: 0.7;
+            pointer-events: none; /* Не нажимается, просто для вида */
         }
 
         .live-banner {
@@ -303,6 +306,12 @@
             border: 1px solid rgba(138, 43, 226, 0.3);
             position: relative;
             overflow: hidden;
+            transition: all 0.1s ease;
+        }
+
+        .game-card:active {
+            transform: scale(0.98);
+            background: linear-gradient(145deg, #2a1e3a, #1a1028);
         }
 
         .game-left {
@@ -405,6 +414,7 @@
             font-size: 12px;
         }
 
+        /* МИНЫ - ЗАМЕНИЛ ЗВЕЗДЫ НА ПАЗЛЫ */
         .mines-bg {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -414,7 +424,7 @@
             border-radius: 14px;
             width: 110px;
             height: 110px;
-            transform: rotate(5deg);
+            transform: rotate(3deg);
         }
 
         .mine-cell {
@@ -447,17 +457,32 @@
             font-size: 11px;
         }
 
+        /* DICE - НАКЛОНЕННЫЕ КУБИКИ */
         .dice-bg {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             padding: 8px;
-            transform: rotate(5deg);
+            transform: rotate(0deg);
+            position: relative;
         }
 
         .dice-bg i {
             font-size: 40px;
             color: #b87aff;
             filter: drop-shadow(0 0 8px #9b4dff);
+            display: block;
+        }
+
+        .dice-bg i:nth-child(1) {
+            transform: rotate(-15deg) translateY(5px);
+        }
+        
+        .dice-bg i:nth-child(2) {
+            transform: rotate(5deg) translateY(-3px);
+        }
+        
+        .dice-bg i:nth-child(3) {
+            transform: rotate(25deg) translateY(8px);
         }
 
         .upgrade-bg {
@@ -512,17 +537,26 @@
             font-size: 10px;
             font-weight: 600;
             cursor: pointer;
-            padding: 6px 8px;
+            padding: 8px 8px;
             border-radius: 25px;
             flex: 1;
             text-align: center;
             text-decoration: none;
-            transition: all 0.2s;
+            transition: all 0.1s ease;
+            background: transparent;
+            border: none;
+            outline: none;
+        }
+
+        .nav-item:active {
+            background: rgba(106, 13, 173, 0.2);
+            transform: scale(0.95);
         }
 
         .nav-item i {
             font-size: 18px;
             color: #8e98a3;
+            pointer-events: none;
         }
 
         .nav-item.active {
@@ -537,6 +571,7 @@
         .nav-item span {
             font-size: 9px;
             font-weight: 600;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -560,12 +595,13 @@
                         </div>
                     </div>
                     
+                    <!-- БАЛАНС С КНОПКОЙ + (НЕ РАБОТАЕТ) -->
                     <div class="games-balance-wrapper">
                         <div class="games-stars">
                             <span class="puzzle-icon">🧩</span>
                             <span id="gamesBalanceDisplay">12.5k</span>
                         </div>
-                        <div class="add-balance-btn" id="addBalanceBtn" style="display: none;">+</div>
+                        <div class="add-balance-btn" id="addBalanceBtn">+</div>
                     </div>
                 </div>
 
@@ -592,6 +628,7 @@
                     </div>
                 </div>
 
+                <!-- МИНЫ - ТЕПЕРЬ ПАЗЛЫ ВМЕСТО ЗВЕЗД -->
                 <div class="game-card" onclick="window.location.href='MINES.html'">
                     <div class="game-left">
                         <div class="game-icon"><i class="fas fa-bomb"></i></div>
@@ -607,18 +644,19 @@
                     <div class="game-bg">
                         <div class="mines-bg">
                             <div class="mine-cell"><i class="fas fa-bomb"></i></div>
-                            <div class="puzzle-cell"><i class="fas fa-star"></i></div>
+                            <div class="puzzle-cell"><span class="puzzle-icon">🧩</span></div>
                             <div class="mine-cell"><i class="fas fa-bomb"></i></div>
-                            <div class="puzzle-cell"><i class="fas fa-star"></i></div>
+                            <div class="puzzle-cell"><span class="puzzle-icon">🧩</span></div>
                             <div class="mine-cell"><i class="fas fa-bomb"></i></div>
-                            <div class="puzzle-cell"><i class="fas fa-star"></i></div>
+                            <div class="puzzle-cell"><span class="puzzle-icon">🧩</span></div>
                             <div class="mine-cell"><i class="fas fa-bomb"></i></div>
-                            <div class="puzzle-cell"><i class="fas fa-star"></i></div>
+                            <div class="puzzle-cell"><span class="puzzle-icon">🧩</span></div>
                             <div class="mine-cell"><i class="fas fa-bomb"></i></div>
                         </div>
                     </div>
                 </div>
 
+                <!-- DICE - НАКЛОНЕННЫЕ КУБИКИ -->
                 <div class="game-card" onclick="window.location.href='dice.html'">
                     <div class="game-left">
                         <div class="game-icon"><i class="fas fa-dice"></i></div>
@@ -663,21 +701,21 @@
             </div>
         </div>
 
-        <!-- НИЖНЯЯ НАВИГАЦИЯ - ИСПРАВЛЕННАЯ ССЫЛКА -->
+        <!-- НИЖНЯЯ НАВИГАЦИЯ - ИСПРАВЛЕННАЯ ССЫЛКА НА PROFLE.HTML -->
         <div class="bottom-nav">
-            <a href="index.html" class="nav-item active">
+            <a href="index.html" class="nav-item active" onclick="window.location.href='index.html'; return false;">
                 <i class="fas fa-gamepad"></i>
                 <span>ИГРЫ</span>
             </a>
-            <a href="shop.html" class="nav-item">
+            <a href="shop.html" class="nav-item" onclick="window.location.href='shop.html'; return false;">
                 <i class="fas fa-store"></i>
                 <span>МАГАЗИН</span>
             </a>
-            <a href="leaders.html" class="nav-item">
+            <a href="leaders.html" class="nav-item" onclick="window.location.href='leaders.html'; return false;">
                 <i class="fas fa-trophy"></i>
                 <span>ЛИДЕРЫ</span>
             </a>
-            <a href="profile.html" class="nav-item">  <!-- ИСПРАВЛЕНО: было profle.html, стало profile.html -->
+            <a href="profle.html" class="nav-item" onclick="window.location.href='profle.html'; return false;">  <!-- ИСПРАВЛЕНО: profile.html -> profle.html -->
                 <i class="fas fa-user"></i>
                 <span>ПРОФИЛЬ</span>
             </a>
@@ -685,70 +723,6 @@
     </div>
 
     <script>
-        // ЗАЩИТА ОТ НАКРУТКИ И ФЕЙКОВ
-        (function() {
-            // Проверка на запуск в Telegram WebApp
-            const tg = window.Telegram?.WebApp;
-            
-            // Если не в Telegram, блокируем функционал
-            if (!tg || !tg.initData || !tg.initDataUnsafe?.user) {
-                console.error('Доступ запрещен: приложение работает только в Telegram');
-                
-                // Блокируем все клики и показываем сообщение
-                document.body.innerHTML = `
-                    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #03050a; color: white; text-align: center; padding: 20px;">
-                        <div>
-                            <h2 style="margin-bottom: 20px; color: #ff4444;">❌ Доступ запрещен</h2>
-                            <p style="color: #8e98a3; margin-bottom: 20px;">Приложение работает только в Telegram WebApp</p>
-                            <a href="https://t.me/your_bot" style="background: linear-gradient(145deg, #6a0dad, #4b0082); color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: 600;">Открыть в Telegram</a>
-                        </div>
-                    </div>
-                `;
-                throw new Error('Not in Telegram');
-            }
-
-            // Сохраняем данные пользователя для проверки
-            const user = tg.initDataUnsafe.user;
-            const chatId = user.id;
-            const startParam = tg.initDataUnsafe.start_param || '';
-            
-            // Функция для проверки подписи данных
-            function validateTelegramData() {
-                // Здесь должна быть проверка на сервере
-                // Но для клиента - хотя бы проверяем наличие данных
-                return tg.initData && tg.initData.length > 0;
-            }
-
-            if (!validateTelegramData()) {
-                console.error('Невалидные данные Telegram');
-                tg.close();
-            }
-
-            // Защита от инспектора и консоли
-            (function() {
-                const devtools = {
-                    open: false,
-                    orientation: null
-                };
-                
-                // Проверка на открытые инструменты разработчика
-                setInterval(() => {
-                    const widthThreshold = window.outerWidth - window.innerWidth > 160;
-                    const heightThreshold = window.outerHeight - window.innerHeight > 160;
-                    
-                    if (widthThreshold || heightThreshold) {
-                        // Если открыты инструменты разработчика, блокируем
-                        document.body.innerHTML = '<div style="color: white; background: #03050a; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; text-align: center;">🔒 Инструменты разработчика отключены</div>';
-                    }
-                }, 1000);
-            })();
-
-            // Защита от повторных запусков (фреймы)
-            if (window.self !== window.top) {
-                throw new Error('Запуск во фрейме запрещен');
-            }
-        })();
-
         // Звезды
         function createStars() {
             const starsContainer = document.getElementById('stars');
@@ -801,83 +775,56 @@
             }
         };
 
-        // Слушаем покупки с проверкой источника
+        // Слушаем покупки
         window.addEventListener('storage', (e) => {
             if (e.key === 'new_purchase') {
                 try {
-                    // Проверяем, что событие пришло из того же домена
-                    if (e.origin && e.origin !== window.location.origin) {
-                        return;
-                    }
-                    
                     const purchase = JSON.parse(e.newValue);
-                    
-                    // Дополнительная проверка на валидность данных
                     if (purchase && purchase.name && purchase.price && purchase.image) {
                         window.addToLiveBanner(purchase.name, purchase.price, purchase.image);
                     }
-                } catch (err) {
-                    console.error('Ошибка при обработке покупки');
-                }
+                } catch (err) {}
             }
         });
 
-        // Telegram WebApp инициализация с защитой
+        // Telegram WebApp
         const tg = window.Telegram?.WebApp;
         if (tg) {
-            try {
-                tg.ready();
-                tg.expand();
+            tg.ready();
+            tg.expand();
+            
+            const user = tg.initDataUnsafe?.user;
+            if (user) {
+                document.getElementById('gamesNickname').innerText = user.first_name || 'Player';
                 
-                const user = tg.initDataUnsafe?.user;
-                if (user) {
-                    // Устанавливаем имя пользователя
-                    document.getElementById('gamesNickname').innerText = user.first_name || 'Player';
-                    
-                    // Загружаем аватар если есть
-                    if (user.photo_url) {
-                        document.getElementById('gamesAvatar').style.backgroundImage = `url(${user.photo_url})`;
-                        document.getElementById('gamesAvatar').style.backgroundColor = 'transparent';
-                        document.getElementById('gamesAvatar').innerText = '';
-                    } else {
-                        document.getElementById('gamesAvatar').innerText = (user.first_name?.charAt(0) || 'П').toUpperCase();
-                    }
-                    
-                    // Получаем баланс из secure storage (имитация)
-                    // В реальности должно приходить с сервера
-                    const userBalance = localStorage.getItem(`balance_${user.id}`) || '12500';
-                    document.getElementById('gamesBalanceDisplay').innerText = formatNumber(parseInt(userBalance));
+                if (user.photo_url) {
+                    document.getElementById('gamesAvatar').style.backgroundImage = `url(${user.photo_url})`;
+                    document.getElementById('gamesAvatar').style.backgroundColor = 'transparent';
+                    document.getElementById('gamesAvatar').innerText = '';
+                } else {
+                    document.getElementById('gamesAvatar').innerText = (user.first_name?.charAt(0) || 'П').toUpperCase();
                 }
-            } catch (e) {
-                console.error('Ошибка инициализации Telegram');
             }
         }
 
-        // Защита от кликджекинга
-        document.addEventListener('click', function(e) {
-            // Дополнительная проверка для важных действий
-            if (e.target.closest('.add-balance-btn')) {
-                e.preventDefault();
-                // Здесь должна быть проверка на сервере
-                console.log('Попытка накрутки баланса заблокирована');
+        // Принудительная установка активного пункта меню
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('href') === currentPage) {
+                item.classList.add('active');
             }
-        }, true);
-
-        // Маскируем чувствительные данные в консоли
-        ['log', 'info', 'warn', 'error'].forEach(method => {
-            const original = console[method];
-            console[method] = function() {
-                if (arguments[0] && typeof arguments[0] === 'string' && 
-                    (arguments[0].includes('balance') || arguments[0].includes('user'))) {
-                    return;
-                }
-                original.apply(console, arguments);
-            };
         });
 
-        // Очищаем localStorage при выходе (опционально)
-        window.addEventListener('beforeunload', function() {
-            // Не очищаем, просто для совместимости
+        // Обработчики для навигации (чтобы работало с первого раза)
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                if (href) {
+                    window.location.href = href;
+                }
+            });
         });
     </script>
 </body>
