@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        /* СТИЛИ КАК В ПРЕДЫДУЩЕЙ ВЕРСИИ */
         * {
             margin: 0;
             padding: 0;
@@ -27,10 +28,7 @@
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: radial-gradient(ellipse at 40% 50%, #0a0e1a 0%, #03050a 70%, #000103 100%);
             z-index: -2;
         }
@@ -52,6 +50,12 @@
             width: 2px;
             height: 2px;
             opacity: 0.6;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.2; }
         }
 
         .app {
@@ -76,13 +80,54 @@
             padding: 8px 20px 20px;
         }
 
+        /* LIVE уведомление */
+        .live-notification {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(30, 38, 48, 0.9);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 40px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+            backdrop-filter: blur(4px);
+            max-width: 280px;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+
+        .live-notification.show {
+            transform: translateX(0);
+        }
+
+        .live-notification-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .live-notification-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .live-notification-text span {
+            color: #ffd700;
+            font-weight: 700;
+        }
+
+        /* ШАПКА - БЕЗ РАМКИ */
         .games-top {
             display: flex;
             flex-direction: column;
             gap: 15px;
             margin-bottom: 20px;
-            background: rgba(5, 7, 12, 0.2);
-            border-radius: 18px;
             padding: 12px;
         }
 
@@ -138,7 +183,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px rgba(106, 13, 173, 0.5);
             flex-shrink: 0;
         }
 
@@ -183,15 +227,12 @@
             color: #b87aff;
         }
 
-        /* БАЛАНС - ЧУТЬ ПОБОЛЬШЕ */
         .games-balance-wrapper {
             display: flex;
             align-items: center;
             gap: 6px;
-            background: rgba(10, 14, 22, 0.8);
-            padding: 6px 14px;
-            border-radius: 30px;
-            border: 1px solid rgba(138, 43, 226, 0.4);
+            background: transparent;
+            padding: 0;
             flex-shrink: 0;
             margin-left: auto;
         }
@@ -219,7 +260,7 @@
             font-weight: 700;
             cursor: pointer;
             opacity: 0.7;
-            pointer-events: none; /* Не нажимается, просто для вида */
+            pointer-events: none;
         }
 
         .live-banner {
@@ -311,7 +352,6 @@
 
         .game-card:active {
             transform: scale(0.98);
-            background: linear-gradient(145deg, #2a1e3a, #1a1028);
         }
 
         .game-left {
@@ -414,7 +454,9 @@
             font-size: 12px;
         }
 
-        /* МИНЫ - ЗАМЕНИЛ ЗВЕЗДЫ НА ПАЗЛЫ */
+        .jackpot-item:first-child { transform: translateX(0); }
+        .jackpot-item:last-child { transform: translateX(30px); }
+
         .mines-bg {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -457,13 +499,10 @@
             font-size: 11px;
         }
 
-        /* DICE - НАКЛОНЕННЫЕ КУБИКИ */
         .dice-bg {
             display: flex;
             gap: 12px;
             padding: 8px;
-            transform: rotate(0deg);
-            position: relative;
         }
 
         .dice-bg i {
@@ -510,7 +549,6 @@
             color: white;
         }
 
-        /* НИЖНЯЯ НАВИГАЦИЯ */
         .bottom-nav {
             position: fixed;
             bottom: 16px;
@@ -521,8 +559,8 @@
             background: #0c0f16;
             display: flex;
             justify-content: space-around;
-            padding: 8px 4px;
-            border-radius: 25px;
+            padding: 10px 4px;
+            border-radius: 30px;
             border: 1px solid #2a1e3a;
             box-shadow: 0 4px 20px rgba(0,0,0,0.8);
             z-index: 1000;
@@ -543,9 +581,6 @@
             text-align: center;
             text-decoration: none;
             transition: all 0.1s ease;
-            background: transparent;
-            border: none;
-            outline: none;
         }
 
         .nav-item:active {
@@ -556,7 +591,6 @@
         .nav-item i {
             font-size: 18px;
             color: #8e98a3;
-            pointer-events: none;
         }
 
         .nav-item.active {
@@ -571,12 +605,118 @@
         .nav-item span {
             font-size: 9px;
             font-weight: 600;
-            pointer-events: none;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .hint-modal {
+            width: 280px;
+            background: #f0f0f0;
+            border-radius: 28px;
+            padding: 28px 24px 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+            color: #222;
+            border: 1px solid #ddd;
+        }
+        
+        .hint-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 22px;
+            color: #555;
+            cursor: pointer;
+            background: rgba(0,0,0,0.05);
+            border: none;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: 0.1s ease;
+        }
+        
+        .hint-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #111;
+            padding-right: 20px;
+        }
+        
+        .hint-text {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            margin-bottom: 28px;
+        }
+        
+        .hint-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+        
+        .hint-checkbox {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #e0e0e0;
+            padding: 12px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            width: fit-content;
+            margin: 0 auto;
+            font-size: 15px;
+            color: #222;
+            transition: 0.1s ease;
+        }
+        
+        .hint-done-btn {
+            background: #2c2c2c;
+            border: none;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 14px 20px;
+            border-radius: 60px;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #111;
+            transition: 0.05s linear;
+            letter-spacing: 0.5px;
+        }
+        
+        .hint-done-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
         }
     </style>
 </head>
 <body>
     <div class="stars" id="stars"></div>
+
+    <div class="live-notification" id="liveNotification">
+        <img src="" alt="" class="live-notification-image" id="liveImage">
+        <div class="live-notification-text" id="liveText"></div>
+    </div>
 
     <div class="app">
         <div class="content">
@@ -595,7 +735,6 @@
                         </div>
                     </div>
                     
-                    <!-- БАЛАНС С КНОПКОЙ + (НЕ РАБОТАЕТ) -->
                     <div class="games-balance-wrapper">
                         <div class="games-stars">
                             <span class="puzzle-icon">🧩</span>
@@ -628,7 +767,6 @@
                     </div>
                 </div>
 
-                <!-- МИНЫ - ТЕПЕРЬ ПАЗЛЫ ВМЕСТО ЗВЕЗД -->
                 <div class="game-card" onclick="window.location.href='MINES.html'">
                     <div class="game-left">
                         <div class="game-icon"><i class="fas fa-bomb"></i></div>
@@ -656,7 +794,6 @@
                     </div>
                 </div>
 
-                <!-- DICE - НАКЛОНЕННЫЕ КУБИКИ -->
                 <div class="game-card" onclick="window.location.href='dice.html'">
                     <div class="game-left">
                         <div class="game-icon"><i class="fas fa-dice"></i></div>
@@ -701,28 +838,183 @@
             </div>
         </div>
 
-        <!-- НИЖНЯЯ НАВИГАЦИЯ - ИСПРАВЛЕННАЯ ССЫЛКА НА PROFLE.HTML -->
         <div class="bottom-nav">
-            <a href="index.html" class="nav-item active" onclick="window.location.href='index.html'; return false;">
-                <i class="fas fa-gamepad"></i>
-                <span>ИГРЫ</span>
-            </a>
-            <a href="shop.html" class="nav-item" onclick="window.location.href='shop.html'; return false;">
-                <i class="fas fa-store"></i>
-                <span>МАГАЗИН</span>
-            </a>
-            <a href="leaders.html" class="nav-item" onclick="window.location.href='leaders.html'; return false;">
-                <i class="fas fa-trophy"></i>
-                <span>ЛИДЕРЫ</span>
-            </a>
-            <a href="profle.html" class="nav-item" onclick="window.location.href='profle.html'; return false;">  <!-- ИСПРАВЛЕНО: profile.html -> profle.html -->
-                <i class="fas fa-user"></i>
-                <span>ПРОФИЛЬ</span>
-            </a>
+            <a href="index.html" class="nav-item active" onclick="window.location.href='index.html'; return false;"><i class="fas fa-gamepad"></i><span>ИГРЫ</span></a>
+            <a href="shop.html" class="nav-item" onclick="window.location.href='shop.html'; return false;"><i class="fas fa-store"></i><span>МАГАЗИН</span></a>
+            <a href="leaders.html" class="nav-item" onclick="window.location.href='leaders.html'; return false;"><i class="fas fa-trophy"></i><span>ЛИДЕРЫ</span></a>
+            <a href="profle.html" class="nav-item" onclick="window.location.href='profle.html'; return false;"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
+        </div>
+    </div>
+
+    <div class="overlay" id="hintOverlay" style="display: none;">
+        <div class="hint-modal">
+            <button class="hint-close" id="hintCloseBtn"><i class="fas fa-times"></i></button>
+            <div class="hint-title">Добро пожаловать!</div>
+            <div class="hint-text">
+                <p>🔹 <strong>1 пазл = 1 Telegram звезда</strong></p>
+                <p>🔹 Покупайте наборы пазлов в магазине</p>
+                <p>🔹 Повышайте свой уровень и открывайте NFT</p>
+                <p>🔹 Выигрывайте в играх и поднимайтесь в топе</p>
+            </div>
+            <div class="hint-footer">
+                <div class="hint-checkbox" id="dontShowCheckbox">
+                    <i class="far fa-square" id="checkIcon"></i>
+                    <span>Не показывать снова</span>
+                </div>
+                <button class="hint-done-btn" id="hintDoneBtn">Понятно</button>
+            </div>
         </div>
     </div>
 
     <script>
+        // ГЛОБАЛЬНОЕ ХРАНИЛИЩЕ - ОДИНАКОВОЕ ДЛЯ ВСЕХ СТРАНИЦ
+        (function() {
+            // Проверка Telegram
+            const tg = window.Telegram?.WebApp;
+            
+            if (!tg || !tg.initData || !tg.initDataUnsafe?.user) {
+                document.body.innerHTML = `
+                    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #03050a; color: white; text-align: center; padding: 20px;">
+                        <div>
+                            <h2 style="margin-bottom: 20px; color: #ff4444;">❌ Доступ запрещен</h2>
+                            <p style="color: #8e98a3; margin-bottom: 20px;">Приложение работает только в Telegram</p>
+                        </div>
+                    </div>
+                `;
+                throw new Error('Not in Telegram');
+            }
+
+            // ID пользователя Telegram
+            const userId = tg.initDataUnsafe.user.id;
+            
+            // Ключ для хранения данных конкретного пользователя
+            const STORAGE_KEY = `yeter_user_${userId}`;
+            
+            // Загрузка или создание данных
+            function loadUserData() {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    try {
+                        return JSON.parse(saved);
+                    } catch {
+                        return createDefaultData();
+                    }
+                }
+                return createDefaultData();
+            }
+            
+            function createDefaultData() {
+                return {
+                    stars: 12500,
+                    level: 1,
+                    exp: 0,
+                    expToNext: 1000,
+                    gifts: [],
+                    games: {},
+                    transactions: [],
+                    lastSync: Date.now()
+                };
+            }
+            
+            let userData = loadUserData();
+            
+            // Сохранение данных
+            function saveUserData() {
+                userData.lastSync = Date.now();
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+                
+                // Отправляем событие о изменении данных для других вкладок
+                localStorage.setItem('yeter_data_updated', Date.now().toString());
+                setTimeout(() => localStorage.removeItem('yeter_data_updated'), 100);
+            }
+            
+            // Слушаем изменения в других вкладках
+            window.addEventListener('storage', (e) => {
+                if (e.key === STORAGE_KEY && e.newValue) {
+                    try {
+                        const newData = JSON.parse(e.newValue);
+                        if (newData.lastSync > userData.lastSync) {
+                            userData = newData;
+                            updateUIDisplay();
+                        }
+                    } catch {}
+                }
+                
+                // Обновляем данные при изменении в другой вкладке
+                if (e.key === 'yeter_data_updated') {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        try {
+                            const newData = JSON.parse(saved);
+                            if (newData.lastSync > userData.lastSync) {
+                                userData = newData;
+                                updateUIDisplay();
+                            }
+                        } catch {}
+                    }
+                }
+            });
+            
+            // Периодическая проверка обновлений (каждые 2 секунды)
+            setInterval(() => {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    try {
+                        const newData = JSON.parse(saved);
+                        if (newData.lastSync > userData.lastSync) {
+                            userData = newData;
+                            updateUIDisplay();
+                        }
+                    } catch {}
+                }
+            }, 2000);
+            
+            // Глобальный объект для доступа из других скриптов
+            window.UserStorage = {
+                getStars: function() { return userData.stars; },
+                getLevel: function() { return userData.level; },
+                getExp: function() { return userData.exp; },
+                getExpToNext: function() { return userData.expToNext; },
+                getUserData: function() { return { ...userData }; },
+                
+                updateStars: function(amount, reason) {
+                    if (userData.stars + amount < 0) return false;
+                    userData.stars += amount;
+                    if (!userData.transactions) userData.transactions = [];
+                    userData.transactions.push({ 
+                        amount, 
+                        reason, 
+                        time: Date.now(), 
+                        balance: userData.stars
+                    });
+                    if (userData.transactions.length > 50) userData.transactions = userData.transactions.slice(-50);
+                    saveUserData();
+                    return true;
+                },
+                
+                addExp: function(amount) {
+                    userData.exp += amount;
+                    while (userData.exp >= userData.expToNext) {
+                        userData.exp -= userData.expToNext;
+                        userData.level++;
+                        userData.expToNext = Math.floor(userData.expToNext * 1.5);
+                    }
+                    saveUserData();
+                },
+                
+                forceUpdate: function() {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        try {
+                            const newData = JSON.parse(saved);
+                            userData = newData;
+                            updateUIDisplay();
+                        } catch {}
+                    }
+                }
+            };
+        })();
+
         // Звезды
         function createStars() {
             const starsContainer = document.getElementById('stars');
@@ -736,7 +1028,7 @@
         }
         createStars();
 
-        // Функция форматирования чисел
+        // Форматирование чисел
         function formatNumber(num) {
             if (num >= 1000000) {
                 return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'м';
@@ -747,47 +1039,63 @@
             return num.toString();
         }
 
+        // Обновление UI
+        function updateUIDisplay() {
+            const data = window.UserStorage.getUserData();
+            document.getElementById('gamesBalanceDisplay').innerText = formatNumber(data.stars);
+            document.getElementById('gamesLevelNumber').innerText = data.level;
+            document.getElementById('gamesNextLevel').innerText = data.level + 1;
+            const progress = (data.exp / data.expToNext) * 100;
+            document.getElementById('gamesProgressFill').style.width = progress + '%';
+        }
+
+        // LIVE уведомление
+        const LiveNotification = {
+            show: function(image, name, price) {
+                const notif = document.getElementById('liveNotification');
+                document.getElementById('liveImage').src = image;
+                document.getElementById('liveText').innerHTML = `<span>${name}</span> куплен за ${formatNumber(price)} 🧩`;
+                notif.classList.add('show');
+                setTimeout(() => notif.classList.remove('show'), 5000);
+            }
+        };
+
+        // Слушаем покупки из магазина
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'new_purchase') {
+                try {
+                    const purchase = JSON.parse(e.newValue);
+                    LiveNotification.show(purchase.image, purchase.name, purchase.price);
+                    addToLiveBanner(purchase);
+                } catch (err) {}
+            }
+        });
+
         // Функция для добавления в LIVE ленту
-        window.addToLiveBanner = function(nftName, nftPrice, nftImage) {
+        function addToLiveBanner(purchase) {
             const banner = document.getElementById('liveBanner');
             
-            const item = document.createElement('div');
-            item.className = 'live-item';
-            
-            let imagePath = nftImage;
+            let imagePath = purchase.image;
             if (!imagePath.startsWith('nft/') && !imagePath.startsWith('http')) {
                 imagePath = 'nft/' + imagePath;
             }
             
+            const item = document.createElement('div');
+            item.className = 'live-item';
             item.innerHTML = `
-                <img src="${imagePath}" class="live-item-image" 
-                     onerror="this.src='https://via.placeholder.com/35/2a2a2a/9b4dff?text=NFT'">
-                <span class="live-item-name">${nftName}</span>
-                <span class="live-item-price">${formatNumber(nftPrice)} 🧩</span>
+                <img src="${imagePath}" class="live-item-image" onerror="this.src='nft/placeholder.png'">
+                <span class="live-item-name">${purchase.name}</span>
+                <span class="live-item-price">${formatNumber(purchase.price)} 🧩</span>
             `;
             
             banner.appendChild(item);
             
             while (banner.children.length > 9) {
-                if (banner.children[1]) {
-                    banner.removeChild(banner.children[1]);
-                }
+                if (banner.children[1]) banner.removeChild(banner.children[1]);
             }
-        };
+        }
 
-        // Слушаем покупки
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'new_purchase') {
-                try {
-                    const purchase = JSON.parse(e.newValue);
-                    if (purchase && purchase.name && purchase.price && purchase.image) {
-                        window.addToLiveBanner(purchase.name, purchase.price, purchase.image);
-                    }
-                } catch (err) {}
-            }
-        });
-
-        // Telegram WebApp
+        // Telegram
         const tg = window.Telegram?.WebApp;
         if (tg) {
             tg.ready();
@@ -795,37 +1103,69 @@
             
             const user = tg.initDataUnsafe?.user;
             if (user) {
-                document.getElementById('gamesNickname').innerText = user.first_name || 'Player';
+                const firstName = user.first_name || '';
+                const lastName = user.last_name || '';
+                const fullName = (firstName + ' ' + lastName).trim() || 'Player';
+                
+                document.getElementById('gamesNickname').innerText = fullName;
                 
                 if (user.photo_url) {
                     document.getElementById('gamesAvatar').style.backgroundImage = `url(${user.photo_url})`;
                     document.getElementById('gamesAvatar').style.backgroundColor = 'transparent';
                     document.getElementById('gamesAvatar').innerText = '';
                 } else {
-                    document.getElementById('gamesAvatar').innerText = (user.first_name?.charAt(0) || 'П').toUpperCase();
+                    document.getElementById('gamesAvatar').innerText = (firstName.charAt(0) || 'П').toUpperCase();
                 }
             }
         }
 
-        // Принудительная установка активного пункта меню
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('href') === currentPage) {
-                item.classList.add('active');
+        // Подсказка
+        if (localStorage.getItem('yeter_hint_shown') !== 'false') {
+            document.getElementById('hintOverlay').style.display = 'flex';
+        }
+
+        document.getElementById('hintCloseBtn').addEventListener('click', () => {
+            document.getElementById('hintOverlay').style.display = 'none';
+            if (document.getElementById('dontShowCheckbox').classList.contains('fa-check-square')) {
+                localStorage.setItem('yeter_hint_shown', 'false');
             }
         });
 
-        // Обработчики для навигации (чтобы работало с первого раза)
+        document.getElementById('hintDoneBtn').addEventListener('click', () => {
+            document.getElementById('hintOverlay').style.display = 'none';
+            if (document.getElementById('dontShowCheckbox').classList.contains('fa-check-square')) {
+                localStorage.setItem('yeter_hint_shown', 'false');
+            }
+        });
+
+        document.getElementById('dontShowCheckbox').addEventListener('click', () => {
+            const icon = document.getElementById('checkIcon');
+            icon.className = icon.className.includes('fa-square') ? 'fas fa-check-square' : 'far fa-square';
+        });
+
+        // Обработчики навигации
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
                 const href = this.getAttribute('href');
-                if (href) {
-                    window.location.href = href;
-                }
+                if (href) window.location.href = href;
             });
         });
+
+        // Активный пункт меню
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('href') === currentPage) item.classList.add('active');
+        });
+
+        // Инициализация
+        updateUIDisplay();
+        
+        // Принудительная синхронизация при загрузке страницы
+        setTimeout(() => {
+            window.UserStorage.forceUpdate();
+        }, 500);
     </script>
 </body>
 </html>
