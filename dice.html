@@ -13,6 +13,8 @@
             padding: 0; 
             box-sizing: border-box; 
             font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent; /* Убирает синюю рамку на мобильных */
+            outline: none; /* Убирает рамку при фокусе */
         }
         
         body {
@@ -72,83 +74,6 @@
             flex-shrink: 0;
         }
 
-        /* ТУТОРИАЛ - ПО СЕРЕДИНЕ, БЕЗ ФОНА */
-        .tutorial-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            pointer-events: none;
-        }
-
-        .tutorial-modal {
-            background: #2a2a2a;
-            border-radius: 20px;
-            padding: 20px;
-            width: 300px;
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            pointer-events: auto;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .tutorial-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .tutorial-title {
-            color: #b87aff;
-            font-size: 20px;
-            font-weight: 800;
-        }
-
-        .tutorial-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            color: #b87aff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.1s;
-        }
-
-        .tutorial-close:active {
-            background: rgba(106, 13, 173, 0.3);
-            transform: scale(0.95);
-        }
-
-        .tutorial-content {
-            color: #8e98a3;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .tutorial-content p {
-            margin-bottom: 10px;
-        }
-
-        .tutorial-content strong {
-            color: #ffd700;
-        }
-
         /* ХЕДЕР */
         .header { 
             display: flex; 
@@ -172,6 +97,7 @@
             border-radius: 40px;
             transition: 0.1s ease;
             text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
         }
         
         .back-button:active { 
@@ -423,6 +349,8 @@
             box-shadow: 0 6px 0 #2d0b4e;
             transition: all 0.1s ease;
             min-height: 56px;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
         }
         
         .dice-button:active { 
@@ -430,30 +358,17 @@
             box-shadow: 0 0 0 #2d0b4e; 
         }
 
-        .dice-button:disabled {
-            opacity: 0.5;
-            pointer-events: none;
+        .dice-button:focus {
+            outline: none;
+        }
+
+        .dice-button::-moz-focus-inner {
+            border: 0;
         }
     </style>
 </head>
 <body>
     <div class="stars" id="stars"></div>
-
-    <!-- ТУТОРИАЛ - ПО СЕРЕДИНЕ -->
-    <div class="tutorial-overlay" id="tutorialOverlay">
-        <div class="tutorial-modal" id="tutorialModal">
-            <div class="tutorial-header">
-                <span class="tutorial-title">🎲 КАК ИГРАТЬ?</span>
-                <div class="tutorial-close" id="closeTutorial">✖</div>
-            </div>
-            <div class="tutorial-content">
-                <p>🔹 Выбери <strong>ШАНС</strong> от 1% до 95%</p>
-                <p>🔹 Чем меньше шанс, тем больше множитель</p>
-                <p>🔹 Если выпавшее число (1-100) меньше или равно твоему шансу — ты выиграл!</p>
-                <p>🔹 Множитель = 100 / шанс</p>
-            </div>
-        </div>
-    </div>
 
     <div class="app">
         <div class="header">
@@ -524,7 +439,7 @@
     
     <script>
         // ============================================
-        // ЗАЩИТА И ГЛОБАЛЬНОЕ ХРАНИЛИЩЕ
+        // ГЛОБАЛЬНОЕ ХРАНИЛИЩЕ - КАК ВЕЗДЕ
         // ============================================
         (function() {
             const tg = window.Telegram?.WebApp;
@@ -588,6 +503,18 @@
                         }
                     } catch {}
                 }
+                if (e.key === 'yeter_data_updated') {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        try {
+                            const newData = JSON.parse(saved);
+                            if (newData.lastSync > userData.lastSync) {
+                                userData = newData;
+                                updateUIDisplay();
+                            }
+                        } catch {}
+                    }
+                }
             });
             
             setInterval(() => {
@@ -608,6 +535,7 @@
                 getLevel: function() { return userData.level; },
                 getExp: function() { return userData.exp; },
                 getExpToNext: function() { return userData.expToNext; },
+                getUserData: function() { return { ...userData }; },
                 
                 updateStars: function(amount, reason) {
                     if (userData.stars + amount < 0) return false;
@@ -658,7 +586,7 @@
         createStars();
 
         // ============================================
-        // ФОРМАТИРОВАНИЕ ЧИСЕЛ (ТОЛЬКО ДЛЯ БАЛАНСА)
+        // ФОРМАТИРОВАНИЕ ЧИСЕЛ
         // ============================================
         function formatNumber(num) {
             if (num >= 1000000) {
@@ -682,24 +610,6 @@
             const progress = (data.exp / data.expToNext) * 100;
             document.getElementById('progressFill').style.width = progress + '%';
         }
-
-        // ============================================
-        // ТУТОРИАЛ - ТОЛЬКО 1 РАЗ
-        // ============================================
-        const TUTORIAL_KEY = 'yeter_dice_tutorial_shown';
-        
-        function checkTutorial() {
-            if (localStorage.getItem(TUTORIAL_KEY) !== 'true') {
-                document.getElementById('tutorialOverlay').style.display = 'flex';
-                localStorage.setItem(TUTORIAL_KEY, 'true');
-            } else {
-                document.getElementById('tutorialOverlay').style.display = 'none';
-            }
-        }
-
-        document.getElementById('closeTutorial').addEventListener('click', () => {
-            document.getElementById('tutorialOverlay').style.display = 'none';
-        });
 
         // ============================================
         // TELEGRAM ПРОФИЛЬ
@@ -762,7 +672,7 @@
             const mult = calculateMultiplier(validChance);
             const win = Math.floor(bet * mult);
             
-            document.getElementById('winAmount').innerText = win; // БЕЗ ФОРМАТИРОВАНИЯ
+            document.getElementById('winAmount').innerText = win;
             document.getElementById('winMultiplier').innerText = `x${mult.toFixed(2)}`;
         }
 
@@ -829,7 +739,6 @@
         window.onload = function() {
             updateUIDisplay();
             updateWinInfo();
-            checkTutorial();
             
             document.getElementById('betAmount').addEventListener('input', updateWinInfo);
             document.getElementById('chanceInput').addEventListener('input', updateWinInfo);
@@ -843,4 +752,4 @@
         };
     </script>
 </body>
-</html>
+    </html>
