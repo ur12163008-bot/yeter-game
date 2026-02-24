@@ -242,10 +242,9 @@
             font-size: 18px;
             font-weight: 800;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 10px;
             box-shadow: 0 6px 0 rgba(0,0,0,0.3);
             animation: messagePop 0.3s ease;
             min-height: 56px;
@@ -273,19 +272,6 @@
             background: linear-gradient(145deg, #f39c12, #e67e22);
             color: white;
             border: 1px solid rgba(243, 156, 18, 0.5);
-        }
-
-        .message-top {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .message-bottom {
-            font-size: 20px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
         
         .game-container { 
@@ -480,9 +466,7 @@
             
             starsContainer.innerHTML = '';
             
-            // Используем requestAnimationFrame для оптимизации
             requestAnimationFrame(() => {
-                // Определяем слабые устройства
                 const isLowEnd = navigator.hardwareConcurrency <= 4 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
                 const starCount = isLowEnd ? 30 : 50;
                 
@@ -507,14 +491,12 @@
             });
         }
 
-        // Запускаем звезды
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', createStars);
         } else {
             createStars();
         }
 
-        // Останавливаем анимацию когда вкладка не активна
         document.addEventListener('visibilitychange', function() {
             const stars = document.getElementById('stars');
             if (stars) {
@@ -714,16 +696,25 @@
         // ============================================
         // ИГРОВАЯ ЛОГИКА
         // ============================================
-        function showMessage(top, bottom, type = 'success') {
+        function showMessage(text, type = 'success') {
             const container = document.getElementById('messageContainer');
             container.innerHTML = '';
             
             const msg = document.createElement('div');
             msg.className = `game-message ${type}`;
-            msg.innerHTML = `
-                <div class="message-top">${top}</div>
-                <div class="message-bottom">${bottom}</div>
-            `;
+            
+            // Специальная обработка для сообщения о шансе
+            if (text.includes('Шанс должен быть')) {
+                msg.style.flexDirection = 'column';
+                msg.style.padding = '12px 16px';
+                msg.innerHTML = `
+                    <div style="font-size: 16px;">Шанс должен быть</div>
+                    <div style="font-size: 20px; display: flex; align-items: center; gap: 4px;">от 1% до 95%</div>
+                `;
+            } else {
+                msg.innerHTML = `<span>${text}</span>`;
+            }
+            
             container.appendChild(msg);
             
             setTimeout(() => {
@@ -757,26 +748,26 @@
             const chance = parseInt(document.getElementById('chanceInput').value);
             
             if (isNaN(bet) || bet < 10) {
-                showMessage('Минимальная ставка', '10 🧩', 'error');
+                showMessage('Минимальная ставка 10 🧩', 'error');
                 return;
             }
             if (bet > 100000) {
-                showMessage('Максимальная ставка', '100000 🧩', 'error');
+                showMessage('Максимальная ставка 100000 🧩', 'error');
                 return;
             }
             if (isNaN(chance) || chance < 1 || chance > 95) {
-                showMessage('Шанс должен быть', 'от 1% до 95%', 'warning');
+                showMessage('Шанс должен быть от 1% до 95%', 'warning');
                 return;
             }
             
             const currentStars = window.UserStorage.getStars();
             if (bet > currentStars) {
-                showMessage('Недостаточно', 'средств', 'error');
+                showMessage('Недостаточно средств', 'error');
                 return;
             }
             
             if (!window.UserStorage.updateStars(-bet, 'Ставка в Dice')) {
-                showMessage('Ошибка', 'транзакции', 'error');
+                showMessage('Ошибка транзакции', 'error');
                 return;
             }
             
@@ -795,11 +786,11 @@
                 
                 if (window.UserStorage.updateStars(winAmount, 'Выигрыш в Dice')) {
                     window.UserStorage.addExp(Math.floor(bet / 10));
-                    showMessage('ВЫИГРЫШ', `+${winAmount} 🧩`, 'success');
+                    showMessage(`ВЫИГРЫШ +${winAmount} 🧩`, 'success');
                 }
             } else {
                 window.UserStorage.addExp(1);
-                showMessage('ПРОИГРЫШ', `-${bet} 🧩`, 'error');
+                showMessage(`ПРОИГРЫШ -${bet} 🧩`, 'error');
             }
             
             updateUIDisplay();
@@ -828,4 +819,4 @@
         };
     </script>
 </body>
-    </html>
+</html>
