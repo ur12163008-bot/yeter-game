@@ -13,8 +13,8 @@
             padding: 0; 
             box-sizing: border-box; 
             font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent; /* Убирает синюю рамку на мобильных */
-            outline: none; /* Убирает рамку при фокусе */
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
         }
         
         body {
@@ -37,6 +37,7 @@
             z-index: -2;
         }
 
+        /* ========== ОПТИМИЗИРОВАННЫЕ ЗВЕЗДЫ ========== */
         .stars {
             position: fixed;
             top: 0;
@@ -53,7 +54,27 @@
             border-radius: 50%;
             width: 2px;
             height: 2px;
-            opacity: 0.6;
+            opacity: 0;
+            animation: twinkle 4s infinite ease-in-out;
+        }
+
+        .star.medium {
+            width: 3px;
+            height: 3px;
+        }
+
+        .star.large {
+            width: 4px;
+            height: 4px;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0; }
+            20% { opacity: 0.8; }
+            40% { opacity: 0.3; }
+            60% { opacity: 0.6; }
+            80% { opacity: 0.2; }
+            100% { opacity: 0; }
         }
 
         .app { 
@@ -74,7 +95,6 @@
             flex-shrink: 0;
         }
 
-        /* ХЕДЕР */
         .header { 
             display: flex; 
             justify-content: space-between; 
@@ -222,12 +242,14 @@
             font-size: 18px;
             font-weight: 800;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 4px;
             box-shadow: 0 6px 0 rgba(0,0,0,0.3);
             animation: messagePop 0.3s ease;
             min-height: 56px;
+            text-align: center;
         }
         
         @keyframes messagePop {
@@ -251,6 +273,19 @@
             background: linear-gradient(145deg, #f39c12, #e67e22);
             color: white;
             border: 1px solid rgba(243, 156, 18, 0.5);
+        }
+
+        .message-top {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .message-bottom {
+            font-size: 20px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         
         .game-container { 
@@ -438,8 +473,61 @@
     </div>
     
     <script>
+        // ========== ОПТИМИЗИРОВАННЫЕ ЗВЕЗДЫ ==========
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            if (!starsContainer) return;
+            
+            starsContainer.innerHTML = '';
+            
+            // Используем requestAnimationFrame для оптимизации
+            requestAnimationFrame(() => {
+                // Определяем слабые устройства
+                const isLowEnd = navigator.hardwareConcurrency <= 4 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+                const starCount = isLowEnd ? 30 : 50;
+                
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    
+                    const size = Math.random();
+                    if (size < 0.6) {
+                        star.className = 'star';
+                    } else if (size < 0.85) {
+                        star.className = 'star medium';
+                    } else {
+                        star.className = 'star large';
+                    }
+                    
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    star.style.animationDelay = Math.random() * 5 + 's';
+                    
+                    starsContainer.appendChild(star);
+                }
+            });
+        }
+
+        // Запускаем звезды
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', createStars);
+        } else {
+            createStars();
+        }
+
+        // Останавливаем анимацию когда вкладка не активна
+        document.addEventListener('visibilitychange', function() {
+            const stars = document.getElementById('stars');
+            if (stars) {
+                if (document.hidden) {
+                    stars.style.animation = 'none';
+                } else {
+                    stars.style.animation = '';
+                }
+            }
+        });
+
         // ============================================
-        // ГЛОБАЛЬНОЕ ХРАНИЛИЩЕ - КАК ВЕЗДЕ
+        // ГЛОБАЛЬНОЕ ХРАНИЛИЩЕ
         // ============================================
         (function() {
             const tg = window.Telegram?.WebApp;
@@ -571,21 +659,6 @@
         })();
 
         // ============================================
-        // ЗВЕЗДЫ
-        // ============================================
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            for (let i = 0; i < 60; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                starsContainer.appendChild(star);
-            }
-        }
-        createStars();
-
-        // ============================================
         // ФОРМАТИРОВАНИЕ ЧИСЕЛ
         // ============================================
         function formatNumber(num) {
@@ -641,13 +714,16 @@
         // ============================================
         // ИГРОВАЯ ЛОГИКА
         // ============================================
-        function showMessage(text, type = 'success') {
+        function showMessage(top, bottom, type = 'success') {
             const container = document.getElementById('messageContainer');
             container.innerHTML = '';
             
             const msg = document.createElement('div');
             msg.className = `game-message ${type}`;
-            msg.innerHTML = `<span>${text}</span>`;
+            msg.innerHTML = `
+                <div class="message-top">${top}</div>
+                <div class="message-bottom">${bottom}</div>
+            `;
             container.appendChild(msg);
             
             setTimeout(() => {
@@ -681,26 +757,26 @@
             const chance = parseInt(document.getElementById('chanceInput').value);
             
             if (isNaN(bet) || bet < 10) {
-                showMessage('Минимальная ставка 10 🧩', 'error');
+                showMessage('Минимальная ставка', '10 🧩', 'error');
                 return;
             }
             if (bet > 100000) {
-                showMessage('Максимальная ставка 100000 🧩', 'error');
+                showMessage('Максимальная ставка', '100000 🧩', 'error');
                 return;
             }
             if (isNaN(chance) || chance < 1 || chance > 95) {
-                showMessage('Шанс должен быть от 1% до 95%', 'warning');
+                showMessage('Шанс должен быть', 'от 1% до 95%', 'warning');
                 return;
             }
             
             const currentStars = window.UserStorage.getStars();
             if (bet > currentStars) {
-                showMessage('Недостаточно средств', 'error');
+                showMessage('Недостаточно', 'средств', 'error');
                 return;
             }
             
             if (!window.UserStorage.updateStars(-bet, 'Ставка в Dice')) {
-                showMessage('Ошибка транзакции', 'error');
+                showMessage('Ошибка', 'транзакции', 'error');
                 return;
             }
             
@@ -719,11 +795,11 @@
                 
                 if (window.UserStorage.updateStars(winAmount, 'Выигрыш в Dice')) {
                     window.UserStorage.addExp(Math.floor(bet / 10));
-                    showMessage(`ВЫИГРЫШ +${winAmount} 🧩`, 'success');
+                    showMessage('ВЫИГРЫШ', `+${winAmount} 🧩`, 'success');
                 }
             } else {
                 window.UserStorage.addExp(1);
-                showMessage(`ПРОИГРЫШ -${bet} 🧩`, 'error');
+                showMessage('ПРОИГРЫШ', `-${bet} 🧩`, 'error');
             }
             
             updateUIDisplay();
