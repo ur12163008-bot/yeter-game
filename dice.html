@@ -8,17 +8,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
             font-family: 'Inter', sans-serif;
+        }
+        
+        body {
             background: #03050a;
             color: white;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            padding: 0;
         }
+        
         body::before {
             content: '';
             position: fixed;
@@ -29,41 +34,148 @@
             background: radial-gradient(ellipse at 40% 50%, #0a0e1a 0%, #03050a 70%, #000103 100%);
             z-index: -2;
         }
-        body::after {
-            content: '';
+
+        .stars {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                radial-gradient(1.5px 1.5px at 15px 60px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.2px 1.2px at 72px 430px, rgba(255,245,200,0.8), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 250px 120px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(1.8px 1.8px at 120px 550px, rgba(210,230,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.3px 1.3px at 380px 200px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 40px 780px, rgba(200,220,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(1.6px 1.6px at 310px 640px, rgba(255,255,240,0.8), rgba(0,0,0,0)),
-                radial-gradient(1.1px 1.1px at 190px 890px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 420px 350px, rgba(180,200,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.4px 1.4px at 80px 920px, rgba(255,255,255,0.8), rgba(0,0,0,0));
-            background-size: 500px 1000px;
-            background-repeat: repeat;
-            opacity: 0.6;
+            width: 100%;
+            height: 100%;
             z-index: -1;
+            pointer-events: none;
         }
-        .app { max-width: 440px; width: 100%; background: transparent; position: relative; min-height: 100vh; padding-bottom: 20px; }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 2px;
+            height: 2px;
+            opacity: 0.6;
+        }
+
+        .app { 
+            max-width: 440px; 
+            width: 100%; 
+            background: transparent; 
+            position: relative; 
+            padding-bottom: 20px; 
+            min-height: 100vh;
+            z-index: 1;
+        }
 
         .puzzle-icon {
             display: inline-block;
             font-size: 18px;
             line-height: 1;
             color: #ffd700;
-            text-shadow: 0 0 6px #ffaa00;
             flex-shrink: 0;
         }
 
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 20px 16px; background: transparent; }
+        /* ТУТОРИАЛ - СЕРАЯ РАМКА */
+        .tutorial-modal {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2a2a2a;
+            border-radius: 20px;
+            padding: 16px;
+            width: 280px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 2000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .tutorial-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .tutorial-title {
+            color: #b87aff;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .tutorial-close {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            color: #b87aff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.1s;
+        }
+
+        .tutorial-close:active {
+            background: rgba(106, 13, 173, 0.3);
+            transform: scale(0.95);
+        }
+
+        .tutorial-content {
+            color: #8e98a3;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .tutorial-content p {
+            margin-bottom: 8px;
+        }
+
+        .tutorial-content strong {
+            color: #ffd700;
+        }
+
+        .tutorial-footer {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(138, 43, 226, 0.2);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .tutorial-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #8e98a3;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .tutorial-checkbox i {
+            color: #b87aff;
+            font-size: 16px;
+        }
+
+        /* ХЕДЕР */
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px 20px 16px; 
+            background: transparent; 
+        }
+        
         .back-button {
             display: flex;
             align-items: center;
@@ -77,78 +189,120 @@
             border: 1px solid rgba(138, 43, 226, 0.4);
             border-radius: 40px;
             transition: 0.1s ease;
+            text-decoration: none;
         }
-        .back-button:hover { background: rgba(106, 13, 173, 0.3); }
+        
+        .back-button:active { 
+            background: rgba(106, 13, 173, 0.3); 
+            transform: scale(0.95);
+        }
+        
+        /* БАЛАНС - КАК ВЕЗДЕ */
         .balance-wrapper {
             display: flex;
             align-items: center;
             gap: 6px;
             background: rgba(10, 14, 22, 0.8);
-            padding: 4px 12px 4px 10px;
-            border-radius: 32px;
+            padding: 6px 14px;
+            border-radius: 30px;
             border: 1px solid rgba(138, 43, 226, 0.4);
         }
+        
         .balance { 
             display: flex; 
             align-items: center; 
-            gap: 3px; 
-            font-weight: 800; 
-            font-size: 18px; 
+            gap: 4px; 
+            font-weight: 700; 
+            font-size: 16px; 
             color: white; 
         }
-        
+
+        /* ПРОФИЛЬ - КАК ВЕЗДЕ */
         .player-profile {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 15px;
             background: rgba(10, 14, 22, 0.6);
             backdrop-filter: blur(5px);
-            padding: 16px 20px;
+            padding: 15px 20px;
             margin: 0 20px 20px;
-            border-radius: 24px;
+            border-radius: 25px;
             border: 1px solid rgba(138, 43, 226, 0.3);
         }
+        
         .avatar-small {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(145deg, #1e1a2a, #12101a);
-            border-radius: 16px;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
-            color: #b87aff;
-            border: 2px solid #9b4dff;
+            color: white;
+            border: 2px solid #b87aff;
             flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+            background-color: #6a0dad;
         }
-        .profile-info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-        .profile-name { font-size: 18px; font-weight: 800; color: white; }
-        .profile-level-row { display: flex; align-items: center; gap: 8px; }
+        
+        .profile-info { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 4px; 
+        }
+        
+        .profile-name { 
+            font-size: 16px; 
+            font-weight: 700; 
+            color: white; 
+        }
+        
+        .profile-level-row { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        
+        /* УРОВЕНЬ - КРУГЛЫЙ */
         .level-number {
             background: linear-gradient(145deg, #6a0dad, #4b0082);
             width: 28px;
             height: 28px;
-            border-radius: 8px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
-            font-weight: 900;
+            font-weight: 800;
             color: white;
-            box-shadow: 0 3px 0 #2d0b4e;
         }
+        
         .progress-small {
-            width: 80px;
-            height: 6px;
+            width: 70px;
+            height: 5px;
             background: rgba(30, 38, 48, 0.8);
             border-radius: 20px;
             overflow: hidden;
             border: 1px solid rgba(155, 77, 255, 0.3);
         }
-        .progress-fill-small { height: 100%; background: linear-gradient(90deg, #9b4dff, #b87aff); border-radius: 20px; }
-        .next-level { color: #b87aff; font-size: 14px; font-weight: 700; }
         
+        .progress-fill-small { 
+            height: 100%; 
+            background: linear-gradient(90deg, #9b4dff, #b87aff); 
+            border-radius: 20px; 
+            transition: width 0.2s ease;
+        }
+        
+        .next-level { 
+            color: #b87aff; 
+            font-size: 14px; 
+            font-weight: 700; 
+        }
+        
+        /* СООБЩЕНИЯ */
         .message-container {
             width: 100%;
             margin-top: 20px;
@@ -156,6 +310,7 @@
             flex-direction: column;
             gap: 10px;
         }
+        
         .game-message {
             width: 100%;
             padding: 16px 24px;
@@ -170,27 +325,33 @@
             animation: messagePop 0.3s ease;
             min-height: 56px;
         }
+        
         @keyframes messagePop {
             0% { transform: scale(0.9); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
+        
         .game-message.success {
             background: linear-gradient(145deg, #2ecc71, #27ae60);
             color: white;
             border: 1px solid rgba(46, 204, 113, 0.5);
         }
+        
         .game-message.error {
             background: linear-gradient(145deg, #e74c3c, #c0392b);
             color: white;
             border: 1px solid rgba(231, 76, 60, 0.5);
         }
+        
         .game-message.warning {
             background: linear-gradient(145deg, #f39c12, #e67e22);
             color: white;
             border: 1px solid rgba(243, 156, 18, 0.5);
         }
         
-        .game-container { padding: 0 20px; }
+        .game-container { 
+            padding: 0 20px; 
+        }
         
         .controls-row {
             display: flex;
@@ -198,12 +359,14 @@
             margin-bottom: 40px;
             align-items: center;
         }
+        
         .input-group {
             flex: 1;
             display: flex;
             flex-direction: column;
             gap: 4px;
         }
+        
         .input-label {
             display: flex;
             align-items: center;
@@ -213,6 +376,7 @@
             font-weight: 800;
             letter-spacing: 0.3px;
         }
+        
         .input-field {
             background: rgba(10, 14, 22, 0.8);
             border: 1px solid rgba(138, 43, 226, 0.4);
@@ -225,12 +389,17 @@
             transition: 0.1s ease;
             width: 100%;
         }
-        .input-field:focus { border-color: #9b4dff; background: rgba(20, 25, 35, 0.9); }
+        
+        .input-field:focus { 
+            border-color: #9b4dff; 
+            background: rgba(20, 25, 35, 0.9); 
+        }
         
         .win-info {
             text-align: center;
             margin-bottom: 40px;
         }
+        
         .win-label {
             color: #8e98a3;
             font-size: 16px;
@@ -238,15 +407,17 @@
             margin-bottom: 8px;
             letter-spacing: 0.5px;
         }
+        
         .win-amount {
-            color: #8e98a3;
+            color: #b87aff;
             font-size: 48px;
             font-weight: 800;
             line-height: 1.2;
             margin-bottom: 8px;
         }
+        
         .win-multiplier {
-            color: #6b7280;
+            color: #8e98a3;
             font-size: 18px;
             font-weight: 700;
         }
@@ -256,6 +427,7 @@
             gap: 12px;
             margin-bottom: 20px;
         }
+        
         .dice-button {
             flex: 1;
             background: linear-gradient(145deg, #6a0dad, #4b0082);
@@ -274,28 +446,62 @@
             transition: all 0.1s ease;
             min-height: 56px;
         }
-        .dice-button:active { transform: translateY(6px); box-shadow: 0 0 0 #2d0b4e; }
+        
+        .dice-button:active { 
+            transform: translateY(6px); 
+            box-shadow: 0 0 0 #2d0b4e; 
+        }
+
+        .dice-button:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
+    <div class="stars" id="stars"></div>
+
+    <!-- ТУТОРИАЛ - СЕРАЯ РАМКА -->
+    <div class="tutorial-modal" id="tutorialModal">
+        <div class="tutorial-header">
+            <span class="tutorial-title">🎲 DICE</span>
+            <div class="tutorial-close" id="closeTutorial">✖</div>
+        </div>
+        <div class="tutorial-content">
+            <p>🔹 Выбираешь <strong>ШАНС</strong> от 1% до 95%</p>
+            <p>🔹 Чем меньше шанс, тем больше множитель</p>
+            <p>🔹 Нажимаешь <strong>МЕНЬШЕ</strong> или <strong>БОЛЬШЕ</strong></p>
+            <p>🔹 Если выпавшее число (1-100) соответствует твоему выбору — ты выиграл!</p>
+            <p>🔹 Множитель рассчитывается по формуле: 100 / шанс</p>
+            <p>🔹 Реальные шансы как в казино — каждый может как выиграть, так и проиграть</p>
+        </div>
+        <div class="tutorial-footer">
+            <div class="tutorial-checkbox" id="dontShowAgain">
+                <i class="far fa-square" id="checkIcon"></i>
+                <span>Не показывать снова</span>
+            </div>
+        </div>
+    </div>
+
     <div class="app">
         <div class="header">
-            <div class="back-button" onclick="window.location.href='index.html'">
+            <a href="index.html" class="back-button" onclick="window.location.href='index.html'; return false;">
                 <i class="fas fa-arrow-left"></i>
                 <span>Назад</span>
-            </div>
+            </a>
             <div class="balance-wrapper">
                 <div class="balance">
                     <span class="puzzle-icon">🧩</span>
-                    <span id="balanceDisplay">0</span>
+                    <span id="balanceDisplay">12.5k</span>
                 </div>
             </div>
         </div>
         
+        <!-- ПРОФИЛЬ - КАК ВЕЗДЕ -->
         <div class="player-profile">
-            <div class="avatar-small" id="playerAvatar">Y</div>
+            <div class="avatar-small" id="playerAvatar"></div>
             <div class="profile-info">
-                <div class="profile-name" id="playerName">@yeter</div>
+                <div class="profile-name" id="playerName">Загрузка...</div>
                 <div class="profile-level-row">
                     <div class="level-number" id="levelDisplay">1</div>
                     <div class="progress-small">
@@ -346,139 +552,254 @@
     </div>
     
     <script>
-        // ========== ЖЕСТКАЯ ЗАЩИТА ==========
+        // ============================================
+        // ЗАЩИТА И ГЛОБАЛЬНОЕ ХРАНИЛИЩЕ - КАК ВЕЗДЕ
+        // ============================================
         (function() {
-            // Защита от изменения объектов
-            const protectedMethods = ['getItem', 'setItem', 'removeItem'];
-            protectedMethods.forEach(method => {
-                const original = localStorage[method];
-                localStorage[method] = function() {
-                    if (new Error().stack.includes('debugger')) {
-                        throw new Error('Access denied');
-                    }
-                    return original.apply(this, arguments);
-                };
-            });
+            // Проверка Telegram
+            const tg = window.Telegram?.WebApp;
             
-            // Анти-отладка
-            setInterval(function() {
-                const before = new Date();
-                debugger;
-                const after = new Date();
-                if (after - before > 100) {
-                    window.location.reload();
-                }
-            }, 1000);
-        })();
+            if (!tg || !tg.initData || !tg.initDataUnsafe?.user) {
+                document.body.innerHTML = `
+                    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #03050a; color: white; text-align: center; padding: 20px;">
+                        <div>
+                            <h2 style="margin-bottom: 20px; color: #ff4444;">❌ Доступ запрещен</h2>
+                            <p style="color: #8e98a3; margin-bottom: 20px;">Приложение работает только в Telegram</p>
+                        </div>
+                    </div>
+                `;
+                throw new Error('Not in Telegram');
+            }
 
-        // ========== СИСТЕМА СОХРАНЕНИЯ ==========
-        const GameStorage = (function() {
-            let _data = null;
-            const _key = 'yeter_user_data';
+            // ID пользователя Telegram
+            const userId = tg.initDataUnsafe.user.id;
             
-            function _load() {
-                const saved = localStorage.getItem(_key);
+            // Ключ для хранения данных конкретного пользователя
+            const STORAGE_KEY = `yeter_user_${userId}`;
+            
+            // Загрузка или создание данных
+            function loadUserData() {
+                const saved = localStorage.getItem(STORAGE_KEY);
                 if (saved) {
                     try {
-                        _data = JSON.parse(saved);
-                        if (!_validate(_data)) {
-                            _createDefault();
-                        }
+                        return JSON.parse(saved);
                     } catch {
-                        _createDefault();
+                        return createDefaultData();
                     }
-                } else {
-                    _createDefault();
                 }
+                return createDefaultData();
             }
             
-            function _validate(data) {
-                return data && 
-                       typeof data.stars === 'number' && 
-                       data.stars >= 0 &&
-                       typeof data.level === 'number' &&
-                       data.level >= 1;
-            }
-            
-            function _createDefault() {
-                _data = {
-                    stars: 1250,
+            function createDefaultData() {
+                return {
+                    stars: 12500,
                     level: 1,
                     exp: 0,
                     expToNext: 1000,
+                    gifts: [],
                     games: { dice: { wins: 0, losses: 0 } },
-                    transactions: []
+                    transactions: [],
+                    lastSync: Date.now()
                 };
             }
             
-            function _save() {
-                localStorage.setItem(_key, JSON.stringify(_data));
+            let userData = loadUserData();
+            
+            // Сохранение данных
+            function saveUserData() {
+                userData.lastSync = Date.now();
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+                
+                // Отправляем событие о изменении данных для других вкладок
+                localStorage.setItem('yeter_data_updated', Date.now().toString());
+                setTimeout(() => localStorage.removeItem('yeter_data_updated'), 100);
             }
             
-            _load();
+            // Слушаем изменения в других вкладках
+            window.addEventListener('storage', (e) => {
+                if (e.key === STORAGE_KEY && e.newValue) {
+                    try {
+                        const newData = JSON.parse(e.newValue);
+                        if (newData.lastSync > userData.lastSync) {
+                            userData = newData;
+                            updateUIDisplay();
+                        }
+                    } catch {}
+                }
+                
+                if (e.key === 'yeter_data_updated') {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        try {
+                            const newData = JSON.parse(saved);
+                            if (newData.lastSync > userData.lastSync) {
+                                userData = newData;
+                                updateUIDisplay();
+                            }
+                        } catch {}
+                    }
+                }
+            });
             
-            return {
-                getStars: function() { return _data.stars; },
+            // Периодическая проверка обновлений
+            setInterval(() => {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    try {
+                        const newData = JSON.parse(saved);
+                        if (newData.lastSync > userData.lastSync) {
+                            userData = newData;
+                            updateUIDisplay();
+                        }
+                    } catch {}
+                }
+            }, 2000);
+            
+            // Глобальный объект
+            window.UserStorage = {
+                getStars: function() { return userData.stars; },
+                getLevel: function() { return userData.level; },
+                getExp: function() { return userData.exp; },
+                getExpToNext: function() { return userData.expToNext; },
+                getUserData: function() { return { ...userData }; },
                 
                 updateStars: function(amount, reason) {
-                    if (_data.stars + amount < 0) return false;
-                    _data.stars += amount;
-                    
-                    _data.transactions.push({
-                        amount: amount,
-                        reason: reason,
-                        time: Date.now(),
-                        balance: _data.stars
+                    if (userData.stars + amount < 0) return false;
+                    userData.stars += amount;
+                    if (!userData.transactions) userData.transactions = [];
+                    userData.transactions.push({ 
+                        amount, 
+                        reason, 
+                        time: Date.now(), 
+                        balance: userData.stars
                     });
-                    
-                    if (_data.transactions.length > 50) {
-                        _data.transactions = _data.transactions.slice(-50);
-                    }
-                    
-                    _save();
+                    if (userData.transactions.length > 50) userData.transactions = userData.transactions.slice(-50);
+                    saveUserData();
                     return true;
                 },
                 
                 addExp: function(amount) {
-                    _data.exp += amount;
-                    while (_data.exp >= _data.expToNext) {
-                        _data.exp -= _data.expToNext;
-                        _data.level++;
-                        _data.expToNext = Math.floor(_data.expToNext * 1.5);
+                    userData.exp += amount;
+                    while (userData.exp >= userData.expToNext) {
+                        userData.exp -= userData.expToNext;
+                        userData.level++;
+                        userData.expToNext = Math.floor(userData.expToNext * 1.5);
                     }
-                    _save();
+                    saveUserData();
                 },
                 
-                getLevel: function() { return _data.level; },
-                getExp: function() { return _data.exp; },
-                getExpToNext: function() { return _data.expToNext; },
-                
-                updateUI: function() {
-                    document.getElementById('balanceDisplay').innerText = _data.stars.toLocaleString();
-                    document.getElementById('levelDisplay').innerText = _data.level;
-                    document.getElementById('nextLevelDisplay').innerText = _data.level + 1;
-                    
-                    const progress = (_data.exp / _data.expToNext) * 100;
-                    document.getElementById('progressFill').style.width = progress + '%';
+                forceUpdate: function() {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        try {
+                            const newData = JSON.parse(saved);
+                            userData = newData;
+                            updateUIDisplay();
+                        } catch {}
+                    }
                 }
             };
         })();
 
-        // ========== ИНИЦИАЛИЗАЦИЯ TELEGRAM ==========
+        // ============================================
+        // ЗВЕЗДЫ
+        // ============================================
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 60; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+
+        // ============================================
+        // ФОРМАТИРОВАНИЕ ЧИСЕЛ
+        // ============================================
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'м';
+            }
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'к';
+            }
+            return num.toString();
+        }
+
+        // ============================================
+        // ОБНОВЛЕНИЕ UI
+        // ============================================
+        function updateUIDisplay() {
+            const data = window.UserStorage.getUserData();
+            document.getElementById('balanceDisplay').innerText = formatNumber(data.stars);
+            document.getElementById('levelDisplay').innerText = data.level;
+            document.getElementById('nextLevelDisplay').innerText = data.level + 1;
+            
+            const progress = (data.exp / data.expToNext) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // ============================================
+        // ТУТОРИАЛ
+        // ============================================
+        const TUTORIAL_KEY = 'yeter_dice_tutorial_shown';
+        
+        function checkTutorial() {
+            if (localStorage.getItem(TUTORIAL_KEY) !== 'true') {
+                document.getElementById('tutorialModal').style.display = 'block';
+            } else {
+                document.getElementById('tutorialModal').style.display = 'none';
+            }
+        }
+
+        document.getElementById('closeTutorial').addEventListener('click', () => {
+            document.getElementById('tutorialModal').style.display = 'none';
+        });
+
+        document.getElementById('dontShowAgain').addEventListener('click', () => {
+            const icon = document.getElementById('checkIcon');
+            if (icon.className.includes('fa-square')) {
+                icon.className = 'fas fa-check-square';
+                localStorage.setItem(TUTORIAL_KEY, 'true');
+            } else {
+                icon.className = 'far fa-square';
+                localStorage.setItem(TUTORIAL_KEY, 'false');
+            }
+        });
+
+        // ============================================
+        // TELEGRAM ПРОФИЛЬ
+        // ============================================
         const tg = window.Telegram?.WebApp;
         if (tg) {
             tg.ready();
             tg.expand();
+            
             const user = tg.initDataUnsafe?.user;
             if (user) {
-                const name = user.username || (user.first_name || '').toLowerCase() || 'player';
-                const firstChar = (user.first_name || 'P').charAt(0).toUpperCase();
-                document.getElementById('playerAvatar').innerText = firstChar;
-                document.getElementById('playerName').innerText = '@' + name;
+                const firstName = user.first_name || '';
+                const lastName = user.last_name || '';
+                const fullName = (firstName + ' ' + lastName).trim() || 'Player';
+                
+                document.getElementById('playerName').innerText = fullName;
+                
+                if (user.photo_url) {
+                    document.getElementById('playerAvatar').style.backgroundImage = `url('${user.photo_url}')`;
+                    document.getElementById('playerAvatar').style.backgroundColor = 'transparent';
+                    document.getElementById('playerAvatar').style.backgroundSize = 'cover';
+                    document.getElementById('playerAvatar').innerText = '';
+                } else {
+                    document.getElementById('playerAvatar').innerText = (firstName.charAt(0) || 'П').toUpperCase();
+                }
             }
         }
 
-        // ========== ИГРОВАЯ ЛОГИКА ==========
+        // ============================================
+        // ИГРОВАЯ ЛОГИКА
+        // ============================================
         function showMessage(text, type = 'success') {
             const container = document.getElementById('messageContainer');
             container.innerHTML = '';
@@ -535,7 +856,7 @@
             const mult = calculateMultiplier(validChance);
             const win = Math.floor(bet * mult);
             
-            document.getElementById('winAmount').innerText = win.toLocaleString();
+            document.getElementById('winAmount').innerText = formatNumber(win);
             document.getElementById('winMultiplier').innerText = `x${mult.toFixed(2)}`;
         }
 
@@ -556,50 +877,82 @@
                 return;
             }
             
-            const currentStars = GameStorage.getStars();
+            const currentStars = window.UserStorage.getStars();
             if (bet > currentStars) {
                 showMessage('Недостаточно средств', 'error');
                 return;
             }
             
             // Списываем ставку
-            if (!GameStorage.updateStars(-bet, 'bet')) {
+            if (!window.UserStorage.updateStars(-bet, 'Ставка в Dice')) {
                 showMessage('Ошибка транзакции', 'error');
                 return;
             }
             
-            // Генерируем результат
+            // Генерируем число от 1 до 100
             const roll = Math.floor(Math.random() * 100) + 1;
-            const win = roll <= chance;
+            
+            // Определяем победу
+            let win = false;
+            if (prediction === 'less' && roll <= chance) {
+                win = true;
+            } else if (prediction === 'more' && roll > (100 - chance)) {
+                // Для "БОЛЬШЕ" - выигрыш если число больше 100-chance
+                // Например при шансе 30%: выигрыш при roll > 70
+                win = true;
+            }
             
             if (win) {
                 const mult = calculateMultiplier(chance);
                 const winAmount = Math.floor(bet * mult);
                 
-                if (GameStorage.updateStars(winAmount, 'win')) {
-                    GameStorage.addExp(bet / 10); // Опыт за выигрыш
+                if (window.UserStorage.updateStars(winAmount, 'Выигрыш в Dice')) {
+                    window.UserStorage.addExp(Math.floor(bet / 10));
                     
-                    showMessage(`ВЫИГРЫШ +${winAmount.toLocaleString()} 🧩`, 'success');
+                    showMessage(`ВЫИГРЫШ +${formatNumber(winAmount)} 🧩`, 'success');
+                    
+                    // Сохраняем статистику
+                    const data = window.UserStorage.getUserData();
+                    if (!data.games) data.games = {};
+                    if (!data.games.dice) data.games.dice = { wins: 0, losses: 0 };
+                    data.games.dice.wins++;
                 }
             } else {
-                GameStorage.addExp(1); // Немного опыта за проигрыш
-                showMessage(`ПРОИГРЫШ -${bet.toLocaleString()} 🧩`, 'error');
+                window.UserStorage.addExp(1);
+                showMessage(`ПРОИГРЫШ -${formatNumber(bet)} 🧩`, 'error');
+                
+                const data = window.UserStorage.getUserData();
+                if (!data.games) data.games = {};
+                if (!data.games.dice) data.games.dice = { wins: 0, losses: 0 };
+                data.games.dice.losses++;
             }
             
-            GameStorage.updateUI();
+            updateUIDisplay();
             updateWinInfo();
+            
+            // Отправляем сигнал об обновлении
+            localStorage.setItem('yeter_data_updated', Date.now().toString());
+            setTimeout(() => localStorage.removeItem('yeter_data_updated'), 100);
         }
 
-        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        // ============================================
+        // ИНИЦИАЛИЗАЦИЯ
+        // ============================================
         window.onload = function() {
-            GameStorage.updateUI();
+            updateUIDisplay();
             updateWinInfo();
+            checkTutorial();
             
             document.getElementById('betAmount').addEventListener('input', updateWinInfo);
             document.getElementById('chanceInput').addEventListener('input', updateWinInfo);
             
             document.getElementById('lessBtn').addEventListener('click', () => playGame('less'));
             document.getElementById('moreBtn').addEventListener('click', () => playGame('more'));
+            
+            // Принудительная синхронизация
+            setTimeout(() => {
+                window.UserStorage.forceUpdate();
+            }, 500);
         };
     </script>
 </body>
