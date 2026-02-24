@@ -107,8 +107,8 @@
             padding: 8px 16px;
             width: auto;
             gap: 8px;
-            background: transparent; /* УБРАЛ РАМКУ */
-            border: none; /* УБРАЛ РАМКУ */
+            background: transparent;
+            border: none;
         }
 
         .shop-profile-left {
@@ -154,7 +154,7 @@
             text-overflow: ellipsis;
         }
 
-        /* УРОВЕНЬ - КРУГЛЫЙ (НЕ ОВАЛ) */
+        /* УРОВЕНЬ - КРУГЛЫЙ */
         .shop-level-row {
             display: flex;
             align-items: center;
@@ -165,7 +165,7 @@
             background: linear-gradient(145deg, #6a0dad, #4b0082);
             width: 28px;
             height: 28px;
-            border-radius: 50%; /* КРУГЛЫЙ */
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -197,7 +197,7 @@
         .shop-next-level {
             width: 28px;
             height: 28px;
-            border-radius: 50%; /* КРУГЛЫЙ */
+            border-radius: 50%;
             background: rgba(42, 30, 58, 0.9);
             display: flex;
             align-items: center;
@@ -216,9 +216,9 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            background: transparent; /* УБРАЛ РАМКУ */
+            background: transparent;
             padding: 0;
-            border: none; /* УБРАЛ РАМКУ */
+            border: none;
             flex-shrink: 0;
         }
 
@@ -253,7 +253,7 @@
             font-weight: 700;
             cursor: pointer;
             opacity: 0.7;
-            pointer-events: none; /* Не нажимается */
+            pointer-events: none;
         }
 
         .search-section {
@@ -687,13 +687,14 @@
     </div>
 
     <script>
-        // ЗАЩИТА И ГЛОБАЛЬНОЕ ХРАНИЛИЩЕ
+        // ============================================
+        // ГЛОБАЛЬНОЕ ХРАНИЛИЩЕ - ОДИНАКОВОЕ ДЛЯ ВСЕХ СТРАНИЦ
+        // ============================================
         (function() {
-            // Проверка на запуск в Telegram WebApp
+            // Проверка Telegram
             const tg = window.Telegram?.WebApp;
             
             if (!tg || !tg.initData || !tg.initDataUnsafe?.user) {
-                console.error('Доступ запрещен');
                 document.body.innerHTML = `
                     <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #03050a; color: white; text-align: center; padding: 20px;">
                         <div>
@@ -705,94 +706,140 @@
                 throw new Error('Not in Telegram');
             }
 
-            // Получаем ID пользователя Telegram
+            // ID пользователя Telegram
             const userId = tg.initDataUnsafe.user.id;
             
-            // Глобальное хранилище для одного пользователя на всех устройствах
-            window.UserStorage = (function() {
-                const STORAGE_KEY = `yeter_user_${userId}`;
+            // Ключ для хранения данных конкретного пользователя
+            const STORAGE_KEY = `yeter_user_${userId}`;
+            
+            // Загрузка или создание данных
+            function loadUserData() {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    try {
+                        return JSON.parse(saved);
+                    } catch {
+                        return createDefaultData();
+                    }
+                }
+                return createDefaultData();
+            }
+            
+            function createDefaultData() {
+                return {
+                    stars: 12500,
+                    level: 1,
+                    exp: 0,
+                    expToNext: 1000,
+                    gifts: [],
+                    games: {},
+                    transactions: [],
+                    lastSync: Date.now()
+                };
+            }
+            
+            let userData = loadUserData();
+            
+            // Сохранение данных
+            function saveUserData() {
+                userData.lastSync = Date.now();
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
                 
-                function loadUserData() {
+                // Отправляем событие о изменении данных для других вкладок
+                localStorage.setItem('yeter_data_updated', Date.now().toString());
+                setTimeout(() => localStorage.removeItem('yeter_data_updated'), 100);
+            }
+            
+            // Слушаем изменения в других вкладках
+            window.addEventListener('storage', (e) => {
+                if (e.key === STORAGE_KEY && e.newValue) {
+                    try {
+                        const newData = JSON.parse(e.newValue);
+                        if (newData.lastSync > userData.lastSync) {
+                            userData = newData;
+                            updateUIDisplay();
+                        }
+                    } catch {}
+                }
+                
+                // Обновляем данные при изменении в другой вкладке
+                if (e.key === 'yeter_data_updated') {
                     const saved = localStorage.getItem(STORAGE_KEY);
                     if (saved) {
                         try {
-                            return JSON.parse(saved);
-                        } catch {
-                            return createDefaultData();
-                        }
-                    }
-                    return createDefaultData();
-                }
-                
-                function createDefaultData() {
-                    return {
-                        stars: 12500,
-                        level: 1,
-                        exp: 0,
-                        expToNext: 1000,
-                        gifts: [],
-                        games: {},
-                        transactions: [],
-                        lastSync: Date.now()
-                    };
-                }
-                
-                let userData = loadUserData();
-                
-                function saveUserData() {
-                    userData.lastSync = Date.now();
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
-                }
-                
-                // Синхронизация между вкладками
-                window.addEventListener('storage', (e) => {
-                    if (e.key === STORAGE_KEY && e.newValue) {
-                        try {
-                            const newData = JSON.parse(e.newValue);
+                            const newData = JSON.parse(saved);
                             if (newData.lastSync > userData.lastSync) {
                                 userData = newData;
                                 updateUIDisplay();
                             }
                         } catch {}
                     }
-                });
-                
-                return {
-                    getStars: function() { return userData.stars; },
-                    getLevel: function() { return userData.level; },
-                    getExp: function() { return userData.exp; },
-                    getExpToNext: function() { return userData.expToNext; },
-                    getUserData: function() { return { ...userData }; },
-                    
-                    updateStars: function(amount, reason) {
-                        if (userData.stars + amount < 0) return false;
-                        userData.stars += amount;
-                        if (!userData.transactions) userData.transactions = [];
-                        userData.transactions.push({ 
-                            amount, 
-                            reason, 
-                            time: Date.now(), 
-                            balance: userData.stars
-                        });
-                        if (userData.transactions.length > 50) userData.transactions = userData.transactions.slice(-50);
-                        saveUserData();
-                        return true;
-                    },
-                    
-                    addExp: function(amount) {
-                        userData.exp += amount;
-                        while (userData.exp >= userData.expToNext) {
-                            userData.exp -= userData.expToNext;
-                            userData.level++;
-                            userData.expToNext = Math.floor(userData.expToNext * 1.5);
+                }
+            });
+            
+            // Периодическая проверка обновлений (каждые 2 секунды)
+            setInterval(() => {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    try {
+                        const newData = JSON.parse(saved);
+                        if (newData.lastSync > userData.lastSync) {
+                            userData = newData;
+                            updateUIDisplay();
                         }
-                        saveUserData();
+                    } catch {}
+                }
+            }, 2000);
+            
+            // Глобальный объект для доступа из других скриптов
+            window.UserStorage = {
+                getStars: function() { return userData.stars; },
+                getLevel: function() { return userData.level; },
+                getExp: function() { return userData.exp; },
+                getExpToNext: function() { return userData.expToNext; },
+                getUserData: function() { return { ...userData }; },
+                
+                updateStars: function(amount, reason) {
+                    if (userData.stars + amount < 0) return false;
+                    userData.stars += amount;
+                    if (!userData.transactions) userData.transactions = [];
+                    userData.transactions.push({ 
+                        amount, 
+                        reason, 
+                        time: Date.now(), 
+                        balance: userData.stars
+                    });
+                    if (userData.transactions.length > 50) userData.transactions = userData.transactions.slice(-50);
+                    saveUserData();
+                    return true;
+                },
+                
+                addExp: function(amount) {
+                    userData.exp += amount;
+                    while (userData.exp >= userData.expToNext) {
+                        userData.exp -= userData.expToNext;
+                        userData.level++;
+                        userData.expToNext = Math.floor(userData.expToNext * 1.5);
                     }
-                };
-            })();
+                    saveUserData();
+                },
+                
+                forceUpdate: function() {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        try {
+                            const newData = JSON.parse(saved);
+                            userData = newData;
+                            updateUIDisplay();
+                        } catch {}
+                    }
+                }
+            };
         })();
 
-        // Звезды
+        // ============================================
+        // ЗВЕЗДЫ
+        // ============================================
         function createStars() {
             const starsContainer = document.getElementById('stars');
             starsContainer.innerHTML = '';
@@ -806,7 +853,9 @@
         }
         createStars();
 
-        // Форматирование чисел
+        // ============================================
+        // ФОРМАТИРОВАНИЕ ЧИСЕЛ
+        // ============================================
         function formatNumber(num) {
             if (num >= 1000000) {
                 return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'м';
@@ -817,7 +866,9 @@
             return num.toString();
         }
 
-        // Обновление UI
+        // ============================================
+        // ОБНОВЛЕНИЕ UI
+        // ============================================
         function updateUIDisplay() {
             const data = window.UserStorage.getUserData();
             document.getElementById('shopBalanceDisplay').innerText = formatNumber(data.stars);
@@ -827,7 +878,9 @@
             document.getElementById('shopProgressFill').style.width = progress + '%';
         }
 
-        // Уведомления
+        // ============================================
+        // УВЕДОМЛЕНИЯ
+        // ============================================
         const Notification = {
             show: function(message, type) {
                 const notif = document.getElementById('notification');
@@ -840,7 +893,9 @@
             error: function(message) { this.show(message, 'error'); }
         };
 
-        // Защита от накрутки
+        // ============================================
+        // ЗАЩИТА ОТ НАКРУТКИ
+        // ============================================
         const Security = (function() {
             let _requestTimestamps = [];
             function checkRateLimit() {
@@ -853,7 +908,9 @@
             return { validateRequest: checkRateLimit };
         })();
 
-        // Все NFT
+        // ============================================
+        // ВСЕ NFT
+        // ============================================
         const nftGifts = [
             { name: "Khabib's Papakha", price: 10100, image: "nft/Khabibs Papakha.png" },
             { name: "Snoop Cigar", price: 12500, image: "nft/Snoop Cigar.png" },
@@ -955,7 +1012,9 @@
             { name: "Trapped Heart", price: 129, image: "nft/Trapped Heart.png" }
         ];
 
-        // Состояние
+        // ============================================
+        // СОСТОЯНИЕ
+        // ============================================
         let currentSearchTerm = '';
         let currentSort = 'random';
 
@@ -1004,6 +1063,9 @@
             `).join('');
         }
 
+        // ============================================
+        // МОДАЛЬНОЕ ОКНО
+        // ============================================
         function openModal(name, price, image) {
             document.getElementById('modalImage').src = image;
             document.getElementById('modalTitle').innerText = name;
@@ -1015,6 +1077,9 @@
             };
         }
 
+        // ============================================
+        // ПОКУПКА - ГЛАВНОЕ ИЗМЕНЕНИЕ ЗДЕСЬ
+        // ============================================
         function buyItem(name, price, image) {
             if (!Security.validateRequest()) {
                 Notification.error('Слишком много запросов');
@@ -1044,7 +1109,12 @@
                     document.getElementById('modalOverlay').classList.remove('active');
                     Notification.success('Подарок успешно куплен');
                     
+                    // Обновляем отображение
                     updateUIDisplay();
+                    
+                    // Отправляем сигнал об обновлении данных для других страниц
+                    localStorage.setItem('yeter_data_updated', Date.now().toString());
+                    setTimeout(() => localStorage.removeItem('yeter_data_updated'), 100);
                 }
             } else {
                 document.getElementById('modalOverlay').classList.remove('active');
@@ -1052,11 +1122,16 @@
             }
         }
 
-        // Кнопка + не работает
+        // ============================================
+        // КНОПКА + НЕ РАБОТАЕТ
+        // ============================================
         document.getElementById('addBalanceBtn').addEventListener('click', (e) => {
             e.preventDefault();
         });
 
+        // ============================================
+        // TELEGRAM
+        // ============================================
         const tg = window.Telegram?.WebApp;
         if (tg) {
             tg.ready();
@@ -1080,6 +1155,9 @@
             }
         }
 
+        // ============================================
+        // ЗАКРЫТИЕ МОДАЛКИ
+        // ============================================
         document.getElementById('modalClose').addEventListener('click', () => {
             document.getElementById('modalOverlay').classList.remove('active');
         });
@@ -1090,6 +1168,9 @@
             }
         });
 
+        // ============================================
+        // СОРТИРОВКА
+        // ============================================
         document.getElementById('sortBtn').addEventListener('click', () => {
             if (!Security.validateRequest()) return;
             
@@ -1099,12 +1180,17 @@
             renderProducts();
         });
 
+        // ============================================
+        // ПОИСК
+        // ============================================
         document.getElementById('searchInput').addEventListener('input', (e) => {
             currentSearchTerm = e.target.value;
             renderProducts();
         });
 
-        // Обработчики навигации
+        // ============================================
+        // НАВИГАЦИЯ
+        // ============================================
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1120,8 +1206,15 @@
             if (item.getAttribute('href') === currentPage) item.classList.add('active');
         });
 
-        // Инициализация
+        // ============================================
+        // ИНИЦИАЛИЗАЦИЯ
+        // ============================================
         updateUIDisplay();
+        
+        // Принудительная синхронизация при загрузке страницы
+        setTimeout(() => {
+            window.UserStorage.forceUpdate();
+        }, 500);
         
         setTimeout(() => {
             renderProducts();
