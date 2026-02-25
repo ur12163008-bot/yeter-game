@@ -340,7 +340,6 @@
             background: rgba(20, 25, 35, 0.9);
         }
 
-        /* Убираем стрелки у input number */
         .input-field[type="number"]::-webkit-inner-spin-button,
         .input-field[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -360,7 +359,7 @@
 
         .mine-cell {
             aspect-ratio: 1;
-            background: rgba(20, 25, 35, 0.8); /* КАК РАНЬШЕ */
+            background: rgba(20, 25, 35, 0.8);
             border: 1px solid rgba(138, 43, 226, 0.3);
             border-radius: 12px;
             display: flex;
@@ -611,33 +610,22 @@
     </div>
 
     <script>
-        // ========== ОПТИМИЗИРОВАННЫЕ ЗВЕЗДЫ ==========
         function createStars() {
             const starsContainer = document.getElementById('stars');
             if (!starsContainer) return;
-
             starsContainer.innerHTML = '';
-
             requestAnimationFrame(() => {
                 const isLowEnd = navigator.hardwareConcurrency <= 4 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
                 const starCount = isLowEnd ? 30 : 50;
-
                 for (let i = 0; i < starCount; i++) {
                     const star = document.createElement('div');
-
                     const size = Math.random();
-                    if (size < 0.6) {
-                        star.className = 'star';
-                    } else if (size < 0.85) {
-                        star.className = 'star medium';
-                    } else {
-                        star.className = 'star large';
-                    }
-
+                    if (size < 0.6) star.className = 'star';
+                    else if (size < 0.85) star.className = 'star medium';
+                    else star.className = 'star large';
                     star.style.left = Math.random() * 100 + '%';
                     star.style.top = Math.random() * 100 + '%';
                     star.style.animationDelay = Math.random() * 5 + 's';
-
                     starsContainer.appendChild(star);
                 }
             });
@@ -660,12 +648,8 @@
             }
         });
 
-        // ============================================
-        // ГЛОБАЛЬНОЕ ХРАНИЛИЩЕ
-        // ============================================
         (function() {
             const tg = window.Telegram?.WebApp;
-
             if (!tg || !tg.initData || !tg.initDataUnsafe?.user) {
                 document.body.innerHTML = `
                     <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #03050a; color: white; text-align: center; padding: 20px;">
@@ -792,48 +776,31 @@
             };
         })();
 
-        // ============================================
-        // ФОРМАТИРОВАНИЕ ЧИСЕЛ
-        // ============================================
         function formatNumber(num) {
-            if (num >= 1000000) {
-                return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'м';
-            }
-            if (num >= 1000) {
-                return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'к';
-            }
+            if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'м';
+            if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'к';
             return num.toString();
         }
 
-        // ============================================
-        // ОБНОВЛЕНИЕ UI
-        // ============================================
         function updateUIDisplay() {
             const data = window.UserStorage.getUserData();
             document.getElementById('balanceDisplay').innerText = formatNumber(data.stars);
             document.getElementById('levelDisplay').innerText = data.level;
             document.getElementById('nextLevelDisplay').innerText = data.level + 1;
-
             const progress = (data.exp / data.expToNext) * 100;
             document.getElementById('progressFill').style.width = progress + '%';
         }
 
-        // ============================================
-        // TELEGRAM ПРОФИЛЬ
-        // ============================================
         const tg = window.Telegram?.WebApp;
         if (tg) {
             tg.ready();
             tg.expand();
-
             const user = tg.initDataUnsafe?.user;
             if (user) {
                 const firstName = user.first_name || '';
                 const lastName = user.last_name || '';
                 const fullName = (firstName + ' ' + lastName).trim() || 'Player';
-
                 document.getElementById('playerName').innerText = fullName;
-
                 if (user.photo_url) {
                     document.getElementById('playerAvatar').style.backgroundImage = `url('${user.photo_url}')`;
                     document.getElementById('playerAvatar').style.backgroundColor = 'transparent';
@@ -845,9 +812,6 @@
             }
         }
 
-        // ============================================
-        // КНОПКА + ДОБАВЛЯЕТ 100
-        // ============================================
         document.getElementById('addBalanceBtn').addEventListener('click', function() {
             if (window.UserStorage.updateStars(100, 'Пополнение')) {
                 updateUIDisplay();
@@ -857,7 +821,7 @@
         });
 
         // ============================================
-        // ИГРОВАЯ ЛОГИКА MINES - ТОЧНО КАК В ТВОЕМ СКРИПТЕ
+        // ИГРОВАЯ ЛОГИКА - ТОЧНО КАК В ТВОЕМ СКРИПТЕ
         // ============================================
         const GRID_SIZE = 5;
         const TOTAL_CELLS = 25;
@@ -872,8 +836,8 @@
             currentWin: 0
         };
 
+        // ТОЧНО ТАКАЯ ЖЕ ФОРМУЛА МНОЖИТЕЛЯ
         function calculateMultiplier(revealedCount, minesCount) {
-            // ТОЧНО КАК В ТВОЕМ СКРИПТЕ
             return 1 + (revealedCount * 0.25) + (minesCount * 0.1);
         }
 
@@ -885,14 +849,11 @@
         function createGrid() {
             const grid = document.getElementById('minesGrid');
             grid.innerHTML = '';
-
             for (let i = 0; i < TOTAL_CELLS; i++) {
                 const cell = document.createElement('div');
                 cell.className = 'mine-cell';
                 cell.dataset.index = i;
-
                 cell.addEventListener('click', () => handleCellClick(i));
-
                 grid.appendChild(cell);
             }
         }
@@ -905,7 +866,6 @@
                 showMessage('Минимальная ставка 10', 'error');
                 return;
             }
-
             if (isNaN(minesCount) || minesCount < 1 || minesCount > 24) {
                 showMessage('Минимальное количество бомб 1', 'error');
                 return;
@@ -917,7 +877,6 @@
                 return;
             }
 
-            // Списываем ставку
             if (!window.UserStorage.updateStars(-bet, 'Ставка в Mines')) {
                 showMessage('Ошибка транзакции', 'error');
                 return;
@@ -960,17 +919,14 @@
             const cell = document.querySelector(`[data-index="${index}"]`);
 
             if (gameState.mines.includes(index)) {
-                // Проигрыш
                 cell.classList.add('revealed', 'mine');
                 cell.innerHTML = '<i class="fas fa-bomb"></i>';
-
                 showMessage(`Проигрыш -${gameState.bet}`, 'error');
 
                 gameState.active = false;
                 document.getElementById('newGameBtn').disabled = false;
                 document.getElementById('cashoutBtn').disabled = true;
 
-                // Показываем все бомбы
                 for (let i = 0; i < TOTAL_CELLS; i++) {
                     if (gameState.mines.includes(i)) {
                         const mineCell = document.querySelector(`[data-index="${i}"]`);
@@ -979,7 +935,6 @@
                     }
                 }
             } else {
-                // Выигрыш
                 cell.classList.add('revealed', 'gem');
                 cell.innerHTML = '<span class="puzzle-icon">🧩</span>';
 
@@ -989,7 +944,6 @@
 
                 updateWinDisplay();
 
-                // Проверка на победу (все алмазы открыты)
                 if (gameState.revealed.length === TOTAL_CELLS - gameState.minesCount) {
                     cashout();
                 }
@@ -998,20 +952,15 @@
 
         function cashout() {
             if (!gameState.active) return;
-
             const winAmount = gameState.currentWin;
-
             if (window.UserStorage.updateStars(winAmount, 'Выигрыш в Mines')) {
                 window.UserStorage.addExp(Math.floor(winAmount / 10));
                 showMessage(`Выигрыш +${winAmount}`, 'success');
             }
-
             gameState.active = false;
             document.getElementById('newGameBtn').disabled = false;
             document.getElementById('cashoutBtn').disabled = true;
-
             updateUIDisplay();
-
             localStorage.setItem('yeter_data_updated', Date.now().toString());
             setTimeout(() => localStorage.removeItem('yeter_data_updated'), 100);
         }
@@ -1019,12 +968,10 @@
         function showMessage(text, type = 'success') {
             const container = document.getElementById('messageContainer');
             container.innerHTML = '';
-
             const msg = document.createElement('div');
             msg.className = `game-message ${type}`;
             msg.innerHTML = `<span>${text}</span>`;
             container.appendChild(msg);
-
             setTimeout(() => {
                 if (msg.parentNode) {
                     msg.style.animation = 'messagePop 0.3s reverse';
@@ -1033,29 +980,17 @@
             }, 3000);
         }
 
-        // ============================================
-        // ИНИЦИАЛИЗАЦИЯ
-        // ============================================
         window.onload = function() {
             updateUIDisplay();
             createGrid();
-
             document.getElementById('newGameBtn').addEventListener('click', startNewGame);
             document.getElementById('cashoutBtn').addEventListener('click', cashout);
-
-            // Убираем автоизменение значений
             document.getElementById('betAmount').addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-                    e.preventDefault();
-                }
+                if (e.key === 'ArrowUp' || e.key === 'ArrowDown') e.preventDefault();
             });
-
             document.getElementById('minesCount').addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-                    e.preventDefault();
-                }
+                if (e.key === 'ArrowUp' || e.key === 'ArrowDown') e.preventDefault();
             });
-
             setTimeout(() => {
                 window.UserStorage.forceUpdate();
             }, 500);
