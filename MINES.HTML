@@ -350,38 +350,17 @@
             -moz-appearance: textfield;
         }
 
-        .win-info {
-            text-align: center;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(106, 13, 173, 0.1);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 20px;
-        }
-
-        .current-multiplier {
-            color: #b87aff;
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 5px;
-        }
-
-        .current-win {
-            color: #ffd700;
-            font-size: 24px;
-            font-weight: 700;
-        }
-
         .mines-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 8px;
-            margin: 20px 0;
+            margin: 30px 0;
+            padding: 0 5px;
         }
 
         .mine-cell {
             aspect-ratio: 1;
-            background: #2a1e3a;  /* ФИОЛЕТОВЫЙ как было */
+            background: rgba(20, 25, 35, 0.8); /* КАК РАНЬШЕ */
             border: 1px solid rgba(138, 43, 226, 0.3);
             border-radius: 12px;
             display: flex;
@@ -390,24 +369,34 @@
             font-size: 22px;
             cursor: pointer;
             transition: all 0.1s ease;
-            box-shadow: 0 4px 0 #1a1028;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mine-cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), transparent);
+            pointer-events: none;
         }
 
         .mine-cell:active {
-            transform: translateY(4px);
-            box-shadow: none;
+            transform: scale(0.95);
+            background: rgba(30, 35, 45, 0.9);
         }
 
         .mine-cell.revealed {
             background: rgba(106, 13, 173, 0.3);
             border-color: #b87aff;
-            box-shadow: 0 2px 0 #1a1028;
-            transform: translateY(2px);
             cursor: default;
         }
 
         .mine-cell.revealed:active {
-            transform: translateY(2px);
+            transform: none;
         }
 
         .mine-cell.mine {
@@ -425,10 +414,37 @@
             font-size: 22px;
         }
 
+        .win-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .win-label {
+            color: #8e98a3;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .win-amount {
+            color: #b87aff;
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .win-multiplier {
+            color: #8e98a3;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
         .buttons-row {
             display: flex;
             gap: 12px;
-            margin: 20px 0;
+            margin-bottom: 20px;
         }
 
         .action-button {
@@ -571,19 +587,20 @@
                 </div>
             </div>
 
-            <div class="win-info" id="winInfo" style="display: none;">
-                <div class="current-multiplier" id="currentMultiplier">x1.00</div>
-                <div class="current-win" id="currentWin">0 🧩</div>
+            <div class="win-info">
+                <div class="win-label">ВОЗМОЖНЫЙ ВЫИГРЫШ</div>
+                <div class="win-amount" id="winAmount">10</div>
+                <div class="win-multiplier" id="winMultiplier">x1.00</div>
             </div>
 
             <div class="mines-grid" id="minesGrid"></div>
 
             <div class="buttons-row">
-                <button class="action-button" id="startGameBtn">
+                <button class="action-button" id="newGameBtn">
                     <i class="fas fa-play"></i>
-                    НАЧАТЬ ИГРУ
+                    НОВАЯ ИГРА
                 </button>
-                <button class="action-button" id="cashoutBtn" style="display: none;">
+                <button class="action-button" id="cashoutBtn" disabled>
                     <i class="fas fa-hand-holding-usd"></i>
                     ЗАБРАТЬ
                 </button>
@@ -840,32 +857,29 @@
         });
 
         // ============================================
-        // ИГРОВАЯ ЛОГИКА MINES
+        // ИГРОВАЯ ЛОГИКА MINES - ТОЧНО КАК В ТВОЕМ СКРИПТЕ
         // ============================================
         const GRID_SIZE = 5;
         const TOTAL_CELLS = 25;
 
-        let gameActive = false;
-        let mines = [];
-        let revealed = [];
-        let currentBet = 0;
-        let currentMinesCount = 3;
-        let currentMultiplier = 1;
+        let gameState = {
+            active: false,
+            mines: [],
+            revealed: [],
+            bet: 0,
+            minesCount: 3,
+            multiplier: 1,
+            currentWin: 0
+        };
 
         function calculateMultiplier(revealedCount, minesCount) {
-            // Множитель растет с каждым открытием и зависит от количества бомб
-            return 1 + (revealedCount * 0.25) + (minesCount * 0.15);
+            // ТОЧНО КАК В ТВОЕМ СКРИПТЕ
+            return 1 + (revealedCount * 0.25) + (minesCount * 0.1);
         }
 
         function updateWinDisplay() {
-            if (gameActive) {
-                const multiplier = calculateMultiplier(revealed.length, currentMinesCount);
-                currentMultiplier = multiplier;
-                const winAmount = Math.floor(currentBet * multiplier);
-                
-                document.getElementById('currentMultiplier').innerText = `x${multiplier.toFixed(2)}`;
-                document.getElementById('currentWin').innerText = `${winAmount} 🧩`;
-            }
+            document.getElementById('winAmount').innerText = Math.floor(gameState.currentWin);
+            document.getElementById('winMultiplier').innerText = `x${gameState.multiplier.toFixed(2)}`;
         }
 
         function createGrid() {
@@ -883,7 +897,7 @@
             }
         }
 
-        function startGame() {
+        function startNewGame() {
             const bet = parseInt(document.getElementById('betAmount').value);
             const minesCount = parseInt(document.getElementById('minesCount').value);
 
@@ -909,20 +923,23 @@
                 return;
             }
 
-            // Генерируем бомбы в случайном порядке
-            const allCells = Array.from({ length: TOTAL_CELLS }, (_, i) => i);
-            for (let i = allCells.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [allCells[i], allCells[j]] = [allCells[j], allCells[i]];
+            // Генерируем бомбы
+            const mines = new Set();
+            while (mines.size < minesCount) {
+                mines.add(Math.floor(Math.random() * TOTAL_CELLS));
             }
-            
-            mines = allCells.slice(0, minesCount);
-            revealed = [];
-            gameActive = true;
-            currentBet = bet;
-            currentMinesCount = minesCount;
 
-            // Очищаем поле
+            gameState = {
+                active: true,
+                mines: Array.from(mines),
+                revealed: [],
+                bet: bet,
+                minesCount: minesCount,
+                multiplier: 1,
+                currentWin: bet
+            };
+
+            // Очищаем клетки
             for (let i = 0; i < TOTAL_CELLS; i++) {
                 const cell = document.querySelector(`[data-index="${i}"]`);
                 cell.className = 'mine-cell';
@@ -932,53 +949,30 @@
             updateUIDisplay();
             updateWinDisplay();
 
-            document.getElementById('startGameBtn').style.display = 'none';
-            document.getElementById('cashoutBtn').style.display = 'flex';
-            document.getElementById('winInfo').style.display = 'block';
-        }
-
-        function cashout() {
-            if (!gameActive) return;
-
-            const winAmount = Math.floor(currentBet * currentMultiplier);
-
-            if (window.UserStorage.updateStars(winAmount, 'Выигрыш в Mines')) {
-                window.UserStorage.addExp(Math.floor(winAmount / 10));
-                showMessage(`Выигрыш +${winAmount}`, 'success');
-            }
-
-            gameActive = false;
-            document.getElementById('startGameBtn').style.display = 'flex';
-            document.getElementById('cashoutBtn').style.display = 'none';
-            document.getElementById('winInfo').style.display = 'none';
-
-            updateUIDisplay();
-            
-            localStorage.setItem('yeter_data_updated', Date.now().toString());
-            setTimeout(() => localStorage.removeItem('yeter_data_updated'), 100);
+            document.getElementById('newGameBtn').disabled = true;
+            document.getElementById('cashoutBtn').disabled = false;
         }
 
         function handleCellClick(index) {
-            if (!gameActive) return;
-            if (revealed.includes(index)) return;
+            if (!gameState.active) return;
+            if (gameState.revealed.includes(index)) return;
 
             const cell = document.querySelector(`[data-index="${index}"]`);
 
-            if (mines.includes(index)) {
+            if (gameState.mines.includes(index)) {
                 // Проигрыш
                 cell.classList.add('revealed', 'mine');
                 cell.innerHTML = '<i class="fas fa-bomb"></i>';
 
-                showMessage(`Проигрыш -${currentBet}`, 'error');
+                showMessage(`Проигрыш -${gameState.bet}`, 'error');
 
-                gameActive = false;
-                document.getElementById('startGameBtn').style.display = 'flex';
-                document.getElementById('cashoutBtn').style.display = 'none';
-                document.getElementById('winInfo').style.display = 'none';
+                gameState.active = false;
+                document.getElementById('newGameBtn').disabled = false;
+                document.getElementById('cashoutBtn').disabled = true;
 
                 // Показываем все бомбы
                 for (let i = 0; i < TOTAL_CELLS; i++) {
-                    if (mines.includes(i)) {
+                    if (gameState.mines.includes(i)) {
                         const mineCell = document.querySelector(`[data-index="${i}"]`);
                         mineCell.classList.add('revealed', 'mine');
                         mineCell.innerHTML = '<i class="fas fa-bomb"></i>';
@@ -989,14 +983,37 @@
                 cell.classList.add('revealed', 'gem');
                 cell.innerHTML = '<span class="puzzle-icon">🧩</span>';
 
-                revealed.push(index);
+                gameState.revealed.push(index);
+                gameState.multiplier = calculateMultiplier(gameState.revealed.length, gameState.minesCount);
+                gameState.currentWin = Math.floor(gameState.bet * gameState.multiplier);
+
                 updateWinDisplay();
 
-                // Проверка на полную победу
-                if (revealed.length === TOTAL_CELLS - mines.length) {
+                // Проверка на победу (все алмазы открыты)
+                if (gameState.revealed.length === TOTAL_CELLS - gameState.minesCount) {
                     cashout();
                 }
             }
+        }
+
+        function cashout() {
+            if (!gameState.active) return;
+
+            const winAmount = gameState.currentWin;
+
+            if (window.UserStorage.updateStars(winAmount, 'Выигрыш в Mines')) {
+                window.UserStorage.addExp(Math.floor(winAmount / 10));
+                showMessage(`Выигрыш +${winAmount}`, 'success');
+            }
+
+            gameState.active = false;
+            document.getElementById('newGameBtn').disabled = false;
+            document.getElementById('cashoutBtn').disabled = true;
+
+            updateUIDisplay();
+
+            localStorage.setItem('yeter_data_updated', Date.now().toString());
+            setTimeout(() => localStorage.removeItem('yeter_data_updated'), 100);
         }
 
         function showMessage(text, type = 'success') {
@@ -1023,7 +1040,7 @@
             updateUIDisplay();
             createGrid();
 
-            document.getElementById('startGameBtn').addEventListener('click', startGame);
+            document.getElementById('newGameBtn').addEventListener('click', startNewGame);
             document.getElementById('cashoutBtn').addEventListener('click', cashout);
 
             // Убираем автоизменение значений
