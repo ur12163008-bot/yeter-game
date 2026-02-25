@@ -8,17 +8,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
             font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+        
+        body {
             background: #03050a;
             color: white;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            padding: 0;
         }
+        
         body::before {
             content: '';
             position: fixed;
@@ -29,45 +36,73 @@
             background: radial-gradient(ellipse at 40% 50%, #0a0e1a 0%, #03050a 70%, #000103 100%);
             z-index: -2;
         }
-        body::after {
-            content: '';
+
+        /* ========== ОПТИМИЗИРОВАННЫЕ ЗВЕЗДЫ ========== */
+        .stars {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                radial-gradient(1.5px 1.5px at 15px 60px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.2px 1.2px at 72px 430px, rgba(255,245,200,0.8), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 250px 120px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(1.8px 1.8px at 120px 550px, rgba(210,230,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.3px 1.3px at 380px 200px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 40px 780px, rgba(200,220,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(1.6px 1.6px at 310px 640px, rgba(255,255,240,0.8), rgba(0,0,0,0)),
-                radial-gradient(1.1px 1.1px at 190px 890px, rgba(255,255,255,0.7), rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 420px 350px, rgba(180,200,255,0.9), rgba(0,0,0,0)),
-                radial-gradient(1.4px 1.4px at 80px 920px, rgba(255,255,255,0.8), rgba(0,0,0,0));
-            background-size: 500px 1000px;
-            background-repeat: repeat;
-            opacity: 0.6;
+            width: 100%;
+            height: 100%;
             z-index: -1;
+            pointer-events: none;
         }
-        .app { max-width: 440px; width: 100%; background: transparent; position: relative; min-height: 100vh; padding-bottom: 20px; }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            width: 2px;
+            height: 2px;
+            opacity: 0;
+            animation: twinkle 4s infinite ease-in-out;
+        }
+
+        .star.medium {
+            width: 3px;
+            height: 3px;
+        }
+
+        .star.large {
+            width: 4px;
+            height: 4px;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0; }
+            20% { opacity: 0.8; }
+            40% { opacity: 0.3; }
+            60% { opacity: 0.6; }
+            80% { opacity: 0.2; }
+            100% { opacity: 0; }
+        }
+
+        .app { 
+            max-width: 440px; 
+            width: 100%; 
+            background: transparent; 
+            position: relative; 
+            min-height: 100vh; 
+            padding-bottom: 20px;
+            z-index: 1;
+        }
 
         .puzzle-icon {
             display: inline-block;
-            font-size: 20px;
+            font-size: 18px;
             line-height: 1;
             color: #ffd700;
-            text-shadow: 0 0 6px #ffaa00;
             flex-shrink: 0;
         }
-        .puzzle-balance { 
-            font-size: 24px; 
-            margin-left: 6px;
+        
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px 20px 16px; 
+            background: transparent; 
         }
-
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 20px 16px; background: transparent; }
+        
         .back-button {
             display: flex;
             align-items: center;
@@ -81,70 +116,116 @@
             border: 1px solid rgba(138, 43, 226, 0.4);
             border-radius: 40px;
             transition: 0.1s ease;
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
         }
-        .back-button:hover { background: rgba(106, 13, 173, 0.3); }
+        
+        .back-button:active { 
+            background: rgba(106, 13, 173, 0.3); 
+            transform: scale(0.95);
+        }
+        
         .balance-wrapper {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
             background: rgba(10, 14, 22, 0.8);
-            padding: 8px 16px;
-            border-radius: 40px;
+            padding: 6px 14px;
+            border-radius: 30px;
             border: 1px solid rgba(138, 43, 226, 0.4);
         }
-        .stars { display: flex; align-items: center; gap: 6px; font-weight: 900; font-size: 20px; color: white; }
+        
+        .balance { 
+            display: flex; 
+            align-items: center; 
+            gap: 4px; 
+            font-weight: 700; 
+            font-size: 16px; 
+            color: white; 
+        }
         
         .player-profile {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 15px;
             background: rgba(10, 14, 22, 0.6);
             backdrop-filter: blur(5px);
-            padding: 16px 20px;
+            padding: 15px 20px;
             margin: 0 20px 20px;
-            border-radius: 24px;
+            border-radius: 25px;
             border: 1px solid rgba(138, 43, 226, 0.3);
         }
+        
         .avatar-small {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(145deg, #1e1a2a, #12101a);
-            border-radius: 16px;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
-            color: #b87aff;
-            border: 2px solid #9b4dff;
+            color: white;
+            border: 2px solid #b87aff;
             flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+            background-color: #6a0dad;
         }
-        .profile-info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-        .profile-name { font-size: 18px; font-weight: 800; color: white; }
-        .profile-level-row { display: flex; align-items: center; gap: 8px; }
+        
+        .profile-info { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 4px; 
+        }
+        
+        .profile-name { 
+            font-size: 16px; 
+            font-weight: 700; 
+            color: white; 
+        }
+        
+        .profile-level-row { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        
         .level-number {
             background: linear-gradient(145deg, #6a0dad, #4b0082);
             width: 28px;
             height: 28px;
-            border-radius: 8px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
-            font-weight: 900;
+            font-weight: 800;
             color: white;
-            box-shadow: 0 3px 0 #2d0b4e;
         }
+        
         .progress-small {
-            width: 80px;
-            height: 6px;
+            width: 70px;
+            height: 5px;
             background: rgba(30, 38, 48, 0.8);
             border-radius: 20px;
             overflow: hidden;
             border: 1px solid rgba(155, 77, 255, 0.3);
         }
-        .progress-fill-small { height: 100%; background: linear-gradient(90deg, #9b4dff, #b87aff); border-radius: 20px; }
-        .next-level { color: #b87aff; font-size: 14px; font-weight: 700; }
+        
+        .progress-fill-small { 
+            height: 100%; 
+            background: linear-gradient(90deg, #9b4dff, #b87aff); 
+            border-radius: 20px; 
+            transition: width 0.2s ease;
+        }
+        
+        .next-level { 
+            color: #b87aff; 
+            font-size: 14px; 
+            font-weight: 700; 
+        }
         
         .message-container {
             width: 100%;
@@ -153,6 +234,7 @@
             flex-direction: column;
             gap: 10px;
         }
+        
         .game-message {
             width: 100%;
             padding: 16px 24px;
@@ -166,28 +248,37 @@
             box-shadow: 0 6px 0 rgba(0,0,0,0.3);
             animation: messagePop 0.3s ease;
             min-height: 56px;
+            text-align: center;
         }
+        
         @keyframes messagePop {
             0% { transform: scale(0.9); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
+        
         .game-message.success {
             background: linear-gradient(145deg, #2ecc71, #27ae60);
             color: white;
             border: 1px solid rgba(46, 204, 113, 0.5);
         }
+        
         .game-message.error {
             background: linear-gradient(145deg, #e74c3c, #c0392b);
             color: white;
             border: 1px solid rgba(231, 76, 60, 0.5);
         }
+        
         .game-message.warning {
             background: linear-gradient(145deg, #f39c12, #e67e22);
             color: white;
             border: 1px solid rgba(243, 156, 18, 0.5);
         }
         
-        .game-container { padding: 0 20px; }
+        .game-container { 
+            padding: 0 20px; 
+        }
+        
+        /* КРАСИВЫЕ МИНЫ И ПАЗЛЫ */
         .mines-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -198,6 +289,7 @@
             border-radius: 28px;
             border: 1px solid rgba(138, 43, 226, 0.2);
         }
+        
         .mine-cell {
             aspect-ratio: 1;
             background: rgba(20, 25, 35, 0.8);
@@ -212,14 +304,68 @@
             color: white;
             box-shadow: 0 4px 0 #0a0c16;
         }
-        .mine-cell:hover { transform: scale(1.05); border-color: rgba(255, 215, 0, 0.6); background: rgba(40, 45, 60, 0.9); }
-        .mine-cell.revealed { animation: cellReveal 0.3s ease; }
-        @keyframes cellReveal { 0% { transform: scale(0.8); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
-        .mine-cell.star { background: rgba(255, 215, 0, 0.15); border-color: #ffd700; }
-        .mine-cell.mine { background: rgba(255, 59, 48, 0.15); border-color: #ff3b30; }
-        .controls-row { display: flex; gap: 12px; margin-bottom: 20px; align-items: center; }
-        .input-group { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-        .input-label { display: flex; align-items: center; gap: 6px; color: #b87aff; font-size: 14px; font-weight: 800; letter-spacing: 0.3px; }
+        
+        .mine-cell:hover { 
+            transform: scale(1.05); 
+            border-color: rgba(255, 215, 0, 0.6); 
+            background: rgba(40, 45, 60, 0.9); 
+        }
+        
+        .mine-cell.revealed { 
+            animation: cellReveal 0.3s ease; 
+        }
+        
+        @keyframes cellReveal { 
+            0% { transform: scale(0.8); opacity: 0.5; } 
+            100% { transform: scale(1); opacity: 1; } 
+        }
+        
+        .mine-cell.star { 
+            background: rgba(255, 215, 0, 0.15); 
+            border-color: #ffd700; 
+        }
+        
+        .mine-cell.mine { 
+            background: rgba(255, 59, 48, 0.15); 
+            border-color: #ff3b30; 
+        }
+
+        .mine-cell.star i {
+            color: #ffd700;
+            font-size: 24px;
+            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+        }
+
+        .mine-cell.mine i {
+            color: #ff4444;
+            font-size: 24px;
+            filter: drop-shadow(0 0 5px rgba(255, 68, 68, 0.5));
+        }
+        
+        .controls-row { 
+            display: flex; 
+            gap: 12px; 
+            margin-bottom: 20px; 
+            align-items: center; 
+        }
+        
+        .input-group { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 4px; 
+        }
+        
+        .input-label { 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+            color: #b87aff; 
+            font-size: 14px; 
+            font-weight: 800; 
+            letter-spacing: 0.3px; 
+        }
+        
         .input-field {
             background: rgba(10, 14, 22, 0.8);
             border: 1px solid rgba(138, 43, 226, 0.4);
@@ -232,7 +378,12 @@
             transition: 0.1s ease;
             width: 100%;
         }
-        .input-field:focus { border-color: #9b4dff; background: rgba(20, 25, 35, 0.9); }
+        
+        .input-field:focus { 
+            border-color: #9b4dff; 
+            background: rgba(20, 25, 35, 0.9); 
+        }
+        
         .action-button {
             background: linear-gradient(145deg, #6a0dad, #4b0082);
             color: white;
@@ -249,9 +400,19 @@
             transition: all 0.1s ease;
             margin-bottom: 20px;
             width: 100%;
+            -webkit-tap-highlight-color: transparent;
         }
-        .action-button:active { transform: translateY(6px); box-shadow: 0 0 0 #2d0b4e; }
-        .action-button.disabled { opacity: 0.6; pointer-events: none; }
+        
+        .action-button:active { 
+            transform: translateY(6px); 
+            box-shadow: 0 0 0 #2d0b4e; 
+        }
+        
+        .action-button.disabled { 
+            opacity: 0.6; 
+            pointer-events: none; 
+        }
+        
         .cooldown-message {
             width: 100%;
             padding: 16px 24px;
@@ -273,24 +434,26 @@
     </style>
 </head>
 <body>
+    <div class="stars" id="stars"></div>
+
     <div class="app">
         <div class="header">
-            <div class="back-button" onclick="window.location.href='index.html'">
+            <a href="index.html" class="back-button" onclick="window.location.href='index.html'; return false;">
                 <i class="fas fa-arrow-left"></i>
                 <span>Назад</span>
-            </div>
+            </a>
             <div class="balance-wrapper">
-                <div class="stars">
-                    <span id="balanceDisplay">0</span>
-                    <span class="puzzle-icon puzzle-balance">🧩</span>
+                <div class="balance">
+                    <span id="balanceDisplay">12.5k</span>
+                    <span class="puzzle-icon">🧩</span>
                 </div>
             </div>
         </div>
         
         <div class="player-profile">
-            <div class="avatar-small" id="playerAvatar">Y</div>
+            <div class="avatar-small" id="playerAvatar"></div>
             <div class="profile-info">
-                <div class="profile-name" id="playerName">@yeter</div>
+                <div class="profile-name" id="playerName">Загрузка...</div>
                 <div class="profile-level-row">
                     <div class="level-number" id="levelDisplay">1</div>
                     <div class="progress-small">
@@ -326,142 +489,244 @@
     </div>
     
     <script>
-        // ========== ЖЕСТКАЯ ЗАЩИТА ==========
+        // ========== ЗАЩИТА КАК ВЕЗДЕ ==========
         (function() {
-            const protectedMethods = ['getItem', 'setItem', 'removeItem'];
-            protectedMethods.forEach(method => {
-                const original = localStorage[method];
-                localStorage[method] = function() {
-                    if (new Error().stack.includes('debugger')) {
-                        throw new Error('Access denied');
-                    }
-                    return original.apply(this, arguments);
-                };
-            });
+            const tg = window.Telegram?.WebApp;
             
-            setInterval(function() {
-                const before = new Date();
-                debugger;
-                const after = new Date();
-                if (after - before > 100) {
-                    window.location.reload();
-                }
-            }, 1000);
+            if (!tg || !tg.initData || !tg.initDataUnsafe?.user) {
+                document.body.innerHTML = `
+                    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #03050a; color: white; text-align: center; padding: 20px;">
+                        <div>
+                            <h2 style="margin-bottom: 20px; color: #ff4444;">❌ Доступ запрещен</h2>
+                            <p style="color: #8e98a3; margin-bottom: 20px;">Приложение работает только в Telegram</p>
+                        </div>
+                    </div>
+                `;
+                throw new Error('Not in Telegram');
+            }
         })();
 
-        // ========== СИСТЕМА СОХРАНЕНИЯ ==========
-        const GameStorage = (function() {
-            let _data = null;
-            const _key = 'yeter_user_data';
+        // ========== ОПТИМИЗИРОВАННЫЕ ЗВЕЗДЫ ==========
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            if (!starsContainer) return;
             
-            function _load() {
-                const saved = localStorage.getItem(_key);
-                if (saved) {
-                    try {
-                        _data = JSON.parse(saved);
-                        if (!_validate(_data)) {
-                            _createDefault();
-                        }
-                    } catch {
-                        _createDefault();
+            starsContainer.innerHTML = '';
+            
+            requestAnimationFrame(() => {
+                const isLowEnd = navigator.hardwareConcurrency <= 4 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+                const starCount = isLowEnd ? 30 : 50;
+                
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    
+                    const size = Math.random();
+                    if (size < 0.6) {
+                        star.className = 'star';
+                    } else if (size < 0.85) {
+                        star.className = 'star medium';
+                    } else {
+                        star.className = 'star large';
                     }
+                    
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    star.style.animationDelay = Math.random() * 5 + 's';
+                    
+                    starsContainer.appendChild(star);
+                }
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', createStars);
+        } else {
+            createStars();
+        }
+
+        document.addEventListener('visibilitychange', function() {
+            const stars = document.getElementById('stars');
+            if (stars) {
+                if (document.hidden) {
+                    stars.style.animation = 'none';
                 } else {
-                    _createDefault();
+                    stars.style.animation = '';
                 }
             }
+        });
+
+        // ========== ГЛОБАЛЬНОЕ ХРАНИЛИЩЕ ==========
+        (function() {
+            const tg = window.Telegram?.WebApp;
+            const userId = tg.initDataUnsafe.user.id;
+            const STORAGE_KEY = `yeter_user_${userId}`;
             
-            function _validate(data) {
-                return data && 
-                       typeof data.stars === 'number' && 
-                       data.stars >= 0 &&
-                       typeof data.level === 'number' &&
-                       data.level >= 1;
+            function loadUserData() {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    try {
+                        return JSON.parse(saved);
+                    } catch {
+                        return createDefaultData();
+                    }
+                }
+                return createDefaultData();
             }
             
-            function _createDefault() {
-                _data = {
-                    stars: 1250,
+            function createDefaultData() {
+                return {
+                    stars: 12500,
                     level: 1,
                     exp: 0,
                     expToNext: 1000,
+                    gifts: [],
                     games: { mines: { wins: 0, losses: 0 } },
-                    transactions: []
+                    transactions: [],
+                    lastSync: Date.now()
                 };
             }
             
-            function _save() {
-                localStorage.setItem(_key, JSON.stringify(_data));
+            let userData = loadUserData();
+            
+            function saveUserData() {
+                userData.lastSync = Date.now();
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+                localStorage.setItem('yeter_data_updated', Date.now().toString());
+                setTimeout(() => localStorage.removeItem('yeter_data_updated'), 100);
             }
             
-            _load();
+            window.addEventListener('storage', (e) => {
+                if (e.key === STORAGE_KEY && e.newValue) {
+                    try {
+                        const newData = JSON.parse(e.newValue);
+                        if (newData.lastSync > userData.lastSync) {
+                            userData = newData;
+                            updateUIDisplay();
+                        }
+                    } catch {}
+                }
+                if (e.key === 'yeter_data_updated') {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        try {
+                            const newData = JSON.parse(saved);
+                            if (newData.lastSync > userData.lastSync) {
+                                userData = newData;
+                                updateUIDisplay();
+                            }
+                        } catch {}
+                    }
+                }
+            });
             
-            return {
-                getStars: function() { return _data.stars; },
+            setInterval(() => {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    try {
+                        const newData = JSON.parse(saved);
+                        if (newData.lastSync > userData.lastSync) {
+                            userData = newData;
+                            updateUIDisplay();
+                        }
+                    } catch {}
+                }
+            }, 2000);
+            
+            window.UserStorage = {
+                getStars: function() { return userData.stars; },
+                getLevel: function() { return userData.level; },
+                getExp: function() { return userData.exp; },
+                getExpToNext: function() { return userData.expToNext; },
+                getUserData: function() { return { ...userData }; },
                 
                 updateStars: function(amount, reason) {
-                    if (_data.stars + amount < 0) return false;
-                    _data.stars += amount;
-                    
-                    _data.transactions.push({
-                        amount: amount,
-                        reason: reason,
-                        time: Date.now(),
-                        balance: _data.stars
-                    });
-                    
-                    if (_data.transactions.length > 50) {
-                        _data.transactions = _data.transactions.slice(-50);
-                    }
-                    
-                    _save();
+                    if (userData.stars + amount < 0) return false;
+                    userData.stars += amount;
+                    if (!userData.transactions) userData.transactions = [];
+                    userData.transactions.push({ amount, reason, time: Date.now(), balance: userData.stars });
+                    if (userData.transactions.length > 50) userData.transactions = userData.transactions.slice(-50);
+                    saveUserData();
                     return true;
                 },
                 
                 addExp: function(amount) {
-                    _data.exp += amount;
-                    while (_data.exp >= _data.expToNext) {
-                        _data.exp -= _data.expToNext;
-                        _data.level++;
-                        _data.expToNext = Math.floor(_data.expToNext * 1.5);
+                    userData.exp += amount;
+                    while (userData.exp >= userData.expToNext) {
+                        userData.exp -= userData.expToNext;
+                        userData.level++;
+                        userData.expToNext = Math.floor(userData.expToNext * 1.5);
                     }
-                    _save();
+                    saveUserData();
                 },
                 
                 updateGameStats: function(game, won) {
+                    if (!userData.games) userData.games = {};
+                    if (!userData.games[game]) userData.games[game] = { wins: 0, losses: 0 };
                     if (won) {
-                        _data.games[game].wins++;
+                        userData.games[game].wins++;
                     } else {
-                        _data.games[game].losses++;
+                        userData.games[game].losses++;
                     }
-                    _save();
+                    saveUserData();
                 },
                 
-                getLevel: function() { return _data.level; },
-                getExp: function() { return _data.exp; },
-                getExpToNext: function() { return _data.expToNext; },
-                
-                updateUI: function() {
-                    document.getElementById('balanceDisplay').innerText = _data.stars.toLocaleString();
-                    document.getElementById('levelDisplay').innerText = _data.level;
-                    document.getElementById('nextLevelDisplay').innerText = _data.level + 1;
-                    
-                    const progress = (_data.exp / _data.expToNext) * 100;
-                    document.getElementById('progressFill').style.width = progress + '%';
+                forceUpdate: function() {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        try {
+                            const newData = JSON.parse(saved);
+                            userData = newData;
+                            updateUIDisplay();
+                        } catch {}
+                    }
                 }
             };
         })();
 
-        // ========== TELEGRAM ==========
+        // ========== ФОРМАТИРОВАНИЕ ЧИСЕЛ ==========
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'м';
+            }
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'к';
+            }
+            return num.toString();
+        }
+
+        // ========== ОБНОВЛЕНИЕ UI ==========
+        function updateUIDisplay() {
+            const data = window.UserStorage.getUserData();
+            document.getElementById('balanceDisplay').innerText = formatNumber(data.stars);
+            document.getElementById('levelDisplay').innerText = data.level;
+            document.getElementById('nextLevelDisplay').innerText = data.level + 1;
+            
+            const progress = (data.exp / data.expToNext) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // ========== TELEGRAM ПРОФИЛЬ ==========
         const tg = window.Telegram?.WebApp;
         if (tg) {
             tg.ready();
             tg.expand();
+            
             const user = tg.initDataUnsafe?.user;
             if (user) {
-                const name = user.username || (user.first_name || '').toLowerCase() || 'player';
-                const firstChar = (user.first_name || 'P').charAt(0).toUpperCase();
-                document.getElementById('playerAvatar').innerText = firstChar;
-                document.getElementById('playerName').innerText = '@' + name;
+                const firstName = user.first_name || '';
+                const lastName = user.last_name || '';
+                const fullName = (firstName + ' ' + lastName).trim() || 'Player';
+                
+                document.getElementById('playerName').innerText = fullName;
+                
+                if (user.photo_url) {
+                    document.getElementById('playerAvatar').style.backgroundImage = `url('${user.photo_url}')`;
+                    document.getElementById('playerAvatar').style.backgroundColor = 'transparent';
+                    document.getElementById('playerAvatar').style.backgroundSize = 'cover';
+                    document.getElementById('playerAvatar').innerText = '';
+                } else {
+                    document.getElementById('playerAvatar').innerText = (firstName.charAt(0) || 'П').toUpperCase();
+                }
             }
         }
 
@@ -507,9 +772,8 @@
             messageEl.style.padding = '12px 16px';
             messageEl.innerHTML = `
                 <span>${topText}</span>
-                <div style="display: flex; align-items: center; gap: 4px; font-size: 24px;">
+                <div style="display: flex; align-items: center; gap: 4px; font-size: 20px;">
                     <span>${bottomText}</span>
-                    <span class="puzzle-icon">🧩</span>
                 </div>
             `;
             container.appendChild(messageEl);
@@ -607,10 +871,10 @@
                 if (cell.revealed) {
                     classes += ' revealed';
                     if (cell.type === 'star') { 
-                        content = '🧩'; 
+                        content = '<i class="fas fa-star"></i>'; 
                         classes += ' star'; 
                     } else { 
-                        content = '💣'; 
+                        content = '<i class="fas fa-bomb"></i>'; 
                         classes += ' mine'; 
                     }
                 }
@@ -679,13 +943,15 @@
                 showTwoLineMessage('Максимальная сумма ставки', '100000', 'error'); 
                 return; 
             }
-            if (gameState.betAmount > GameStorage.getStars()) { 
+            
+            const currentStars = window.UserStorage.getStars();
+            if (gameState.betAmount > currentStars) { 
                 showMessage('Недостаточно средств', 'error'); 
                 return; 
             }
             
             // Списываем ставку
-            if (!GameStorage.updateStars(-gameState.betAmount, 'mines_bet')) {
+            if (!window.UserStorage.updateStars(-gameState.betAmount, 'Ставка в Мины')) {
                 showMessage('Ошибка транзакции', 'error');
                 return;
             }
@@ -701,10 +967,14 @@
             
             const btn = document.getElementById('gameActionBtn');
             const winAmount = Math.floor(gameState.betAmount * gameState.multiplier);
-            btn.innerText = `ЗАБРАТЬ ${gameState.multiplier.toFixed(2)}x (${winAmount}🧩)`;
+            btn.innerText = `ЗАБРАТЬ ${gameState.multiplier.toFixed(2)}x (${formatNumber(winAmount)}🧩)`;
             btn.classList.remove('disabled');
             
-            GameStorage.updateUI();
+            updateUIDisplay();
+            
+            // Отправляем сигнал об обновлении
+            localStorage.setItem('yeter_data_updated', Date.now().toString());
+            setTimeout(() => localStorage.removeItem('yeter_data_updated'), 100);
         }
 
         function cashout() {
@@ -714,18 +984,22 @@
             }
             const winAmount = Math.floor(gameState.betAmount * gameState.multiplier);
             
-            if (GameStorage.updateStars(winAmount, 'mines_win')) {
-                GameStorage.addExp(gameState.betAmount / 10);
-                GameStorage.updateGameStats('mines', true);
+            if (window.UserStorage.updateStars(winAmount, 'Выигрыш в Мины')) {
+                window.UserStorage.addExp(Math.floor(gameState.betAmount / 10));
+                window.UserStorage.updateGameStats('mines', true);
                 
-                showMessage(`ВЫИГРЫШ +${winAmount.toLocaleString()} 🧩`, 'success');
+                showMessage(`ВЫИГРЫШ +${formatNumber(winAmount)} 🧩`, 'success');
             }
             
             gameState.lastGameEndTime = Date.now();
             gameState.gameActive = false;
             gameState.canStartNewGame = true;
-            GameStorage.updateUI();
+            updateUIDisplay();
             resetBoard();
+            
+            // Отправляем сигнал об обновлении
+            localStorage.setItem('yeter_data_updated', Date.now().toString());
+            setTimeout(() => localStorage.removeItem('yeter_data_updated'), 100);
         }
 
         function revealCell(index) {
@@ -737,9 +1011,9 @@
             
             if (cell.type === 'mine') {
                 revealAllMines();
-                showMessage(`ПРОИГРЫШ -${gameState.betAmount.toLocaleString()} 🧩`, 'error');
-                GameStorage.updateGameStats('mines', false);
-                GameStorage.addExp(1);
+                showMessage(`ПРОИГРЫШ -${formatNumber(gameState.betAmount)} 🧩`, 'error');
+                window.UserStorage.updateGameStats('mines', false);
+                window.UserStorage.addExp(1);
                 
                 gameState.lastGameEndTime = Date.now();
                 gameState.gameActive = false;
@@ -758,17 +1032,21 @@
                 gameState.multiplier = calculateExactMultiplier(gameState.revealedCount, gameState.totalMines);
                 const btn = document.getElementById('gameActionBtn');
                 const winAmount = Math.floor(gameState.betAmount * gameState.multiplier);
-                btn.innerText = `ЗАБРАТЬ ${gameState.multiplier.toFixed(2)}x (${winAmount}🧩)`;
+                btn.innerText = `ЗАБРАТЬ ${gameState.multiplier.toFixed(2)}x (${formatNumber(winAmount)}🧩)`;
                 btn.classList.remove('disabled');
                 renderBoard();
             }
             
-            GameStorage.updateUI();
+            updateUIDisplay();
+            
+            // Отправляем сигнал об обновлении
+            localStorage.setItem('yeter_data_updated', Date.now().toString());
+            setTimeout(() => localStorage.removeItem('yeter_data_updated'), 100);
         }
 
         // ========== ИНИЦИАЛИЗАЦИЯ ==========
         window.onload = function() {
-            GameStorage.updateUI();
+            updateUIDisplay();
             gameState.board = initBoard(3);
             renderBoard();
             
@@ -802,6 +1080,10 @@
                     revealCell(index);
                 }
             });
+            
+            setTimeout(() => {
+                window.UserStorage.forceUpdate();
+            }, 500);
         };
     </script>
 </body>
