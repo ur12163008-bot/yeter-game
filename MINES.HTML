@@ -298,78 +298,29 @@
             padding: 0 20px;
         }
 
-        .controls-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            align-items: center;
-        }
-
-        .input-group {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .input-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #b87aff;
-            font-size: 14px;
-            font-weight: 800;
-            letter-spacing: 0.3px;
-        }
-
-        .input-field {
-            background: rgba(10, 14, 22, 0.8);
-            border: 1px solid rgba(138, 43, 226, 0.4);
-            border-radius: 20px;
-            padding: 12px 16px;
-            color: white;
-            font-size: 15px;
-            font-weight: 600;
-            outline: none;
-            transition: 0.1s ease;
-            width: 100%;
-        }
-
-        .input-field:focus {
-            border-color: #9b4dff;
-            background: rgba(20, 25, 35, 0.9);
-        }
-
-        .input-field[type="number"]::-webkit-inner-spin-button,
-        .input-field[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        .input-field[type="number"] {
-            -moz-appearance: textfield;
-        }
-
+        /* === ПОЛЕ (МИНЫ) === */
         .mines-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 8px;
-            margin: 30px 0;
+            margin: 20px 0 30px 0;
             padding: 0 5px;
         }
 
         .mine-cell {
             aspect-ratio: 1;
-            background: rgba(20, 25, 35, 0.8);
-            border: 1px solid rgba(138, 43, 226, 0.3);
+            background: #2a1e3a;  /* тёмно-фиолетовый */
+            border: 1px solid #4a2a7a;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 22px;
             cursor: pointer;
-            transition: all 0.1s ease;
+            transition: transform 0.15s ease, background 0.1s ease, border-color 0.1s ease;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 0 #130b1f;
         }
 
         .mine-cell::before {
@@ -379,27 +330,23 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), transparent);
+            background: radial-gradient(circle at 30% 30%, rgba(180, 130, 255, 0.2), transparent 70%);
             pointer-events: none;
         }
 
         .mine-cell:active {
-            transform: scale(0.95);
-            background: rgba(30, 35, 45, 0.9);
+            transform: scale(0.92);
         }
 
         .mine-cell.revealed {
-            background: rgba(106, 13, 173, 0.3);
+            background: #5d3a8a;  /* яркий фиолет для открытых */
             border-color: #b87aff;
             cursor: default;
-        }
-
-        .mine-cell.revealed:active {
-            transform: none;
+            transform: scale(1);
         }
 
         .mine-cell.mine {
-            background: rgba(255, 68, 68, 0.2);
+            background: #4a1a2a;
             border-color: #ff4444;
         }
 
@@ -413,68 +360,131 @@
             font-size: 22px;
         }
 
-        .win-info {
-            text-align: center;
-            margin-bottom: 20px;
+        /* === НОВАЯ ПАНЕЛЬ УПРАВЛЕНИЯ (СНИЗУ) === */
+        .bottom-controls {
+            background: rgba(20, 10, 30, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 36px;
+            padding: 20px 16px;
+            border: 1px solid #4a2a7a;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+            margin-top: 10px;
         }
 
-        .win-label {
-            color: #8e98a3;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        .win-amount {
-            color: #b87aff;
-            font-size: 48px;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 8px;
-        }
-
-        .win-multiplier {
-            color: #8e98a3;
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .buttons-row {
+        .input-row {
             display: flex;
             gap: 12px;
             margin-bottom: 20px;
         }
 
-        .action-button {
+        .input-group {
             flex: 1;
-            background: linear-gradient(145deg, #6a0dad, #4b0082);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #c7a5ff;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            margin-left: 5px;
+        }
+
+        .input-field {
+            background: #1a1128;
+            border: 1px solid #5d3a8a;
+            border-radius: 30px;
+            padding: 14px 18px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            outline: none;
+            transition: 0.1s ease;
+            width: 100%;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .input-field:focus {
+            border-color: #b87aff;
+            background: #221830;
+        }
+
+        .input-field[type="number"]::-webkit-inner-spin-button,
+        .input-field[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .input-field[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        /* кнопка ИГРАТЬ / ЗАБРАТЬ */
+        .action-button {
+            width: 100%;
+            background: linear-gradient(145deg, #8a4dff, #5a2a9a);
             color: white;
             border: none;
-            padding: 16px 24px;
+            padding: 18px 24px;
             border-radius: 40px;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             cursor: pointer;
-            box-shadow: 0 6px 0 #2d0b4e;
-            transition: all 0.1s ease;
-            min-height: 56px;
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
+            box-shadow: 0 8px 0 #2d0b4e;
+            transition: all 0.08s linear;
+            min-height: 64px;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            border: 1px solid #b87aff;
         }
 
-        .action-button:active {
-            transform: translateY(6px);
+        .action-button:active:not(:disabled) {
+            transform: translateY(8px);
             box-shadow: 0 0 0 #2d0b4e;
         }
 
         .action-button:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
+            filter: grayscale(0.6);
             pointer-events: none;
+            box-shadow: 0 5px 0 #1f0f30;
+            transform: translateY(3px);
+        }
+
+        .cashout-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1f1530;
+            border-radius: 60px;
+            padding: 12px 20px;
+            border: 1px solid #7a4dbd;
+            font-weight: 700;
+            font-size: 18px;
+            color: #e6d0ff;
+        }
+
+        .multiplier-badge {
+            background: #4a2a7a;
+            padding: 6px 18px;
+            border-radius: 40px;
+            color: #ffd966;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .win-preview {
+            color: #b87aff;
+            font-size: 20px;
+            font-weight: 800;
         }
 
         .bottom-nav {
@@ -569,40 +579,37 @@
         </div>
 
         <div class="game-container">
-            <div class="controls-row">
-                <div class="input-group">
-                    <div class="input-label">
-                        <i class="fas fa-puzzle-piece"></i>
-                        Ставка
-                    </div>
-                    <input type="number" id="betAmount" class="input-field" value="10">
-                </div>
-                <div class="input-group">
-                    <div class="input-label">
-                        <i class="fas fa-bomb"></i>
-                        Бомбы
-                    </div>
-                    <input type="number" id="minesCount" class="input-field" value="3" min="1" max="24">
-                </div>
-            </div>
-
-            <div class="win-info">
-                <div class="win-label">ВОЗМОЖНЫЙ ВЫИГРЫШ</div>
-                <div class="win-amount" id="winAmount">10</div>
-                <div class="win-multiplier" id="winMultiplier">x1.00</div>
-            </div>
-
+            <!-- СЕТКА 5x5 -->
             <div class="mines-grid" id="minesGrid"></div>
 
-            <div class="buttons-row">
-                <button class="action-button" id="newGameBtn">
-                    <i class="fas fa-play"></i>
-                    НОВАЯ ИГРА
+            <!-- НИЖНЯЯ ПАНЕЛЬ: ставка, мины, кнопка, cashout -->
+            <div class="bottom-controls">
+                <div class="input-row">
+                    <div class="input-group">
+                        <div class="input-label">
+                            <i class="fas fa-coins" style="color:#f7d354;"></i> Ставка
+                        </div>
+                        <input type="number" id="betAmount" class="input-field" value="10" min="10" step="1">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-label">
+                            <i class="fas fa-bomb" style="color:#ff8866;"></i> Мины
+                        </div>
+                        <input type="number" id="minesCount" class="input-field" value="3" min="1" max="24">
+                    </div>
+                </div>
+
+                <!-- Кнопка, которая меняется: ИГРАТЬ / ЗАБРАТЬ + информация снизу -->
+                <button class="action-button" id="mainActionBtn" disabled>
+                    <i class="fas fa-play" id="actionIcon"></i>
+                    <span id="actionText">ИГРАТЬ</span>
                 </button>
-                <button class="action-button" id="cashoutBtn" disabled>
-                    <i class="fas fa-hand-holding-usd"></i>
-                    ЗАБРАТЬ
-                </button>
+
+                <!-- Блок cashout (отображается только когда игра активна) -->
+                <div id="cashoutInfoBlock" style="display: none;" class="cashout-info">
+                    <span class="multiplier-badge" id="currentMultiplier">x1.00</span>
+                    <span class="win-preview" id="currentWinPreview">0</span>
+                </div>
             </div>
 
             <div class="message-container" id="messageContainer"></div>
@@ -821,7 +828,7 @@
         });
 
         // ============================================
-        // ИГРОВАЯ ЛОГИКА - ТОЧНО КАК В ТВОЕМ СКРИПТЕ
+        // ИГРОВАЯ ЛОГИКА (MINES) — ПОЛНОСТЬЮ ПЕРЕРАБОТАНА
         // ============================================
         const GRID_SIZE = 5;
         const TOTAL_CELLS = 25;
@@ -832,18 +839,24 @@
             revealed: [],
             bet: 0,
             minesCount: 3,
-            multiplier: 1,
+            multiplier: 1.0,
             currentWin: 0
         };
 
-        // ТОЧНО ТАКАЯ ЖЕ ФОРМУЛА МНОЖИТЕЛЯ
+        // НОВАЯ ФОРМУЛА МНОЖИТЕЛЯ (как в запросе: blisx.6 / welvura — более агрессивная)
         function calculateMultiplier(revealedCount, minesCount) {
-            return 1 + (revealedCount * 0.25) + (minesCount * 0.1);
+            // имитация "казиношных" коэффициентов: 1 + (0.2 * открыто) + (0.15 * мины)
+            return 1 + (revealedCount * 0.2) + (minesCount * 0.15);
         }
 
-        function updateWinDisplay() {
-            document.getElementById('winAmount').innerText = Math.floor(gameState.currentWin);
-            document.getElementById('winMultiplier').innerText = `x${gameState.multiplier.toFixed(2)}`;
+        function updateUIAfterReveal() {
+            if (!gameState.active) return;
+
+            gameState.multiplier = calculateMultiplier(gameState.revealed.length, gameState.minesCount);
+            gameState.currentWin = Math.floor(gameState.bet * gameState.multiplier);
+
+            document.getElementById('currentMultiplier').innerText = `x${gameState.multiplier.toFixed(2)}`;
+            document.getElementById('currentWinPreview').innerText = formatNumber(gameState.currentWin);
         }
 
         function createGrid() {
@@ -858,31 +871,43 @@
             }
         }
 
+        // валидация полей для активации кнопки "ИГРАТЬ"
+        function validatePlayButton() {
+            if (gameState.active) return; // если игра активна – не трогаем, там своя логика
+
+            const bet = parseInt(document.getElementById('betAmount').value);
+            const mines = parseInt(document.getElementById('minesCount').value);
+            const stars = window.UserStorage.getStars();
+
+            const isValid = !isNaN(bet) && bet >= 10 && bet <= stars && !isNaN(mines) && mines >= 1 && mines <= 24;
+
+            const btn = document.getElementById('mainActionBtn');
+            btn.disabled = !isValid;
+        }
+
+        // НАЧАТЬ НОВУЮ ИГРУ
         function startNewGame() {
             const bet = parseInt(document.getElementById('betAmount').value);
             const minesCount = parseInt(document.getElementById('minesCount').value);
+            const stars = window.UserStorage.getStars();
 
             if (isNaN(bet) || bet < 10) {
                 showMessage('Минимальная ставка 10', 'error');
                 return;
             }
-            if (isNaN(minesCount) || minesCount < 1 || minesCount > 24) {
-                showMessage('Минимальное количество бомб 1', 'error');
-                return;
-            }
-
-            const currentStars = window.UserStorage.getStars();
-            if (bet > currentStars) {
+            if (bet > stars) {
                 showMessage('Недостаточно средств', 'error');
                 return;
             }
-
-            if (!window.UserStorage.updateStars(-bet, 'Ставка в Mines')) {
-                showMessage('Ошибка транзакции', 'error');
+            if (isNaN(minesCount) || minesCount < 1 || minesCount > 24) {
+                showMessage('Мины от 1 до 24', 'error');
                 return;
             }
 
-            // Генерируем бомбы
+            // списываем ставку
+            if (!window.UserStorage.updateStars(-bet, 'Ставка')) return;
+
+            // генерируем мины
             const mines = new Set();
             while (mines.size < minesCount) {
                 mines.add(Math.floor(Math.random() * TOTAL_CELLS));
@@ -894,24 +919,46 @@
                 revealed: [],
                 bet: bet,
                 minesCount: minesCount,
-                multiplier: 1,
+                multiplier: 1.0,
                 currentWin: bet
             };
 
-            // Очищаем клетки
+            // отчистить поле визуально
             for (let i = 0; i < TOTAL_CELLS; i++) {
                 const cell = document.querySelector(`[data-index="${i}"]`);
-                cell.className = 'mine-cell';
-                cell.innerHTML = '';
+                if (cell) {
+                    cell.className = 'mine-cell';
+                    cell.innerHTML = '';
+                }
             }
 
-            updateUIDisplay();
-            updateWinDisplay();
+            // меняем кнопку на "ЗАБРАТЬ", показываем инфо-блок
+            document.getElementById('actionIcon').className = 'fas fa-hand-holding-usd';
+            document.getElementById('actionText').innerText = 'ЗАБРАТЬ';
+            document.getElementById('cashoutInfoBlock').style.display = 'flex';
+            document.getElementById('mainActionBtn').disabled = false; // активна
 
-            document.getElementById('newGameBtn').disabled = true;
-            document.getElementById('cashoutBtn').disabled = false;
+            // обновить множитель
+            updateUIAfterReveal();
+            updateUIDisplay();
         }
 
+        // ЗАБРАТЬ ВЫИГРЫШ
+        function cashoutWin() {
+            if (!gameState.active) return;
+
+            const win = gameState.currentWin;
+            if (window.UserStorage.updateStars(win, 'Выигрыш')) {
+                window.UserStorage.addExp(Math.floor(win / 10));
+                showMessage(`Вы выиграли ${formatNumber(win)}!`, 'success');
+            }
+
+            gameState.active = false;
+            resetUItoPlayMode();
+            updateUIDisplay();
+        }
+
+        // обработка клика по ячейке
         function handleCellClick(index) {
             if (!gameState.active) return;
             if (gameState.revealed.includes(index)) return;
@@ -919,14 +966,15 @@
             const cell = document.querySelector(`[data-index="${index}"]`);
 
             if (gameState.mines.includes(index)) {
+                // проигрыш
                 cell.classList.add('revealed', 'mine');
                 cell.innerHTML = '<i class="fas fa-bomb"></i>';
-                showMessage(`Проигрыш -${gameState.bet}`, 'error');
+
+                showMessage(`МИНА! Проигрыш -${gameState.bet}`, 'error');
 
                 gameState.active = false;
-                document.getElementById('newGameBtn').disabled = false;
-                document.getElementById('cashoutBtn').disabled = true;
 
+                // показываем все мины
                 for (let i = 0; i < TOTAL_CELLS; i++) {
                     if (gameState.mines.includes(i)) {
                         const mineCell = document.querySelector(`[data-index="${i}"]`);
@@ -934,35 +982,29 @@
                         mineCell.innerHTML = '<i class="fas fa-bomb"></i>';
                     }
                 }
+
+                resetUItoPlayMode();
             } else {
+                // открыта алмаз
                 cell.classList.add('revealed', 'gem');
                 cell.innerHTML = '<span class="puzzle-icon">🧩</span>';
 
                 gameState.revealed.push(index);
-                gameState.multiplier = calculateMultiplier(gameState.revealed.length, gameState.minesCount);
-                gameState.currentWin = Math.floor(gameState.bet * gameState.multiplier);
+                updateUIAfterReveal();
 
-                updateWinDisplay();
-
+                // если открыты все не-мины – автоматический кэшаут
                 if (gameState.revealed.length === TOTAL_CELLS - gameState.minesCount) {
-                    cashout();
+                    cashoutWin();
                 }
             }
         }
 
-        function cashout() {
-            if (!gameState.active) return;
-            const winAmount = gameState.currentWin;
-            if (window.UserStorage.updateStars(winAmount, 'Выигрыш в Mines')) {
-                window.UserStorage.addExp(Math.floor(winAmount / 10));
-                showMessage(`Выигрыш +${winAmount}`, 'success');
-            }
-            gameState.active = false;
-            document.getElementById('newGameBtn').disabled = false;
-            document.getElementById('cashoutBtn').disabled = true;
-            updateUIDisplay();
-            localStorage.setItem('yeter_data_updated', Date.now().toString());
-            setTimeout(() => localStorage.removeItem('yeter_data_updated'), 100);
+        function resetUItoPlayMode() {
+            document.getElementById('actionIcon').className = 'fas fa-play';
+            document.getElementById('actionText').innerText = 'ИГРАТЬ';
+            document.getElementById('cashoutInfoBlock').style.display = 'none';
+
+            validatePlayButton(); // проверка на доступность (ставка, мин)
         }
 
         function showMessage(text, type = 'success') {
@@ -980,20 +1022,27 @@
             }, 3000);
         }
 
+        // главная кнопка (динамическая)
+        document.getElementById('mainActionBtn').addEventListener('click', function() {
+            if (gameState.active) {
+                cashoutWin();        // если игра активна – ЗАБРАТЬ
+            } else {
+                startNewGame();      // иначе – ИГРАТЬ
+            }
+        });
+
+        // Валидация при изменении полей
+        document.getElementById('betAmount').addEventListener('input', validatePlayButton);
+        document.getElementById('minesCount').addEventListener('input', validatePlayButton);
+        document.getElementById('betAmount').addEventListener('keydown', (e) => e.key === 'ArrowUp' || e.key === 'ArrowDown' ? e.preventDefault() : null);
+        document.getElementById('minesCount').addEventListener('keydown', (e) => e.key === 'ArrowUp' || e.key === 'ArrowDown' ? e.preventDefault() : null);
+
         window.onload = function() {
             updateUIDisplay();
             createGrid();
-            document.getElementById('newGameBtn').addEventListener('click', startNewGame);
-            document.getElementById('cashoutBtn').addEventListener('click', cashout);
-            document.getElementById('betAmount').addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowUp' || e.key === 'ArrowDown') e.preventDefault();
-            });
-            document.getElementById('minesCount').addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowUp' || e.key === 'ArrowDown') e.preventDefault();
-            });
-            setTimeout(() => {
-                window.UserStorage.forceUpdate();
-            }, 500);
+            validatePlayButton();   // начальное состояние кнопки
+            resetUItoPlayMode();    // убедимся что режим "ИГРАТЬ"
+            setTimeout(() => window.UserStorage.forceUpdate(), 500);
         };
     </script>
 </body>
