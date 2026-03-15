@@ -67,26 +67,26 @@
             align-items: center;
             justify-content: space-between;
             margin: 16px 20px 20px;
-            gap: 12px; /* Немного увеличил промежуток */
+            gap: 12px;
         }
 
         .profile-left {
             display: flex;
             align-items: center;
-            gap: 12px; /* Увеличил gap между аватаром и текстом */
+            gap: 12px;
             flex: 1;
             min-width: 0;
         }
 
         .avatar {
-            width: 52px; /* Чуть больше аватар */
+            width: 52px;
             height: 52px;
-            border-radius: 16px; /* Под размер */
+            border-radius: 16px;
             background: #6a0dad;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px; /* Больше буква */
+            font-size: 24px;
             font-weight: 700;
             color: white;
             border: 2px solid #b87aff;
@@ -105,18 +105,18 @@
         }
 
         .fullname {
-            font-size: 18px; /* Увеличил */
+            font-size: 18px;
             font-weight: 700;
             color: white;
             line-height: 1.3;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-bottom: 4px; /* Больше отступ */
+            margin-bottom: 4px;
         }
 
         .username {
-            font-size: 15px; /* Увеличил */
+            font-size: 15px;
             color: #8e98a3;
             font-weight: 500;
             white-space: nowrap;
@@ -127,25 +127,25 @@
         .balance-block {
             display: flex;
             align-items: center;
-            gap: 6px; /* Чуть больше */
+            gap: 6px;
             background: rgba(10, 14, 22, 0.7);
             border: 1px solid rgba(138, 43, 226, 0.4);
             border-radius: 40px;
-            padding: 8px 14px 8px 16px; /* Увеличил паддинги - рамка длиннее */
+            padding: 8px 14px 8px 16px;
             flex-shrink: 0;
         }
 
         .balance-stars {
             display: flex;
             align-items: center;
-            gap: 5px; /* Чуть больше */
+            gap: 5px;
             font-weight: 700;
-            font-size: 16px; /* Чуть больше */
+            font-size: 16px;
             color: white;
         }
 
         .puzzle-icon {
-            font-size: 16px; /* Чуть больше */
+            font-size: 16px;
             color: #ffd700;
         }
 
@@ -153,13 +153,13 @@
             background: rgba(106, 13, 173, 0.3);
             border: 1px solid rgba(138, 43, 226, 0.5);
             border-radius: 50%;
-            width: 24px; /* Немного больше */
+            width: 24px;
             height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #b87aff;
-            font-size: 20px; /* Больше плюс */
+            font-size: 20px;
             font-weight: 700;
             cursor: pointer;
             transition: 0.1s;
@@ -388,9 +388,10 @@
             <div class="market-subtext">Скоро здесь появятся NFT подарки</div>
         </div>
 
+        <!-- Нижняя навигация: только MARKET и PROFILE -->
         <div class="bottom-nav">
             <a href="#" class="nav-item active" id="navMarket"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
-            <a href="#" class="nav-item" id="navProfile"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
+            <a href="profle.html" class="nav-item" id="navProfile"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
         </div>
     </div>
 
@@ -497,7 +498,7 @@
                 alert('Фильтры NFT подарков (скоро)');
             });
 
-            // Навигация
+            // Навигация - теперь профиль ведет на profle.html
             const navMarket = document.getElementById('navMarket');
             const navProfile = document.getElementById('navProfile');
 
@@ -508,15 +509,25 @@
                 if (activeId === 'profile') navProfile.classList.add('active');
             }
 
-            setActive('market');
+            // Проверяем текущую страницу для подсветки
+            const currentPage = window.location.pathname.split('/').pop() || 'market.html';
+            if (currentPage === 'profle.html') {
+                setActive('profile');
+            } else {
+                setActive('market');
+            }
 
+            // Обработчик для маркета (остаемся на этой странице)
             navMarket.addEventListener('click', (e) => {
                 e.preventDefault();
                 setActive('market');
+                // Если нужно реально переходить на market.html - раскомментируй:
+                // window.location.href = 'market.html';
             });
 
-            navProfile.addEventListener('click', (e) => {
-                e.preventDefault();
+            // Для профиля ссылка уже в href="profle.html", поэтому ничего не делаем,
+            // но добавим подсветку при клике (на случай если переход не произойдет мгновенно)
+            navProfile.addEventListener('click', () => {
                 setActive('profile');
             });
 
@@ -529,4 +540,4 @@
         })();
     </script>
 </body>
-            </html>
+</html>
