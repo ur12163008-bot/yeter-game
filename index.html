@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>YETER · GAMES</title>
+    <title>Market · Gifts</title>
+    <!-- Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Font Awesome и Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
         }
 
         body {
+            font-family: 'Inter', sans-serif;
             background: #03050a;
-            color: white;
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -29,25 +29,18 @@
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: radial-gradient(ellipse at 40% 50%, #0a0e1a 0%, #03050a 70%, #000103 100%);
             z-index: -2;
         }
 
-        /* ========== ОПТИМИЗИРОВАННЫЕ ЗВЕЗДЫ КАК В DICE.HTML ========== */
         .stars {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
             pointer-events: none;
         }
-
+        
         .star {
             position: absolute;
             background: white;
@@ -55,537 +48,234 @@
             width: 2px;
             height: 2px;
             opacity: 0;
-            animation: twinkle 4s infinite ease-in-out;
-        }
-
-        .star.medium {
-            width: 3px;
-            height: 3px;
-        }
-
-        .star.large {
-            width: 4px;
-            height: 4px;
-        }
-
-        @keyframes twinkle {
-            0% { opacity: 0; }
-            20% { opacity: 0.8; }
-            40% { opacity: 0.3; }
-            60% { opacity: 0.6; }
-            80% { opacity: 0.2; }
-            100% { opacity: 0; }
+            transition: opacity 0.1s ease;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
         }
 
         .app {
             max-width: 440px;
             width: 100%;
             background: transparent;
-            position: relative;
             padding-bottom: 100px;
             min-height: 100vh;
             z-index: 1;
         }
 
-        .puzzle-icon {
-            display: inline-block;
-            font-size: 18px;
-            line-height: 1;
-            color: #ffd700;
-            flex-shrink: 0;
-        }
-
-        .content {
-            padding: 8px 20px 20px;
-        }
-
-        /* LIVE уведомление */
-        .live-notification {
-            position: fixed;
-            top: 70px;
-            right: 20px;
-            background: rgba(30, 38, 48, 0.9);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 40px;
-            padding: 8px 16px;
+        /* Шапка с аватаром */
+        .profile-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            z-index: 100;
-            backdrop-filter: blur(4px);
-            max-width: 280px;
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
+            justify-content: space-between;
+            margin: 16px 20px 20px;
+            gap: 12px; /* Немного увеличил промежуток */
         }
 
-        .live-notification.show {
-            transform: translateX(0);
-        }
-
-        .live-notification-image {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            object-fit: cover;
-            border: 1px solid rgba(138, 43, 226, 0.3);
-        }
-
-        .live-notification-text {
-            font-size: 13px;
-            font-weight: 500;
-            color: white;
-        }
-
-        .live-notification-text span {
-            color: #ffd700;
-            font-weight: 700;
-        }
-
-        /* ШАПКА - БЕЗ РАМКИ */
-        .games-top {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 12px;
-        }
-
-        .games-header {
+        .profile-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px; /* Увеличил gap между аватаром и текстом */
+            flex: 1;
+            min-width: 0;
         }
 
-        .avatar-small {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
+        .avatar {
+            width: 52px; /* Чуть больше аватар */
+            height: 52px;
+            border-radius: 16px; /* Под размер */
+            background: #6a0dad;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 24px; /* Больше буква */
             font-weight: 700;
             color: white;
             border: 2px solid #b87aff;
             flex-shrink: 0;
             background-size: cover;
             background-position: center;
-            background-color: #6a0dad;
+            text-transform: uppercase;
         }
 
-        .games-info-wrapper {
-            flex: 1;
+        .name-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             min-width: 0;
+            flex: 1;
         }
 
-        .games-nickname {
-            font-size: 16px;
+        .fullname {
+            font-size: 18px; /* Увеличил */
             font-weight: 700;
             color: white;
+            line-height: 1.3;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-bottom: 4px;
+            margin-bottom: 4px; /* Больше отступ */
         }
 
-        .games-level-row {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .level-number-small {
-            background: linear-gradient(145deg, #6a0dad, #4b0082);
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .level-number-small span {
-            font-size: 14px;
-            font-weight: 800;
-            color: white;
-        }
-
-        .games-progress-small {
-            width: 60px;
-            height: 5px;
-            background: rgba(30, 38, 48, 0.8);
-            border-radius: 20px;
+        .username {
+            font-size: 15px; /* Увеличил */
+            color: #8e98a3;
+            font-weight: 500;
+            white-space: nowrap;
             overflow: hidden;
-            border: 1px solid rgba(155, 77, 255, 0.3);
-            flex-shrink: 0;
+            text-overflow: ellipsis;
         }
 
-        .games-progress-fill-small {
-            height: 100%;
-            background: linear-gradient(90deg, #9b4dff, #b87aff);
-            border-radius: 20px;
-            transition: width 0.2s ease;
-        }
-
-        .next-level-number-games {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: rgba(42, 30, 58, 0.9);
+        .balance-block {
             display: flex;
             align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(155, 77, 255, 0.3);
-            flex-shrink: 0;
-        }
-
-        .next-level-number-games span {
-            font-size: 14px;
-            font-weight: 800;
-            color: #b87aff;
-        }
-
-        /* БАЛАНС - С РАМКОЙ КАК В DICE.HTML */
-        .games-balance-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(10, 14, 22, 0.8);
-            padding: 6px 14px;
-            border-radius: 30px;
+            gap: 6px; /* Чуть больше */
+            background: rgba(10, 14, 22, 0.7);
             border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 40px;
+            padding: 8px 14px 8px 16px; /* Увеличил паддинги - рамка длиннее */
             flex-shrink: 0;
-            margin-left: auto;
         }
 
-        .games-stars {
+        .balance-stars {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px; /* Чуть больше */
             font-weight: 700;
-            font-size: 16px;
+            font-size: 16px; /* Чуть больше */
             color: white;
         }
 
-        .add-balance-btn {
+        .puzzle-icon {
+            font-size: 16px; /* Чуть больше */
+            color: #ffd700;
+        }
+
+        .plus-btn {
             background: rgba(106, 13, 173, 0.3);
-            border: 1px solid rgba(138, 43, 226, 0.4);
+            border: 1px solid rgba(138, 43, 226, 0.5);
             border-radius: 50%;
-            width: 24px;
+            width: 24px; /* Немного больше */
             height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #b87aff;
-            font-size: 18px;
+            font-size: 20px; /* Больше плюс */
             font-weight: 700;
             cursor: pointer;
-            opacity: 0.7;
+            transition: 0.1s;
+            line-height: 1;
+        }
+
+        .plus-btn:active {
+            background: rgba(106, 13, 173, 0.6);
+            color: white;
+        }
+
+        /* Поиск и фильтр */
+        .search-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 20px 20px;
+        }
+
+        .search-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8e98a3;
+            font-size: 14px;
             pointer-events: none;
         }
 
-        /* LIVE лента */
-        .live-banner {
-            background: #1a1a1a;
-            border-radius: 25px;
-            height: 75px;
+        .search-input {
             width: 100%;
-            display: flex;
-            align-items: center;
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            padding: 0 12px;
-            gap: 10px;
-            overflow-x: auto;
-            white-space: nowrap;
-            scrollbar-width: none;
-        }
-
-        .live-banner::-webkit-scrollbar {
-            display: none;
-        }
-
-        .live-banner::before {
-            content: "LIVE";
+            background: rgba(10, 14, 22, 0.9);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 40px;
+            padding: 10px 16px 10px 40px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
             color: white;
-            font-weight: 900;
-            font-size: 22px;
-            margin-right: 12px;
-            flex-shrink: 0;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            outline: none;
         }
 
-        .live-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(30, 35, 45, 0.9);
-            border: 1px solid rgba(155, 77, 255, 0.4);
-            border-radius: 30px;
-            padding: 4px 12px 4px 4px;
-            flex-shrink: 0;
+        .search-input::placeholder {
+            color: #8e98a3;
+            font-weight: 400;
         }
 
-        .live-item-image {
-            width: 35px;
-            height: 35px;
-            border-radius: 10px;
-            object-fit: cover;
-            border: 2px solid rgba(155, 77, 255, 0.5);
-            background: #2a2a2a;
-        }
-
-        .live-item-name {
-            font-size: 12px;
-            font-weight: 600;
-            color: white;
-        }
-
-        .live-item-price {
-            font-size: 12px;
-            font-weight: 700;
-            color: #ffd700;
-        }
-
-        .games-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        .game-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 20px;
-            border-radius: 25px;
-            width: 100%;
-            cursor: pointer;
-            min-height: 115px;
-            background: linear-gradient(145deg, #2a1e3a, #1a1028);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.1s ease;
-        }
-
-        .game-card:active {
-            transform: scale(0.98);
-        }
-
-        .game-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex: 1;
-            z-index: 2;
-        }
-
-        .game-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 14px;
+        .filter-btn {
+            background: rgba(10, 14, 22, 0.9);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
-            color: white;
+            color: #b87aff;
+            font-size: 18px;
+            cursor: pointer;
             flex-shrink: 0;
-            border: 1px solid rgba(155, 77, 255, 0.3);
         }
 
-        .game-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .game-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: white;
-        }
-
-        .game-stats {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .online-count {
-            font-size: 13px;
-            font-weight: 600;
+        /* Заглушка с иконкой магазина */
+        .market-placeholder {
+            margin: 30px 20px;
+            padding: 50px 20px;
+            text-align: center;
+            background: rgba(10, 14, 22, 0.5);
+            border: 1px dashed rgba(155, 77, 255, 0.4);
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
             color: #b87aff;
         }
 
-        .online-text {
-            font-size: 12px;
+        .market-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #b87aff;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 10px #9b4dff);
+        }
+
+        .market-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .market-subtext {
+            font-size: 14px;
             color: #8e98a3;
         }
 
-        .game-arrow {
-            color: #b87aff;
-            font-size: 20px;
-            opacity: 0.8;
-            flex-shrink: 0;
-            z-index: 2;
-        }
-
-        .game-bg {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 170px;
-            height: 100%;
-            opacity: 0.25;
-            pointer-events: none;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .jackpot-bg {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding: 12px;
-            background: linear-gradient(90deg, transparent, rgba(155, 77, 255, 0.25));
-            width: 170px;
-        }
-
-        .jackpot-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.15);
-            padding: 5px 12px;
-            border-radius: 30px;
-            font-size: 12px;
-            color: white;
-            transform: translateX(15px);
-            width: fit-content;
-        }
-
-        .jackpot-item i {
-            color: #ffd700;
-            font-size: 12px;
-        }
-
-        .jackpot-item:first-child { transform: translateX(0); }
-        .jackpot-item:last-child { transform: translateX(30px); }
-
-        .mines-bg {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
-            padding: 8px;
-            background: rgba(0,0,0,0.4);
-            border-radius: 14px;
-            width: 110px;
-            height: 110px;
-            transform: rotate(3deg);
-        }
-
-        .mine-cell {
-            width: 22px;
-            height: 22px;
-            background: rgba(155, 77, 255, 0.4);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .mine-cell i {
-            color: #ff4444;
-            font-size: 11px;
-        }
-
-        .puzzle-cell {
-            width: 22px;
-            height: 22px;
-            background: rgba(255, 215, 0, 0.4);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .puzzle-cell i {
-            color: #ffd700;
-            font-size: 11px;
-        }
-
-        .dice-bg {
-            display: flex;
-            gap: 12px;
-            padding: 8px;
-        }
-
-        .dice-bg i {
-            font-size: 40px;
-            color: #b87aff;
-            filter: drop-shadow(0 0 8px #9b4dff);
-            display: block;
-        }
-
-        .dice-bg i:nth-child(1) {
-            transform: rotate(-15deg) translateY(5px);
-        }
-        
-        .dice-bg i:nth-child(2) {
-            transform: rotate(5deg) translateY(-3px);
-        }
-        
-        .dice-bg i:nth-child(3) {
-            transform: rotate(25deg) translateY(8px);
-        }
-
-        .upgrade-bg {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 140px;
-            height: 110px;
-        }
-
-        .upgrade-circle {
-            width: 75px;
-            height: 75px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #9b4dff, #6a0dad);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 25px rgba(155, 77, 255, 0.8);
-        }
-
-        .upgrade-circle span {
-            font-size: 22px;
-            font-weight: 800;
-            color: white;
-        }
-
-        /* НИЖНЯЯ НАВИГАЦИЯ */
+        /* Нижняя навигация — только MARKET и PROFILE */
         .bottom-nav {
             position: fixed;
-            bottom: 16px;
-            left: 20px;
-            right: 20px;
-            max-width: 400px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 440px;
             margin: 0 auto;
             background: #0c0f16;
             display: flex;
             justify-content: space-around;
-            padding: 10px 4px;
-            border-radius: 30px;
+            padding: 12px 4px;
+            border-radius: 35px;
             border: 1px solid #2a1e3a;
+            margin-bottom: 20px;
+            width: calc(100% - 40px);
+            left: 20px;
+            right: 20px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.8);
             z-index: 1000;
         }
@@ -599,630 +289,244 @@
             font-size: 10px;
             font-weight: 600;
             cursor: pointer;
-            padding: 8px 8px;
-            border-radius: 25px;
-            flex: 1;
+            padding: 8px 16px;
+            border-radius: 30px;
             text-align: center;
             text-decoration: none;
-            transition: all 0.1s ease;
-        }
-
-        .nav-item:active {
-            background: rgba(106, 13, 173, 0.2);
-            transform: scale(0.95);
+            transition: all 0.15s ease;
+            background: transparent;
+            border: none;
+            min-width: 100px;
         }
 
         .nav-item i {
-            font-size: 18px;
+            font-size: 20px;
             color: #8e98a3;
+            margin-bottom: 2px;
+        }
+
+        .nav-item span {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
         }
 
         .nav-item.active {
+            background: rgba(106, 13, 173, 0.25);
             color: #b87aff;
-            background: rgba(106, 13, 173, 0.3);
         }
 
         .nav-item.active i {
             color: #b87aff;
         }
 
-        .nav-item span {
-            font-size: 9px;
-            font-weight: 600;
+        .nav-item.active span {
+            color: #b87aff;
         }
 
-        .overlay {
+        .nav-item:active {
+            background: rgba(106, 13, 173, 0.4);
+            transform: scale(0.95);
+        }
+
+        .notification {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .hint-modal {
-            width: 280px;
-            background: #f0f0f0;
-            border-radius: 28px;
-            padding: 28px 24px 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            position: relative;
-            color: #222;
-            border: 1px solid #ddd;
-        }
-        
-        .hint-close {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            font-size: 22px;
-            color: #555;
-            cursor: pointer;
-            background: rgba(0,0,0,0.05);
-            border: none;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: 0.1s ease;
-        }
-        
-        .hint-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #111;
-            padding-right: 20px;
-        }
-        
-        .hint-text {
-            font-size: 16px;
-            line-height: 1.5;
-            color: #333;
-            margin-bottom: 28px;
-        }
-        
-        .hint-footer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 18px;
-        }
-        
-        .hint-checkbox {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: #e0e0e0;
+            top: 20px; right: 20px;
             padding: 12px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            width: fit-content;
-            margin: 0 auto;
-            font-size: 15px;
-            color: #222;
-            transition: 0.1s ease;
-        }
-        
-        .hint-done-btn {
-            background: #2c2c2c;
-            border: none;
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            padding: 14px 20px;
             border-radius: 60px;
-            width: 100%;
-            cursor: pointer;
-            box-shadow: 0 4px 0 #111;
-            transition: 0.05s linear;
-            letter-spacing: 0.5px;
+            background: #00c853;
+            color: white;
+            font-weight: 500;
+            font-size: 14px;
+            z-index: 3000;
+            transform: translateX(150%);
+            transition: 0.3s;
+            box-shadow: 0 4px 0 #00691e;
+            pointer-events: none;
         }
-        
-        .hint-done-btn:active {
-            transform: translateY(4px);
-            box-shadow: none;
-        }
+        .notification.show { transform: translateX(0); }
     </style>
 </head>
 <body>
     <div class="stars" id="stars"></div>
 
-    <div class="live-notification" id="liveNotification">
-        <img src="" alt="" class="live-notification-image" id="liveImage">
-        <div class="live-notification-text" id="liveText"></div>
-    </div>
+    <div class="notification" id="notification">➕ Баланс пополнен</div>
 
     <div class="app">
-        <div class="content">
-            <div class="games-top">
-                <div class="games-header">
-                    <div class="avatar-small" id="gamesAvatar"></div>
-                    
-                    <div class="games-info-wrapper">
-                        <div class="games-nickname" id="gamesNickname">Загрузка...</div>
-                        <div class="games-level-row">
-                            <div class="level-number-small"><span id="gamesLevelNumber">1</span></div>
-                            <div class="games-progress-small">
-                                <div class="games-progress-fill-small" id="gamesProgressFill" style="width: 0%;"></div>
-                            </div>
-                            <div class="next-level-number-games"><span id="gamesNextLevel">2</span></div>
-                        </div>
-                    </div>
-                    
-                    <!-- БАЛАНС - С РАМКОЙ КАК В DICE.HTML -->
-                    <div class="games-balance-wrapper">
-                        <div class="games-stars">
-                            <span class="puzzle-icon">🧩</span>
-                            <span id="gamesBalanceDisplay">12.5k</span>
-                        </div>
-                        <div class="add-balance-btn" id="addBalanceBtn">+</div>
-                    </div>
-                </div>
-
-                <div class="live-banner" id="liveBanner"></div>
-            </div>
-
-            <div class="games-container">
-                <div class="game-card" onclick="window.location.href='jackpot.html'">
-                    <div class="game-left">
-                        <div class="game-icon"><i class="fas fa-trophy"></i></div>
-                        <div class="game-info">
-                            <div class="game-title">Джекпот</div>
-                            <div class="game-stats">
-                                <span class="online-count">3,456</span>
-                                <span class="online-text">онлайн</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="game-arrow"><i class="fas fa-chevron-right"></i></div>
-                    <div class="game-bg jackpot-bg">
-                        <div class="jackpot-item"><i class="fas fa-user"></i> 2.5k</div>
-                        <div class="jackpot-item"><i class="fas fa-user"></i> 1.8k</div>
-                        <div class="jackpot-item"><i class="fas fa-user"></i> 1.2k</div>
-                    </div>
-                </div>
-
-                <!-- МИНЫ - ТЕПЕРЬ ВЕДЕТ В MINES.HTML (правильное название) -->
-                <div class="game-card" onclick="window.location.href='MINES.HTML'">
-                    <div class="game-left">
-                        <div class="game-icon"><i class="fas fa-bomb"></i></div>
-                        <div class="game-info">
-                            <div class="game-title">Мины</div>
-                            <div class="game-stats">
-                                <span class="online-count">892</span>
-                                <span class="online-text">онлайн</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="game-arrow"><i class="fas fa-chevron-right"></i></div>
-                    <div class="game-bg">
-                        <div class="mines-bg">
-                            <div class="mine-cell"><i class="fas fa-bomb"></i></div>
-                            <div class="puzzle-cell"><span class="puzzle-icon">🧩</span></div>
-                            <div class="mine-cell"><i class="fas fa-bomb"></i></div>
-                            <div class="puzzle-cell"><span class="puzzle-icon">🧩</span></div>
-                            <div class="mine-cell"><i class="fas fa-bomb"></i></div>
-                            <div class="puzzle-cell"><span class="puzzle-icon">🧩</span></div>
-                            <div class="mine-cell"><i class="fas fa-bomb"></i></div>
-                            <div class="puzzle-cell"><span class="puzzle-icon">🧩</span></div>
-                            <div class="mine-cell"><i class="fas fa-bomb"></i></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="game-card" onclick="window.location.href='dice.html'">
-                    <div class="game-left">
-                        <div class="game-icon"><i class="fas fa-dice"></i></div>
-                        <div class="game-info">
-                            <div class="game-title">Dice</div>
-                            <div class="game-stats">
-                                <span class="online-count">2,013</span>
-                                <span class="online-text">онлайн</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="game-arrow"><i class="fas fa-chevron-right"></i></div>
-                    <div class="game-bg">
-                        <div class="dice-bg">
-                            <i class="fas fa-dice-six"></i>
-                            <i class="fas fa-dice-six"></i>
-                            <i class="fas fa-dice-six"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="game-card" onclick="window.location.href='upgrade.html'">
-                    <div class="game-left">
-                        <div class="game-icon"><i class="fas fa-arrow-up"></i></div>
-                        <div class="game-info">
-                            <div class="game-title">Апгрейд</div>
-                            <div class="game-stats">
-                                <span class="online-count">2,341</span>
-                                <span class="online-text">онлайн</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="game-arrow"><i class="fas fa-chevron-right"></i></div>
-                    <div class="game-bg">
-                        <div class="upgrade-bg">
-                            <div class="upgrade-circle">
-                                <span>75%</span>
-                            </div>
-                        </div>
-                    </div>
+        <div class="profile-header">
+            <div class="profile-left">
+                <div class="avatar" id="avatar">A</div>
+                <div class="name-box">
+                    <span class="fullname" id="fullName">Алексей Иванов</span>
+                    <span class="username" id="username">@alexey</span>
                 </div>
             </div>
+            <div class="balance-block">
+                <div class="balance-stars">
+                    <span class="puzzle-icon">🧩</span>
+                    <span id="balanceValue">0</span>
+                </div>
+                <div class="plus-btn" id="plusBtn">+</div>
+            </div>
+        </div>
+
+        <div class="search-section">
+            <div class="search-wrapper">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Поиск по названию">
+            </div>
+            <div class="filter-btn" id="filterBtn">
+                <i class="fas fa-sliders-h"></i>
+            </div>
+        </div>
+
+        <div class="market-placeholder">
+            <div class="market-icon">
+                <i class="fas fa-store"></i>
+            </div>
+            <div class="market-text">Подарков в магазине пока нет</div>
+            <div class="market-subtext">Скоро здесь появятся NFT подарки</div>
         </div>
 
         <div class="bottom-nav">
-            <a href="index.html" class="nav-item active" onclick="window.location.href='index.html'; return false;"><i class="fas fa-gamepad"></i><span>ИГРЫ</span></a>
-            <a href="shop.html" class="nav-item" onclick="window.location.href='shop.html'; return false;"><i class="fas fa-store"></i><span>МАГАЗИН</span></a>
-            <a href="leaders.html" class="nav-item" onclick="window.location.href='leaders.html'; return false;"><i class="fas fa-trophy"></i><span>ЛИДЕРЫ</span></a>
-            <a href="profle.html" class="nav-item" onclick="window.location.href='profle.html'; return false;"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
-        </div>
-    </div>
-
-    <div class="overlay" id="hintOverlay" style="display: none;">
-        <div class="hint-modal">
-            <button class="hint-close" id="hintCloseBtn"><i class="fas fa-times"></i></button>
-            <div class="hint-title">Добро пожаловать!</div>
-            <div class="hint-text">
-                <p>🔹 <strong>1 пазл = 1 Telegram звезда</strong></p>
-                <p>🔹 Покупайте наборы пазлов в магазине</p>
-                <p>🔹 Повышайте свой уровень и открывайте NFT</p>
-                <p>🔹 Выигрывайте в играх и поднимайтесь в топе</p>
-            </div>
-            <div class="hint-footer">
-                <div class="hint-checkbox" id="dontShowCheckbox">
-                    <i class="far fa-square" id="checkIcon"></i>
-                    <span>Не показывать снова</span>
-                </div>
-                <button class="hint-done-btn" id="hintDoneBtn">Понятно</button>
-            </div>
+            <a href="#" class="nav-item active" id="navMarket"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
+            <a href="#" class="nav-item" id="navProfile"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
         </div>
     </div>
 
     <script>
-        // ========== ОПТИМИЗИРОВАННЫЕ ЗВЕЗДЫ КАК В DICE.HTML ==========
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            if (!starsContainer) return;
-            
-            starsContainer.innerHTML = '';
-            
-            requestAnimationFrame(() => {
-                const isLowEnd = navigator.hardwareConcurrency <= 4 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-                const starCount = isLowEnd ? 30 : 50;
+        (function() {
+            // Звезды с анимацией
+            function initStars() {
+                const starsContainer = document.getElementById('stars');
+                if (!starsContainer) return;
+                
+                starsContainer.innerHTML = '';
+                const starCount = 80;
+                const stars = [];
                 
                 for (let i = 0; i < starCount; i++) {
                     const star = document.createElement('div');
+                    star.className = 'star';
                     
-                    const size = Math.random();
-                    if (size < 0.6) {
-                        star.className = 'star';
-                    } else if (size < 0.85) {
-                        star.className = 'star medium';
-                    } else {
-                        star.className = 'star large';
-                    }
+                    const left = Math.random() * 100;
+                    const top = Math.random() * 100;
+                    const size = 1 + Math.floor(Math.random() * 2);
                     
-                    star.style.left = Math.random() * 100 + '%';
-                    star.style.top = Math.random() * 100 + '%';
-                    star.style.animationDelay = Math.random() * 5 + 's';
+                    star.style.left = left + '%';
+                    star.style.top = top + '%';
+                    star.style.width = size + 'px';
+                    star.style.height = size + 'px';
+                    
+                    star.dataset.speed = 0.3 + Math.random() * 0.7;
+                    star.dataset.phase = Math.random() * Math.PI * 2;
+                    star.dataset.baseOpacity = 0.3 + Math.random() * 0.5;
                     
                     starsContainer.appendChild(star);
+                    stars.push(star);
                 }
-            });
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', createStars);
-        } else {
-            createStars();
-        }
-
-        document.addEventListener('visibilitychange', function() {
-            const stars = document.getElementById('stars');
-            if (stars) {
-                if (document.hidden) {
-                    stars.style.animation = 'none';
-                } else {
-                    stars.style.animation = '';
+                
+                function animateStars() {
+                    stars.forEach(star => {
+                        const speed = parseFloat(star.dataset.speed);
+                        const phase = parseFloat(star.dataset.phase);
+                        const baseOp = parseFloat(star.dataset.baseOpacity);
+                        
+                        const time = performance.now() / 1000;
+                        const opacity = baseOp + 0.3 * Math.sin(time * speed + phase);
+                        
+                        star.style.opacity = Math.max(0.1, Math.min(0.9, opacity));
+                    });
+                    
+                    requestAnimationFrame(animateStars);
                 }
+                
+                requestAnimationFrame(animateStars);
             }
-        });
+            
+            initStars();
 
-        // ============================================
-        // ГЛОБАЛЬНОЕ ХРАНИЛИЩЕ
-        // ============================================
-        (function() {
+            // Telegram данные
             const tg = window.Telegram?.WebApp;
-            
-            if (!tg || !tg.initData || !tg.initDataUnsafe?.user) {
-                document.body.innerHTML = `
-                    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #03050a; color: white; text-align: center; padding: 20px;">
-                        <div>
-                            <h2 style="margin-bottom: 20px; color: #ff4444;">❌ Доступ запрещен</h2>
-                            <p style="color: #8e98a3; margin-bottom: 20px;">Приложение работает только в Telegram</p>
-                        </div>
-                    </div>
-                `;
-                throw new Error('Not in Telegram');
+            let firstName = 'Игрок';
+            let lastName = '';
+            let tgUsername = '';
+
+            if (tg && tg.initDataUnsafe?.user) {
+                const user = tg.initDataUnsafe.user;
+                firstName = user.first_name || 'Игрок';
+                lastName = user.last_name || '';
+                tgUsername = user.username ? '@' + user.username : '';
             }
 
-            const userId = tg.initDataUnsafe.user.id;
-            const STORAGE_KEY = `yeter_user_${userId}`;
-            
-            function loadUserData() {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) {
-                    try {
-                        return JSON.parse(saved);
-                    } catch {
-                        return createDefaultData();
-                    }
-                }
-                return createDefaultData();
-            }
-            
-            function createDefaultData() {
-                return {
-                    stars: 12500,
-                    level: 1,
-                    exp: 0,
-                    expToNext: 1000,
-                    gifts: [],
-                    games: {},
-                    transactions: [],
-                    lastSync: Date.now()
-                };
-            }
-            
-            let userData = loadUserData();
-            
-            function saveUserData() {
-                userData.lastSync = Date.now();
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
-                localStorage.setItem('yeter_data_updated', Date.now().toString());
-                setTimeout(() => localStorage.removeItem('yeter_data_updated'), 100);
-            }
-            
-            window.addEventListener('storage', (e) => {
-                if (e.key === STORAGE_KEY && e.newValue) {
-                    try {
-                        const newData = JSON.parse(e.newValue);
-                        if (newData.lastSync > userData.lastSync) {
-                            userData = newData;
-                            updateUIDisplay();
-                        }
-                    } catch {}
-                }
-                if (e.key === 'yeter_data_updated') {
-                    const saved = localStorage.getItem(STORAGE_KEY);
-                    if (saved) {
-                        try {
-                            const newData = JSON.parse(saved);
-                            if (newData.lastSync > userData.lastSync) {
-                                userData = newData;
-                                updateUIDisplay();
-                            }
-                        } catch {}
-                    }
-                }
-            });
-            
-            setInterval(() => {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) {
-                    try {
-                        const newData = JSON.parse(saved);
-                        if (newData.lastSync > userData.lastSync) {
-                            userData = newData;
-                            updateUIDisplay();
-                        }
-                    } catch {}
-                }
-            }, 2000);
-            
-            window.UserStorage = {
-                getStars: function() { return userData.stars; },
-                getLevel: function() { return userData.level; },
-                getExp: function() { return userData.exp; },
-                getExpToNext: function() { return userData.expToNext; },
-                getUserData: function() { return { ...userData }; },
-                
-                updateStars: function(amount, reason) {
-                    if (userData.stars + amount < 0) return false;
-                    userData.stars += amount;
-                    if (!userData.transactions) userData.transactions = [];
-                    userData.transactions.push({ amount, reason, time: Date.now(), balance: userData.stars });
-                    if (userData.transactions.length > 50) userData.transactions = userData.transactions.slice(-50);
-                    saveUserData();
-                    return true;
-                },
-                
-                addExp: function(amount) {
-                    userData.exp += amount;
-                    while (userData.exp >= userData.expToNext) {
-                        userData.exp -= userData.expToNext;
-                        userData.level++;
-                        userData.expToNext = Math.floor(userData.expToNext * 1.5);
-                    }
-                    saveUserData();
-                },
-                
-                forceUpdate: function() {
-                    const saved = localStorage.getItem(STORAGE_KEY);
-                    if (saved) {
-                        try {
-                            const newData = JSON.parse(saved);
-                            userData = newData;
-                            updateUIDisplay();
-                        } catch {}
-                    }
-                }
-            };
-        })();
+            // Имя и фамилия
+            const fullName = (firstName + ' ' + lastName).trim();
+            document.getElementById('fullName').innerText = fullName;
 
-        // ============================================
-        // ФОРМАТИРОВАНИЕ ЧИСЕЛ
-        // ============================================
-        function formatNumber(num) {
-            if (num >= 1000000) {
-                return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'м';
+            // Юзернейм
+            const usernameEl = document.getElementById('username');
+            if (tgUsername) {
+                usernameEl.innerText = tgUsername;
+            } else {
+                usernameEl.innerText = '@' + firstName.toLowerCase().replace(/\s+/g, '');
             }
-            if (num >= 1000) {
-                return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'к';
-            }
-            return num.toString();
-        }
 
-        // ============================================
-        // ОБНОВЛЕНИЕ UI
-        // ============================================
-        function updateUIDisplay() {
-            const data = window.UserStorage.getUserData();
-            document.getElementById('gamesBalanceDisplay').innerText = formatNumber(data.stars);
-            document.getElementById('gamesLevelNumber').innerText = data.level;
-            document.getElementById('gamesNextLevel').innerText = data.level + 1;
+            // Аватар
+            const avatarDiv = document.getElementById('avatar');
+            if (tg && tg.initDataUnsafe?.user?.photo_url) {
+                const photoUrl = tg.initDataUnsafe.user.photo_url;
+                avatarDiv.style.backgroundImage = `url('${photoUrl}')`;
+                avatarDiv.style.backgroundSize = 'cover';
+                avatarDiv.innerText = '';
+            } else {
+                avatarDiv.innerText = firstName.charAt(0).toUpperCase();
+            }
+
+            // Баланс 0
+            const balanceSpan = document.getElementById('balanceValue');
+            balanceSpan.innerText = '0';
             
-            const progress = (data.exp / data.expToNext) * 100;
-            document.getElementById('gamesProgressFill').style.width = progress + '%';
-        }
-
-        // ============================================
-        // LIVE УВЕДОМЛЕНИЯ
-        // ============================================
-        const LiveNotification = {
-            show: function(image, name, price) {
-                const notif = document.getElementById('liveNotification');
-                document.getElementById('liveImage').src = image;
-                document.getElementById('liveText').innerHTML = `<span>${name}</span> куплен за ${formatNumber(price)} 🧩`;
-                notif.classList.add('show');
-                setTimeout(() => notif.classList.remove('show'), 5000);
-            }
-        };
-
-        function addToLiveBanner(purchase) {
-            const banner = document.getElementById('liveBanner');
-            
-            let imagePath = purchase.image;
-            if (!imagePath.startsWith('nft/') && !imagePath.startsWith('http')) {
-                imagePath = 'nft/' + imagePath;
-            }
-            
-            const item = document.createElement('div');
-            item.className = 'live-item';
-            item.innerHTML = `
-                <img src="${imagePath}" class="live-item-image" onerror="this.src='nft/placeholder.png'">
-                <span class="live-item-name">${purchase.name}</span>
-                <span class="live-item-price">${formatNumber(purchase.price)} 🧩</span>
-            `;
-            
-            banner.appendChild(item);
-            
-            while (banner.children.length > 9) {
-                if (banner.children[1]) banner.removeChild(banner.children[1]);
-            }
-        }
-
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'new_purchase') {
-                try {
-                    const purchase = JSON.parse(e.newValue);
-                    LiveNotification.show(purchase.image, purchase.name, purchase.price);
-                    addToLiveBanner(purchase);
-                } catch (err) {}
-            }
-        });
-
-        // ============================================
-        // TELEGRAM ПРОФИЛЬ
-        // ============================================
-        const tg = window.Telegram?.WebApp;
-        if (tg) {
-            tg.ready();
-            tg.expand();
-            
-            const user = tg.initDataUnsafe?.user;
-            if (user) {
-                const firstName = user.first_name || '';
-                const lastName = user.last_name || '';
-                const fullName = (firstName + ' ' + lastName).trim() || 'Player';
-                
-                document.getElementById('gamesNickname').innerText = fullName;
-                
-                if (user.photo_url) {
-                    document.getElementById('gamesAvatar').style.backgroundImage = `url(${user.photo_url})`;
-                    document.getElementById('gamesAvatar').style.backgroundColor = 'transparent';
-                    document.getElementById('gamesAvatar').innerText = '';
-                } else {
-                    document.getElementById('gamesAvatar').innerText = (firstName.charAt(0) || 'П').toUpperCase();
-                }
-            }
-        }
-
-        // ============================================
-        // ХИНТ
-        // ============================================
-        if (localStorage.getItem('yeter_hint_shown') !== 'false') {
-            document.getElementById('hintOverlay').style.display = 'flex';
-        }
-
-        document.getElementById('hintCloseBtn').addEventListener('click', () => {
-            document.getElementById('hintOverlay').style.display = 'none';
-            if (document.getElementById('dontShowCheckbox').classList.contains('fa-check-square')) {
-                localStorage.setItem('yeter_hint_shown', 'false');
-            }
-        });
-
-        document.getElementById('hintDoneBtn').addEventListener('click', () => {
-            document.getElementById('hintOverlay').style.display = 'none';
-            if (document.getElementById('dontShowCheckbox').classList.contains('fa-check-square')) {
-                localStorage.setItem('yeter_hint_shown', 'false');
-            }
-        });
-
-        document.getElementById('dontShowCheckbox').addEventListener('click', () => {
-            const icon = document.getElementById('checkIcon');
-            icon.className = icon.className.includes('fa-square') ? 'fas fa-check-square' : 'far fa-square';
-        });
-
-        // ============================================
-        // НАВИГАЦИЯ
-        // ============================================
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function(e) {
+            // Кнопка + ничего не делает
+            document.getElementById('plusBtn').addEventListener('click', (e) => {
                 e.preventDefault();
-                const href = this.getAttribute('href');
-                if (href) window.location.href = href;
+                console.log('Пополнение временно отключено');
             });
-        });
 
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('href') === currentPage) item.classList.add('active');
-        });
+            // Фильтр
+            document.getElementById('filterBtn').addEventListener('click', () => {
+                alert('Фильтры NFT подарков (скоро)');
+            });
 
-        // ============================================
-        // ИНИЦИАЛИЗАЦИЯ
-        // ============================================
-        updateUIDisplay();
-        
-        setTimeout(() => {
-            window.UserStorage.forceUpdate();
-        }, 500);
+            // Навигация
+            const navMarket = document.getElementById('navMarket');
+            const navProfile = document.getElementById('navProfile');
+
+            function setActive(activeId) {
+                navMarket.classList.remove('active');
+                navProfile.classList.remove('active');
+                if (activeId === 'market') navMarket.classList.add('active');
+                if (activeId === 'profile') navProfile.classList.add('active');
+            }
+
+            setActive('market');
+
+            navMarket.addEventListener('click', (e) => {
+                e.preventDefault();
+                setActive('market');
+            });
+
+            navProfile.addEventListener('click', (e) => {
+                e.preventDefault();
+                setActive('profile');
+            });
+
+            // Поиск
+            const searchInput = document.querySelector('.search-input');
+            searchInput.addEventListener('input', (e) => {
+                console.log('Поиск:', e.target.value);
+            });
+
+        })();
     </script>
 </body>
-                </html>
+            </html>
