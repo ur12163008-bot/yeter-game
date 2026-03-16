@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Market · Gifts</title>
+    <title>Market · NFT Gifts</title>
     <!-- Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <!-- Font Awesome и Google Fonts -->
@@ -14,6 +14,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -24,6 +25,8 @@
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body::before {
@@ -32,6 +35,7 @@
             top: 0; left: 0; right: 0; bottom: 0;
             background: radial-gradient(ellipse at 40% 50%, #0a0e1a 0%, #03050a 70%, #000103 100%);
             z-index: -2;
+            will-change: transform;
         }
 
         .stars {
@@ -39,6 +43,8 @@
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
             pointer-events: none;
+            opacity: 0.5;
+            will-change: transform;
         }
         
         .star {
@@ -47,9 +53,9 @@
             border-radius: 50%;
             width: 2px;
             height: 2px;
-            opacity: 0;
-            transition: opacity 0.1s ease;
+            opacity: 0.5;
             box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+            will-change: opacity;
         }
 
         .app {
@@ -59,15 +65,175 @@
             padding-bottom: 100px;
             min-height: 100vh;
             z-index: 1;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            perspective: 1000;
         }
 
-        /* Шапка с аватаром */
+        /* Затемнение фона */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            will-change: opacity;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        /* Модальное окно для NFT - ТЕМНО-СЕРОЕ */
+        .nft-modal {
+            max-width: 320px;
+            width: 85%;
+            background: #1a1a24;
+            border-radius: 30px;
+            padding: 30px 20px 25px;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            animation: modalAppear 0.15s ease-out;
+            -webkit-animation: modalAppear 0.15s ease-out;
+            will-change: transform, opacity;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Крестик фиолетовый */
+        .nft-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            color: #b87aff;
+            font-size: 22px;
+            font-weight: 800;
+            cursor: pointer;
+            z-index: 10;
+            line-height: 1;
+            background: none;
+            border: none;
+            padding: 8px;
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            transition: color 0.05s ease;
+            will-change: color;
+        }
+
+        .nft-modal-close:active {
+            color: #d0a0ff;
+            transform: scale(0.95);
+        }
+
+        /* Изображение в модалке */
+        .nft-modal-image {
+            width: 140px;
+            height: 140px;
+            border-radius: 25px;
+            margin: 5px auto 15px;
+            display: block;
+            object-fit: cover;
+            background: #2a2a3a;
+            border: 2px solid rgba(184, 122, 255, 0.2);
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        /* Название в модалке - СЕРЫЙ */
+        .nft-modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #a0a0b0;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        /* Цена в модалке - БЕЛАЯ */
+        .nft-modal-price {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 25px;
+        }
+
+        .nft-modal-price .price-icon {
+            font-size: 22px;
+            color: #ffd700;
+        }
+
+        /* Кнопка купить - ПЛОСКАЯ */
+        .nft-modal-buy {
+            background: #6a0dad;
+            border: none;
+            border-radius: 60px;
+            padding: 16px;
+            width: 100%;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.05s ease, transform 0.05s ease;
+            text-align: center;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            box-shadow: none;
+        }
+
+        .nft-modal-buy:active {
+            background: #7b1db5;
+            transform: scale(0.97);
+        }
+
+        /* Шапка профиля */
         .profile-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin: 16px 20px 20px;
             gap: 12px;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .profile-left {
@@ -94,6 +260,8 @@
             background-size: cover;
             background-position: center;
             text-transform: uppercase;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
 
         .name-box {
@@ -124,51 +292,60 @@
             text-overflow: ellipsis;
         }
 
+        /* Баланс - УДЛИНЕННЫЙ И КНОПКА + ЕЩЕ МЕНЬШЕ */
         .balance-block {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             background: rgba(10, 14, 22, 0.7);
             border: 1px solid rgba(138, 43, 226, 0.4);
-            border-radius: 40px;
-            padding: 8px 14px 8px 16px;
+            border-radius: 30px;
+            padding: 4px 12px 4px 14px;
             flex-shrink: 0;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
 
         .balance-stars {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 14px;
             color: white;
         }
 
         .puzzle-icon {
-            font-size: 16px;
+            font-size: 14px;
             color: #ffd700;
         }
 
+        /* Кнопка + и круг - МАЛЕНЬКИЕ */
         .plus-btn {
             background: rgba(106, 13, 173, 0.3);
             border: 1px solid rgba(138, 43, 226, 0.5);
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 18px;
+            height: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #b87aff;
-            font-size: 20px;
+            font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.1s;
+            transition: background 0.05s ease;
             line-height: 1;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            min-width: 28px;
+            min-height: 28px;
         }
 
         .plus-btn:active {
             background: rgba(106, 13, 173, 0.6);
-            color: white;
+            transform: scale(0.95);
         }
 
         /* Поиск и фильтр */
@@ -204,6 +381,10 @@
             font-family: 'Inter', sans-serif;
             color: white;
             outline: none;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .search-input::placeholder {
@@ -224,41 +405,108 @@
             font-size: 18px;
             cursor: pointer;
             flex-shrink: 0;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            min-width: 44px;
+            min-height: 44px;
+            transition: background 0.05s ease;
         }
 
-        /* Заглушка с иконкой магазина */
-        .market-placeholder {
-            margin: 30px 20px;
-            padding: 50px 20px;
-            text-align: center;
-            background: rgba(10, 14, 22, 0.5);
-            border: 1px dashed rgba(155, 77, 255, 0.4);
-            border-radius: 40px;
+        .filter-btn:active {
+            background: rgba(106, 13, 173, 0.3);
+            transform: scale(0.95);
+        }
+
+        /* Сетка NFT */
+        .nft-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 0 20px 30px;
+        }
+
+        /* Карточка NFT */
+        .nft-card {
+            background: rgba(10, 14, 22, 0.7);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 24px;
+            padding: 15px 10px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             backdrop-filter: blur(4px);
-            color: #b87aff;
+            -webkit-backdrop-filter: blur(4px);
+            cursor: pointer;
+            transition: border 0.05s ease, background 0.05s ease;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
-        .market-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-            color: #b87aff;
-            opacity: 0.8;
-            filter: drop-shadow(0 0 10px #9b4dff);
+        .nft-card:active {
+            transform: scale(0.97);
+            border-color: #b87aff;
+            background: rgba(20, 25, 35, 0.9);
         }
 
-        .market-text {
-            font-size: 18px;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 8px;
+        .nft-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            background: #2a1e3a;
+            border: 1px solid rgba(184, 122, 255, 0.2);
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
-        .market-subtext {
+        .nft-name {
             font-size: 14px;
-            color: #8e98a3;
+            font-weight: 600;
+            color: #f0f0f0;
+            text-align: center;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            padding: 0 4px;
         }
 
-        /* Нижняя навигация — только MARKET и PROFILE */
+        .price-frame {
+            background: linear-gradient(145deg, #2a1e3a, #1a1028);
+            border: 1px solid rgba(155, 77, 255, 0.3);
+            border-radius: 30px;
+            padding: 6px 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 3px 0 #0f0a18;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+        }
+
+        .nft-price {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #b87aff;
+        }
+
+        .price-icon {
+            font-size: 14px;
+            color: #ffd700;
+        }
+
+        /* Нижняя навигация */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -269,15 +517,21 @@
             background: #0c0f16;
             display: flex;
             justify-content: space-around;
-            padding: 12px 4px;
+            padding: 8px 4px;
             border-radius: 35px;
             border: 1px solid #2a1e3a;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             width: calc(100% - 40px);
             left: 20px;
             right: 20px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.8);
             z-index: 1000;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .nav-item {
@@ -289,26 +543,39 @@
             font-size: 10px;
             font-weight: 600;
             cursor: pointer;
-            padding: 8px 16px;
+            padding: 8px 12px;
             border-radius: 30px;
             text-align: center;
             text-decoration: none;
-            transition: all 0.15s ease;
+            transition: background 0.05s ease, color 0.05s ease;
             background: transparent;
             border: none;
-            min-width: 100px;
+            min-width: 80px;
+            min-height: 44px;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        .nav-item:active {
+            background: rgba(106, 13, 173, 0.3);
+            transform: scale(0.95);
         }
 
         .nav-item i {
             font-size: 20px;
             color: #8e98a3;
             margin-bottom: 2px;
+            transition: color 0.05s ease;
         }
 
         .nav-item span {
             font-size: 10px;
             font-weight: 600;
             letter-spacing: 0.3px;
+            transition: color 0.05s ease;
         }
 
         .nav-item.active {
@@ -324,35 +591,58 @@
             color: #b87aff;
         }
 
-        .nav-item:active {
-            background: rgba(106, 13, 173, 0.4);
-            transform: scale(0.95);
+        /* Защита от выделения */
+        .no-select {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .notification {
-            position: fixed;
-            top: 20px; right: 20px;
-            padding: 12px 20px;
-            border-radius: 60px;
-            background: #00c853;
-            color: white;
-            font-weight: 500;
-            font-size: 14px;
-            z-index: 3000;
-            transform: translateX(150%);
-            transition: 0.3s;
-            box-shadow: 0 4px 0 #00691e;
-            pointer-events: none;
+        /* Оптимизация для слабых устройств */
+        @media (max-width: 440px) {
+            .app {
+                max-width: 100%;
+            }
+            
+            .nft-image {
+                width: 85px;
+                height: 85px;
+            }
+            
+            .nft-modal {
+                width: 90%;
+            }
+            
+            .nft-modal-image {
+                width: 120px;
+                height: 120px;
+            }
         }
-        .notification.show { transform: translateX(0); }
     </style>
 </head>
-<body>
+<body class="no-select">
     <div class="stars" id="stars"></div>
 
-    <div class="notification" id="notification">➕ Баланс пополнен</div>
+    <!-- Затемнение с модальным окном для NFT -->
+    <div class="modal-overlay" id="nftModal">
+        <div class="nft-modal">
+            <div class="nft-modal-close" id="closeNftModal">✕</div>
+            <img src="" alt="" class="nft-modal-image" id="modalNftImage">
+            <div class="nft-modal-title" id="modalNftTitle"></div>
+            <div class="nft-modal-price" id="modalNftPrice">
+                <span class="price-icon">🧩</span>
+                <span id="modalNftPriceValue"></span>
+            </div>
+            <button class="nft-modal-buy" id="buyNftBtn">Купить</button>
+        </div>
+    </div>
 
     <div class="app">
+        <!-- Шапка -->
         <div class="profile-header">
             <div class="profile-left">
                 <div class="avatar" id="avatar">A</div>
@@ -370,25 +660,69 @@
             </div>
         </div>
 
+        <!-- Поиск -->
         <div class="search-section">
             <div class="search-wrapper">
                 <i class="fas fa-search search-icon"></i>
-                <input type="text" class="search-input" placeholder="Поиск по названию">
+                <input type="text" class="search-input" placeholder="Поиск по названию" id="searchInput">
             </div>
             <div class="filter-btn" id="filterBtn">
                 <i class="fas fa-sliders-h"></i>
             </div>
         </div>
 
-        <div class="market-placeholder">
-            <div class="market-icon">
-                <i class="fas fa-store"></i>
+        <!-- Сетка NFT -->
+        <div class="nft-grid" id="nftGrid">
+            <!-- Neko Helmet -->
+            <div class="nft-card" data-name="Neko Helmet" data-price="259" data-image="nft/Neko Helmet.png">
+                <img src="nft/Neko Helmet.png" alt="Neko Helmet" class="nft-image" onerror="this.src='https://via.placeholder.com/100/6a0dad/ffffff?text=Neko'">
+                <div class="nft-name">Neko Helmet</div>
+                <div class="price-frame">
+                    <div class="nft-price">
+                        <span class="price-icon">🧩</span>
+                        <span>259</span>
+                    </div>
+                </div>
             </div>
-            <div class="market-text">Подарков в магазине пока нет</div>
-            <div class="market-subtext">Скоро здесь появятся NFT подарки</div>
+
+            <!-- Jingle Bells -->
+            <div class="nft-card" data-name="Jingle Bells" data-price="69" data-image="nft/Jingle Bells.png">
+                <img src="nft/Jingle Bells.png" alt="Jingle Bells" class="nft-image" onerror="this.src='https://via.placeholder.com/100/6a0dad/ffffff?text=Jingle'">
+                <div class="nft-name">Jingle Bells</div>
+                <div class="price-frame">
+                    <div class="nft-price">
+                        <span class="price-icon">🧩</span>
+                        <span>69</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lol Pop -->
+            <div class="nft-card" data-name="Lol Pop" data-price="45" data-image="nft/Lol Pop.png">
+                <img src="nft/Lol Pop.png" alt="Lol Pop" class="nft-image" onerror="this.src='https://via.placeholder.com/100/6a0dad/ffffff?text=Lol+Pop'">
+                <div class="nft-name">Lol Pop</div>
+                <div class="price-frame">
+                    <div class="nft-price">
+                        <span class="price-icon">🧩</span>
+                        <span>45</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tam Gadget -->
+            <div class="nft-card" data-name="Tam Gadget" data-price="189" data-image="nft/Tam Gadget.png">
+                <img src="nft/Tam Gadget.png" alt="Tam Gadget" class="nft-image" onerror="this.src='https://via.placeholder.com/100/6a0dad/ffffff?text=Tam+Gadget'">
+                <div class="nft-name">Tam Gadget</div>
+                <div class="price-frame">
+                    <div class="nft-price">
+                        <span class="price-icon">🧩</span>
+                        <span>189</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Нижняя навигация: только MARKET и PROFILE -->
+        <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a href="#" class="nav-item active" id="navMarket"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
             <a href="profle.html" class="nav-item" id="navProfile"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
@@ -397,145 +731,332 @@
 
     <script>
         (function() {
-            // Звезды с анимацией
+            "use strict";
+
+            // ========== УПРАВЛЕНИЕ БАЛАНСОМ ==========
+            const STORAGE_KEY = 'nft_balance';
+            const INVENTORY_KEY = 'nft_inventory';
+
+            // Функция для получения текущего баланса
+            function getBalance() {
+                const balance = localStorage.getItem(STORAGE_KEY);
+                return balance ? parseInt(balance, 10) : 500; // Начинаем с 500 для теста
+            }
+
+            // Функция для обновления баланса на странице
+            function updateBalanceDisplay() {
+                const balanceSpan = document.getElementById('balanceValue');
+                if (balanceSpan) {
+                    balanceSpan.innerText = getBalance();
+                }
+            }
+
+            // Функция для списания баланса
+            function deductBalance(amount) {
+                const currentBalance = getBalance();
+                if (currentBalance >= amount) {
+                    const newBalance = currentBalance - amount;
+                    localStorage.setItem(STORAGE_KEY, newBalance);
+                    updateBalanceDisplay();
+                    
+                    // Оповещаем другие вкладки (для профиля)
+                    localStorage.setItem('balance_updated', Date.now().toString());
+                    setTimeout(() => localStorage.removeItem('balance_updated'), 100);
+                    return true;
+                }
+                return false;
+            }
+
+            // Функция для добавления NFT в инвентарь
+            function addToInventory(name, price, image) {
+                const inventory = JSON.parse(localStorage.getItem(INVENTORY_KEY) || '[]');
+                inventory.push({
+                    name: name,
+                    price: price,
+                    image: image,
+                    id: Date.now() + Math.random() // Уникальный ID
+                });
+                localStorage.setItem(INVENTORY_KEY, JSON.stringify(inventory));
+                
+                // Оповещаем другие вкладки (для профиля)
+                localStorage.setItem('inventory_updated', Date.now().toString());
+                setTimeout(() => localStorage.removeItem('inventory_updated'), 100);
+            }
+
+            // Конфигурация защиты
+            const SECURITY_CONFIG = {
+                maxClicksPerSecond: 10,
+                maxRequestsPerMinute: 60,
+                clickCooldown: 50,
+                debugMode: false
+            };
+
+            // Система защиты от накрутки
+            const SecuritySystem = {
+                clicks: [],
+                requests: [],
+                lastClickTime: 0,
+                
+                checkClick: function() {
+                    const now = Date.now();
+                    
+                    if (now - this.lastClickTime < SECURITY_CONFIG.clickCooldown) {
+                        if (SECURITY_CONFIG.debugMode) console.log('Click too fast');
+                        return false;
+                    }
+                    
+                    this.clicks = this.clicks.filter(t => now - t < 1000);
+                    
+                    if (this.clicks.length >= SECURITY_CONFIG.maxClicksPerSecond) {
+                        if (SECURITY_CONFIG.debugMode) console.log('Too many clicks per second');
+                        return false;
+                    }
+                    
+                    this.clicks.push(now);
+                    this.lastClickTime = now;
+                    return true;
+                },
+                
+                checkRequest: function() {
+                    const now = Date.now();
+                    
+                    this.requests = this.requests.filter(t => now - t < 60000);
+                    
+                    if (this.requests.length >= SECURITY_CONFIG.maxRequestsPerMinute) {
+                        if (SECURITY_CONFIG.debugMode) console.log('Too many requests per minute');
+                        return false;
+                    }
+                    
+                    this.requests.push(now);
+                    return true;
+                },
+                
+                safeCall: function(fn, context, args) {
+                    if (!this.checkClick() || !this.checkRequest()) {
+                        return false;
+                    }
+                    
+                    setTimeout(() => {
+                        fn.apply(context, args);
+                    }, 0);
+                    
+                    return true;
+                }
+            };
+
+            // Звездная анимация
             function initStars() {
                 const starsContainer = document.getElementById('stars');
                 if (!starsContainer) return;
                 
                 starsContainer.innerHTML = '';
-                const starCount = 80;
-                const stars = [];
+                const starCount = 20;
                 
                 for (let i = 0; i < starCount; i++) {
                     const star = document.createElement('div');
                     star.className = 'star';
                     
-                    const left = Math.random() * 100;
-                    const top = Math.random() * 100;
-                    const size = 1 + Math.floor(Math.random() * 2);
-                    
-                    star.style.left = left + '%';
-                    star.style.top = top + '%';
-                    star.style.width = size + 'px';
-                    star.style.height = size + 'px';
-                    
-                    star.dataset.speed = 0.3 + Math.random() * 0.7;
-                    star.dataset.phase = Math.random() * Math.PI * 2;
-                    star.dataset.baseOpacity = 0.3 + Math.random() * 0.5;
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    star.style.opacity = (0.2 + Math.random() * 0.3).toString();
                     
                     starsContainer.appendChild(star);
-                    stars.push(star);
                 }
-                
-                function animateStars() {
-                    stars.forEach(star => {
-                        const speed = parseFloat(star.dataset.speed);
-                        const phase = parseFloat(star.dataset.phase);
-                        const baseOp = parseFloat(star.dataset.baseOpacity);
-                        
-                        const time = performance.now() / 1000;
-                        const opacity = baseOp + 0.3 * Math.sin(time * speed + phase);
-                        
-                        star.style.opacity = Math.max(0.1, Math.min(0.9, opacity));
-                    });
-                    
-                    requestAnimationFrame(animateStars);
-                }
-                
-                requestAnimationFrame(animateStars);
             }
-            
-            initStars();
 
             // Telegram данные
-            const tg = window.Telegram?.WebApp;
-            let firstName = 'Игрок';
-            let lastName = '';
-            let tgUsername = '';
+            function getTelegramData() {
+                const tg = window.Telegram?.WebApp;
+                
+                const cachedData = sessionStorage.getItem('tg_user_data');
+                if (cachedData) {
+                    return JSON.parse(cachedData);
+                }
+                
+                let firstName = 'Игрок';
+                let lastName = '';
+                let tgUsername = '';
 
-            if (tg && tg.initDataUnsafe?.user) {
-                const user = tg.initDataUnsafe.user;
-                firstName = user.first_name || 'Игрок';
-                lastName = user.last_name || '';
-                tgUsername = user.username ? '@' + user.username : '';
+                if (tg && tg.initDataUnsafe?.user) {
+                    const user = tg.initDataUnsafe.user;
+                    firstName = user.first_name || 'Игрок';
+                    lastName = user.last_name || '';
+                    tgUsername = user.username ? '@' + user.username : '';
+                    
+                    const userData = { firstName, lastName, tgUsername };
+                    sessionStorage.setItem('tg_user_data', JSON.stringify(userData));
+                    return userData;
+                }
+                
+                return { firstName, lastName, tgUsername };
             }
 
-            // Имя и фамилия
-            const fullName = (firstName + ' ' + lastName).trim();
-            document.getElementById('fullName').innerText = fullName;
+            // Инициализация
+            function init() {
+                initStars();
 
-            // Юзернейм
-            const usernameEl = document.getElementById('username');
-            if (tgUsername) {
-                usernameEl.innerText = tgUsername;
-            } else {
-                usernameEl.innerText = '@' + firstName.toLowerCase().replace(/\s+/g, '');
+                const userData = getTelegramData();
+                const fullName = (userData.firstName + ' ' + userData.lastName).trim();
+                
+                document.getElementById('fullName').innerText = fullName;
+                
+                const usernameEl = document.getElementById('username');
+                if (userData.tgUsername) {
+                    usernameEl.innerText = userData.tgUsername;
+                } else {
+                    usernameEl.innerText = '@' + userData.firstName.toLowerCase().replace(/\s+/g, '');
+                }
+
+                const avatarDiv = document.getElementById('avatar');
+                const tg = window.Telegram?.WebApp;
+                
+                if (tg && tg.initDataUnsafe?.user?.photo_url) {
+                    const photoUrl = tg.initDataUnsafe.user.photo_url;
+                    avatarDiv.style.backgroundImage = `url('${photoUrl}')`;
+                    avatarDiv.style.backgroundSize = 'cover';
+                    avatarDiv.innerText = '';
+                } else {
+                    avatarDiv.innerText = userData.firstName.charAt(0).toUpperCase();
+                }
+
+                // Инициализируем баланс
+                updateBalanceDisplay();
+
+                initEventHandlers();
             }
 
-            // Аватар
-            const avatarDiv = document.getElementById('avatar');
-            if (tg && tg.initDataUnsafe?.user?.photo_url) {
-                const photoUrl = tg.initDataUnsafe.user.photo_url;
-                avatarDiv.style.backgroundImage = `url('${photoUrl}')`;
-                avatarDiv.style.backgroundSize = 'cover';
-                avatarDiv.innerText = '';
-            } else {
-                avatarDiv.innerText = firstName.charAt(0).toUpperCase();
+            // Обработчики событий
+            function initEventHandlers() {
+                // Кнопка + баланса (ничего не делает)
+                document.getElementById('plusBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                });
+
+                // Фильтр
+                document.getElementById('filterBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    SecuritySystem.safeCall(() => {
+                        alert('Фильтры NFT подарков (скоро)');
+                    });
+                });
+
+                // Поиск
+                const searchInput = document.getElementById('searchInput');
+                let searchTimeout;
+                
+                searchInput.addEventListener('input', (e) => {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        SecuritySystem.safeCall(() => {
+                            const searchTerm = e.target.value.toLowerCase();
+                            const cards = document.querySelectorAll('.nft-card');
+                            
+                            cards.forEach(card => {
+                                const name = card.querySelector('.nft-name').innerText.toLowerCase();
+                                if (name.includes(searchTerm)) {
+                                    card.style.display = 'flex';
+                                } else {
+                                    card.style.display = 'none';
+                                }
+                            });
+                        });
+                    }, 50);
+                });
+
+                // Модальное окно для NFT
+                const modalOverlay = document.getElementById('nftModal');
+                const closeModal = document.getElementById('closeNftModal');
+                const modalImage = document.getElementById('modalNftImage');
+                const modalTitle = document.getElementById('modalNftTitle');
+                const modalPrice = document.getElementById('modalNftPriceValue');
+                const buyBtn = document.getElementById('buyNftBtn');
+
+                // Открытие модалки при клике на карточку
+                document.querySelectorAll('.nft-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        SecuritySystem.safeCall(() => {
+                            const name = card.dataset.name;
+                            const price = card.dataset.price;
+                            const image = card.dataset.image;
+                            
+                            modalImage.src = image;
+                            modalImage.alt = name;
+                            modalTitle.innerText = name;
+                            modalPrice.innerText = price;
+                            
+                            modalOverlay.classList.add('active');
+                        });
+                    });
+                });
+
+                // Закрытие модалки
+                closeModal.addEventListener('click', () => {
+                    SecuritySystem.safeCall(() => {
+                        modalOverlay.classList.remove('active');
+                    });
+                });
+
+                modalOverlay.addEventListener('click', (e) => {
+                    if (e.target === modalOverlay) {
+                        SecuritySystem.safeCall(() => {
+                            modalOverlay.classList.remove('active');
+                        });
+                    }
+                });
+
+                // Кнопка купить
+                buyBtn.addEventListener('click', () => {
+                    SecuritySystem.safeCall(() => {
+                        const name = modalTitle.innerText;
+                        const price = parseInt(modalPrice.innerText, 10);
+                        const image = modalImage.src;
+                        
+                        // Проверяем достаточно ли средств
+                        if (getBalance() >= price) {
+                            // Списываем баланс
+                            deductBalance(price);
+                            
+                            // Добавляем в инвентарь
+                            addToInventory(name, price, image);
+                            
+                            alert(`✅ Подарок "${name}" куплен!`);
+                            modalOverlay.classList.remove('active');
+                        } else {
+                            alert('❌ Недостаточно средств!');
+                        }
+                    });
+                });
+
+                // Навигация
+                const navMarket = document.getElementById('navMarket');
+                const navProfile = document.getElementById('navProfile');
+
+                navMarket.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    SecuritySystem.safeCall(() => {
+                        navMarket.classList.add('active');
+                        navProfile.classList.remove('active');
+                    });
+                });
+
+                navProfile.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    SecuritySystem.safeCall(() => {
+                        window.location.href = 'profle.html';
+                    });
+                });
             }
 
-            // Баланс 0
-            const balanceSpan = document.getElementById('balanceValue');
-            balanceSpan.innerText = '0';
-            
-            // Кнопка + ничего не делает
-            document.getElementById('plusBtn').addEventListener('click', (e) => {
-                e.preventDefault();
-                console.log('Пополнение временно отключено');
-            });
-
-            // Фильтр
-            document.getElementById('filterBtn').addEventListener('click', () => {
-                alert('Фильтры NFT подарков (скоро)');
-            });
-
-            // Навигация - теперь профиль ведет на profle.html
-            const navMarket = document.getElementById('navMarket');
-            const navProfile = document.getElementById('navProfile');
-
-            function setActive(activeId) {
-                navMarket.classList.remove('active');
-                navProfile.classList.remove('active');
-                if (activeId === 'market') navMarket.classList.add('active');
-                if (activeId === 'profile') navProfile.classList.add('active');
+            if (!window._initialized) {
+                window._initialized = true;
+                
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', init);
+                } else {
+                    init();
+                }
             }
-
-            // Проверяем текущую страницу для подсветки
-            const currentPage = window.location.pathname.split('/').pop() || 'market.html';
-            if (currentPage === 'profle.html') {
-                setActive('profile');
-            } else {
-                setActive('market');
-            }
-
-            // Обработчик для маркета (остаемся на этой странице)
-            navMarket.addEventListener('click', (e) => {
-                e.preventDefault();
-                setActive('market');
-                // Если нужно реально переходить на market.html - раскомментируй:
-                // window.location.href = 'market.html';
-            });
-
-            // Для профиля ссылка уже в href="profle.html", поэтому ничего не делаем,
-            // но добавим подсветку при клике (на случай если переход не произойдет мгновенно)
-            navProfile.addEventListener('click', () => {
-                setActive('profile');
-            });
-
-            // Поиск
-            const searchInput = document.querySelector('.search-input');
-            searchInput.addEventListener('input', (e) => {
-                console.log('Поиск:', e.target.value);
-            });
 
         })();
     </script>
