@@ -25,8 +25,6 @@
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
         body::before {
@@ -35,7 +33,6 @@
             top: 0; left: 0; right: 0; bottom: 0;
             background: radial-gradient(ellipse at 40% 50%, #0a0e1a 0%, #03050a 70%, #000103 100%);
             z-index: -2;
-            will-change: transform;
         }
 
         .stars {
@@ -43,8 +40,6 @@
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
             pointer-events: none;
-            opacity: 0.5;
-            will-change: transform;
         }
         
         .star {
@@ -53,9 +48,8 @@
             border-radius: 50%;
             width: 2px;
             height: 2px;
-            opacity: 0.5;
+            opacity: 0.3;
             box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
-            will-change: opacity;
         }
 
         .app {
@@ -65,24 +59,172 @@
             padding-bottom: 100px;
             min-height: 100vh;
             z-index: 1;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            perspective: 1000;
         }
 
-        /* Шапка профиля */
+        /* Затемнение фона */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        /* Модальное окно */
+        .modal-container {
+            max-width: 360px;
+            width: 90%;
+            background: #1a1028;
+            border: none;
+            border-radius: 30px;
+            padding: 30px 20px 25px;
+            position: relative;
+            box-shadow: 0 15px 0 #0f0a18;
+            animation: modalAppear 0.2s ease;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Крестик - как в скрипте, ровно справа сверху, не налезает */
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 18px;
+            color: #b87aff;
+            font-size: 22px;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 10;
+            line-height: 1;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .warning-box {
+            background: #b84d4d;
+            border-radius: 20px;
+            padding: 16px 18px;
+            margin: 5px 0 25px;
+            box-shadow: 0 6px 0 #6b2e2e;
+        }
+
+        .warning-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .warning-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 12px 10px;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .info-item:active {
+            background: rgba(184, 122, 255, 0.25);
+            transform: scale(0.98);
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: #2a2a3a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #a0a0b0;
+            border: 1px solid rgba(160, 160, 176, 0.3);
+            flex-shrink: 0;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .info-subtitle {
+            font-size: 14px;
+            color: #8e98a3;
+        }
+
+        .info-subtitle.bot-username {
+            color: #b87aff;
+            font-weight: 500;
+        }
+
+        .go-button {
+            background: #6a0dad;
+            border: none;
+            border-radius: 60px;
+            padding: 16px;
+            width: 100%;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 6px 0 #4a0b8a;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .go-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #4a0b8a;
+        }
+
+        /* Шапка */
         .profile-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin: 16px 20px 20px;
             gap: 12px;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
         }
 
         .profile-left {
@@ -109,8 +251,6 @@
             background-size: cover;
             background-position: center;
             text-transform: uppercase;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
         }
 
         .name-box {
@@ -126,10 +266,10 @@
             font-weight: 700;
             color: white;
             line-height: 1.3;
+            margin-bottom: 4px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-bottom: 4px;
         }
 
         .username {
@@ -141,54 +281,48 @@
             text-overflow: ellipsis;
         }
 
-        /* Баланс - как в маркете */
+        /* Баланс - цифры жирные, круг с + чуть больше */
         .balance-block {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             background: rgba(10, 14, 22, 0.7);
             border: 1px solid rgba(138, 43, 226, 0.4);
             border-radius: 30px;
-            padding: 4px 12px 4px 14px;
+            padding: 6px 12px 6px 14px;
             flex-shrink: 0;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
         }
 
         .balance-stars {
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-weight: 700;
-            font-size: 14px;
+            gap: 5px;
+            font-weight: 800;
+            font-size: 16px;
             color: white;
         }
 
         .puzzle-icon {
-            font-size: 14px;
+            font-size: 16px;
             color: #ffd700;
         }
 
+        /* Круг с + - чуть больше */
         .plus-btn {
             background: rgba(106, 13, 173, 0.3);
             border: 1px solid rgba(138, 43, 226, 0.5);
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
+            width: 22px;
+            height: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #b87aff;
-            font-size: 14px;
+            font-size: 18px;
             font-weight: 700;
             cursor: pointer;
-            transition: background 0.05s ease;
+            transition: 0.05s;
             line-height: 1;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            min-width: 28px;
-            min-height: 28px;
         }
 
         .plus-btn:active {
@@ -196,12 +330,11 @@
             transform: scale(0.95);
         }
 
-        /* Контейнер для рамки профиля */
+        /* Рамка инвентаря */
         .profile-frame-container {
             margin-top: 5px;
         }
 
-        /* ОБЩАЯ РАМКА - инвентарь */
         .profile-frame {
             margin: 0 20px;
             background: rgba(10, 14, 22, 0.5);
@@ -209,13 +342,9 @@
             border-radius: 30px;
             padding: 25px 20px 25px;
             backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
             position: relative;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
         }
 
-        /* Заголовок инвентаря */
         .inventory-header {
             display: flex;
             align-items: center;
@@ -240,7 +369,7 @@
             color: white;
         }
 
-        /* Круг с ¡ */
+        /* Круг с ! - ровно по центру */
         .info-circle {
             width: 32px;
             height: 32px;
@@ -251,14 +380,11 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background 0.1s ease;
+            transition: 0.1s;
+            color: rgba(184, 122, 255, 0.8);
+            font-size: 22px;
+            font-weight: 500;
             line-height: 1;
-            text-align: center;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            min-width: 40px;
-            min-height: 40px;
         }
 
         .info-circle:active {
@@ -266,42 +392,28 @@
             transform: scale(0.95);
         }
 
-        .info-circle span {
-            color: rgba(184, 122, 255, 0.8);
-            font-size: 20px;
-            font-weight: 500;
-            display: block;
-            line-height: 1;
-        }
-
         .info-circle.active {
             background: rgba(106, 13, 173, 0.4);
             border-color: rgba(184, 122, 255, 0.8);
-        }
-
-        .info-circle.active span {
             color: #b87aff;
         }
 
-        /* Кнопка Добавить подарок */
+        /* КНОПКА ДОБАВИТЬ ПОДАРОК - МЕНЬШЕ ПО ВЫСОТЕ */
         .add-gift-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             width: 100%;
-            padding: 15px 0;
+            padding: 8px 0; /* Уменьшил высоту */
             border: 2px dashed rgba(184, 122, 255, 0.5);
             border-radius: 60px;
             background: rgba(106, 13, 173, 0.1);
             cursor: pointer;
-            transition: background 0.1s ease;
+            transition: 0.1s;
             margin-bottom: 20px;
             color: #8e98a3;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            min-height: 80px;
+            min-height: 55px; /* Уменьшил */
         }
 
         .add-gift-btn:active {
@@ -310,18 +422,17 @@
         }
 
         .add-gift-btn .plus-symbol {
-            font-size: 32px;
+            font-size: 28px; /* Чуть меньше */
             font-weight: 300;
             line-height: 1;
-            margin-bottom: 2px;
+            margin-bottom: 0;
             color: #8e98a3;
         }
 
         .add-gift-btn .plus-text {
-            font-size: 14px;
+            font-size: 13px; /* Чуть меньше */
             color: #8e98a3;
             font-weight: 500;
-            letter-spacing: 0.3px;
         }
 
         /* Сетка инвентаря */
@@ -329,10 +440,9 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-top: 15px;
+            margin-bottom: 15px;
         }
 
-        /* Карточка в инвентаре */
         .inventory-item {
             background: rgba(10, 14, 22, 0.7);
             border: 1px solid rgba(138, 43, 226, 0.3);
@@ -342,9 +452,13 @@
             flex-direction: column;
             align-items: center;
             backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .inventory-item:active {
+            transform: scale(0.97);
+            border-color: #b87aff;
         }
 
         .inventory-item-image {
@@ -384,12 +498,34 @@
             color: #ffd700;
         }
 
+        /* Кнопка "Показать все" */
+        .show-more-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px 0;
+            border: 2px dashed #b87aff;
+            border-radius: 60px;
+            background: transparent;
+            color: #b87aff;
+            font-size: 24px;
+            font-weight: 300;
+            cursor: pointer;
+            transition: 0.1s;
+            margin-top: 5px;
+        }
+
+        .show-more-btn:active {
+            background: rgba(184, 122, 255, 0.1);
+            transform: scale(0.98);
+        }
+
         /* Пустой инвентарь */
         .empty-inventory {
             text-align: center;
             color: #8e98a3;
             font-size: 14px;
-            line-height: 1.6;
             padding: 30px 0;
         }
 
@@ -410,16 +546,13 @@
             background: #6a0dad;
             border-radius: 20px;
             padding: 16px 18px;
-            box-shadow: 0 8px 0 #4a0b8a, 0 4px 15px rgba(106, 13, 173, 0.5);
+            box-shadow: 0 8px 0 #4a0b8a;
             display: none;
             z-index: 10;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
         }
 
         .hint-message.show {
             display: block;
-            animation: fadeIn 0.15s ease;
         }
 
         .hint-message::before {
@@ -427,30 +560,15 @@
             position: absolute;
             top: -10px;
             right: 15px;
-            width: 0;
-            height: 0;
             border-left: 12px solid transparent;
             border-right: 12px solid transparent;
             border-bottom: 12px solid #6a0dad;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-5px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .hint-text {
             font-size: 14px;
             color: rgba(255, 255, 255, 0.95);
             line-height: 1.5;
-            font-weight: 500;
-            text-align: left;
         }
 
         .hint-text span {
@@ -460,7 +578,143 @@
             padding: 2px 8px;
             border-radius: 40px;
             display: inline-block;
-            margin: 0 2px;
+        }
+
+        /* Модальное окно для продажи */
+        .nft-modal {
+            max-width: 320px;
+            width: 85%;
+            background: #1a1a24;
+            border-radius: 30px;
+            padding: 30px 20px 25px;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .nft-modal-image {
+            width: 140px;
+            height: 140px;
+            border-radius: 25px;
+            margin: 5px auto 15px;
+            display: block;
+            object-fit: cover;
+            background: #2a2a3a;
+            border: 2px solid rgba(184, 122, 255, 0.2);
+        }
+
+        .nft-modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #a0a0b0;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .nft-modal-price {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 25px;
+        }
+
+        .nft-modal-price .price-icon {
+            font-size: 22px;
+            color: #ffd700;
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .sell-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 60px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            background: #2a2a3a;
+            color: #a0a0b0;
+            transition: 0.1s;
+        }
+
+        .sell-btn.active {
+            background: #6a0dad;
+            color: white;
+            justify-content: center;
+        }
+
+        .sell-btn .btn-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sell-btn .btn-left i {
+            font-size: 16px;
+            color: #a0a0b0;
+        }
+
+        .sell-btn.active .btn-left i {
+            color: white;
+        }
+
+        .sell-btn .timer {
+            font-weight: 500;
+            background: rgba(0,0,0,0.2);
+            padding: 4px 8px;
+            border-radius: 30px;
+            font-size: 14px;
+        }
+
+        .withdraw-btn {
+            background: #6a0dad;
+            border: none;
+            border-radius: 60px;
+            padding: 14px;
+            width: 100%;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.1s;
+            text-align: center;
+            box-shadow: none;
+        }
+
+        .withdraw-btn:active {
+            background: #7b1db5;
+            transform: scale(0.97);
+        }
+
+        .full-inventory-modal {
+            max-width: 400px;
+            width: 90%;
+            background: #1a1a24;
+            border-radius: 30px;
+            padding: 30px 20px 25px;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .full-inventory-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
         }
 
         /* Нижняя навигация */
@@ -483,12 +737,6 @@
             right: 20px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.8);
             z-index: 1000;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
         }
 
         .nav-item {
@@ -504,16 +752,10 @@
             border-radius: 30px;
             text-align: center;
             text-decoration: none;
-            transition: background 0.05s ease, color 0.05s ease;
+            transition: 0.05s;
             background: transparent;
             border: none;
             min-width: 80px;
-            min-height: 44px;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
         }
 
         .nav-item:active {
@@ -525,14 +767,11 @@
             font-size: 20px;
             color: #8e98a3;
             margin-bottom: 2px;
-            transition: color 0.05s ease;
         }
 
         .nav-item span {
             font-size: 10px;
             font-weight: 600;
-            letter-spacing: 0.3px;
-            transition: color 0.05s ease;
         }
 
         .nav-item.active {
@@ -547,39 +786,77 @@
         .nav-item.active span {
             color: #b87aff;
         }
-
-        .no-select {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        @media (max-width: 440px) {
-            .app {
-                max-width: 100%;
-            }
-            
-            .inventory-item-image {
-                width: 70px;
-                height: 70px;
-            }
-            
-            .hint-message {
-                width: 260px;
-                right: 10px;
-            }
-        }
     </style>
 </head>
-<body class="no-select">
+<body>
     <div class="stars" id="stars"></div>
 
+    <!-- Модальное окно для инструкции (Добавить подарок) -->
+    <div class="modal-overlay" id="giftModal">
+        <div class="modal-container">
+            <div class="modal-close" id="closeModal">✕</div>
+            <div class="warning-box">
+                <div class="warning-title">Не дарите подарки с Telegram Маркета</div>
+                <div class="warning-text">Отправляйте подарки только напрямую со своего аккаунта</div>
+            </div>
+            <div class="info-item" id="goToBot">
+                <div class="info-icon"><i class="fas fa-robot"></i></div>
+                <div class="info-content">
+                    <div class="info-title">Перейдите в бота</div>
+                    <div class="info-subtitle bot-username">@yeter16</div>
+                </div>
+            </div>
+            <div class="info-item" style="cursor: default;">
+                <div class="info-icon"><i class="fas fa-gift"></i></div>
+                <div class="info-content">
+                    <div class="info-title">Отправьте ему подарок</div>
+                    <div class="info-subtitle">(любой из Telegram)</div>
+                </div>
+            </div>
+            <div class="info-item" style="cursor: default;">
+                <div class="info-icon"><i class="fas fa-clock"></i></div>
+                <div class="info-content">
+                    <div class="info-title">Подарок добавится в инвентарь</div>
+                    <div class="info-subtitle">в течение нескольких минут</div>
+                </div>
+            </div>
+            <div class="go-button" id="goButton">Перейти в бота</div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для продажи NFT -->
+    <div class="modal-overlay" id="nftModal">
+        <div class="nft-modal">
+            <div class="modal-close" id="closeNftModal">✕</div>
+            <img src="" alt="" class="nft-modal-image" id="modalNftImage">
+            <div class="nft-modal-title" id="modalNftTitle"></div>
+            <div class="nft-modal-price" id="modalNftPrice">
+                <span class="price-icon">🧩</span>
+                <span id="modalNftPriceValue"></span>
+            </div>
+            <div class="modal-actions">
+                <div class="sell-btn" id="sellBtn">
+                    <div class="btn-left"><i class="fas fa-lock"></i><span class="btn-text">Продать</span></div>
+                    <span class="timer" id="timerDisplay">30:00</span>
+                </div>
+                <button class="withdraw-btn" id="withdrawBtn">Вывести</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для полного инвентаря -->
+    <div class="modal-overlay" id="fullInventoryModal">
+        <div class="full-inventory-modal">
+            <div class="modal-close" id="closeFullInventoryModal">✕</div>
+            <div class="inventory-title" style="margin-bottom: 10px;">
+                <i class="fas fa-box"></i>
+                <span>Весь инвентарь</span>
+            </div>
+            <div id="fullInventoryGrid" class="full-inventory-grid"></div>
+        </div>
+    </div>
+
     <div class="app">
-        <!-- Шапка -->
         <div class="profile-header">
             <div class="profile-left">
                 <div class="avatar" id="avatar">A</div>
@@ -591,45 +868,35 @@
             <div class="balance-block">
                 <div class="balance-stars">
                     <span class="puzzle-icon">🧩</span>
-                    <span id="balanceValue">0</span>
+                    <span id="balanceValue">5000</span>
                 </div>
                 <div class="plus-btn" id="plusBtn">+</div>
             </div>
         </div>
 
-        <!-- Контейнер для рамки профиля -->
         <div class="profile-frame-container">
             <div class="profile-frame">
-                <!-- Заголовок инвентаря -->
                 <div class="inventory-header">
                     <div class="inventory-title">
                         <i class="fas fa-box"></i>
                         <span>Инвентарь</span>
                     </div>
-                    <div class="info-circle" id="infoCircle">
-                        <span>¡</span>
-                    </div>
+                    <div class="info-circle" id="infoCircle">!</div>
                 </div>
 
-                <!-- Кнопка Добавить подарок -->
                 <div class="add-gift-btn" id="addGiftBtn">
                     <span class="plus-symbol">+</span>
                     <span class="plus-text">Добавить подарок</span>
                 </div>
 
-                <!-- Сетка инвентаря -->
                 <div id="inventoryContainer"></div>
-
-                <!-- Подсказка -->
+                <div class="show-more-btn" id="showMoreBtn">›</div>
                 <div class="hint-message" id="hintMessage">
-                    <div class="hint-text">
-                        Воспользуйся кнопкой <span>«Добавить подарок»</span>, чтобы добавить NFT в инвентарь и выставить его на продажу в магазине
-                    </div>
+                    <div class="hint-text">Воспользуйся кнопкой <span>«Добавить подарок»</span>, чтобы добавить NFT в инвентарь и выставить его на продажу в магазине</div>
                 </div>
             </div>
         </div>
 
-        <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a href="market.html" class="nav-item" id="navMarket"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
             <a href="#" class="nav-item active" id="navProfile"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
@@ -639,205 +906,270 @@
     <script>
         (function() {
             "use strict";
-
+            
             const STORAGE_KEY = 'nft_balance';
             const INVENTORY_KEY = 'nft_inventory';
+            const TIMER_KEY = 'nft_timers';
 
-            // Получение баланса
+            function loadTimers() {
+                return JSON.parse(localStorage.getItem(TIMER_KEY) || '{}');
+            }
+
+            function saveTimers(timers) {
+                localStorage.setItem(TIMER_KEY, JSON.stringify(timers));
+            }
+
             function getBalance() {
-                const balance = localStorage.getItem(STORAGE_KEY);
-                return balance ? parseInt(balance, 10) : 500;
+                return parseInt(localStorage.getItem(STORAGE_KEY)) || 5000;
             }
 
-            // Обновление баланса на странице
             function updateBalanceDisplay() {
-                const balanceSpan = document.getElementById('balanceValue');
-                if (balanceSpan) {
-                    balanceSpan.innerText = getBalance();
-                }
+                document.getElementById('balanceValue').innerText = getBalance();
             }
 
-            // Получение инвентаря
             function getInventory() {
-                const inventory = localStorage.getItem(INVENTORY_KEY);
-                return inventory ? JSON.parse(inventory) : [];
+                return JSON.parse(localStorage.getItem(INVENTORY_KEY) || '[]');
             }
 
-            // Отображение инвентаря
+            function saveInventory(inventory) {
+                localStorage.setItem(INVENTORY_KEY, JSON.stringify(inventory));
+            }
+
+            window.addPurchasedItem = function(name, price, image) {
+                const inventory = getInventory();
+                const timers = loadTimers();
+                const itemId = Date.now() + Math.random();
+                const purchaseTime = Date.now();
+                
+                inventory.push({ name, price, image, id: itemId, purchaseTime });
+                timers[itemId] = purchaseTime;
+                
+                saveTimers(timers);
+                saveInventory(inventory);
+                renderInventory();
+            };
+
             function renderInventory() {
                 const container = document.getElementById('inventoryContainer');
                 const inventory = getInventory();
 
-                if (inventory.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-inventory">
-                            <i class="fas fa-gift"></i>
-                            <p>В инвентаре пока пусто</p>
-                            <p class="small">Купите подарки в магазине</p>
-                        </div>
-                    `;
-                } else {
-                    let html = '<div class="inventory-grid">';
-                    inventory.forEach(item => {
-                        html += `
-                            <div class="inventory-item">
-                                <img src="${item.image}" alt="${item.name}" class="inventory-item-image" onerror="this.src='https://via.placeholder.com/80/6a0dad/ffffff?text=NFT'">
-                                <div class="inventory-item-name">${item.name}</div>
-                                <div class="inventory-item-price">
-                                    <span class="price-icon">🧩</span>
-                                    <span>${item.price}</span>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    html += '</div>';
-                    container.innerHTML = html;
+                if (!inventory.length) {
+                    container.innerHTML = '<div class="empty-inventory"><i class="fas fa-gift"></i><p>В инвентаре пока пусто</p><p class="small">Купите подарки в магазине</p></div>';
+                    document.getElementById('showMoreBtn').style.display = 'none';
+                    return;
                 }
+
+                const itemsToShow = inventory.slice(0, 2);
+                let html = '<div class="inventory-grid">';
+                itemsToShow.forEach((item, index) => {
+                    html += `<div class="inventory-item" data-index="${index}" data-id="${item.id}">
+                        <img src="${item.image}" alt="${item.name}" class="inventory-item-image" onerror="this.src=\'https://via.placeholder.com/80/6a0dad/ffffff?text=NFT\'">
+                        <div class="inventory-item-name">${item.name}</div>
+                        <div class="inventory-item-price"><span class="price-icon">🧩</span><span>${item.price}</span></div>
+                    </div>`;
+                });
+                html += '</div>';
+                container.innerHTML = html;
+                document.getElementById('showMoreBtn').style.display = inventory.length > 2 ? 'flex' : 'none';
             }
 
-            // Звезды
-            function initStars() {
+            function renderFullInventory() {
+                const grid = document.getElementById('fullInventoryGrid');
+                const inventory = getInventory();
+
+                if (!inventory.length) {
+                    grid.innerHTML = '<div class="empty-inventory" style="grid-column: span 2;">В инвентаре пока пусто</div>';
+                    return;
+                }
+
+                let html = '';
+                inventory.forEach((item, index) => {
+                    html += `<div class="inventory-item" data-index="${index}" data-id="${item.id}">
+                        <img src="${item.image}" alt="${item.name}" class="inventory-item-image" onerror="this.src=\'https://via.placeholder.com/80/6a0dad/ffffff?text=NFT\'">
+                        <div class="inventory-item-name">${item.name}</div>
+                        <div class="inventory-item-price"><span class="price-icon">🧩</span><span>${item.price}</span></div>
+                    </div>`;
+                });
+                grid.innerHTML = html;
+            }
+
+            function startTimer(button, timerDisplay, itemId) {
+                const timers = loadTimers();
+                const purchaseTime = timers[itemId];
+                if (!purchaseTime) return;
+
+                const updateTimer = () => {
+                    const now = Date.now();
+                    const elapsed = Math.floor((now - purchaseTime) / 1000);
+                    const remaining = Math.max(0, 1800 - elapsed);
+
+                    if (remaining <= 0) {
+                        clearInterval(interval);
+                        button.classList.add('active');
+                        button.innerHTML = '<span class="btn-text">Продать</span>';
+                        delete timers[itemId];
+                        saveTimers(timers);
+                        return;
+                    }
+
+                    const mins = Math.floor(remaining / 60).toString().padStart(2, '0');
+                    const secs = (remaining % 60).toString().padStart(2, '0');
+                    if (timerDisplay) timerDisplay.textContent = `${mins}:${secs}`;
+                };
+
+                updateTimer();
+                const interval = setInterval(updateTimer, 1000);
+            }
+
+            function init() {
                 const starsContainer = document.getElementById('stars');
-                if (!starsContainer) return;
-                
-                starsContainer.innerHTML = '';
-                const starCount = 20;
-                
-                for (let i = 0; i < starCount; i++) {
-                    const star = document.createElement('div');
-                    star.className = 'star';
-                    
-                    star.style.left = Math.random() * 100 + '%';
-                    star.style.top = Math.random() * 100 + '%';
-                    star.style.opacity = (0.2 + Math.random() * 0.3).toString();
-                    
-                    starsContainer.appendChild(star);
+                if (starsContainer) {
+                    starsContainer.innerHTML = '';
+                    for (let i = 0; i < 30; i++) {
+                        const star = document.createElement('div');
+                        star.className = 'star';
+                        star.style.left = Math.random() * 100 + '%';
+                        star.style.top = Math.random() * 100 + '%';
+                        starsContainer.appendChild(star);
+                    }
                 }
-            }
 
-            // Telegram данные
-            function getTelegramData() {
                 const tg = window.Telegram?.WebApp;
+                let firstName = 'Игрок', lastName = '', tgUsername = '';
                 
-                const cachedData = sessionStorage.getItem('tg_user_data');
-                if (cachedData) {
-                    return JSON.parse(cachedData);
-                }
-                
-                let firstName = 'Игрок';
-                let lastName = '';
-                let tgUsername = '';
-
-                if (tg && tg.initDataUnsafe?.user) {
+                if (tg?.initDataUnsafe?.user) {
                     const user = tg.initDataUnsafe.user;
                     firstName = user.first_name || 'Игрок';
                     lastName = user.last_name || '';
                     tgUsername = user.username ? '@' + user.username : '';
-                    
-                    const userData = { firstName, lastName, tgUsername };
-                    sessionStorage.setItem('tg_user_data', JSON.stringify(userData));
-                    return userData;
                 }
-                
-                return { firstName, lastName, tgUsername };
-            }
 
-            // Инициализация
-            function init() {
-                initStars();
-
-                const userData = getTelegramData();
-                const fullName = (userData.firstName + ' ' + userData.lastName).trim();
-                
+                const fullName = (firstName + ' ' + lastName).trim();
                 document.getElementById('fullName').innerText = fullName;
                 
                 const usernameEl = document.getElementById('username');
-                if (userData.tgUsername) {
-                    usernameEl.innerText = userData.tgUsername;
-                } else {
-                    usernameEl.innerText = '@' + userData.firstName.toLowerCase().replace(/\s+/g, '');
-                }
+                usernameEl.innerText = tgUsername || '@' + firstName.toLowerCase().replace(/\s+/g, '');
 
                 const avatarDiv = document.getElementById('avatar');
-                const tg = window.Telegram?.WebApp;
-                
-                if (tg && tg.initDataUnsafe?.user?.photo_url) {
-                    const photoUrl = tg.initDataUnsafe.user.photo_url;
-                    avatarDiv.style.backgroundImage = `url('${photoUrl}')`;
+                if (tg?.initDataUnsafe?.user?.photo_url) {
+                    avatarDiv.style.backgroundImage = `url('${tg.initDataUnsafe.user.photo_url}')`;
                     avatarDiv.style.backgroundSize = 'cover';
                     avatarDiv.innerText = '';
                 } else {
-                    avatarDiv.innerText = userData.firstName.charAt(0).toUpperCase();
+                    avatarDiv.innerText = firstName.charAt(0).toUpperCase();
                 }
 
                 updateBalanceDisplay();
                 renderInventory();
 
-                // Слушаем изменения из других вкладок
-                window.addEventListener('storage', (e) => {
-                    if (e.key === STORAGE_KEY) {
-                        updateBalanceDisplay();
-                    }
-                    if (e.key === INVENTORY_KEY || e.key === 'inventory_updated') {
-                        renderInventory();
-                    }
-                });
+                document.getElementById('plusBtn').addEventListener('click', e => e.preventDefault());
 
-                // Кнопка + баланса
-                document.getElementById('plusBtn').addEventListener('click', (e) => {
-                    e.preventDefault();
-                });
-
-                // Информационный кружок
                 const infoCircle = document.getElementById('infoCircle');
                 const hintMessage = document.getElementById('hintMessage');
                 
-                infoCircle.addEventListener('click', (e) => {
+                infoCircle.addEventListener('click', e => {
                     e.stopPropagation();
                     hintMessage.classList.toggle('show');
                     infoCircle.classList.toggle('active');
                 });
-                
-                document.addEventListener('click', (e) => {
+
+                document.addEventListener('click', e => {
                     if (!hintMessage.contains(e.target) && !infoCircle.contains(e.target)) {
                         hintMessage.classList.remove('show');
                         infoCircle.classList.remove('active');
                     }
                 });
 
-                // Кнопка добавить подарок
-                document.getElementById('addGiftBtn').addEventListener('click', (e) => {
+                const giftModal = document.getElementById('giftModal');
+                const closeModal = document.getElementById('closeModal');
+                const addGiftBtn = document.getElementById('addGiftBtn');
+                const goToBot = document.getElementById('goToBot');
+                const goButton = document.getElementById('goButton');
+
+                addGiftBtn.addEventListener('click', e => {
                     e.preventDefault();
-                    alert('Купите подарок в маркете!');
+                    giftModal.classList.add('active');
                 });
 
-                // Навигация
+                closeModal.addEventListener('click', () => giftModal.classList.remove('active'));
+                giftModal.addEventListener('click', e => {
+                    if (e.target === giftModal) giftModal.classList.remove('active');
+                });
+
+                const openBot = () => window.open('https://t.me/yeter16', '_blank');
+                goToBot.addEventListener('click', openBot);
+                goButton.addEventListener('click', openBot);
+
+                const nftModal = document.getElementById('nftModal');
+                const closeNftModal = document.getElementById('closeNftModal');
+                const modalImage = document.getElementById('modalNftImage');
+                const modalTitle = document.getElementById('modalNftTitle');
+                const modalPrice = document.getElementById('modalNftPriceValue');
+                const sellBtn = document.getElementById('sellBtn');
+                const timerDisplay = document.getElementById('timerDisplay');
+                const withdrawBtn = document.getElementById('withdrawBtn');
+                const fullInventoryModal = document.getElementById('fullInventoryModal');
+                const closeFullInventory = document.getElementById('closeFullInventoryModal');
+
+                document.addEventListener('click', e => {
+                    const item = e.target.closest('.inventory-item');
+                    if (!item) return;
+
+                    const inventory = getInventory();
+                    const index = item.dataset.index;
+                    const itemData = inventory[index];
+                    if (!itemData) return;
+
+                    modalImage.src = itemData.image;
+                    modalImage.alt = itemData.name;
+                    modalTitle.innerText = itemData.name;
+                    modalPrice.innerText = itemData.price;
+
+                    sellBtn.classList.remove('active');
+                    sellBtn.innerHTML = `<div class="btn-left"><i class="fas fa-lock"></i><span class="btn-text">Продать</span></div><span class="timer" id="timerDisplay">30:00</span>`;
+                    
+                    const newTimer = document.getElementById('timerDisplay');
+                    if (newTimer) {
+                        startTimer(sellBtn, newTimer, itemData.id);
+                    }
+
+                    nftModal.classList.add('active');
+                });
+
+                closeNftModal.addEventListener('click', () => nftModal.classList.remove('active'));
+                nftModal.addEventListener('click', e => {
+                    if (e.target === nftModal) nftModal.classList.remove('active');
+                });
+
+                withdrawBtn.addEventListener('click', () => alert('Функция вывода средств временно недоступна'));
+
+                document.getElementById('showMoreBtn').addEventListener('click', () => {
+                    renderFullInventory();
+                    fullInventoryModal.classList.add('active');
+                });
+
+                closeFullInventory.addEventListener('click', () => fullInventoryModal.classList.remove('active'));
+                fullInventoryModal.addEventListener('click', e => {
+                    if (e.target === fullInventoryModal) fullInventoryModal.classList.remove('active');
+                });
+
                 const navMarket = document.getElementById('navMarket');
                 const navProfile = document.getElementById('navProfile');
 
-                navMarket.addEventListener('click', (e) => {
+                navMarket.addEventListener('click', e => {
                     e.preventDefault();
                     window.location.href = 'market.html';
                 });
 
-                navProfile.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    navProfile.classList.add('active');
-                    navMarket.classList.remove('active');
-                });
+                navProfile.addEventListener('click', e => e.preventDefault());
             }
 
-            if (!window._initialized) {
-                window._initialized = true;
-                
-                if (document.readyState === 'loading') {
-                    document.addEventListener('DOMContentLoaded', init);
-                } else {
-                    init();
-                }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
             }
-
         })();
     </script>
 </body>
-</html>
+    </html>
