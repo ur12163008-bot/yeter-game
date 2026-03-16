@@ -80,7 +80,7 @@
             display: flex;
         }
 
-        /* Модальное окно */
+        /* Модальное окно инструкции */
         .modal-container {
             max-width: 360px;
             width: 90%;
@@ -104,13 +104,12 @@
             }
         }
 
-        /* Крестик - как в скрипте, ровно справа сверху, не налезает */
         .modal-close {
             position: absolute;
-            top: 16px;
-            right: 18px;
+            top: 12px;
+            right: 14px;
             color: #b87aff;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             cursor: pointer;
             z-index: 10;
@@ -118,8 +117,8 @@
             background: none;
             border: none;
             padding: 0;
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -281,7 +280,6 @@
             text-overflow: ellipsis;
         }
 
-        /* Баланс - цифры жирные, круг с + чуть больше */
         .balance-block {
             display: flex;
             align-items: center;
@@ -307,7 +305,6 @@
             color: #ffd700;
         }
 
-        /* Круг с + - чуть больше */
         .plus-btn {
             background: rgba(106, 13, 173, 0.3);
             border: 1px solid rgba(138, 43, 226, 0.5);
@@ -343,6 +340,7 @@
             padding: 25px 20px 25px;
             backdrop-filter: blur(4px);
             position: relative;
+            z-index: 1;
         }
 
         .inventory-header {
@@ -369,7 +367,6 @@
             color: white;
         }
 
-        /* Круг с ! - ровно по центру */
         .info-circle {
             width: 32px;
             height: 32px;
@@ -398,22 +395,35 @@
             color: #b87aff;
         }
 
-        /* КНОПКА ДОБАВИТЬ ПОДАРОК - МЕНЬШЕ ПО ВЫСОТЕ */
+        /* Кнопка добавить подарок */
         .add-gift-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             width: 100%;
-            padding: 8px 0; /* Уменьшил высоту */
+            padding: 8px 0;
             border: 2px dashed rgba(184, 122, 255, 0.5);
             border-radius: 60px;
             background: rgba(106, 13, 173, 0.1);
             cursor: pointer;
             transition: 0.1s;
             margin-bottom: 20px;
+            min-height: 55px;
+        }
+
+        .add-gift-btn .plus-symbol {
+            font-size: 28px;
+            font-weight: 300;
+            line-height: 1;
+            margin-bottom: 0;
+            color: #ffffff;
+        }
+
+        .add-gift-btn .plus-text {
+            font-size: 13px;
             color: #8e98a3;
-            min-height: 55px; /* Уменьшил */
+            font-weight: 500;
         }
 
         .add-gift-btn:active {
@@ -421,26 +431,32 @@
             transform: scale(0.98);
         }
 
-        .add-gift-btn .plus-symbol {
-            font-size: 28px; /* Чуть меньше */
-            font-weight: 300;
-            line-height: 1;
-            margin-bottom: 0;
-            color: #8e98a3;
+        /* Сетка инвентаря - скроллируемая */
+        .inventory-scroll {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+            margin-bottom: 10px;
         }
 
-        .add-gift-btn .plus-text {
-            font-size: 13px; /* Чуть меньше */
-            color: #8e98a3;
-            font-weight: 500;
+        .inventory-scroll::-webkit-scrollbar {
+            width: 4px;
         }
 
-        /* Сетка инвентаря */
+        .inventory-scroll::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .inventory-scroll::-webkit-scrollbar-thumb {
+            background: #b87aff;
+            border-radius: 10px;
+        }
+
         .inventory-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 15px;
         }
 
         .inventory-item {
@@ -496,29 +512,6 @@
         .inventory-item-price .price-icon {
             font-size: 12px;
             color: #ffd700;
-        }
-
-        /* Кнопка "Показать все" */
-        .show-more-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 12px 0;
-            border: 2px dashed #b87aff;
-            border-radius: 60px;
-            background: transparent;
-            color: #b87aff;
-            font-size: 24px;
-            font-weight: 300;
-            cursor: pointer;
-            transition: 0.1s;
-            margin-top: 5px;
-        }
-
-        .show-more-btn:active {
-            background: rgba(184, 122, 255, 0.1);
-            transform: scale(0.98);
         }
 
         /* Пустой инвентарь */
@@ -589,6 +582,7 @@
             padding: 30px 20px 25px;
             position: relative;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            z-index: 2100;
         }
 
         .nft-modal-image {
@@ -618,7 +612,7 @@
             font-size: 24px;
             font-weight: 800;
             color: #ffffff;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .nft-modal-price .price-icon {
@@ -630,6 +624,13 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            width: 100%;
+        }
+
+        /* Контейнер для кнопки продажи и надписи */
+        .sell-container {
+            display: flex;
+            flex-direction: column;
             width: 100%;
         }
 
@@ -678,6 +679,20 @@
             font-size: 14px;
         }
 
+        /* Надпись на маркете под кнопкой продать */
+        .market-text {
+            text-align: center;
+            color: #5a5a6a;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 5px;
+            letter-spacing: 0.3px;
+        }
+
+        .sell-btn.active + .market-text {
+            color: #a0a0b0;
+        }
+
         .withdraw-btn {
             background: #6a0dad;
             border: none;
@@ -691,30 +706,12 @@
             transition: 0.1s;
             text-align: center;
             box-shadow: none;
+            margin-top: 5px;
         }
 
         .withdraw-btn:active {
             background: #7b1db5;
             transform: scale(0.97);
-        }
-
-        .full-inventory-modal {
-            max-width: 400px;
-            width: 90%;
-            background: #1a1a24;
-            border-radius: 30px;
-            padding: 30px 20px 25px;
-            position: relative;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .full-inventory-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
         }
 
         /* Нижняя навигация */
@@ -835,24 +832,15 @@
                 <span id="modalNftPriceValue"></span>
             </div>
             <div class="modal-actions">
-                <div class="sell-btn" id="sellBtn">
-                    <div class="btn-left"><i class="fas fa-lock"></i><span class="btn-text">Продать</span></div>
-                    <span class="timer" id="timerDisplay">30:00</span>
+                <div class="sell-container">
+                    <button class="sell-btn" id="sellBtn">
+                        <div class="btn-left"><i class="fas fa-lock"></i><span class="btn-text">Продать</span></div>
+                        <span class="timer" id="timerDisplay">30:00</span>
+                    </button>
+                    <div class="market-text" id="marketText">на маркете</div>
                 </div>
                 <button class="withdraw-btn" id="withdrawBtn">Вывести</button>
             </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно для полного инвентаря -->
-    <div class="modal-overlay" id="fullInventoryModal">
-        <div class="full-inventory-modal">
-            <div class="modal-close" id="closeFullInventoryModal">✕</div>
-            <div class="inventory-title" style="margin-bottom: 10px;">
-                <i class="fas fa-box"></i>
-                <span>Весь инвентарь</span>
-            </div>
-            <div id="fullInventoryGrid" class="full-inventory-grid"></div>
         </div>
     </div>
 
@@ -889,8 +877,11 @@
                     <span class="plus-text">Добавить подарок</span>
                 </div>
 
-                <div id="inventoryContainer"></div>
-                <div class="show-more-btn" id="showMoreBtn">›</div>
+                <!-- Скроллируемый инвентарь -->
+                <div class="inventory-scroll" id="inventoryScroll">
+                    <div id="inventoryContainer"></div>
+                </div>
+                
                 <div class="hint-message" id="hintMessage">
                     <div class="hint-text">Воспользуйся кнопкой <span>«Добавить подарок»</span>, чтобы добавить NFT в инвентарь и выставить его на продажу в магазине</div>
                 </div>
@@ -911,10 +902,12 @@
             const INVENTORY_KEY = 'nft_inventory';
             const TIMER_KEY = 'nft_timers';
 
+            // Загрузка таймеров из localStorage
             function loadTimers() {
                 return JSON.parse(localStorage.getItem(TIMER_KEY) || '{}');
             }
 
+            // Сохранение таймеров
             function saveTimers(timers) {
                 localStorage.setItem(TIMER_KEY, JSON.stringify(timers));
             }
@@ -933,15 +926,27 @@
 
             function saveInventory(inventory) {
                 localStorage.setItem(INVENTORY_KEY, JSON.stringify(inventory));
+                // Триггерим обновление в других вкладках
+                localStorage.setItem('inventory_updated', Date.now().toString());
+                setTimeout(() => localStorage.removeItem('inventory_updated'), 100);
             }
 
+            // Функция для добавления купленного предмета (вызывается из market.html)
             window.addPurchasedItem = function(name, price, image) {
                 const inventory = getInventory();
                 const timers = loadTimers();
                 const itemId = Date.now() + Math.random();
                 const purchaseTime = Date.now();
                 
-                inventory.push({ name, price, image, id: itemId, purchaseTime });
+                inventory.push({ 
+                    name, 
+                    price, 
+                    image, 
+                    id: itemId, 
+                    purchaseTime: purchaseTime 
+                });
+                
+                // Сохраняем время покупки для таймера
                 timers[itemId] = purchaseTime;
                 
                 saveTimers(timers);
@@ -949,19 +954,18 @@
                 renderInventory();
             };
 
+            // Рендер инвентаря
             function renderInventory() {
                 const container = document.getElementById('inventoryContainer');
                 const inventory = getInventory();
 
                 if (!inventory.length) {
                     container.innerHTML = '<div class="empty-inventory"><i class="fas fa-gift"></i><p>В инвентаре пока пусто</p><p class="small">Купите подарки в магазине</p></div>';
-                    document.getElementById('showMoreBtn').style.display = 'none';
                     return;
                 }
 
-                const itemsToShow = inventory.slice(0, 2);
                 let html = '<div class="inventory-grid">';
-                itemsToShow.forEach((item, index) => {
+                inventory.forEach((item, index) => {
                     html += `<div class="inventory-item" data-index="${index}" data-id="${item.id}">
                         <img src="${item.image}" alt="${item.name}" class="inventory-item-image" onerror="this.src=\'https://via.placeholder.com/80/6a0dad/ffffff?text=NFT\'">
                         <div class="inventory-item-name">${item.name}</div>
@@ -970,33 +974,19 @@
                 });
                 html += '</div>';
                 container.innerHTML = html;
-                document.getElementById('showMoreBtn').style.display = inventory.length > 2 ? 'flex' : 'none';
             }
 
-            function renderFullInventory() {
-                const grid = document.getElementById('fullInventoryGrid');
-                const inventory = getInventory();
-
-                if (!inventory.length) {
-                    grid.innerHTML = '<div class="empty-inventory" style="grid-column: span 2;">В инвентаре пока пусто</div>';
-                    return;
-                }
-
-                let html = '';
-                inventory.forEach((item, index) => {
-                    html += `<div class="inventory-item" data-index="${index}" data-id="${item.id}">
-                        <img src="${item.image}" alt="${item.name}" class="inventory-item-image" onerror="this.src=\'https://via.placeholder.com/80/6a0dad/ffffff?text=NFT\'">
-                        <div class="inventory-item-name">${item.name}</div>
-                        <div class="inventory-item-price"><span class="price-icon">🧩</span><span>${item.price}</span></div>
-                    </div>`;
-                });
-                grid.innerHTML = html;
-            }
-
-            function startTimer(button, timerDisplay, itemId) {
+            // Функция для запуска таймера
+            function startTimer(button, timerDisplay, marketText, itemId) {
                 const timers = loadTimers();
                 const purchaseTime = timers[itemId];
-                if (!purchaseTime) return;
+                
+                if (!purchaseTime) {
+                    // Если нет времени покупки, показываем обычную кнопку
+                    button.classList.add('active');
+                    button.innerHTML = '<span class="btn-text">Продать</span>';
+                    return;
+                }
 
                 const updateTimer = () => {
                     const now = Date.now();
@@ -1004,24 +994,29 @@
                     const remaining = Math.max(0, 1800 - elapsed);
 
                     if (remaining <= 0) {
+                        // Таймер истек - делаем кнопку фиолетовой
                         clearInterval(interval);
                         button.classList.add('active');
                         button.innerHTML = '<span class="btn-text">Продать</span>';
+                        // Удаляем таймер из хранилища
                         delete timers[itemId];
                         saveTimers(timers);
                         return;
                     }
 
+                    // Обновляем отображение таймера
                     const mins = Math.floor(remaining / 60).toString().padStart(2, '0');
                     const secs = (remaining % 60).toString().padStart(2, '0');
                     if (timerDisplay) timerDisplay.textContent = `${mins}:${secs}`;
                 };
 
+                // Запускаем обновление
                 updateTimer();
                 const interval = setInterval(updateTimer, 1000);
             }
 
             function init() {
+                // Звезды
                 const starsContainer = document.getElementById('stars');
                 if (starsContainer) {
                     starsContainer.innerHTML = '';
@@ -1034,6 +1029,7 @@
                     }
                 }
 
+                // Telegram данные
                 const tg = window.Telegram?.WebApp;
                 let firstName = 'Игрок', lastName = '', tgUsername = '';
                 
@@ -1062,8 +1058,20 @@
                 updateBalanceDisplay();
                 renderInventory();
 
+                // Слушаем изменения из других вкладок
+                window.addEventListener('storage', (e) => {
+                    if (e.key === STORAGE_KEY) {
+                        updateBalanceDisplay();
+                    }
+                    if (e.key === INVENTORY_KEY || e.key === 'inventory_updated') {
+                        renderInventory();
+                    }
+                });
+
+                // Кнопка + баланса
                 document.getElementById('plusBtn').addEventListener('click', e => e.preventDefault());
 
+                // Информационный кружок
                 const infoCircle = document.getElementById('infoCircle');
                 const hintMessage = document.getElementById('hintMessage');
                 
@@ -1080,6 +1088,7 @@
                     }
                 });
 
+                // Модальное окно инструкции
                 const giftModal = document.getElementById('giftModal');
                 const closeModal = document.getElementById('closeModal');
                 const addGiftBtn = document.getElementById('addGiftBtn');
@@ -1100,6 +1109,7 @@
                 goToBot.addEventListener('click', openBot);
                 goButton.addEventListener('click', openBot);
 
+                // Модальное окно продажи
                 const nftModal = document.getElementById('nftModal');
                 const closeNftModal = document.getElementById('closeNftModal');
                 const modalImage = document.getElementById('modalNftImage');
@@ -1107,10 +1117,10 @@
                 const modalPrice = document.getElementById('modalNftPriceValue');
                 const sellBtn = document.getElementById('sellBtn');
                 const timerDisplay = document.getElementById('timerDisplay');
+                const marketText = document.getElementById('marketText');
                 const withdrawBtn = document.getElementById('withdrawBtn');
-                const fullInventoryModal = document.getElementById('fullInventoryModal');
-                const closeFullInventory = document.getElementById('closeFullInventoryModal');
 
+                // Открытие модалки при клике на предмет инвентаря
                 document.addEventListener('click', e => {
                     const item = e.target.closest('.inventory-item');
                     if (!item) return;
@@ -1125,12 +1135,16 @@
                     modalTitle.innerText = itemData.name;
                     modalPrice.innerText = itemData.price;
 
+                    // Сбрасываем кнопку продажи
                     sellBtn.classList.remove('active');
                     sellBtn.innerHTML = `<div class="btn-left"><i class="fas fa-lock"></i><span class="btn-text">Продать</span></div><span class="timer" id="timerDisplay">30:00</span>`;
                     
+                    // Получаем новый элемент таймера
                     const newTimer = document.getElementById('timerDisplay');
+                    
+                    // Запускаем таймер с ID предмета
                     if (newTimer) {
-                        startTimer(sellBtn, newTimer, itemData.id);
+                        startTimer(sellBtn, newTimer, marketText, itemData.id);
                     }
 
                     nftModal.classList.add('active');
@@ -1143,16 +1157,7 @@
 
                 withdrawBtn.addEventListener('click', () => alert('Функция вывода средств временно недоступна'));
 
-                document.getElementById('showMoreBtn').addEventListener('click', () => {
-                    renderFullInventory();
-                    fullInventoryModal.classList.add('active');
-                });
-
-                closeFullInventory.addEventListener('click', () => fullInventoryModal.classList.remove('active'));
-                fullInventoryModal.addEventListener('click', e => {
-                    if (e.target === fullInventoryModal) fullInventoryModal.classList.remove('active');
-                });
-
+                // Навигация
                 const navMarket = document.getElementById('navMarket');
                 const navProfile = document.getElementById('navProfile');
 
@@ -1172,4 +1177,4 @@
         })();
     </script>
 </body>
-    </html>
+                                                     </html>
