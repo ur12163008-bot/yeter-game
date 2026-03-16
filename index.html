@@ -72,7 +72,6 @@
             perspective: 1000;
         }
 
-        /* Затемнение фона */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -97,7 +96,6 @@
             display: flex;
         }
 
-        /* Модальное окно для NFT - ТЕМНО-СЕРОЕ */
         .nft-modal {
             max-width: 320px;
             width: 85%;
@@ -126,7 +124,6 @@
             }
         }
 
-        /* Крестик фиолетовый */
         .nft-modal-close {
             position: absolute;
             top: 12px;
@@ -154,8 +151,6 @@
             color: #d0a0ff;
             transform: scale(0.95);
         }
-
-        /* Изображение в модалке */
         .nft-modal-image {
             width: 140px;
             height: 140px;
@@ -171,7 +166,6 @@
             backface-visibility: hidden;
         }
 
-        /* Название в модалке - СЕРЫЙ */
         .nft-modal-title {
             font-size: 22px;
             font-weight: 700;
@@ -180,7 +174,6 @@
             margin-bottom: 8px;
         }
 
-        /* Цена в модалке - БЕЛАЯ */
         .nft-modal-price {
             display: flex;
             align-items: center;
@@ -197,7 +190,6 @@
             color: #ffd700;
         }
 
-        /* Кнопка купить - ПЛОСКАЯ */
         .nft-modal-buy {
             background: #6a0dad;
             border: none;
@@ -223,7 +215,6 @@
             transform: scale(0.97);
         }
 
-        /* Шапка профиля */
         .profile-header {
             display: flex;
             align-items: center;
@@ -292,7 +283,6 @@
             text-overflow: ellipsis;
         }
 
-        /* Баланс - УДЛИНЕННЫЙ И КНОПКА + ЕЩЕ МЕНЬШЕ */
         .balance-block {
             display: flex;
             align-items: center;
@@ -320,7 +310,6 @@
             color: #ffd700;
         }
 
-        /* Кнопка + и круг - МАЛЕНЬКИЕ */
         .plus-btn {
             background: rgba(106, 13, 173, 0.3);
             border: 1px solid rgba(138, 43, 226, 0.5);
@@ -348,7 +337,6 @@
             transform: scale(0.95);
         }
 
-        /* Поиск и фильтр */
         .search-section {
             display: flex;
             align-items: center;
@@ -418,7 +406,6 @@
             transform: scale(0.95);
         }
 
-        /* Сетка NFT */
         .nft-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -426,7 +413,6 @@
             margin: 0 20px 30px;
         }
 
-        /* Карточка NFT */
         .nft-card {
             background: rgba(10, 14, 22, 0.7);
             border: 1px solid rgba(138, 43, 226, 0.3);
@@ -506,7 +492,6 @@
             color: #ffd700;
         }
 
-        /* Нижняя навигация */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -591,7 +576,6 @@
             color: #b87aff;
         }
 
-        /* Защита от выделения */
         .no-select {
             -webkit-touch-callout: none;
             -webkit-user-select: none;
@@ -602,7 +586,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Оптимизация для слабых устройств */
         @media (max-width: 440px) {
             .app {
                 max-width: 100%;
@@ -627,7 +610,6 @@
 <body class="no-select">
     <div class="stars" id="stars"></div>
 
-    <!-- Затемнение с модальным окном для NFT -->
     <div class="modal-overlay" id="nftModal">
         <div class="nft-modal">
             <div class="nft-modal-close" id="closeNftModal">✕</div>
@@ -642,7 +624,6 @@
     </div>
 
     <div class="app">
-        <!-- Шапка -->
         <div class="profile-header">
             <div class="profile-left">
                 <div class="avatar" id="avatar">A</div>
@@ -660,7 +641,6 @@
             </div>
         </div>
 
-        <!-- Поиск -->
         <div class="search-section">
             <div class="search-wrapper">
                 <i class="fas fa-search search-icon"></i>
@@ -671,9 +651,7 @@
             </div>
         </div>
 
-        <!-- Сетка NFT -->
         <div class="nft-grid" id="nftGrid">
-            <!-- Neko Helmet -->
             <div class="nft-card" data-name="Neko Helmet" data-price="259" data-image="nft/Neko Helmet.png">
                 <img src="nft/Neko Helmet.png" alt="Neko Helmet" class="nft-image" onerror="this.src='https://via.placeholder.com/100/6a0dad/ffffff?text=Neko'">
                 <div class="nft-name">Neko Helmet</div>
@@ -685,7 +663,7 @@
                 </div>
             </div>
 
-            <!-- Jingle Bells -->
+    
             <div class="nft-card" data-name="Jingle Bells" data-price="69" data-image="nft/Jingle Bells.png">
                 <img src="nft/Jingle Bells.png" alt="Jingle Bells" class="nft-image" onerror="this.src='https://via.placeholder.com/100/6a0dad/ffffff?text=Jingle'">
                 <div class="nft-name">Jingle Bells</div>
@@ -697,7 +675,6 @@
                 </div>
             </div>
 
-            <!-- Lol Pop -->
             <div class="nft-card" data-name="Lol Pop" data-price="45" data-image="nft/Lol Pop.png">
                 <img src="nft/Lol Pop.png" alt="Lol Pop" class="nft-image" onerror="this.src='https://via.placeholder.com/100/6a0dad/ffffff?text=Lol+Pop'">
                 <div class="nft-name">Lol Pop</div>
@@ -709,7 +686,6 @@
                 </div>
             </div>
 
-            <!-- Tam Gadget -->
             <div class="nft-card" data-name="Tam Gadget" data-price="189" data-image="nft/Tam Gadget.png">
                 <img src="nft/Tam Gadget.png" alt="Tam Gadget" class="nft-image" onerror="this.src='https://via.placeholder.com/100/6a0dad/ffffff?text=Tam+Gadget'">
                 <div class="nft-name">Tam Gadget</div>
@@ -722,7 +698,6 @@
             </div>
         </div>
 
-        <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <a href="#" class="nav-item active" id="navMarket"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
             <a href="profle.html" class="nav-item" id="navProfile"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
@@ -733,17 +708,14 @@
         (function() {
             "use strict";
 
-            // ========== УПРАВЛЕНИЕ БАЛАНСОМ ==========
             const STORAGE_KEY = 'nft_balance';
             const INVENTORY_KEY = 'nft_inventory';
 
-            // Функция для получения текущего баланса
             function getBalance() {
                 const balance = localStorage.getItem(STORAGE_KEY);
-                return balance ? parseInt(balance, 10) : 500; // Начинаем с 500 для теста
+                return balance ? parseInt(balance, 10) : 500; 
             }
 
-            // Функция для обновления баланса на странице
             function updateBalanceDisplay() {
                 const balanceSpan = document.getElementById('balanceValue');
                 if (balanceSpan) {
@@ -751,7 +723,6 @@
                 }
             }
 
-            // Функция для списания баланса
             function deductBalance(amount) {
                 const currentBalance = getBalance();
                 if (currentBalance >= amount) {
@@ -759,7 +730,6 @@
                     localStorage.setItem(STORAGE_KEY, newBalance);
                     updateBalanceDisplay();
                     
-                    // Оповещаем другие вкладки (для профиля)
                     localStorage.setItem('balance_updated', Date.now().toString());
                     setTimeout(() => localStorage.removeItem('balance_updated'), 100);
                     return true;
@@ -767,31 +737,27 @@
                 return false;
             }
 
-            // Функция для добавления NFT в инвентарь
             function addToInventory(name, price, image) {
                 const inventory = JSON.parse(localStorage.getItem(INVENTORY_KEY) || '[]');
                 inventory.push({
                     name: name,
                     price: price,
                     image: image,
-                    id: Date.now() + Math.random() // Уникальный ID
+                    id: Date.now() + Math.random() 
                 });
                 localStorage.setItem(INVENTORY_KEY, JSON.stringify(inventory));
                 
-                // Оповещаем другие вкладки (для профиля)
                 localStorage.setItem('inventory_updated', Date.now().toString());
                 setTimeout(() => localStorage.removeItem('inventory_updated'), 100);
             }
 
-            // Конфигурация защиты
             const SECURITY_CONFIG = {
                 maxClicksPerSecond: 10,
                 maxRequestsPerMinute: 60,
                 clickCooldown: 50,
                 debugMode: false
-            };
-
-            // Система защиты от накрутки
+            }
+            
             const SecuritySystem = {
                 clicks: [],
                 requests: [],
@@ -844,7 +810,6 @@
                 }
             };
 
-            // Звездная анимация
             function initStars() {
                 const starsContainer = document.getElementById('stars');
                 if (!starsContainer) return;
@@ -863,8 +828,7 @@
                     starsContainer.appendChild(star);
                 }
             }
-
-            // Telegram данные
+            
             function getTelegramData() {
                 const tg = window.Telegram?.WebApp;
                 
@@ -890,8 +854,7 @@
                 
                 return { firstName, lastName, tgUsername };
             }
-
-            // Инициализация
+            
             function init() {
                 initStars();
 
@@ -919,20 +882,16 @@
                     avatarDiv.innerText = userData.firstName.charAt(0).toUpperCase();
                 }
 
-                // Инициализируем баланс
                 updateBalanceDisplay();
 
                 initEventHandlers();
             }
 
-            // Обработчики событий
             function initEventHandlers() {
-                // Кнопка + баланса (ничего не делает)
                 document.getElementById('plusBtn').addEventListener('click', (e) => {
                     e.preventDefault();
                 });
 
-                // Фильтр
                 document.getElementById('filterBtn').addEventListener('click', (e) => {
                     e.preventDefault();
                     SecuritySystem.safeCall(() => {
@@ -940,7 +899,6 @@
                     });
                 });
 
-                // Поиск
                 const searchInput = document.getElementById('searchInput');
                 let searchTimeout;
                 
@@ -963,7 +921,6 @@
                     }, 50);
                 });
 
-                // Модальное окно для NFT
                 const modalOverlay = document.getElementById('nftModal');
                 const closeModal = document.getElementById('closeNftModal');
                 const modalImage = document.getElementById('modalNftImage');
@@ -971,7 +928,6 @@
                 const modalPrice = document.getElementById('modalNftPriceValue');
                 const buyBtn = document.getElementById('buyNftBtn');
 
-                // Открытие модалки при клике на карточку
                 document.querySelectorAll('.nft-card').forEach(card => {
                     card.addEventListener('click', (e) => {
                         e.preventDefault();
@@ -989,8 +945,7 @@
                         });
                     });
                 });
-
-                // Закрытие модалки
+                
                 closeModal.addEventListener('click', () => {
                     SecuritySystem.safeCall(() => {
                         modalOverlay.classList.remove('active');
@@ -1005,19 +960,15 @@
                     }
                 });
 
-                // Кнопка купить
                 buyBtn.addEventListener('click', () => {
                     SecuritySystem.safeCall(() => {
                         const name = modalTitle.innerText;
                         const price = parseInt(modalPrice.innerText, 10);
                         const image = modalImage.src;
                         
-                        // Проверяем достаточно ли средств
                         if (getBalance() >= price) {
-                            // Списываем баланс
                             deductBalance(price);
                             
-                            // Добавляем в инвентарь
                             addToInventory(name, price, image);
                             
                             alert(`✅ Подарок "${name}" куплен!`);
@@ -1027,8 +978,7 @@
                         }
                     });
                 });
-
-                // Навигация
+                
                 const navMarket = document.getElementById('navMarket');
                 const navProfile = document.getElementById('navProfile');
 
