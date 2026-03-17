@@ -61,6 +61,33 @@
             z-index: 1;
         }
 
+        /* Уведомление */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 14px 22px;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 14px;
+            z-index: 3000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+            max-width: 280px;
+            pointer-events: none;
+            text-align: center;
+            line-height: 1.4;
+        }
+        .notification.show {
+            transform: translateX(0);
+        }
+        .notification.success {
+            background: linear-gradient(145deg, #00c853, #009624);
+            color: white;
+            box-shadow: 0 4px 0 #00691e;
+        }
+
         /* Затемнение фона */
         .modal-overlay {
             position: fixed;
@@ -80,8 +107,20 @@
             display: flex;
         }
 
-        /* Модальное окно инструкции */
-        .modal-container {
+        /* Анимация появления снизу */
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Модальное окно пополнения */
+        .deposit-modal {
             max-width: 360px;
             width: 90%;
             background: #1a1028;
@@ -90,26 +129,15 @@
             padding: 30px 20px 25px;
             position: relative;
             box-shadow: 0 15px 0 #0f0a18;
-            animation: modalAppear 0.2s ease;
-        }
-
-        @keyframes modalAppear {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            animation: slideUp 0.3s ease;
         }
 
         .modal-close {
             position: absolute;
-            top: 12px;
-            right: 14px;
+            top: 16px;
+            right: 18px;
             color: #b87aff;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
             cursor: pointer;
             z-index: 10;
@@ -117,90 +145,48 @@
             background: none;
             border: none;
             padding: 0;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .warning-box {
-            background: #b84d4d;
+        .deposit-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .amount-input {
+            width: 100%;
+            background: rgba(10, 14, 22, 0.7);
+            border: 1px solid rgba(138, 43, 226, 0.4);
             border-radius: 20px;
-            padding: 16px 18px;
-            margin: 5px 0 25px;
-            box-shadow: 0 6px 0 #6b2e2e;
-        }
-
-        .warning-title {
+            padding: 15px 20px;
+            font-size: 18px;
+            font-family: 'Inter', sans-serif;
             color: white;
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .warning-text {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-        }
-
-        .info-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
+            outline: none;
             margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            padding: 12px 10px;
-            cursor: pointer;
-            transition: 0.1s;
         }
 
-        .info-item:active {
-            background: rgba(184, 122, 255, 0.25);
-            transform: scale(0.98);
+        .amount-input:focus {
+            border-color: #b87aff;
         }
 
-        .info-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 15px;
-            background: #2a2a3a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            color: #a0a0b0;
-            border: 1px solid rgba(160, 160, 176, 0.3);
-            flex-shrink: 0;
-        }
-
-        .info-content {
-            flex: 1;
-        }
-
-        .info-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 4px;
-        }
-
-        .info-subtitle {
-            font-size: 14px;
+        .amount-input::placeholder {
             color: #8e98a3;
+            font-size: 14px;
         }
 
-        .info-subtitle.bot-username {
-            color: #b87aff;
-            font-weight: 500;
-        }
-
-        .go-button {
+        .deposit-button {
             background: #6a0dad;
             border: none;
             border-radius: 60px;
-            padding: 16px;
+            padding: 16px 25px;
             width: 100%;
             color: white;
             font-size: 18px;
@@ -208,13 +194,48 @@
             cursor: pointer;
             transition: 0.1s;
             box-shadow: 0 6px 0 #4a0b8a;
-            margin-top: 10px;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .go-button:active {
+        .deposit-button:active {
             transform: translateY(4px);
             box-shadow: 0 2px 0 #4a0b8a;
+        }
+
+        .deposit-button span:last-child {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 16px;
+        }
+
+        /* Быстрые суммы */
+        .quick-amounts {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .quick-amount {
+            background: rgba(106, 13, 173, 0.2);
+            border: 1px solid rgba(184, 122, 255, 0.3);
+            border-radius: 30px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #b87aff;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        
+        .quick-amount:active {
+            background: rgba(106, 13, 173, 0.4);
+            transform: scale(0.95);
         }
 
         /* Шапка */
@@ -402,28 +423,30 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            padding: 8px 0;
+            padding: 15px 0;
             border: 2px dashed rgba(184, 122, 255, 0.5);
             border-radius: 60px;
             background: rgba(106, 13, 173, 0.1);
             cursor: pointer;
             transition: 0.1s;
             margin-bottom: 20px;
-            min-height: 55px;
+            min-height: 80px;
+            color: #8e98a3;
         }
 
         .add-gift-btn .plus-symbol {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 300;
             line-height: 1;
-            margin-bottom: 0;
-            color: #ffffff;
+            margin-bottom: 2px;
+            color: #8e98a3;
         }
 
         .add-gift-btn .plus-text {
-            font-size: 13px;
+            font-size: 14px;
             color: #8e98a3;
             font-weight: 500;
+            letter-spacing: 0.3px;
         }
 
         .add-gift-btn:active {
@@ -431,7 +454,7 @@
             transform: scale(0.98);
         }
 
-        /* Сетка инвентаря - скроллируемая */
+        /* Скроллируемый инвентарь */
         .inventory-scroll {
             max-height: 400px;
             overflow-y: auto;
@@ -573,7 +596,112 @@
             display: inline-block;
         }
 
-        /* Модальное окно для продажи */
+        /* Модальное окно для инструкции */
+        .instruction-modal {
+            max-width: 360px;
+            width: 90%;
+            background: #1a1028;
+            border: none;
+            border-radius: 30px;
+            padding: 30px 20px 25px;
+            position: relative;
+            box-shadow: 0 15px 0 #0f0a18;
+        }
+
+        .instruction-warning {
+            background: #b84d4d;
+            border-radius: 20px;
+            padding: 16px 18px;
+            margin: 5px 0 25px;
+            box-shadow: 0 6px 0 #6b2e2e;
+        }
+
+        .instruction-warning-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .instruction-warning-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+        }
+
+        .instruction-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 12px 10px;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .instruction-item:active {
+            background: rgba(184, 122, 255, 0.25);
+            transform: scale(0.98);
+        }
+
+        .instruction-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: #2a2a3a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #a0a0b0;
+            border: 1px solid rgba(160, 160, 176, 0.3);
+            flex-shrink: 0;
+        }
+
+        .instruction-content {
+            flex: 1;
+        }
+
+        .instruction-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .instruction-subtitle {
+            font-size: 14px;
+            color: #8e98a3;
+        }
+
+        .instruction-subtitle.bot {
+            color: #b87aff;
+            font-weight: 500;
+        }
+
+        .instruction-button {
+            background: #6a0dad;
+            border: none;
+            border-radius: 60px;
+            padding: 16px;
+            width: 100%;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 6px 0 #4a0b8a;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .instruction-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #4a0b8a;
+        }
+
+        /* Модальное окно для продажи NFT */
         .nft-modal {
             max-width: 320px;
             width: 85%;
@@ -627,7 +755,6 @@
             width: 100%;
         }
 
-        /* Контейнер для кнопки продажи и надписи */
         .sell-container {
             display: flex;
             flex-direction: column;
@@ -677,20 +804,6 @@
             padding: 4px 8px;
             border-radius: 30px;
             font-size: 14px;
-        }
-
-        /* Надпись на маркете под кнопкой продать */
-        .market-text {
-            text-align: center;
-            color: #5a5a6a;
-            font-size: 12px;
-            font-weight: 500;
-            margin-top: 5px;
-            letter-spacing: 0.3px;
-        }
-
-        .sell-btn.active + .market-text {
-            color: #a0a0b0;
         }
 
         .withdraw-btn {
@@ -788,36 +901,61 @@
 <body>
     <div class="stars" id="stars"></div>
 
-    <!-- Модальное окно для инструкции (Добавить подарок) -->
+    <!-- Уведомление -->
+    <div class="notification success" id="notification"></div>
+
+    <!-- Модальное окно для пополнения -->
+    <div class="modal-overlay" id="depositModal">
+        <div class="deposit-modal">
+            <div class="modal-close" id="closeDepositModal">✕</div>
+            <div class="deposit-title">Пополнение</div>
+            
+            <!-- Быстрые суммы -->
+            <div class="quick-amounts">
+                <span class="quick-amount" data-amount="50">50 ⭐</span>
+                <span class="quick-amount" data-amount="100">100 ⭐</span>
+                <span class="quick-amount" data-amount="500">500 ⭐</span>
+                <span class="quick-amount" data-amount="1000">1000 ⭐</span>
+            </div>
+            
+            <input type="text" class="amount-input" id="amountInput" placeholder="Введите количество звезд" inputmode="numeric">
+            <button class="deposit-button" id="depositButton">
+                <span>Пополнить</span>
+                <span id="selectedAmount">0</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Модальное окно для инструкции -->
     <div class="modal-overlay" id="giftModal">
-        <div class="modal-container">
+        <div class="instruction-modal">
             <div class="modal-close" id="closeModal">✕</div>
-            <div class="warning-box">
-                <div class="warning-title">Не дарите подарки с Telegram Маркета</div>
-                <div class="warning-text">Отправляйте подарки только напрямую со своего аккаунта</div>
+            <div class="instruction-warning">
+                <div class="instruction-warning-title">Не дарите подарки с Telegram Маркета</div>
+                <div class="instruction-warning-text">Отправляйте подарки только напрямую со своего аккаунта</div>
             </div>
-            <div class="info-item" id="goToBot">
-                <div class="info-icon"><i class="fas fa-robot"></i></div>
-                <div class="info-content">
-                    <div class="info-title">Перейдите в бота</div>
-                    <div class="info-subtitle bot-username">@yeter16</div>
+            <div class="instruction-item" id="goToBot">
+                <div class="instruction-icon"><i class="fas fa-robot"></i></div>
+                <div class="instruction-content">
+                    <div class="instruction-title">Перейдите в бота</div>
+                    <div class="instruction-subtitle bot">@yeter16</div>
                 </div>
             </div>
-            <div class="info-item" style="cursor: default;">
-                <div class="info-icon"><i class="fas fa-gift"></i></div>
-                <div class="info-content">
-                    <div class="info-title">Отправьте ему подарок</div>
-                    <div class="info-subtitle">(любой из Telegram)</div>
+            <div class="instruction-item" style="cursor: default;">
+                <div class="instruction-icon"><i class="fas fa-gift"></i></div>
+                <div class="instruction-content">
+                    <div class="instruction-title">Отправьте ему подарок</div>
+                    <div class="instruction-subtitle">(любой из Telegram)</div>
                 </div>
             </div>
-            <div class="info-item" style="cursor: default;">
-                <div class="info-icon"><i class="fas fa-clock"></i></div>
-                <div class="info-content">
-                    <div class="info-title">Подарок добавится в инвентарь</div>
-                    <div class="info-subtitle">в течение нескольких минут</div>
+            <div class="instruction-item" style="cursor: default;">
+                <div class="instruction-icon"><i class="fas fa-clock"></i></div>
+                <div class="instruction-content">
+                    <div class="instruction-title">Подарок добавится в инвентарь</div>
+                    <div class="instruction-subtitle">в течение нескольких минут</div>
                 </div>
             </div>
-            <div class="go-button" id="goButton">Перейти в бота</div>
+            <div class="instruction-button" id="goButton">Перейти в бота</div>
         </div>
     </div>
 
@@ -837,7 +975,6 @@
                         <div class="btn-left"><i class="fas fa-lock"></i><span class="btn-text">Продать</span></div>
                         <span class="timer" id="timerDisplay">30:00</span>
                     </button>
-                    <div class="market-text" id="marketText">на маркете</div>
                 </div>
                 <button class="withdraw-btn" id="withdrawBtn">Вывести</button>
             </div>
@@ -901,19 +1038,27 @@
             const STORAGE_KEY = 'nft_balance';
             const INVENTORY_KEY = 'nft_inventory';
             const TIMER_KEY = 'nft_timers';
+            
+            // ID твоего бота (который будет получать звезды)
+            const BOT_USERNAME = 'yeter16_bot'; // Замени на реального бота
 
-            // Загрузка таймеров из localStorage
             function loadTimers() {
                 return JSON.parse(localStorage.getItem(TIMER_KEY) || '{}');
             }
 
-            // Сохранение таймеров
             function saveTimers(timers) {
                 localStorage.setItem(TIMER_KEY, JSON.stringify(timers));
             }
 
             function getBalance() {
                 return parseInt(localStorage.getItem(STORAGE_KEY)) || 5000;
+            }
+
+            function setBalance(newBalance) {
+                localStorage.setItem(STORAGE_KEY, newBalance);
+                updateBalanceDisplay();
+                localStorage.setItem('balance_updated', Date.now().toString());
+                setTimeout(() => localStorage.removeItem('balance_updated'), 100);
             }
 
             function updateBalanceDisplay() {
@@ -926,33 +1071,17 @@
 
             function saveInventory(inventory) {
                 localStorage.setItem(INVENTORY_KEY, JSON.stringify(inventory));
-                // Триггерим обновление в других вкладках
                 localStorage.setItem('inventory_updated', Date.now().toString());
                 setTimeout(() => localStorage.removeItem('inventory_updated'), 100);
             }
 
-            // Функция для добавления купленного предмета (вызывается из market.html)
-            window.addPurchasedItem = function(name, price, image) {
-                const inventory = getInventory();
-                const timers = loadTimers();
-                const itemId = Date.now() + Math.random();
-                const purchaseTime = Date.now();
-                
-                inventory.push({ 
-                    name, 
-                    price, 
-                    image, 
-                    id: itemId, 
-                    purchaseTime: purchaseTime 
-                });
-                
-                // Сохраняем время покупки для таймера
-                timers[itemId] = purchaseTime;
-                
-                saveTimers(timers);
-                saveInventory(inventory);
-                renderInventory();
-            };
+            // Функция для показа уведомления
+            function showNotification(message) {
+                const notif = document.getElementById('notification');
+                notif.innerText = message;
+                notif.classList.add('show');
+                setTimeout(() => notif.classList.remove('show'), 3000);
+            }
 
             // Рендер инвентаря
             function renderInventory() {
@@ -976,43 +1105,62 @@
                 container.innerHTML = html;
             }
 
-            // Функция для запуска таймера
-            function startTimer(button, timerDisplay, marketText, itemId) {
-                const timers = loadTimers();
-                const purchaseTime = timers[itemId];
+            // Функция для валидации и форматирования числа
+            function validateAndFormatAmount(value) {
+                let cleaned = value.replace(/[^\d.]/g, '');
+                const parts = cleaned.split('.');
+                if (parts.length > 2) {
+                    cleaned = parts[0] + '.' + parts.slice(1).join('');
+                }
+                if (cleaned === '' || cleaned === '.') {
+                    return 1;
+                }
+                let num = parseFloat(cleaned);
+                if (isNaN(num)) {
+                    return 1;
+                }
+                num = Math.round(num);
+                if (num < 1) return 1;
+                if (num > 100000) return 100000;
+                return num;
+            }
+
+            // Функция для открытия платежа в Telegram
+            function openTelegramPayment(amount) {
+                const tg = window.Telegram?.WebApp;
                 
-                if (!purchaseTime) {
-                    // Если нет времени покупки, показываем обычную кнопку
-                    button.classList.add('active');
-                    button.innerHTML = '<span class="btn-text">Продать</span>';
+                if (!tg) {
+                    alert('Это приложение работает только в Telegram');
                     return;
                 }
-
-                const updateTimer = () => {
-                    const now = Date.now();
-                    const elapsed = Math.floor((now - purchaseTime) / 1000);
-                    const remaining = Math.max(0, 1800 - elapsed);
-
-                    if (remaining <= 0) {
-                        // Таймер истек - делаем кнопку фиолетовой
-                        clearInterval(interval);
-                        button.classList.add('active');
-                        button.innerHTML = '<span class="btn-text">Продать</span>';
-                        // Удаляем таймер из хранилища
-                        delete timers[itemId];
-                        saveTimers(timers);
-                        return;
+                
+                // Формируем ссылку на оплату через бота
+                // Вариант 1: Через бота (рекомендуется)
+                const paymentLink = `https://t.me/${BOT_USERNAME}?start=pay_${amount}`;
+                
+                // Вариант 2: Через звезды напрямую (если настроено)
+                // const paymentLink = `tg://pay?amount=${amount}&currency=stars`;
+                
+                // Открываем ссылку
+                window.location.href = paymentLink;
+                
+                // Показываем уведомление
+                showNotification(`⏳ Открываю оплату на ${amount} ⭐...`);
+                
+                // Закрываем модалку
+                depositModal.classList.remove('active');
+                
+                // Имитация успешной оплаты (для теста)
+                // В реальности нужно настроить вебхук от бота
+                setTimeout(() => {
+                    // Это для теста! В реальности звезды придут через бота
+                    const confirmed = confirm(`Подтверди тестовую оплату ${amount} ⭐?`);
+                    if (confirmed) {
+                        const currentBalance = getBalance();
+                        setBalance(currentBalance + amount);
+                        showNotification(`✅ Успешное пополнение на ${amount} ⭐`);
                     }
-
-                    // Обновляем отображение таймера
-                    const mins = Math.floor(remaining / 60).toString().padStart(2, '0');
-                    const secs = (remaining % 60).toString().padStart(2, '0');
-                    if (timerDisplay) timerDisplay.textContent = `${mins}:${secs}`;
-                };
-
-                // Запускаем обновление
-                updateTimer();
-                const interval = setInterval(updateTimer, 1000);
+                }, 3000);
             }
 
             function init() {
@@ -1038,6 +1186,9 @@
                     firstName = user.first_name || 'Игрок';
                     lastName = user.last_name || '';
                     tgUsername = user.username ? '@' + user.username : '';
+                    
+                    // Сохраняем ID пользователя для платежей
+                    localStorage.setItem('user_id', user.id);
                 }
 
                 const fullName = (firstName + ' ' + lastName).trim();
@@ -1058,9 +1209,8 @@
                 updateBalanceDisplay();
                 renderInventory();
 
-                // Слушаем изменения из других вкладок
                 window.addEventListener('storage', (e) => {
-                    if (e.key === STORAGE_KEY) {
+                    if (e.key === STORAGE_KEY || e.key === 'balance_updated') {
                         updateBalanceDisplay();
                     }
                     if (e.key === INVENTORY_KEY || e.key === 'inventory_updated') {
@@ -1068,8 +1218,93 @@
                     }
                 });
 
-                // Кнопка + баланса
-                document.getElementById('plusBtn').addEventListener('click', e => e.preventDefault());
+                // Модальное окно пополнения
+                const depositModal = document.getElementById('depositModal');
+                const closeDepositModal = document.getElementById('closeDepositModal');
+                const plusBtn = document.getElementById('plusBtn');
+                const amountInput = document.getElementById('amountInput');
+                const depositButton = document.getElementById('depositButton');
+                const selectedAmountSpan = document.getElementById('selectedAmount');
+                const quickAmounts = document.querySelectorAll('.quick-amount');
+
+                // Открытие модалки пополнения
+                plusBtn.addEventListener('click', e => {
+                    e.preventDefault();
+                    amountInput.value = '';
+                    selectedAmountSpan.innerText = '0';
+                    depositModal.classList.add('active');
+                });
+
+                // Быстрые суммы
+                quickAmounts.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const amount = btn.dataset.amount;
+                        amountInput.value = amount;
+                        selectedAmountSpan.innerText = amount;
+                    });
+                });
+
+                // Закрытие модалки пополнения
+                closeDepositModal.addEventListener('click', () => {
+                    depositModal.classList.remove('active');
+                });
+
+                depositModal.addEventListener('click', e => {
+                    if (e.target === depositModal) {
+                        depositModal.classList.remove('active');
+                    }
+                });
+
+                // Обработка ввода в поле
+                amountInput.addEventListener('input', (e) => {
+                    let value = e.target.value;
+                    let cleaned = value.replace(/[^\d.]/g, '');
+                    const parts = cleaned.split('.');
+                    if (parts.length > 2) {
+                        cleaned = parts[0] + '.' + parts.slice(1).join('');
+                    }
+                    e.target.value = cleaned;
+                    
+                    if (cleaned && cleaned !== '.') {
+                        const num = parseFloat(cleaned);
+                        if (!isNaN(num)) {
+                            selectedAmountSpan.innerText = cleaned;
+                        } else {
+                            selectedAmountSpan.innerText = '0';
+                        }
+                    } else {
+                        selectedAmountSpan.innerText = '0';
+                    }
+                });
+
+                // Обработка потери фокуса
+                amountInput.addEventListener('blur', (e) => {
+                    const value = e.target.value;
+                    const formatted = validateAndFormatAmount(value);
+                    e.target.value = formatted;
+                    selectedAmountSpan.innerText = formatted;
+                });
+
+                // Обработка нажатия Enter
+                amountInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const value = e.target.value;
+                        const formatted = validateAndFormatAmount(value);
+                        e.target.value = formatted;
+                        selectedAmountSpan.innerText = formatted;
+                    }
+                });
+
+                // Кнопка пополнения - открывает Telegram Payment
+                depositButton.addEventListener('click', () => {
+                    const value = amountInput.value;
+                    const amount = validateAndFormatAmount(value);
+                    
+                    if (amount > 0) {
+                        openTelegramPayment(amount);
+                    }
+                });
 
                 // Информационный кружок
                 const infoCircle = document.getElementById('infoCircle');
@@ -1105,22 +1340,18 @@
                     if (e.target === giftModal) giftModal.classList.remove('active');
                 });
 
-                const openBot = () => window.open('https://t.me/yeter16', '_blank');
+                const openBot = () => window.open('https://t.me/yeter16_bot', '_blank');
                 goToBot.addEventListener('click', openBot);
                 goButton.addEventListener('click', openBot);
 
-                // Модальное окно продажи
+                // Модальное окно продажи (упрощенно)
                 const nftModal = document.getElementById('nftModal');
                 const closeNftModal = document.getElementById('closeNftModal');
                 const modalImage = document.getElementById('modalNftImage');
                 const modalTitle = document.getElementById('modalNftTitle');
                 const modalPrice = document.getElementById('modalNftPriceValue');
-                const sellBtn = document.getElementById('sellBtn');
-                const timerDisplay = document.getElementById('timerDisplay');
-                const marketText = document.getElementById('marketText');
                 const withdrawBtn = document.getElementById('withdrawBtn');
 
-                // Открытие модалки при клике на предмет инвентаря
                 document.addEventListener('click', e => {
                     const item = e.target.closest('.inventory-item');
                     if (!item) return;
@@ -1134,18 +1365,6 @@
                     modalImage.alt = itemData.name;
                     modalTitle.innerText = itemData.name;
                     modalPrice.innerText = itemData.price;
-
-                    // Сбрасываем кнопку продажи
-                    sellBtn.classList.remove('active');
-                    sellBtn.innerHTML = `<div class="btn-left"><i class="fas fa-lock"></i><span class="btn-text">Продать</span></div><span class="timer" id="timerDisplay">30:00</span>`;
-                    
-                    // Получаем новый элемент таймера
-                    const newTimer = document.getElementById('timerDisplay');
-                    
-                    // Запускаем таймер с ID предмета
-                    if (newTimer) {
-                        startTimer(sellBtn, newTimer, marketText, itemData.id);
-                    }
 
                     nftModal.classList.add('active');
                 });
@@ -1177,4 +1396,4 @@
         })();
     </script>
 </body>
-                                                     </html>
+                    </html>
