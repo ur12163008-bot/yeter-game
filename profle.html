@@ -66,26 +66,20 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 14px 22px;
+            padding: 12px 20px;
             border-radius: 60px;
+            background: #00c853;
+            color: white;
             font-weight: 500;
             font-size: 14px;
             z-index: 3000;
             transform: translateX(150%);
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
-            max-width: 280px;
+            transition: transform 0.2s ease;
+            box-shadow: 0 4px 0 #00691e;
             pointer-events: none;
-            text-align: center;
-            line-height: 1.4;
         }
         .notification.show {
             transform: translateX(0);
-        }
-        .notification.success {
-            background: linear-gradient(145deg, #00c853, #009624);
-            color: white;
-            box-shadow: 0 4px 0 #00691e;
         }
 
         /* Затемнение фона */
@@ -107,7 +101,6 @@
             display: flex;
         }
 
-        /* Анимация появления снизу */
         @keyframes slideUp {
             from {
                 transform: translateY(100%);
@@ -134,10 +127,10 @@
 
         .modal-close {
             position: absolute;
-            top: 16px;
-            right: 18px;
+            top: 8px;
+            right: 12px;
             color: #b87aff;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             cursor: pointer;
             z-index: 10;
@@ -145,11 +138,16 @@
             background: none;
             border: none;
             padding: 0;
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .modal-close:active {
+            color: #d0a0ff;
+            transform: scale(0.95);
         }
 
         .deposit-title {
@@ -167,7 +165,6 @@
             border-radius: 20px;
             padding: 15px 20px;
             font-size: 18px;
-            font-family: 'Inter', sans-serif;
             color: white;
             outline: none;
             margin-bottom: 20px;
@@ -192,17 +189,17 @@
             font-size: 18px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.1s;
-            box-shadow: 0 6px 0 #4a0b8a;
+            transition: background 0.1s ease, transform 0.05s ease;
             text-align: center;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-shadow: none;
         }
 
         .deposit-button:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #4a0b8a;
+            background: #7b1db5;
+            transform: scale(0.97);
         }
 
         .deposit-button span:last-child {
@@ -212,10 +209,9 @@
             font-size: 16px;
         }
 
-        /* Быстрые суммы */
         .quick-amounts {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 20px;
             flex-wrap: wrap;
             justify-content: center;
@@ -230,15 +226,14 @@
             font-weight: 600;
             color: #b87aff;
             cursor: pointer;
-            transition: 0.1s;
+            transition: background 0.1s ease, transform 0.05s ease;
         }
-        
+
         .quick-amount:active {
             background: rgba(106, 13, 173, 0.4);
             transform: scale(0.95);
         }
 
-        /* Шапка */
         .profile-header {
             display: flex;
             align-items: center;
@@ -304,25 +299,25 @@
         .balance-block {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 3px;
             background: rgba(10, 14, 22, 0.7);
             border: 1px solid rgba(138, 43, 226, 0.4);
             border-radius: 30px;
-            padding: 6px 12px 6px 14px;
+            padding: 4px 8px 4px 12px;
             flex-shrink: 0;
         }
 
         .balance-stars {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-weight: 800;
-            font-size: 16px;
+            gap: 3px;
+            font-weight: 700;
+            font-size: 14px;
             color: white;
         }
 
         .puzzle-icon {
-            font-size: 16px;
+            font-size: 14px;
             color: #ffd700;
         }
 
@@ -330,17 +325,19 @@
             background: rgba(106, 13, 173, 0.3);
             border: 1px solid rgba(138, 43, 226, 0.5);
             border-radius: 50%;
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #b87aff;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.05s;
+            transition: background 0.05s ease, transform 0.05s ease;
             line-height: 1;
+            min-width: 32px;
+            min-height: 32px;
         }
 
         .plus-btn:active {
@@ -348,7 +345,6 @@
             transform: scale(0.95);
         }
 
-        /* Рамка инвентаря */
         .profile-frame-container {
             margin-top: 5px;
         }
@@ -398,7 +394,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: 0.1s;
+            transition: background 0.1s ease, transform 0.05s ease;
             color: rgba(184, 122, 255, 0.8);
             font-size: 22px;
             font-weight: 500;
@@ -416,7 +412,6 @@
             color: #b87aff;
         }
 
-        /* Кнопка добавить подарок */
         .add-gift-btn {
             display: flex;
             flex-direction: column;
@@ -428,7 +423,7 @@
             border-radius: 60px;
             background: rgba(106, 13, 173, 0.1);
             cursor: pointer;
-            transition: 0.1s;
+            transition: background 0.1s ease, transform 0.05s ease;
             margin-bottom: 20px;
             min-height: 80px;
             color: #8e98a3;
@@ -439,7 +434,7 @@
             font-weight: 300;
             line-height: 1;
             margin-bottom: 2px;
-            color: #8e98a3;
+            color: #ffffff;
         }
 
         .add-gift-btn .plus-text {
@@ -454,149 +449,6 @@
             transform: scale(0.98);
         }
 
-        /* Скроллируемый инвентарь */
-        .inventory-scroll {
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 5px;
-            margin-bottom: 10px;
-        }
-
-        .inventory-scroll::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .inventory-scroll::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
-        .inventory-scroll::-webkit-scrollbar-thumb {
-            background: #b87aff;
-            border-radius: 10px;
-        }
-
-        .inventory-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .inventory-item {
-            background: rgba(10, 14, 22, 0.7);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 20px;
-            padding: 12px 8px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            backdrop-filter: blur(4px);
-            cursor: pointer;
-            transition: 0.1s;
-        }
-
-        .inventory-item:active {
-            transform: scale(0.97);
-            border-color: #b87aff;
-        }
-
-        .inventory-item-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 16px;
-            object-fit: cover;
-            margin-bottom: 8px;
-            background: #2a1e3a;
-            border: 1px solid rgba(184, 122, 255, 0.2);
-        }
-
-        .inventory-item-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: #f0f0f0;
-            text-align: center;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
-            padding: 0 2px;
-        }
-
-        .inventory-item-price {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #b87aff;
-        }
-
-        .inventory-item-price .price-icon {
-            font-size: 12px;
-            color: #ffd700;
-        }
-
-        /* Пустой инвентарь */
-        .empty-inventory {
-            text-align: center;
-            color: #8e98a3;
-            font-size: 14px;
-            padding: 30px 0;
-        }
-
-        .empty-inventory i {
-            font-size: 48px;
-            color: #b87aff;
-            opacity: 0.3;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        /* Подсказка */
-        .hint-message {
-            position: absolute;
-            top: 60px;
-            right: 20px;
-            width: 280px;
-            background: #6a0dad;
-            border-radius: 20px;
-            padding: 16px 18px;
-            box-shadow: 0 8px 0 #4a0b8a;
-            display: none;
-            z-index: 10;
-        }
-
-        .hint-message.show {
-            display: block;
-        }
-
-        .hint-message::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            right: 15px;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-bottom: 12px solid #6a0dad;
-        }
-
-        .hint-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.95);
-            line-height: 1.5;
-        }
-
-        .hint-text span {
-            font-weight: 700;
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 2px 8px;
-            border-radius: 40px;
-            display: inline-block;
-        }
-
-        /* Модальное окно для инструкции */
         .instruction-modal {
             max-width: 360px;
             width: 90%;
@@ -606,6 +458,7 @@
             padding: 30px 20px 25px;
             position: relative;
             box-shadow: 0 15px 0 #0f0a18;
+            animation: slideUp 0.3s ease;
         }
 
         .instruction-warning {
@@ -637,7 +490,7 @@
             border-radius: 16px;
             padding: 12px 10px;
             cursor: pointer;
-            transition: 0.1s;
+            transition: background 0.1s ease, transform 0.05s ease;
         }
 
         .instruction-item:active {
@@ -690,18 +543,164 @@
             font-size: 18px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.1s;
-            box-shadow: 0 6px 0 #4a0b8a;
+            transition: background 0.1s ease, transform 0.05s ease;
             margin-top: 10px;
             text-align: center;
+            box-shadow: none;
         }
 
         .instruction-button:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #4a0b8a;
+            background: #7b1db5;
+            transform: scale(0.97);
         }
 
-        /* Модальное окно для продажи NFT */
+        .inventory-scroll {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+            margin-bottom: 10px;
+        }
+
+        .inventory-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .inventory-scroll::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .inventory-scroll::-webkit-scrollbar-thumb {
+            background: #b87aff;
+            border-radius: 10px;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .inventory-item {
+            background: rgba(10, 14, 22, 0.7);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 20px;
+            padding: 12px 8px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(4px);
+            cursor: pointer;
+            transition: transform 0.05s ease, border 0.05s ease;
+        }
+
+        .inventory-item:active {
+            transform: scale(0.97);
+            border-color: #b87aff;
+        }
+
+        .inventory-item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            object-fit: cover;
+            margin-bottom: 8px;
+            background: #2a1e3a;
+            border: 1px solid rgba(184, 122, 255, 0.2);
+        }
+
+        .inventory-item-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #f0f0f0;
+            text-align: center;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            padding: 0 2px;
+        }
+
+        .inventory-item-price {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #b87aff;
+        }
+
+        .inventory-item-price .price-icon {
+            font-size: 12px;
+            color: #ffd700;
+        }
+
+        .empty-inventory {
+            text-align: center;
+            color: #8e98a3;
+            font-size: 14px;
+            padding: 30px 0;
+        }
+
+        .empty-inventory i {
+            font-size: 48px;
+            color: #b87aff;
+            opacity: 0.3;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .hint-message {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            width: 280px;
+            background: #6a0dad;
+            border-radius: 20px;
+            padding: 16px 18px;
+            box-shadow: 0 8px 0 #4a0b8a;
+            display: none;
+            z-index: 10;
+            animation: fadeIn 0.15s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hint-message.show {
+            display: block;
+        }
+
+        .hint-message::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: 15px;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 12px solid #6a0dad;
+        }
+
+        .hint-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.5;
+        }
+
+        .hint-text span {
+            font-weight: 700;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 2px 8px;
+            border-radius: 40px;
+            display: inline-block;
+            margin: 0 2px;
+        }
+
+        /* Модальное окно для продажи NFT - БЕЗ 3D */
         .nft-modal {
             max-width: 320px;
             width: 85%;
@@ -711,6 +710,7 @@
             position: relative;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
             z-index: 2100;
+            animation: fadeIn 0.2s ease;
         }
 
         .nft-modal-image {
@@ -755,32 +755,33 @@
             width: 100%;
         }
 
-        .sell-container {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
+        /* Кнопка продажи с таймером - БЕЗ 3D */
         .sell-btn {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            padding: 12px 20px;
+            padding: 14px 20px;
             border-radius: 60px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            border: none;
+            border: 1px solid rgba(184, 122, 255, 0.2);
             background: #2a2a3a;
             color: #a0a0b0;
-            transition: 0.1s;
+            transition: background 0.1s ease, transform 0.05s ease;
+            box-shadow: none;
         }
 
         .sell-btn.active {
             background: #6a0dad;
+            border: none;
             color: white;
             justify-content: center;
+        }
+
+        .sell-btn:active {
+            transform: scale(0.97);
         }
 
         .sell-btn .btn-left {
@@ -800,34 +801,33 @@
 
         .sell-btn .timer {
             font-weight: 500;
-            background: rgba(0,0,0,0.2);
-            padding: 4px 8px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 10px;
             border-radius: 30px;
             font-size: 14px;
         }
 
+        /* Кнопка вывести - БЕЗ 3D */
         .withdraw-btn {
-            background: #6a0dad;
-            border: none;
+            background: transparent;
+            border: 1px solid rgba(184, 122, 255, 0.3);
             border-radius: 60px;
             padding: 14px;
             width: 100%;
-            color: white;
+            color: #b87aff;
             font-size: 16px;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
-            transition: 0.1s;
+            transition: background 0.1s ease, transform 0.05s ease;
             text-align: center;
             box-shadow: none;
-            margin-top: 5px;
         }
 
         .withdraw-btn:active {
-            background: #7b1db5;
+            background: rgba(184, 122, 255, 0.1);
             transform: scale(0.97);
         }
 
-        /* Нижняя навигация */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -845,7 +845,7 @@
             width: calc(100% - 40px);
             left: 20px;
             right: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
             z-index: 1000;
         }
 
@@ -862,7 +862,7 @@
             border-radius: 30px;
             text-align: center;
             text-decoration: none;
-            transition: 0.05s;
+            transition: background 0.05s ease, color 0.05s ease;
             background: transparent;
             border: none;
             min-width: 80px;
@@ -900,24 +900,19 @@
 </head>
 <body>
     <div class="stars" id="stars"></div>
+    <div class="notification" id="notification"></div>
 
-    <!-- Уведомление -->
-    <div class="notification success" id="notification"></div>
-
-    <!-- Модальное окно для пополнения -->
+    <!-- Модальное окно пополнения -->
     <div class="modal-overlay" id="depositModal">
         <div class="deposit-modal">
             <div class="modal-close" id="closeDepositModal">✕</div>
             <div class="deposit-title">Пополнение</div>
-            
-            <!-- Быстрые суммы -->
             <div class="quick-amounts">
                 <span class="quick-amount" data-amount="50">50 ⭐</span>
                 <span class="quick-amount" data-amount="100">100 ⭐</span>
                 <span class="quick-amount" data-amount="500">500 ⭐</span>
                 <span class="quick-amount" data-amount="1000">1000 ⭐</span>
             </div>
-            
             <input type="text" class="amount-input" id="amountInput" placeholder="Введите количество звезд" inputmode="numeric">
             <button class="deposit-button" id="depositButton">
                 <span>Пополнить</span>
@@ -926,7 +921,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно для инструкции -->
+    <!-- Модальное окно инструкции -->
     <div class="modal-overlay" id="giftModal">
         <div class="instruction-modal">
             <div class="modal-close" id="closeModal">✕</div>
@@ -970,12 +965,10 @@
                 <span id="modalNftPriceValue"></span>
             </div>
             <div class="modal-actions">
-                <div class="sell-container">
-                    <button class="sell-btn" id="sellBtn">
-                        <div class="btn-left"><i class="fas fa-lock"></i><span class="btn-text">Продать</span></div>
-                        <span class="timer" id="timerDisplay">30:00</span>
-                    </button>
-                </div>
+                <button class="sell-btn" id="sellBtn">
+                    <span class="btn-left"><i class="fas fa-lock"></i> Продать</span>
+                    <span class="timer" id="timerDisplay">30:00</span>
+                </button>
                 <button class="withdraw-btn" id="withdrawBtn">Вывести</button>
             </div>
         </div>
@@ -1014,7 +1007,6 @@
                     <span class="plus-text">Добавить подарок</span>
                 </div>
 
-                <!-- Скроллируемый инвентарь -->
                 <div class="inventory-scroll" id="inventoryScroll">
                     <div id="inventoryContainer"></div>
                 </div>
@@ -1038,20 +1030,28 @@
             const STORAGE_KEY = 'nft_balance';
             const INVENTORY_KEY = 'nft_inventory';
             const TIMER_KEY = 'nft_timers';
-            
-            // ID твоего бота (который будет получать звезды)
-            const BOT_USERNAME = 'yeter16_bot'; // Замени на реального бота
+            const BOT_USERNAME = 'yeter16_bot';
 
+            // ========== ТАЙМЕРЫ ==========
             function loadTimers() {
-                return JSON.parse(localStorage.getItem(TIMER_KEY) || '{}');
+                try {
+                    return JSON.parse(localStorage.getItem(TIMER_KEY)) || {};
+                } catch {
+                    return {};
+                }
             }
 
             function saveTimers(timers) {
                 localStorage.setItem(TIMER_KEY, JSON.stringify(timers));
             }
 
+            // ========== БАЛАНС ==========
             function getBalance() {
-                return parseInt(localStorage.getItem(STORAGE_KEY)) || 5000;
+                try {
+                    return parseInt(localStorage.getItem(STORAGE_KEY)) || 5000;
+                } catch {
+                    return 5000;
+                }
             }
 
             function setBalance(newBalance) {
@@ -1062,28 +1062,35 @@
             }
 
             function updateBalanceDisplay() {
-                document.getElementById('balanceValue').innerText = getBalance();
+                const el = document.getElementById('balanceValue');
+                if (el) el.innerText = getBalance();
             }
 
+            // ========== ИНВЕНТАРЬ ==========
             function getInventory() {
-                return JSON.parse(localStorage.getItem(INVENTORY_KEY) || '[]');
+                try {
+                    return JSON.parse(localStorage.getItem(INVENTORY_KEY)) || [];
+                } catch {
+                    return [];
+                }
             }
 
             function saveInventory(inventory) {
                 localStorage.setItem(INVENTORY_KEY, JSON.stringify(inventory));
                 localStorage.setItem('inventory_updated', Date.now().toString());
                 setTimeout(() => localStorage.removeItem('inventory_updated'), 100);
+                renderInventory();
             }
 
-            // Функция для показа уведомления
+            // ========== УВЕДОМЛЕНИЯ ==========
             function showNotification(message) {
                 const notif = document.getElementById('notification');
                 notif.innerText = message;
                 notif.classList.add('show');
-                setTimeout(() => notif.classList.remove('show'), 3000);
+                setTimeout(() => notif.classList.remove('show'), 2500);
             }
 
-            // Рендер инвентаря
+            // ========== ОТОБРАЖЕНИЕ ИНВЕНТАРЯ ==========
             function renderInventory() {
                 const container = document.getElementById('inventoryContainer');
                 const inventory = getInventory();
@@ -1096,7 +1103,7 @@
                 let html = '<div class="inventory-grid">';
                 inventory.forEach((item, index) => {
                     html += `<div class="inventory-item" data-index="${index}" data-id="${item.id}">
-                        <img src="${item.image}" alt="${item.name}" class="inventory-item-image" onerror="this.src=\'https://via.placeholder.com/80/6a0dad/ffffff?text=NFT\'">
+                        <img src="${item.image}" alt="${item.name}" class="inventory-item-image" onerror="this.src=\'https://via.placeholder.com/80/6a0dad/ffffff?text=NFT\'" loading="lazy">
                         <div class="inventory-item-name">${item.name}</div>
                         <div class="inventory-item-price"><span class="price-icon">🧩</span><span>${item.price}</span></div>
                     </div>`;
@@ -1105,66 +1112,89 @@
                 container.innerHTML = html;
             }
 
-            // Функция для валидации и форматирования числа
+            // ========== ВАЛИДАЦИЯ СУММЫ ==========
             function validateAndFormatAmount(value) {
                 let cleaned = value.replace(/[^\d.]/g, '');
                 const parts = cleaned.split('.');
-                if (parts.length > 2) {
-                    cleaned = parts[0] + '.' + parts.slice(1).join('');
-                }
-                if (cleaned === '' || cleaned === '.') {
-                    return 1;
-                }
+                if (parts.length > 2) cleaned = parts[0] + '.' + parts.slice(1).join('');
+                if (cleaned === '' || cleaned === '.') return 1;
                 let num = parseFloat(cleaned);
-                if (isNaN(num)) {
-                    return 1;
-                }
+                if (isNaN(num)) return 1;
                 num = Math.round(num);
                 if (num < 1) return 1;
                 if (num > 100000) return 100000;
                 return num;
             }
 
-            // Функция для открытия платежа в Telegram
+            // ========== ПЛАТЕЖ ==========
             function openTelegramPayment(amount) {
                 const tg = window.Telegram?.WebApp;
-                
                 if (!tg) {
                     alert('Это приложение работает только в Telegram');
                     return;
                 }
-                
-                // Формируем ссылку на оплату через бота
-                // Вариант 1: Через бота (рекомендуется)
-                const paymentLink = `https://t.me/${BOT_USERNAME}?start=pay_${amount}`;
-                
-                // Вариант 2: Через звезды напрямую (если настроено)
-                // const paymentLink = `tg://pay?amount=${amount}&currency=stars`;
-                
-                // Открываем ссылку
-                window.location.href = paymentLink;
-                
-                // Показываем уведомление
+                window.location.href = `https://t.me/${BOT_USERNAME}?start=pay_${amount}`;
                 showNotification(`⏳ Открываю оплату на ${amount} ⭐...`);
-                
-                // Закрываем модалку
                 depositModal.classList.remove('active');
                 
-                // Имитация успешной оплаты (для теста)
-                // В реальности нужно настроить вебхук от бота
                 setTimeout(() => {
-                    // Это для теста! В реальности звезды придут через бота
                     const confirmed = confirm(`Подтверди тестовую оплату ${amount} ⭐?`);
                     if (confirmed) {
-                        const currentBalance = getBalance();
-                        setBalance(currentBalance + amount);
+                        setBalance(getBalance() + amount);
                         showNotification(`✅ Успешное пополнение на ${amount} ⭐`);
                     }
                 }, 3000);
             }
 
+            // ========== ТАЙМЕР ==========
+            function startTimer(button, timerDisplay, itemId) {
+                const timers = loadTimers();
+                let purchaseTime = timers[itemId];
+                if (!purchaseTime) {
+                    purchaseTime = Date.now();
+                    timers[itemId] = purchaseTime;
+                    saveTimers(timers);
+                }
+
+                const updateTimer = () => {
+                    const now = Date.now();
+                    const elapsed = Math.floor((now - purchaseTime) / 1000);
+                    const remaining = Math.max(0, 1800 - elapsed);
+
+                    if (remaining <= 0) {
+                        clearInterval(interval);
+                        button.classList.add('active');
+                        button.innerHTML = 'Продать';
+                        delete timers[itemId];
+                        saveTimers(timers);
+                        return;
+                    }
+
+                    const mins = Math.floor(remaining / 60).toString().padStart(2, '0');
+                    const secs = (remaining % 60).toString().padStart(2, '0');
+                    if (timerDisplay) timerDisplay.textContent = `${mins}:${secs}`;
+                };
+
+                updateTimer();
+                const interval = setInterval(updateTimer, 1000);
+            }
+
+            // ========== ДОБАВЛЕНИЕ КУПЛЕННОГО ПРЕДМЕТА ==========
+            window.addPurchasedItem = function(name, price, image) {
+                const inventory = getInventory();
+                const timers = loadTimers();
+                const itemId = Date.now() + Math.random();
+                const purchaseTime = Date.now();
+                
+                inventory.push({ name, price, image, id: itemId, purchaseTime: purchaseTime });
+                timers[itemId] = purchaseTime;
+                saveTimers(timers);
+                saveInventory(inventory);
+                showNotification(`✅ Товар добавлен в инвентарь`);
+            };
+
+            // ========== ИНИЦИАЛИЗАЦИЯ ==========
             function init() {
-                // Звезды
                 const starsContainer = document.getElementById('stars');
                 if (starsContainer) {
                     starsContainer.innerHTML = '';
@@ -1177,7 +1207,6 @@
                     }
                 }
 
-                // Telegram данные
                 const tg = window.Telegram?.WebApp;
                 let firstName = 'Игрок', lastName = '', tgUsername = '';
                 
@@ -1186,16 +1215,11 @@
                     firstName = user.first_name || 'Игрок';
                     lastName = user.last_name || '';
                     tgUsername = user.username ? '@' + user.username : '';
-                    
-                    // Сохраняем ID пользователя для платежей
-                    localStorage.setItem('user_id', user.id);
                 }
 
                 const fullName = (firstName + ' ' + lastName).trim();
                 document.getElementById('fullName').innerText = fullName;
-                
-                const usernameEl = document.getElementById('username');
-                usernameEl.innerText = tgUsername || '@' + firstName.toLowerCase().replace(/\s+/g, '');
+                document.getElementById('username').innerText = tgUsername || '@' + firstName.toLowerCase().replace(/\s+/g, '');
 
                 const avatarDiv = document.getElementById('avatar');
                 if (tg?.initDataUnsafe?.user?.photo_url) {
@@ -1210,15 +1234,11 @@
                 renderInventory();
 
                 window.addEventListener('storage', (e) => {
-                    if (e.key === STORAGE_KEY || e.key === 'balance_updated') {
-                        updateBalanceDisplay();
-                    }
-                    if (e.key === INVENTORY_KEY || e.key === 'inventory_updated') {
-                        renderInventory();
-                    }
+                    if (e.key === STORAGE_KEY || e.key === 'balance_updated') updateBalanceDisplay();
+                    if (e.key === INVENTORY_KEY || e.key === 'inventory_updated') renderInventory();
                 });
 
-                // Модальное окно пополнения
+                // ===== ПОПОЛНЕНИЕ =====
                 const depositModal = document.getElementById('depositModal');
                 const closeDepositModal = document.getElementById('closeDepositModal');
                 const plusBtn = document.getElementById('plusBtn');
@@ -1227,7 +1247,6 @@
                 const selectedAmountSpan = document.getElementById('selectedAmount');
                 const quickAmounts = document.querySelectorAll('.quick-amount');
 
-                // Открытие модалки пополнения
                 plusBtn.addEventListener('click', e => {
                     e.preventDefault();
                     amountInput.value = '';
@@ -1235,7 +1254,6 @@
                     depositModal.classList.add('active');
                 });
 
-                // Быстрые суммы
                 quickAmounts.forEach(btn => {
                     btn.addEventListener('click', () => {
                         const amount = btn.dataset.amount;
@@ -1244,78 +1262,36 @@
                     });
                 });
 
-                // Закрытие модалки пополнения
-                closeDepositModal.addEventListener('click', () => {
-                    depositModal.classList.remove('active');
-                });
+                closeDepositModal.addEventListener('click', () => depositModal.classList.remove('active'));
+                depositModal.addEventListener('click', e => { if (e.target === depositModal) depositModal.classList.remove('active'); });
 
-                depositModal.addEventListener('click', e => {
-                    if (e.target === depositModal) {
-                        depositModal.classList.remove('active');
-                    }
-                });
-
-                // Обработка ввода в поле
                 amountInput.addEventListener('input', (e) => {
-                    let value = e.target.value;
-                    let cleaned = value.replace(/[^\d.]/g, '');
-                    const parts = cleaned.split('.');
-                    if (parts.length > 2) {
-                        cleaned = parts[0] + '.' + parts.slice(1).join('');
-                    }
-                    e.target.value = cleaned;
-                    
-                    if (cleaned && cleaned !== '.') {
-                        const num = parseFloat(cleaned);
-                        if (!isNaN(num)) {
-                            selectedAmountSpan.innerText = cleaned;
-                        } else {
-                            selectedAmountSpan.innerText = '0';
-                        }
-                    } else {
-                        selectedAmountSpan.innerText = '0';
-                    }
+                    let value = e.target.value.replace(/[^\d.]/g, '');
+                    const parts = value.split('.');
+                    if (parts.length > 2) value = parts[0] + '.' + parts.slice(1).join('');
+                    e.target.value = value;
+                    selectedAmountSpan.innerText = (value && value !== '.') ? value : '0';
                 });
 
-                // Обработка потери фокуса
                 amountInput.addEventListener('blur', (e) => {
-                    const value = e.target.value;
-                    const formatted = validateAndFormatAmount(value);
+                    const formatted = validateAndFormatAmount(e.target.value);
                     e.target.value = formatted;
                     selectedAmountSpan.innerText = formatted;
                 });
 
-                // Обработка нажатия Enter
-                amountInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        const value = e.target.value;
-                        const formatted = validateAndFormatAmount(value);
-                        e.target.value = formatted;
-                        selectedAmountSpan.innerText = formatted;
-                    }
-                });
-
-                // Кнопка пополнения - открывает Telegram Payment
                 depositButton.addEventListener('click', () => {
-                    const value = amountInput.value;
-                    const amount = validateAndFormatAmount(value);
-                    
-                    if (amount > 0) {
-                        openTelegramPayment(amount);
-                    }
+                    const amount = validateAndFormatAmount(amountInput.value);
+                    if (amount > 0) openTelegramPayment(amount);
                 });
 
-                // Информационный кружок
+                // ===== ИНФОРМАЦИОННЫЙ КРУЖОК =====
                 const infoCircle = document.getElementById('infoCircle');
                 const hintMessage = document.getElementById('hintMessage');
-                
                 infoCircle.addEventListener('click', e => {
                     e.stopPropagation();
                     hintMessage.classList.toggle('show');
                     infoCircle.classList.toggle('active');
                 });
-
                 document.addEventListener('click', e => {
                     if (!hintMessage.contains(e.target) && !infoCircle.contains(e.target)) {
                         hintMessage.classList.remove('show');
@@ -1323,7 +1299,7 @@
                     }
                 });
 
-                // Модальное окно инструкции
+                // ===== МОДАЛЬНОЕ ОКНО ИНСТРУКЦИИ =====
                 const giftModal = document.getElementById('giftModal');
                 const closeModal = document.getElementById('closeModal');
                 const addGiftBtn = document.getElementById('addGiftBtn');
@@ -1336,28 +1312,31 @@
                 });
 
                 closeModal.addEventListener('click', () => giftModal.classList.remove('active'));
-                giftModal.addEventListener('click', e => {
-                    if (e.target === giftModal) giftModal.classList.remove('active');
-                });
+                giftModal.addEventListener('click', e => { if (e.target === giftModal) giftModal.classList.remove('active'); });
 
-                const openBot = () => window.open('https://t.me/yeter16_bot', '_blank');
+                const openBot = () => window.open(`https://t.me/${BOT_USERNAME}`, '_blank');
                 goToBot.addEventListener('click', openBot);
                 goButton.addEventListener('click', openBot);
 
-                // Модальное окно продажи (упрощенно)
+                // ===== МОДАЛЬНОЕ ОКНО ПРОДАЖИ =====
                 const nftModal = document.getElementById('nftModal');
                 const closeNftModal = document.getElementById('closeNftModal');
                 const modalImage = document.getElementById('modalNftImage');
                 const modalTitle = document.getElementById('modalNftTitle');
                 const modalPrice = document.getElementById('modalNftPriceValue');
+                const sellBtn = document.getElementById('sellBtn');
+                const timerDisplay = document.getElementById('timerDisplay');
                 const withdrawBtn = document.getElementById('withdrawBtn');
 
-                document.addEventListener('click', e => {
+                // Клик по NFT в инвентаре
+                document.addEventListener('click', function(e) {
                     const item = e.target.closest('.inventory-item');
                     if (!item) return;
 
                     const inventory = getInventory();
                     const index = item.dataset.index;
+                    if (index === undefined) return;
+                    
                     const itemData = inventory[index];
                     if (!itemData) return;
 
@@ -1366,25 +1345,37 @@
                     modalTitle.innerText = itemData.name;
                     modalPrice.innerText = itemData.price;
 
+                    // Сбрасываем кнопку продажи
+                    sellBtn.classList.remove('active');
+                    sellBtn.innerHTML = `<span class="btn-left"><i class="fas fa-lock"></i> Продать</span><span class="timer" id="timerDisplay">30:00</span>`;
+                    
+                    const newTimer = document.getElementById('timerDisplay');
+                    if (newTimer && itemData.id) {
+                        startTimer(sellBtn, newTimer, itemData.id);
+                    }
+
                     nftModal.classList.add('active');
                 });
 
                 closeNftModal.addEventListener('click', () => nftModal.classList.remove('active'));
-                nftModal.addEventListener('click', e => {
-                    if (e.target === nftModal) nftModal.classList.remove('active');
+                nftModal.addEventListener('click', e => { if (e.target === nftModal) nftModal.classList.remove('active'); });
+                
+                // Кнопки продажи и вывода
+                sellBtn.addEventListener('click', () => {
+                    alert('Функция продажи временно недоступна');
+                });
+                
+                withdrawBtn.addEventListener('click', () => {
+                    alert('Функция вывода средств временно недоступна');
                 });
 
-                withdrawBtn.addEventListener('click', () => alert('Функция вывода средств временно недоступна'));
-
-                // Навигация
+                // ===== НАВИГАЦИЯ =====
                 const navMarket = document.getElementById('navMarket');
                 const navProfile = document.getElementById('navProfile');
-
                 navMarket.addEventListener('click', e => {
                     e.preventDefault();
                     window.location.href = 'market.html';
                 });
-
                 navProfile.addEventListener('click', e => e.preventDefault());
             }
 
@@ -1396,4 +1387,4 @@
         })();
     </script>
 </body>
-                    </html>
+    </html>
