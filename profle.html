@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Profile · Inventory</title>
-    <!-- Telegram WebApp -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Font Awesome и Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -61,7 +59,6 @@
             z-index: 1;
         }
 
-        /* Уведомление */
         .notification {
             position: fixed;
             top: 20px;
@@ -82,7 +79,6 @@
             transform: translateX(0);
         }
 
-        /* Затемнение фона */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -112,7 +108,6 @@
             }
         }
 
-        /* Модальное окно пополнения */
         .deposit-modal {
             max-width: 360px;
             width: 90%;
@@ -700,7 +695,6 @@
             margin: 0 2px;
         }
 
-        /* Модальное окно для продажи NFT - БЕЗ 3D */
         .nft-modal {
             max-width: 320px;
             width: 85%;
@@ -755,7 +749,6 @@
             width: 100%;
         }
 
-        /* Кнопка продажи с таймером - БЕЗ 3D */
         .sell-btn {
             display: flex;
             align-items: center;
@@ -807,7 +800,6 @@
             font-size: 14px;
         }
 
-        /* Кнопка вывести - БЕЗ 3D */
         .withdraw-btn {
             background: transparent;
             border: 1px solid rgba(184, 122, 255, 0.3);
@@ -902,7 +894,6 @@
     <div class="stars" id="stars"></div>
     <div class="notification" id="notification"></div>
 
-    <!-- Модальное окно пополнения -->
     <div class="modal-overlay" id="depositModal">
         <div class="deposit-modal">
             <div class="modal-close" id="closeDepositModal">✕</div>
@@ -921,7 +912,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно инструкции -->
     <div class="modal-overlay" id="giftModal">
         <div class="instruction-modal">
             <div class="modal-close" id="closeModal">✕</div>
@@ -954,7 +944,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно для продажи NFT -->
     <div class="modal-overlay" id="nftModal">
         <div class="nft-modal">
             <div class="modal-close" id="closeNftModal">✕</div>
@@ -1025,14 +1014,11 @@
 
     <script>
         (function() {
-            "use strict";
-            
             const STORAGE_KEY = 'nft_balance';
             const INVENTORY_KEY = 'nft_inventory';
             const TIMER_KEY = 'nft_timers';
             const BOT_USERNAME = 'yeter16_bot';
 
-            // ========== ТАЙМЕРЫ ==========
             function loadTimers() {
                 try {
                     return JSON.parse(localStorage.getItem(TIMER_KEY)) || {};
@@ -1045,7 +1031,6 @@
                 localStorage.setItem(TIMER_KEY, JSON.stringify(timers));
             }
 
-            // ========== БАЛАНС ==========
             function getBalance() {
                 try {
                     return parseInt(localStorage.getItem(STORAGE_KEY)) || 5000;
@@ -1066,7 +1051,6 @@
                 if (el) el.innerText = getBalance();
             }
 
-            // ========== ИНВЕНТАРЬ ==========
             function getInventory() {
                 try {
                     return JSON.parse(localStorage.getItem(INVENTORY_KEY)) || [];
@@ -1082,7 +1066,6 @@
                 renderInventory();
             }
 
-            // ========== УВЕДОМЛЕНИЯ ==========
             function showNotification(message) {
                 const notif = document.getElementById('notification');
                 notif.innerText = message;
@@ -1090,7 +1073,6 @@
                 setTimeout(() => notif.classList.remove('show'), 2500);
             }
 
-            // ========== ОТОБРАЖЕНИЕ ИНВЕНТАРЯ ==========
             function renderInventory() {
                 const container = document.getElementById('inventoryContainer');
                 const inventory = getInventory();
@@ -1112,7 +1094,6 @@
                 container.innerHTML = html;
             }
 
-            // ========== ВАЛИДАЦИЯ СУММЫ ==========
             function validateAndFormatAmount(value) {
                 let cleaned = value.replace(/[^\d.]/g, '');
                 const parts = cleaned.split('.');
@@ -1126,7 +1107,6 @@
                 return num;
             }
 
-            // ========== ПЛАТЕЖ ==========
             function openTelegramPayment(amount) {
                 const tg = window.Telegram?.WebApp;
                 if (!tg) {
@@ -1146,7 +1126,6 @@
                 }, 3000);
             }
 
-            // ========== ТАЙМЕР ==========
             function startTimer(button, timerDisplay, itemId) {
                 const timers = loadTimers();
                 let purchaseTime = timers[itemId];
@@ -1179,7 +1158,6 @@
                 const interval = setInterval(updateTimer, 1000);
             }
 
-            // ========== ДОБАВЛЕНИЕ КУПЛЕННОГО ПРЕДМЕТА ==========
             window.addPurchasedItem = function(name, price, image) {
                 const inventory = getInventory();
                 const timers = loadTimers();
@@ -1193,7 +1171,6 @@
                 showNotification(`✅ Товар добавлен в инвентарь`);
             };
 
-            // ========== ИНИЦИАЛИЗАЦИЯ ==========
             function init() {
                 const starsContainer = document.getElementById('stars');
                 if (starsContainer) {
@@ -1238,7 +1215,6 @@
                     if (e.key === INVENTORY_KEY || e.key === 'inventory_updated') renderInventory();
                 });
 
-                // ===== ПОПОЛНЕНИЕ =====
                 const depositModal = document.getElementById('depositModal');
                 const closeDepositModal = document.getElementById('closeDepositModal');
                 const plusBtn = document.getElementById('plusBtn');
@@ -1284,7 +1260,6 @@
                     if (amount > 0) openTelegramPayment(amount);
                 });
 
-                // ===== ИНФОРМАЦИОННЫЙ КРУЖОК =====
                 const infoCircle = document.getElementById('infoCircle');
                 const hintMessage = document.getElementById('hintMessage');
                 infoCircle.addEventListener('click', e => {
@@ -1299,7 +1274,6 @@
                     }
                 });
 
-                // ===== МОДАЛЬНОЕ ОКНО ИНСТРУКЦИИ =====
                 const giftModal = document.getElementById('giftModal');
                 const closeModal = document.getElementById('closeModal');
                 const addGiftBtn = document.getElementById('addGiftBtn');
@@ -1318,7 +1292,6 @@
                 goToBot.addEventListener('click', openBot);
                 goButton.addEventListener('click', openBot);
 
-                // ===== МОДАЛЬНОЕ ОКНО ПРОДАЖИ =====
                 const nftModal = document.getElementById('nftModal');
                 const closeNftModal = document.getElementById('closeNftModal');
                 const modalImage = document.getElementById('modalNftImage');
@@ -1328,7 +1301,6 @@
                 const timerDisplay = document.getElementById('timerDisplay');
                 const withdrawBtn = document.getElementById('withdrawBtn');
 
-                // Клик по NFT в инвентаре
                 document.addEventListener('click', function(e) {
                     const item = e.target.closest('.inventory-item');
                     if (!item) return;
@@ -1345,7 +1317,6 @@
                     modalTitle.innerText = itemData.name;
                     modalPrice.innerText = itemData.price;
 
-                    // Сбрасываем кнопку продажи
                     sellBtn.classList.remove('active');
                     sellBtn.innerHTML = `<span class="btn-left"><i class="fas fa-lock"></i> Продать</span><span class="timer" id="timerDisplay">30:00</span>`;
                     
@@ -1360,7 +1331,6 @@
                 closeNftModal.addEventListener('click', () => nftModal.classList.remove('active'));
                 nftModal.addEventListener('click', e => { if (e.target === nftModal) nftModal.classList.remove('active'); });
                 
-                // Кнопки продажи и вывода
                 sellBtn.addEventListener('click', () => {
                     alert('Функция продажи временно недоступна');
                 });
@@ -1369,7 +1339,6 @@
                     alert('Функция вывода средств временно недоступна');
                 });
 
-                // ===== НАВИГАЦИЯ =====
                 const navMarket = document.getElementById('navMarket');
                 const navProfile = document.getElementById('navProfile');
                 navMarket.addEventListener('click', e => {
@@ -1387,4 +1356,4 @@
         })();
     </script>
 </body>
-    </html>
+</html>
