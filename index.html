@@ -281,12 +281,12 @@
         .balance-block {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(20px);
             border: 0.5px solid rgba(138, 43, 226, 0.3);
             border-radius: 40px;
-            padding: 6px 10px 6px 16px;
+            padding: 6px 8px 6px 14px;
             flex-shrink: 0;
         }
 
@@ -319,6 +319,8 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.1s ease;
+            margin-top: -2px;
+            margin-right: -2px;
         }
 
         .plus-btn:active {
@@ -463,10 +465,12 @@
 
         .filter-tabs {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
             justify-content: center;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding-bottom: 4px;
         }
 
         .filter-tab {
@@ -474,12 +478,13 @@
             backdrop-filter: blur(8px);
             border: 0.5px solid rgba(184, 122, 255, 0.3);
             border-radius: 40px;
-            padding: 10px 20px;
-            font-size: 14px;
+            padding: 8px 16px;
+            font-size: 13px;
             font-weight: 500;
             color: rgba(255, 255, 255, 0.7);
             cursor: pointer;
             transition: all 0.1s ease;
+            white-space: nowrap;
         }
 
         .filter-tab:active {
@@ -863,7 +868,7 @@
                     <i class="fas fa-sliders-h"></i>
                 </div>
                 <div class="sort-btn" id="sortBtn">
-                    <i class="fas fa-random"></i>
+                    <i class="fas fa-arrow-up"></i>
                 </div>
             </div>
 
@@ -914,7 +919,7 @@
                     id: i + 1,
                     name: COLLECTION_NAMES[i],
                     price: Math.floor(Math.random() * 400) + 50,
-                    image: `https://picsum.photos/id/${(i % 100) + 1}/200/200`,
+                    image: `nft/${encodeURIComponent(COLLECTION_NAMES[i].replace(/ /g, '_'))}.png`,
                     collection: COLLECTION_NAMES[i],
                     pattern: ["Классический", "Современный", "Винтажный", "Неоновый"][i % 4],
                     background: ["Темный", "Светлый", "Градиент", "Звездный"][i % 4],
@@ -923,7 +928,7 @@
             }
 
             let currentItems = [...NFT_ITEMS];
-            let currentSort = 'random';
+            let currentSort = 'asc';
             let currentTab = 'collection';
             let filterSelections = {
                 collection: [],
@@ -993,10 +998,8 @@
 
                 if (currentSort === 'asc') {
                     itemsToShow.sort((a, b) => a.price - b.price);
-                } else if (currentSort === 'desc') {
-                    itemsToShow.sort((a, b) => b.price - a.price);
                 } else {
-                    itemsToShow = [...itemsToShow].sort(() => Math.random() - 0.5);
+                    itemsToShow.sort((a, b) => b.price - a.price);
                 }
 
                 if (!itemsToShow.length) {
@@ -1008,7 +1011,7 @@
                 for (let i = 0; i < itemsToShow.length; i++) {
                     const item = itemsToShow[i];
                     html += `<div class="market-item">
-                        <img src="${item.image}" alt="${escapeHtml(item.name)}" class="market-item-image" loading="lazy">
+                        <img src="${item.image}" alt="${escapeHtml(item.name)}" class="market-item-image" loading="lazy" onerror="this.src='https://picsum.photos/id/${(i % 100) + 1}/200/200'">
                         <div class="market-item-name">${escapeHtml(item.name)}</div>
                         <div class="market-item-price"><span class="price-icon">🧩</span> ${item.price}</div>
                         <div class="buy-btn" data-price="${item.price}" data-name="${escapeHtml(item.name)}" data-image="${item.image}">Купить</div>
@@ -1073,17 +1076,10 @@
                     options = options.filter(opt => opt.toLowerCase().includes(filterSearchTerm.toLowerCase()));
                 }
                 
-                if (currentTab === 'collection') {
-                    if (collectionSortDirection === 'asc') {
-                        options.sort();
-                    } else {
-                        options.sort().reverse();
-                    }
-                } else {
+                if (collectionSortDirection === 'asc') {
                     options.sort();
-                    if (collectionSortDirection === 'desc') {
-                        options.reverse();
-                    }
+                } else {
+                    options.sort().reverse();
                 }
                 
                 renderFilterList(options, currentSelections);
@@ -1101,8 +1097,9 @@
                     const opt = options[i];
                     const isSelected = selections.includes(opt);
                     if (currentTab === 'collection') {
+                        const imgPath = `nft/${encodeURIComponent(opt.replace(/ /g, '_'))}.png`;
                         html += `<div class="filter-option ${isSelected ? 'selected' : ''}" data-value="${escapeHtml(opt)}">
-                            <img src="https://picsum.photos/id/${(i % 100) + 1}/100/100" class="filter-option-image" loading="lazy">
+                            <img src="${imgPath}" class="filter-option-image" loading="lazy" onerror="this.src='https://picsum.photos/id/${(i % 100) + 1}/100/100'">
                             <div class="filter-option-name">${escapeHtml(opt)}</div>
                             <div class="filter-option-check">
                                 ${isSelected ? '<i class="fas fa-check"></i>' : ''}
@@ -1266,19 +1263,14 @@
                 }
 
                 const sortBtn = document.getElementById('sortBtn');
-                let sortState = 0;
                 if (sortBtn) {
                     sortBtn.addEventListener('click', () => {
-                        sortState = (sortState + 1) % 3;
-                        if (sortState === 0) {
-                            currentSort = 'random';
-                            sortBtn.innerHTML = '<i class="fas fa-random"></i>';
-                        } else if (sortState === 1) {
-                            currentSort = 'asc';
-                            sortBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-                        } else {
+                        if (currentSort === 'asc') {
                             currentSort = 'desc';
                             sortBtn.innerHTML = '<i class="fas fa-arrow-down"></i>';
+                        } else {
+                            currentSort = 'asc';
+                            sortBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
                         }
                         renderMarket();
                     });
