@@ -59,21 +59,56 @@
             z-index: 1;
         }
 
+        /* Glassmorphism стили */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .glass-card:active {
+            background: rgba(255, 255, 255, 0.08);
+            transform: scale(0.98);
+        }
+
+        .glass-button {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 60px;
+            transition: all 0.2s ease;
+        }
+
+        .glass-button:active {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(0.97);
+        }
+
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
             padding: 12px 20px;
             border-radius: 60px;
-            background: #00c853;
+            background: rgba(0, 200, 83, 0.9);
+            backdrop-filter: blur(10px);
             color: white;
             font-weight: 500;
             font-size: 14px;
             z-index: 3000;
             transform: translateX(150%);
             transition: transform 0.2s ease;
-            box-shadow: 0 4px 0 #00691e;
-            pointer-events: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .notification.show {
             transform: translateX(0);
@@ -85,8 +120,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
             z-index: 2000;
             display: none;
             justify-content: center;
@@ -111,13 +146,14 @@
         .deposit-modal {
             max-width: 360px;
             width: 90%;
-            background: #1a1028;
-            border: none;
+            background: rgba(26, 16, 40, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(184, 122, 255, 0.3);
             border-radius: 30px;
             padding: 30px 20px 25px;
             position: relative;
-            box-shadow: 0 15px 0 #0f0a18;
             animation: slideUp 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .modal-close {
@@ -130,18 +166,19 @@
             cursor: pointer;
             z-index: 10;
             line-height: 1;
-            background: none;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
             border: none;
-            padding: 0;
             width: 28px;
             height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 50%;
         }
 
         .modal-close:active {
-            color: #d0a0ff;
+            background: rgba(255, 255, 255, 0.2);
             transform: scale(0.95);
         }
 
@@ -155,7 +192,8 @@
 
         .amount-input {
             width: 100%;
-            background: rgba(10, 14, 22, 0.7);
+            background: rgba(10, 14, 22, 0.5);
+            backdrop-filter: blur(8px);
             border: 1px solid rgba(138, 43, 226, 0.4);
             border-radius: 20px;
             padding: 15px 20px;
@@ -167,6 +205,7 @@
 
         .amount-input:focus {
             border-color: #b87aff;
+            background: rgba(10, 14, 22, 0.7);
         }
 
         .amount-input::placeholder {
@@ -175,8 +214,9 @@
         }
 
         .deposit-button {
-            background: #6a0dad;
-            border: none;
+            background: rgba(106, 13, 173, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(184, 122, 255, 0.3);
             border-radius: 60px;
             padding: 16px 25px;
             width: 100%;
@@ -184,21 +224,21 @@
             font-size: 18px;
             font-weight: 700;
             cursor: pointer;
-            transition: background 0.1s ease, transform 0.05s ease;
+            transition: all 0.1s ease;
             text-align: center;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: none;
         }
 
         .deposit-button:active {
-            background: #7b1db5;
+            background: rgba(106, 13, 173, 0.9);
             transform: scale(0.97);
         }
 
         .deposit-button span:last-child {
             background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
             padding: 4px 12px;
             border-radius: 30px;
             font-size: 16px;
@@ -214,6 +254,7 @@
         
         .quick-amount {
             background: rgba(106, 13, 173, 0.2);
+            backdrop-filter: blur(8px);
             border: 1px solid rgba(184, 122, 255, 0.3);
             border-radius: 30px;
             padding: 8px 16px;
@@ -221,7 +262,7 @@
             font-weight: 600;
             color: #b87aff;
             cursor: pointer;
-            transition: background 0.1s ease, transform 0.05s ease;
+            transition: all 0.1s ease;
         }
 
         .quick-amount:active {
@@ -249,14 +290,15 @@
             width: 52px;
             height: 52px;
             border-radius: 16px;
-            background: #6a0dad;
+            background: rgba(106, 13, 173, 0.5);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
             font-weight: 700;
             color: white;
-            border: 2px solid #b87aff;
+            border: 1px solid rgba(184, 122, 255, 0.5);
             flex-shrink: 0;
             background-size: cover;
             background-position: center;
@@ -295,7 +337,8 @@
             display: flex;
             align-items: center;
             gap: 3px;
-            background: rgba(10, 14, 22, 0.7);
+            background: rgba(10, 14, 22, 0.5);
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(138, 43, 226, 0.4);
             border-radius: 30px;
             padding: 4px 8px 4px 12px;
@@ -318,21 +361,20 @@
 
         .plus-btn {
             background: rgba(106, 13, 173, 0.3);
+            backdrop-filter: blur(8px);
             border: 1px solid rgba(138, 43, 226, 0.5);
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #b87aff;
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 700;
             cursor: pointer;
-            transition: background 0.05s ease, transform 0.05s ease;
+            transition: all 0.05s ease;
             line-height: 1;
-            min-width: 32px;
-            min-height: 32px;
         }
 
         .plus-btn:active {
@@ -346,11 +388,11 @@
 
         .profile-frame {
             margin: 0 20px;
-            background: rgba(10, 14, 22, 0.5);
-            border: 1px solid rgba(138, 43, 226, 0.3);
+            background: rgba(10, 14, 22, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(138, 43, 226, 0.2);
             border-radius: 30px;
             padding: 25px 20px 25px;
-            backdrop-filter: blur(4px);
             position: relative;
             z-index: 1;
         }
@@ -384,12 +426,13 @@
             height: 32px;
             border-radius: 50%;
             background: rgba(106, 13, 173, 0.2);
-            border: 1.5px solid rgba(184, 122, 255, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(184, 122, 255, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background 0.1s ease, transform 0.05s ease;
+            transition: all 0.1s ease;
             color: rgba(184, 122, 255, 0.8);
             font-size: 22px;
             font-weight: 500;
@@ -417,8 +460,9 @@
             border: 2px dashed rgba(184, 122, 255, 0.5);
             border-radius: 60px;
             background: rgba(106, 13, 173, 0.1);
+            backdrop-filter: blur(8px);
             cursor: pointer;
-            transition: background 0.1s ease, transform 0.05s ease;
+            transition: all 0.1s ease;
             margin-bottom: 20px;
             min-height: 80px;
             color: #8e98a3;
@@ -447,21 +491,22 @@
         .instruction-modal {
             max-width: 360px;
             width: 90%;
-            background: #1a1028;
-            border: none;
+            background: rgba(26, 16, 40, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(184, 122, 255, 0.3);
             border-radius: 30px;
             padding: 30px 20px 25px;
             position: relative;
-            box-shadow: 0 15px 0 #0f0a18;
             animation: slideUp 0.3s ease;
         }
 
         .instruction-warning {
-            background: #b84d4d;
+            background: rgba(184, 77, 77, 0.7);
+            backdrop-filter: blur(8px);
             border-radius: 20px;
             padding: 16px 18px;
             margin: 5px 0 25px;
-            box-shadow: 0 6px 0 #6b2e2e;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .instruction-warning-title {
@@ -482,10 +527,12 @@
             gap: 14px;
             margin-bottom: 20px;
             background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
             border-radius: 16px;
             padding: 12px 10px;
             cursor: pointer;
-            transition: background 0.1s ease, transform 0.05s ease;
+            transition: all 0.1s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .instruction-item:active {
@@ -497,7 +544,8 @@
             width: 50px;
             height: 50px;
             border-radius: 15px;
-            background: #2a2a3a;
+            background: rgba(42, 42, 58, 0.5);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -529,8 +577,9 @@
         }
 
         .instruction-button {
-            background: #6a0dad;
-            border: none;
+            background: rgba(106, 13, 173, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(184, 122, 255, 0.3);
             border-radius: 60px;
             padding: 16px;
             width: 100%;
@@ -538,14 +587,13 @@
             font-size: 18px;
             font-weight: 700;
             cursor: pointer;
-            transition: background 0.1s ease, transform 0.05s ease;
+            transition: all 0.1s ease;
             margin-top: 10px;
             text-align: center;
-            box-shadow: none;
         }
 
         .instruction-button:active {
-            background: #7b1db5;
+            background: rgba(106, 13, 173, 0.9);
             transform: scale(0.97);
         }
 
@@ -577,21 +625,22 @@
         }
 
         .inventory-item {
-            background: rgba(10, 14, 22, 0.7);
+            background: rgba(10, 14, 22, 0.5);
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(138, 43, 226, 0.3);
             border-radius: 20px;
             padding: 12px 8px 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            backdrop-filter: blur(4px);
             cursor: pointer;
-            transition: transform 0.05s ease, border 0.05s ease;
+            transition: all 0.05s ease;
         }
 
         .inventory-item:active {
             transform: scale(0.97);
             border-color: #b87aff;
+            background: rgba(10, 14, 22, 0.7);
         }
 
         .inventory-item-image {
@@ -600,7 +649,7 @@
             border-radius: 16px;
             object-fit: cover;
             margin-bottom: 8px;
-            background: #2a1e3a;
+            background: rgba(42, 30, 58, 0.5);
             border: 1px solid rgba(184, 122, 255, 0.2);
         }
 
@@ -651,10 +700,11 @@
             top: 60px;
             right: 20px;
             width: 280px;
-            background: #6a0dad;
+            background: rgba(106, 13, 173, 0.7);
+            backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 16px 18px;
-            box-shadow: 0 8px 0 #4a0b8a;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             display: none;
             z-index: 10;
             animation: fadeIn 0.15s ease;
@@ -676,7 +726,7 @@
             right: 15px;
             border-left: 12px solid transparent;
             border-right: 12px solid transparent;
-            border-bottom: 12px solid #6a0dad;
+            border-bottom: 12px solid rgba(106, 13, 173, 0.7);
         }
 
         .hint-text {
@@ -698,12 +748,12 @@
         .nft-modal {
             max-width: 320px;
             width: 85%;
-            background: #1a1a24;
+            background: rgba(26, 26, 36, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(184, 122, 255, 0.3);
             border-radius: 30px;
             padding: 30px 20px 25px;
             position: relative;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            z-index: 2100;
             animation: fadeIn 0.2s ease;
         }
 
@@ -714,8 +764,8 @@
             margin: 5px auto 15px;
             display: block;
             object-fit: cover;
-            background: #2a2a3a;
-            border: 2px solid rgba(184, 122, 255, 0.2);
+            background: rgba(42, 42, 58, 0.5);
+            border: 1px solid rgba(184, 122, 255, 0.2);
         }
 
         .nft-modal-title {
@@ -760,15 +810,15 @@
             font-weight: 600;
             cursor: pointer;
             border: 1px solid rgba(184, 122, 255, 0.2);
-            background: #2a2a3a;
+            background: rgba(42, 42, 58, 0.5);
+            backdrop-filter: blur(8px);
             color: #a0a0b0;
-            transition: background 0.1s ease, transform 0.05s ease;
-            box-shadow: none;
+            transition: all 0.1s ease;
         }
 
         .sell-btn.active {
-            background: #6a0dad;
-            border: none;
+            background: rgba(106, 13, 173, 0.7);
+            border: 1px solid rgba(184, 122, 255, 0.3);
             color: white;
             justify-content: center;
         }
@@ -795,13 +845,15 @@
         .sell-btn .timer {
             font-weight: 500;
             background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
             padding: 4px 10px;
             border-radius: 30px;
             font-size: 14px;
         }
 
         .withdraw-btn {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
             border: 1px solid rgba(184, 122, 255, 0.3);
             border-radius: 60px;
             padding: 14px;
@@ -810,9 +862,8 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.1s ease, transform 0.05s ease;
+            transition: all 0.1s ease;
             text-align: center;
-            box-shadow: none;
         }
 
         .withdraw-btn:active {
@@ -827,17 +878,17 @@
             right: 0;
             max-width: 440px;
             margin: 0 auto;
-            background: #0c0f16;
+            background: rgba(12, 15, 22, 0.7);
+            backdrop-filter: blur(20px);
             display: flex;
             justify-content: space-around;
             padding: 8px 4px;
             border-radius: 35px;
-            border: 1px solid #2a1e3a;
+            border: 1px solid rgba(184, 122, 255, 0.2);
             margin-bottom: 16px;
             width: calc(100% - 40px);
             left: 20px;
             right: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
             z-index: 1000;
         }
 
@@ -854,7 +905,7 @@
             border-radius: 30px;
             text-align: center;
             text-decoration: none;
-            transition: background 0.05s ease, color 0.05s ease;
+            transition: all 0.05s ease;
             background: transparent;
             border: none;
             min-width: 80px;
@@ -895,7 +946,7 @@
     <div class="notification" id="notification"></div>
 
     <div class="modal-overlay" id="depositModal">
-        <div class="deposit-modal">
+        <div class="deposit-modal glass">
             <div class="modal-close" id="closeDepositModal">✕</div>
             <div class="deposit-title">Пополнение</div>
             <div class="quick-amounts">
@@ -905,7 +956,7 @@
                 <span class="quick-amount" data-amount="1000">1000 ⭐</span>
             </div>
             <input type="text" class="amount-input" id="amountInput" placeholder="Введите количество звезд" inputmode="numeric">
-            <button class="deposit-button" id="depositButton">
+            <button class="deposit-button glass-button" id="depositButton">
                 <span>Пополнить</span>
                 <span id="selectedAmount">0</span>
             </button>
@@ -913,13 +964,13 @@
     </div>
 
     <div class="modal-overlay" id="giftModal">
-        <div class="instruction-modal">
+        <div class="instruction-modal glass">
             <div class="modal-close" id="closeModal">✕</div>
             <div class="instruction-warning">
-                <div class="instruction-warning-title">Не дарите подарки с Telegram Маркета</div>
+                <div class="instruction-warning-title">⚠️ Важно</div>
                 <div class="instruction-warning-text">Отправляйте подарки только напрямую со своего аккаунта</div>
             </div>
-            <div class="instruction-item" id="goToBot">
+            <div class="instruction-item glass-card" id="goToBot">
                 <div class="instruction-icon"><i class="fas fa-robot"></i></div>
                 <div class="instruction-content">
                     <div class="instruction-title">Перейдите в бота</div>
@@ -940,12 +991,12 @@
                     <div class="instruction-subtitle">в течение нескольких минут</div>
                 </div>
             </div>
-            <div class="instruction-button" id="goButton">Перейти в бота</div>
+            <div class="instruction-button glass-button" id="goButton">Перейти в бота</div>
         </div>
     </div>
 
     <div class="modal-overlay" id="nftModal">
-        <div class="nft-modal">
+        <div class="nft-modal glass">
             <div class="modal-close" id="closeNftModal">✕</div>
             <img src="" alt="" class="nft-modal-image" id="modalNftImage">
             <div class="nft-modal-title" id="modalNftTitle"></div>
@@ -958,7 +1009,7 @@
                     <span class="btn-left"><i class="fas fa-lock"></i> Продать</span>
                     <span class="timer" id="timerDisplay">30:00</span>
                 </button>
-                <button class="withdraw-btn" id="withdrawBtn">Вывести</button>
+                <button class="withdraw-btn glass-button" id="withdrawBtn">Вывести</button>
             </div>
         </div>
     </div>
@@ -966,13 +1017,13 @@
     <div class="app">
         <div class="profile-header">
             <div class="profile-left">
-                <div class="avatar" id="avatar">A</div>
+                <div class="avatar glass" id="avatar">A</div>
                 <div class="name-box">
                     <span class="fullname" id="fullName">Алексей Иванов</span>
                     <span class="username" id="username">@alexey</span>
                 </div>
             </div>
-            <div class="balance-block">
+            <div class="balance-block glass">
                 <div class="balance-stars">
                     <span class="puzzle-icon">🧩</span>
                     <span id="balanceValue">5000</span>
@@ -982,16 +1033,16 @@
         </div>
 
         <div class="profile-frame-container">
-            <div class="profile-frame">
+            <div class="profile-frame glass">
                 <div class="inventory-header">
                     <div class="inventory-title">
                         <i class="fas fa-box"></i>
                         <span>Инвентарь</span>
                     </div>
-                    <div class="info-circle" id="infoCircle">!</div>
+                    <div class="info-circle glass" id="infoCircle">!</div>
                 </div>
 
-                <div class="add-gift-btn" id="addGiftBtn">
+                <div class="add-gift-btn glass-card" id="addGiftBtn">
                     <span class="plus-symbol">+</span>
                     <span class="plus-text">Добавить подарок</span>
                 </div>
@@ -1006,7 +1057,7 @@
             </div>
         </div>
 
-        <div class="bottom-nav">
+        <div class="bottom-nav glass">
             <a href="market.html" class="nav-item" id="navMarket"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
             <a href="#" class="nav-item active" id="navProfile"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
         </div>
@@ -1017,7 +1068,22 @@
             const STORAGE_KEY = 'nft_balance';
             const INVENTORY_KEY = 'nft_inventory';
             const TIMER_KEY = 'nft_timers';
+            const PURCHASED_KEY = 'nft_purchased_items';
             const BOT_USERNAME = 'yeter16_bot';
+
+            // Функция для получения купленных из магазина предметов
+            function getPurchasedItems() {
+                try {
+                    const items = localStorage.getItem(PURCHASED_KEY);
+                    return items ? JSON.parse(items) : [];
+                } catch {
+                    return [];
+                }
+            }
+
+            function clearPurchasedItems() {
+                localStorage.removeItem(PURCHASED_KEY);
+            }
 
             function loadTimers() {
                 try {
@@ -1084,7 +1150,7 @@
 
                 let html = '<div class="inventory-grid">';
                 inventory.forEach((item, index) => {
-                    html += `<div class="inventory-item" data-index="${index}" data-id="${item.id}">
+                    html += `<div class="inventory-item glass-card" data-index="${index}" data-id="${item.id}">
                         <img src="${item.image}" alt="${item.name}" class="inventory-item-image" onerror="this.src=\'https://via.placeholder.com/80/6a0dad/ffffff?text=NFT\'" loading="lazy">
                         <div class="inventory-item-name">${item.name}</div>
                         <div class="inventory-item-price"><span class="price-icon">🧩</span><span>${item.price}</span></div>
@@ -1092,6 +1158,34 @@
                 });
                 html += '</div>';
                 container.innerHTML = html;
+            }
+
+            // Функция для обработки купленных предметов из магазина
+            function processPurchasedItems() {
+                const purchasedItems = getPurchasedItems();
+                if (purchasedItems.length > 0) {
+                    const inventory = getInventory();
+                    const timers = loadTimers();
+                    
+                    purchasedItems.forEach(item => {
+                        const itemId = Date.now() + Math.random() + item.id;
+                        const purchaseTime = Date.now();
+                        
+                        inventory.push({ 
+                            name: item.name, 
+                            price: item.price, 
+                            image: item.image, 
+                            id: itemId, 
+                            purchaseTime: purchaseTime 
+                        });
+                        timers[itemId] = purchaseTime;
+                    });
+                    
+                    saveTimers(timers);
+                    saveInventory(inventory);
+                    clearPurchasedItems();
+                    showNotification(`✅ Добавлено ${purchasedItems.length} предмет(ов) в инвентарь!`);
+                }
             }
 
             function validateAndFormatAmount(value) {
@@ -1168,10 +1262,11 @@
                 timers[itemId] = purchaseTime;
                 saveTimers(timers);
                 saveInventory(inventory);
-                showNotification(`✅ Товар добавлен в инвентарь`);
+                showNotification(`✅ Товар "${name}" добавлен в инвентарь!`);
             };
 
             function init() {
+                // Создаем звезды
                 const starsContainer = document.getElementById('stars');
                 if (starsContainer) {
                     starsContainer.innerHTML = '';
@@ -1184,6 +1279,7 @@
                     }
                 }
 
+                // Получаем данные пользователя из Telegram
                 const tg = window.Telegram?.WebApp;
                 let firstName = 'Игрок', lastName = '', tgUsername = '';
                 
@@ -1207,12 +1303,23 @@
                     avatarDiv.innerText = firstName.charAt(0).toUpperCase();
                 }
 
+                // Обрабатываем купленные предметы из магазина
+                processPurchasedItems();
+                
                 updateBalanceDisplay();
                 renderInventory();
 
+                // Слушаем изменения localStorage для синхронизации баланса и инвентаря
                 window.addEventListener('storage', (e) => {
-                    if (e.key === STORAGE_KEY || e.key === 'balance_updated') updateBalanceDisplay();
-                    if (e.key === INVENTORY_KEY || e.key === 'inventory_updated') renderInventory();
+                    if (e.key === STORAGE_KEY || e.key === 'balance_updated') {
+                        updateBalanceDisplay();
+                    }
+                    if (e.key === INVENTORY_KEY || e.key === 'inventory_updated') {
+                        renderInventory();
+                    }
+                    if (e.key === PURCHASED_KEY) {
+                        processPurchasedItems();
+                    }
                 });
 
                 const depositModal = document.getElementById('depositModal');
