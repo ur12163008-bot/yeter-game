@@ -59,43 +59,6 @@
             z-index: 1;
         }
 
-        /* Liquid Glass стиль как в Telegram/iOS 26 */
-        .glass-liquid {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 0.5px solid rgba(255, 255, 255, 0.15);
-            border-radius: 24px;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 0.5px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-
-        .glass-card:active {
-            transform: scale(0.97);
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .glass-button {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 0.5px solid rgba(255, 255, 255, 0.2);
-            border-radius: 40px;
-            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-
-        .glass-button:active {
-            transform: scale(0.96);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
         .notification {
             position: fixed;
             top: 20px;
@@ -111,6 +74,7 @@
             transform: translateX(150%);
             transition: transform 0.2s ease;
             border: 0.5px solid rgba(255, 255, 255, 0.2);
+            pointer-events: none;
         }
         .notification.show {
             transform: translateX(0);
@@ -148,41 +112,38 @@
         .deposit-modal {
             max-width: 360px;
             width: 90%;
-            background: rgba(20, 20, 35, 0.7);
+            background: rgba(20, 20, 35, 0.85);
             backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
             border: 0.5px solid rgba(255, 255, 255, 0.2);
             border-radius: 32px;
-            padding: 30px 20px 25px;
+            padding: 28px 20px 24px;
             position: relative;
-            animation: slideUp 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.25s ease;
         }
 
         .modal-close {
             position: absolute;
-            top: 16px;
-            right: 16px;
-            color: #fff;
-            font-size: 28px;
-            font-weight: 400;
+            top: 8px;
+            right: 8px;
+            color: #b87aff;
+            font-size: 18px;
+            font-weight: 700;
             cursor: pointer;
             z-index: 10;
             line-height: 1;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(4px);
-            width: 36px;
-            height: 36px;
+            background: transparent;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            transition: all 0.2s ease;
+            transition: all 0.1s ease;
             font-family: system-ui, -apple-system, 'Inter', sans-serif;
         }
 
         .modal-close:active {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(184, 122, 255, 0.2);
             transform: scale(0.92);
         }
 
@@ -191,7 +152,7 @@
             font-weight: 600;
             color: white;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 24px;
             letter-spacing: -0.3px;
         }
 
@@ -201,11 +162,11 @@
             backdrop-filter: blur(8px);
             border: 0.5px solid rgba(255, 255, 255, 0.15);
             border-radius: 20px;
-            padding: 15px 20px;
+            padding: 14px 18px;
             font-size: 18px;
             color: white;
             outline: none;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .amount-input:focus {
@@ -219,17 +180,17 @@
         }
 
         .deposit-button {
-            background: rgba(106, 13, 173, 0.6);
+            background: rgba(106, 13, 173, 0.7);
             backdrop-filter: blur(20px);
             border: 0.5px solid rgba(184, 122, 255, 0.4);
             border-radius: 60px;
-            padding: 16px 25px;
+            padding: 14px 22px;
             width: 100%;
             color: white;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.1s ease;
             text-align: center;
             display: flex;
             align-items: center;
@@ -237,7 +198,6 @@
         }
 
         .deposit-button:active {
-            background: rgba(106, 13, 173, 0.8);
             transform: scale(0.97);
         }
 
@@ -246,12 +206,12 @@
             backdrop-filter: blur(4px);
             padding: 4px 12px;
             border-radius: 30px;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .quick-amounts {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             margin-bottom: 20px;
             flex-wrap: wrap;
             justify-content: center;
@@ -262,12 +222,14 @@
             backdrop-filter: blur(8px);
             border: 0.5px solid rgba(184, 122, 255, 0.3);
             border-radius: 30px;
-            padding: 8px 16px;
-            font-size: 14px;
+            padding: 8px 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #b87aff;
             cursor: pointer;
             transition: all 0.1s ease;
+            min-width: 70px;
+            text-align: center;
         }
 
         .quick-amount:active {
@@ -327,11 +289,10 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            letter-spacing: -0.2px;
         }
 
         .username {
-            font-size: 15px;
+            font-size: 14px;
             color: rgba(255, 255, 255, 0.5);
             font-weight: 500;
             white-space: nowrap;
@@ -342,12 +303,12 @@
         .balance-block {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(20px);
             border: 0.5px solid rgba(138, 43, 226, 0.3);
             border-radius: 40px;
-            padding: 6px 12px 6px 16px;
+            padding: 6px 10px 6px 16px;
             flex-shrink: 0;
         }
 
@@ -370,13 +331,13 @@
             backdrop-filter: blur(8px);
             border: 0.5px solid rgba(138, 43, 226, 0.5);
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #b87aff;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.1s ease;
@@ -384,7 +345,7 @@
 
         .plus-btn:active {
             background: rgba(106, 13, 173, 0.6);
-            transform: scale(0.94);
+            transform: scale(0.92);
         }
 
         .profile-frame-container {
@@ -397,7 +358,7 @@
             backdrop-filter: blur(24px);
             border: 0.5px solid rgba(138, 43, 226, 0.2);
             border-radius: 32px;
-            padding: 24px 20px 24px;
+            padding: 20px 18px 22px;
             position: relative;
             z-index: 1;
         }
@@ -406,7 +367,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .inventory-title {
@@ -416,15 +377,14 @@
         }
 
         .inventory-title i {
-            font-size: 24px;
+            font-size: 22px;
             color: #b87aff;
         }
 
         .inventory-title span {
-            font-size: 20px;
+            font-size: 19px;
             font-weight: 600;
             color: white;
-            letter-spacing: -0.3px;
         }
 
         .info-circle {
@@ -440,8 +400,8 @@
             cursor: pointer;
             transition: all 0.1s ease;
             color: rgba(184, 122, 255, 0.7);
-            font-size: 18px;
-            font-weight: 500;
+            font-size: 16px;
+            font-weight: 600;
         }
 
         .info-circle:active {
@@ -461,30 +421,30 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            padding: 16px 0;
+            padding: 14px 0;
             border: 1.5px dashed rgba(184, 122, 255, 0.4);
             border-radius: 60px;
             background: rgba(106, 13, 173, 0.08);
             backdrop-filter: blur(8px);
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.1s ease;
             margin-bottom: 20px;
-            min-height: 80px;
+            min-height: 76px;
+            position: relative;
         }
 
         .add-gift-btn .plus-symbol {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 300;
             line-height: 1;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             color: rgba(255, 255, 255, 0.7);
         }
 
         .add-gift-btn .plus-text {
-            font-size: 14px;
+            font-size: 13px;
             color: rgba(255, 255, 255, 0.5);
             font-weight: 500;
-            letter-spacing: 0.3px;
         }
 
         .add-gift-btn:active {
@@ -495,44 +455,44 @@
         .instruction-modal {
             max-width: 360px;
             width: 90%;
-            background: rgba(20, 20, 35, 0.8);
+            background: rgba(20, 20, 35, 0.85);
             backdrop-filter: blur(40px);
             border: 0.5px solid rgba(184, 122, 255, 0.3);
             border-radius: 32px;
-            padding: 30px 20px 25px;
+            padding: 28px 20px 24px;
             position: relative;
-            animation: slideUp 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            animation: slideUp 0.25s ease;
         }
 
         .instruction-warning {
             background: rgba(184, 77, 77, 0.2);
             backdrop-filter: blur(8px);
-            border-radius: 20px;
-            padding: 16px 18px;
-            margin: 5px 0 25px;
+            border-radius: 18px;
+            padding: 14px 16px;
+            margin: 5px 0 22px;
             border: 0.5px solid rgba(255, 255, 255, 0.1);
         }
 
         .instruction-warning-title {
             color: #ff8888;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .instruction-warning-text {
             color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .instruction-item {
             display: flex;
             align-items: center;
             gap: 14px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(8px);
-            border-radius: 20px;
+            border-radius: 18px;
             padding: 12px 14px;
             cursor: pointer;
             transition: all 0.1s ease;
@@ -545,15 +505,15 @@
         }
 
         .instruction-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 18px;
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 26px;
             color: rgba(255, 255, 255, 0.7);
             border: 0.5px solid rgba(255, 255, 255, 0.1);
             flex-shrink: 0;
@@ -564,14 +524,14 @@
         }
 
         .instruction-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             color: white;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .instruction-subtitle {
-            font-size: 14px;
+            font-size: 13px;
             color: rgba(255, 255, 255, 0.5);
         }
 
@@ -581,35 +541,34 @@
         }
 
         .instruction-button {
-            background: rgba(106, 13, 173, 0.6);
+            background: rgba(106, 13, 173, 0.7);
             backdrop-filter: blur(20px);
             border: 0.5px solid rgba(184, 122, 255, 0.3);
             border-radius: 60px;
-            padding: 16px;
+            padding: 14px;
             width: 100%;
             color: white;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.1s ease;
-            margin-top: 10px;
+            margin-top: 8px;
             text-align: center;
         }
 
         .instruction-button:active {
-            background: rgba(106, 13, 173, 0.8);
             transform: scale(0.97);
         }
 
         .inventory-scroll {
             max-height: 400px;
             overflow-y: auto;
-            padding-right: 5px;
-            margin-bottom: 10px;
+            padding-right: 4px;
+            margin-bottom: 8px;
         }
 
         .inventory-scroll::-webkit-scrollbar {
-            width: 4px;
+            width: 3px;
         }
 
         .inventory-scroll::-webkit-scrollbar-track {
@@ -625,97 +584,95 @@
         .inventory-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
 
         .inventory-item {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(12px);
             border: 0.5px solid rgba(138, 43, 226, 0.25);
-            border-radius: 20px;
-            padding: 12px 8px 10px;
+            border-radius: 18px;
+            padding: 10px 6px 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            transition: all 0.1s ease;
+            transition: all 0.08s ease;
         }
 
         .inventory-item:active {
-            transform: scale(0.97);
+            transform: scale(0.96);
             border-color: rgba(184, 122, 255, 0.6);
-            background: rgba(255, 255, 255, 0.08);
         }
 
         .inventory-item-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 18px;
+            width: 76px;
+            height: 76px;
+            border-radius: 16px;
             object-fit: cover;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             background: rgba(42, 30, 58, 0.5);
             border: 0.5px solid rgba(184, 122, 255, 0.2);
         }
 
         .inventory-item-name {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
             color: #f0f0f0;
             text-align: center;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 100%;
-            padding: 0 2px;
         }
 
         .inventory-item-price {
             display: flex;
             align-items: center;
             gap: 3px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: #b87aff;
         }
 
         .inventory-item-price .price-icon {
-            font-size: 12px;
+            font-size: 11px;
             color: #ffd700;
         }
 
         .empty-inventory {
             text-align: center;
             color: rgba(255, 255, 255, 0.5);
-            font-size: 14px;
-            padding: 30px 0;
+            font-size: 13px;
+            padding: 28px 0;
         }
 
         .empty-inventory i {
-            font-size: 48px;
+            font-size: 44px;
             color: #b87aff;
             opacity: 0.3;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: block;
         }
 
         .hint-message {
             position: absolute;
-            top: 60px;
-            right: 20px;
-            width: 280px;
-            background: rgba(106, 13, 173, 0.8);
-            backdrop-filter: blur(32px);
-            border-radius: 24px;
-            padding: 16px 18px;
+            top: 58px;
+            right: 18px;
+            width: 260px;
+            background: rgba(106, 13, 173, 0.85);
+            backdrop-filter: blur(28px);
+            border-radius: 22px;
+            padding: 14px 16px;
             border: 0.5px solid rgba(255, 255, 255, 0.2);
             display: none;
             z-index: 10;
-            animation: fadeIn 0.15s ease;
+            animation: fadeIn 0.12s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
+            from { opacity: 0; transform: translateY(-4px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -726,46 +683,46 @@
         .hint-message::before {
             content: '';
             position: absolute;
-            top: -10px;
-            right: 15px;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-bottom: 12px solid rgba(106, 13, 173, 0.8);
+            top: -8px;
+            right: 14px;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid rgba(106, 13, 173, 0.85);
         }
 
         .hint-text {
-            font-size: 14px;
+            font-size: 13px;
             color: rgba(255, 255, 255, 0.95);
-            line-height: 1.5;
+            line-height: 1.45;
         }
 
         .hint-text span {
             font-weight: 700;
             color: #ffffff;
             background: rgba(255, 255, 255, 0.15);
-            padding: 2px 8px;
+            padding: 2px 7px;
             border-radius: 40px;
             display: inline-block;
             margin: 0 2px;
         }
 
         .nft-modal {
-            max-width: 320px;
+            max-width: 310px;
             width: 85%;
-            background: rgba(20, 20, 35, 0.8);
+            background: rgba(20, 20, 35, 0.85);
             backdrop-filter: blur(40px);
             border: 0.5px solid rgba(184, 122, 255, 0.3);
-            border-radius: 32px;
-            padding: 30px 20px 25px;
+            border-radius: 30px;
+            padding: 28px 18px 22px;
             position: relative;
-            animation: fadeIn 0.2s ease;
+            animation: fadeIn 0.18s ease;
         }
 
         .nft-modal-image {
-            width: 140px;
-            height: 140px;
-            border-radius: 28px;
-            margin: 5px auto 15px;
+            width: 130px;
+            height: 130px;
+            border-radius: 24px;
+            margin: 4px auto 12px;
             display: block;
             object-fit: cover;
             background: rgba(42, 42, 58, 0.5);
@@ -773,34 +730,33 @@
         }
 
         .nft-modal-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.85);
             text-align: center;
-            margin-bottom: 8px;
-            letter-spacing: -0.3px;
+            margin-bottom: 6px;
         }
 
         .nft-modal-price {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            font-size: 24px;
+            gap: 5px;
+            font-size: 22px;
             font-weight: 700;
             color: #ffffff;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .nft-modal-price .price-icon {
-            font-size: 22px;
+            font-size: 20px;
             color: #ffd700;
         }
 
         .modal-actions {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             width: 100%;
         }
 
@@ -809,9 +765,9 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            padding: 14px 20px;
+            padding: 12px 18px;
             border-radius: 60px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             border: 0.5px solid rgba(184, 122, 255, 0.2);
@@ -822,24 +778,24 @@
         }
 
         .sell-btn.active {
-            background: rgba(106, 13, 173, 0.6);
+            background: rgba(106, 13, 173, 0.7);
             border: 0.5px solid rgba(184, 122, 255, 0.4);
             color: white;
             justify-content: center;
         }
 
         .sell-btn:active {
-            transform: scale(0.97);
+            transform: scale(0.96);
         }
 
         .sell-btn .btn-left {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 7px;
         }
 
         .sell-btn .btn-left i {
-            font-size: 16px;
+            font-size: 15px;
             color: rgba(255, 255, 255, 0.5);
         }
 
@@ -851,9 +807,9 @@
             font-weight: 500;
             background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(4px);
-            padding: 4px 10px;
+            padding: 3px 9px;
             border-radius: 30px;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .withdraw-btn {
@@ -861,10 +817,10 @@
             backdrop-filter: blur(8px);
             border: 0.5px solid rgba(184, 122, 255, 0.3);
             border-radius: 60px;
-            padding: 14px;
+            padding: 12px;
             width: 100%;
             color: #b87aff;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.1s ease;
@@ -873,7 +829,7 @@
 
         .withdraw-btn:active {
             background: rgba(184, 122, 255, 0.1);
-            transform: scale(0.97);
+            transform: scale(0.96);
         }
 
         .bottom-nav {
@@ -883,17 +839,17 @@
             right: 0;
             max-width: 440px;
             margin: 0 auto;
-            background: rgba(20, 20, 30, 0.7);
-            backdrop-filter: blur(32px);
+            background: rgba(20, 20, 30, 0.75);
+            backdrop-filter: blur(28px);
             display: flex;
             justify-content: space-around;
-            padding: 10px 16px;
-            border-radius: 40px;
+            padding: 8px 16px;
+            border-radius: 36px;
             border: 0.5px solid rgba(184, 122, 255, 0.2);
-            margin-bottom: 20px;
-            width: calc(100% - 40px);
-            left: 20px;
-            right: 20px;
+            margin-bottom: 18px;
+            width: calc(100% - 36px);
+            left: 18px;
+            right: 18px;
             z-index: 1000;
         }
 
@@ -901,19 +857,19 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             color: rgba(255, 255, 255, 0.5);
             font-size: 10px;
             font-weight: 500;
             cursor: pointer;
-            padding: 8px 16px;
-            border-radius: 30px;
+            padding: 6px 14px;
+            border-radius: 28px;
             text-align: center;
             text-decoration: none;
             transition: all 0.1s ease;
             background: transparent;
             border: none;
-            min-width: 80px;
+            min-width: 70px;
         }
 
         .nav-item:active {
@@ -922,15 +878,14 @@
         }
 
         .nav-item i {
-            font-size: 22px;
+            font-size: 20px;
             color: rgba(255, 255, 255, 0.5);
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
 
         .nav-item span {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 500;
-            letter-spacing: 0.3px;
         }
 
         .nav-item.active {
@@ -958,8 +913,10 @@
             <div class="quick-amounts">
                 <span class="quick-amount" data-amount="50">50 ⭐</span>
                 <span class="quick-amount" data-amount="100">100 ⭐</span>
+                <span class="quick-amount" data-amount="200">200 ⭐</span>
                 <span class="quick-amount" data-amount="500">500 ⭐</span>
                 <span class="quick-amount" data-amount="1000">1000 ⭐</span>
+                <span class="quick-amount" data-amount="2000">2000 ⭐</span>
             </div>
             <input type="text" class="amount-input" id="amountInput" placeholder="Введите количество звезд" inputmode="numeric">
             <button class="deposit-button" id="depositButton">
@@ -973,7 +930,7 @@
         <div class="instruction-modal">
             <div class="modal-close" id="closeModal">✕</div>
             <div class="instruction-warning">
-                <div class="instruction-warning-title">⚠️ Не дарите подарки с Telegram Маркета</div>
+                <div class="instruction-warning-title">Не дарите подарки с Telegram Маркета</div>
                 <div class="instruction-warning-text">Отправляйте подарки только напрямую со своего аккаунта</div>
             </div>
             <div class="instruction-item" id="goToBot">
@@ -1045,7 +1002,7 @@
                         <i class="fas fa-box"></i>
                         <span>Инвентарь</span>
                     </div>
-                    <div class="info-circle" id="infoCircle">!</div>
+                    <div class="info-circle" id="infoCircle">i</div>
                 </div>
 
                 <div class="add-gift-btn" id="addGiftBtn">
@@ -1079,8 +1036,7 @@
 
             function getPurchasedItems() {
                 try {
-                    const items = localStorage.getItem(PURCHASED_KEY);
-                    return items ? JSON.parse(items) : [];
+                    return JSON.parse(localStorage.getItem(PURCHASED_KEY)) || [];
                 } catch {
                     return [];
                 }
@@ -1141,7 +1097,7 @@
                 const notif = document.getElementById('notification');
                 notif.innerText = message;
                 notif.classList.add('show');
-                setTimeout(() => notif.classList.remove('show'), 2500);
+                setTimeout(() => notif.classList.remove('show'), 2000);
             }
 
             function renderInventory() {
@@ -1154,15 +1110,26 @@
                 }
 
                 let html = '<div class="inventory-grid">';
-                inventory.forEach((item, index) => {
-                    html += `<div class="inventory-item" data-index="${index}" data-id="${item.id}">
+                for (let i = 0; i < inventory.length; i++) {
+                    const item = inventory[i];
+                    html += `<div class="inventory-item" data-index="${i}" data-id="${item.id}">
                         <img src="${item.image}" alt="${item.name}" class="inventory-item-image" onerror="this.src=\'https://via.placeholder.com/80/6a0dad/ffffff?text=NFT\'" loading="lazy">
-                        <div class="inventory-item-name">${item.name}</div>
+                        <div class="inventory-item-name">${escapeHtml(item.name)}</div>
                         <div class="inventory-item-price"><span class="price-icon">🧩</span><span>${item.price}</span></div>
                     </div>`;
-                });
+                }
                 html += '</div>';
                 container.innerHTML = html;
+            }
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return str.replace(/[&<>]/g, function(m) {
+                    if (m === '&') return '&amp;';
+                    if (m === '<') return '&lt;';
+                    if (m === '>') return '&gt;';
+                    return m;
+                });
             }
 
             function processPurchasedItems() {
@@ -1171,8 +1138,9 @@
                     const inventory = getInventory();
                     const timers = loadTimers();
                     
-                    purchasedItems.forEach(item => {
-                        const itemId = Date.now() + Math.random() + item.id;
+                    for (let i = 0; i < purchasedItems.length; i++) {
+                        const item = purchasedItems[i];
+                        const itemId = Date.now() + Math.random() + (item.id || i);
                         const purchaseTime = Date.now();
                         
                         inventory.push({ 
@@ -1183,7 +1151,7 @@
                             purchaseTime: purchaseTime 
                         });
                         timers[itemId] = purchaseTime;
-                    });
+                    }
                     
                     saveTimers(timers);
                     saveInventory(inventory);
@@ -1199,7 +1167,7 @@
                 if (cleaned === '' || cleaned === '.') return 1;
                 let num = parseFloat(cleaned);
                 if (isNaN(num)) return 1;
-                num = Math.round(num);
+                num = Math.floor(num);
                 if (num < 1) return 1;
                 if (num > 100000) return 100000;
                 return num;
@@ -1213,7 +1181,8 @@
                 }
                 window.location.href = `https://t.me/${BOT_USERNAME}?start=pay_${amount}`;
                 showNotification(`⏳ Открываю оплату на ${amount} ⭐...`);
-                depositModal.classList.remove('active');
+                const modal = document.getElementById('depositModal');
+                if (modal) modal.classList.remove('active');
                 
                 setTimeout(() => {
                     const confirmed = confirm(`Подтверди тестовую оплату ${amount} ⭐?`);
@@ -1224,7 +1193,13 @@
                 }, 3000);
             }
 
+            let activeTimers = {};
+
             function startTimer(button, timerDisplay, itemId) {
+                if (activeTimers[itemId]) {
+                    clearInterval(activeTimers[itemId]);
+                }
+                
                 const timers = loadTimers();
                 let purchaseTime = timers[itemId];
                 if (!purchaseTime) {
@@ -1239,9 +1214,14 @@
                     const remaining = Math.max(0, 1800 - elapsed);
 
                     if (remaining <= 0) {
-                        clearInterval(interval);
-                        button.classList.add('active');
-                        button.innerHTML = 'Продать';
+                        if (activeTimers[itemId]) {
+                            clearInterval(activeTimers[itemId]);
+                            delete activeTimers[itemId];
+                        }
+                        if (button) {
+                            button.classList.add('active');
+                            button.innerHTML = 'Продать';
+                        }
                         delete timers[itemId];
                         saveTimers(timers);
                         return;
@@ -1254,6 +1234,7 @@
 
                 updateTimer();
                 const interval = setInterval(updateTimer, 1000);
+                activeTimers[itemId] = interval;
             }
 
             window.addPurchasedItem = function(name, price, image) {
@@ -1271,9 +1252,8 @@
 
             function init() {
                 const starsContainer = document.getElementById('stars');
-                if (starsContainer) {
-                    starsContainer.innerHTML = '';
-                    for (let i = 0; i < 30; i++) {
+                if (starsContainer && starsContainer.children.length === 0) {
+                    for (let i = 0; i < 40; i++) {
                         const star = document.createElement('div');
                         star.className = 'star';
                         star.style.left = Math.random() * 100 + '%';
@@ -1293,16 +1273,20 @@
                 }
 
                 const fullName = (firstName + ' ' + lastName).trim();
-                document.getElementById('fullName').innerText = fullName;
-                document.getElementById('username').innerText = tgUsername || '@' + firstName.toLowerCase().replace(/\s+/g, '');
+                const fullNameEl = document.getElementById('fullName');
+                const usernameEl = document.getElementById('username');
+                if (fullNameEl) fullNameEl.innerText = fullName || 'Игрок';
+                if (usernameEl) usernameEl.innerText = tgUsername || '@' + firstName.toLowerCase().replace(/\s+/g, '');
 
                 const avatarDiv = document.getElementById('avatar');
-                if (tg?.initDataUnsafe?.user?.photo_url) {
-                    avatarDiv.style.backgroundImage = `url('${tg.initDataUnsafe.user.photo_url}')`;
-                    avatarDiv.style.backgroundSize = 'cover';
-                    avatarDiv.innerText = '';
-                } else {
-                    avatarDiv.innerText = firstName.charAt(0).toUpperCase();
+                if (avatarDiv) {
+                    if (tg?.initDataUnsafe?.user?.photo_url) {
+                        avatarDiv.style.backgroundImage = `url('${tg.initDataUnsafe.user.photo_url}')`;
+                        avatarDiv.style.backgroundSize = 'cover';
+                        avatarDiv.innerText = '';
+                    } else {
+                        avatarDiv.innerText = firstName.charAt(0).toUpperCase();
+                    }
                 }
 
                 processPurchasedItems();
@@ -1330,56 +1314,68 @@
                 const selectedAmountSpan = document.getElementById('selectedAmount');
                 const quickAmounts = document.querySelectorAll('.quick-amount');
 
-                plusBtn.addEventListener('click', e => {
-                    e.preventDefault();
-                    amountInput.value = '';
-                    selectedAmountSpan.innerText = '0';
-                    depositModal.classList.add('active');
-                });
+                if (plusBtn) {
+                    plusBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (amountInput) amountInput.value = '';
+                        if (selectedAmountSpan) selectedAmountSpan.innerText = '0';
+                        if (depositModal) depositModal.classList.add('active');
+                    });
+                }
 
                 quickAmounts.forEach(btn => {
                     btn.addEventListener('click', () => {
                         const amount = btn.dataset.amount;
-                        amountInput.value = amount;
-                        selectedAmountSpan.innerText = amount;
+                        if (amountInput) amountInput.value = amount;
+                        if (selectedAmountSpan) selectedAmountSpan.innerText = amount;
                     });
                 });
 
-                closeDepositModal.addEventListener('click', () => depositModal.classList.remove('active'));
-                depositModal.addEventListener('click', e => { if (e.target === depositModal) depositModal.classList.remove('active'); });
+                if (closeDepositModal) {
+                    closeDepositModal.addEventListener('click', () => depositModal.classList.remove('active'));
+                }
+                if (depositModal) {
+                    depositModal.addEventListener('click', (e) => { if (e.target === depositModal) depositModal.classList.remove('active'); });
+                }
 
-                amountInput.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/[^\d.]/g, '');
-                    const parts = value.split('.');
-                    if (parts.length > 2) value = parts[0] + '.' + parts.slice(1).join('');
-                    e.target.value = value;
-                    selectedAmountSpan.innerText = (value && value !== '.') ? value : '0';
-                });
+                if (amountInput) {
+                    amountInput.addEventListener('input', (e) => {
+                        let value = e.target.value.replace(/[^\d.]/g, '');
+                        const parts = value.split('.');
+                        if (parts.length > 2) value = parts[0] + '.' + parts.slice(1).join('');
+                        e.target.value = value;
+                        if (selectedAmountSpan) selectedAmountSpan.innerText = (value && value !== '.') ? value : '0';
+                    });
 
-                amountInput.addEventListener('blur', (e) => {
-                    const formatted = validateAndFormatAmount(e.target.value);
-                    e.target.value = formatted;
-                    selectedAmountSpan.innerText = formatted;
-                });
+                    amountInput.addEventListener('blur', (e) => {
+                        const formatted = validateAndFormatAmount(e.target.value);
+                        e.target.value = formatted;
+                        if (selectedAmountSpan) selectedAmountSpan.innerText = formatted;
+                    });
+                }
 
-                depositButton.addEventListener('click', () => {
-                    const amount = validateAndFormatAmount(amountInput.value);
-                    if (amount > 0) openTelegramPayment(amount);
-                });
+                if (depositButton) {
+                    depositButton.addEventListener('click', () => {
+                        const amount = validateAndFormatAmount(amountInput ? amountInput.value : '0');
+                        if (amount > 0) openTelegramPayment(amount);
+                    });
+                }
 
                 const infoCircle = document.getElementById('infoCircle');
                 const hintMessage = document.getElementById('hintMessage');
-                infoCircle.addEventListener('click', e => {
-                    e.stopPropagation();
-                    hintMessage.classList.toggle('show');
-                    infoCircle.classList.toggle('active');
-                });
-                document.addEventListener('click', e => {
-                    if (!hintMessage.contains(e.target) && !infoCircle.contains(e.target)) {
-                        hintMessage.classList.remove('show');
-                        infoCircle.classList.remove('active');
-                    }
-                });
+                if (infoCircle && hintMessage) {
+                    infoCircle.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        hintMessage.classList.toggle('show');
+                        infoCircle.classList.toggle('active');
+                    });
+                    document.addEventListener('click', (e) => {
+                        if (!hintMessage.contains(e.target) && !infoCircle.contains(e.target)) {
+                            hintMessage.classList.remove('show');
+                            infoCircle.classList.remove('active');
+                        }
+                    });
+                }
 
                 const giftModal = document.getElementById('giftModal');
                 const closeModal = document.getElementById('closeModal');
@@ -1387,17 +1383,23 @@
                 const goToBot = document.getElementById('goToBot');
                 const goButton = document.getElementById('goButton');
 
-                addGiftBtn.addEventListener('click', e => {
-                    e.preventDefault();
-                    giftModal.classList.add('active');
-                });
+                if (addGiftBtn) {
+                    addGiftBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (giftModal) giftModal.classList.add('active');
+                    });
+                }
 
-                closeModal.addEventListener('click', () => giftModal.classList.remove('active'));
-                giftModal.addEventListener('click', e => { if (e.target === giftModal) giftModal.classList.remove('active'); });
+                if (closeModal) {
+                    closeModal.addEventListener('click', () => giftModal.classList.remove('active'));
+                }
+                if (giftModal) {
+                    giftModal.addEventListener('click', (e) => { if (e.target === giftModal) giftModal.classList.remove('active'); });
+                }
 
                 const openBot = () => window.open(`https://t.me/${BOT_USERNAME}`, '_blank');
-                goToBot.addEventListener('click', openBot);
-                goButton.addEventListener('click', openBot);
+                if (goToBot) goToBot.addEventListener('click', openBot);
+                if (goButton) goButton.addEventListener('click', openBot);
 
                 const nftModal = document.getElementById('nftModal');
                 const closeNftModal = document.getElementById('closeNftModal');
@@ -1405,7 +1407,6 @@
                 const modalTitle = document.getElementById('modalNftTitle');
                 const modalPrice = document.getElementById('modalNftPriceValue');
                 const sellBtn = document.getElementById('sellBtn');
-                const timerDisplay = document.getElementById('timerDisplay');
                 const withdrawBtn = document.getElementById('withdrawBtn');
 
                 document.addEventListener('click', function(e) {
@@ -1416,43 +1417,56 @@
                     const index = item.dataset.index;
                     if (index === undefined) return;
                     
-                    const itemData = inventory[index];
+                    const itemData = inventory[parseInt(index)];
                     if (!itemData) return;
 
-                    modalImage.src = itemData.image;
-                    modalImage.alt = itemData.name;
-                    modalTitle.innerText = itemData.name;
-                    modalPrice.innerText = itemData.price;
+                    if (modalImage) modalImage.src = itemData.image;
+                    if (modalTitle) modalTitle.innerText = itemData.name;
+                    if (modalPrice) modalPrice.innerText = itemData.price;
 
-                    sellBtn.classList.remove('active');
-                    sellBtn.innerHTML = `<span class="btn-left"><i class="fas fa-lock"></i> Продать</span><span class="timer" id="timerDisplay">30:00</span>`;
-                    
-                    const newTimer = document.getElementById('timerDisplay');
-                    if (newTimer && itemData.id) {
-                        startTimer(sellBtn, newTimer, itemData.id);
+                    if (sellBtn) {
+                        sellBtn.classList.remove('active');
+                        sellBtn.innerHTML = `<span class="btn-left"><i class="fas fa-lock"></i> Продать</span><span class="timer" id="timerDisplay">30:00</span>`;
+                        
+                        const newTimer = document.getElementById('timerDisplay');
+                        if (newTimer && itemData.id) {
+                            startTimer(sellBtn, newTimer, itemData.id);
+                        }
                     }
 
-                    nftModal.classList.add('active');
+                    if (nftModal) nftModal.classList.add('active');
                 });
 
-                closeNftModal.addEventListener('click', () => nftModal.classList.remove('active'));
-                nftModal.addEventListener('click', e => { if (e.target === nftModal) nftModal.classList.remove('active'); });
+                if (closeNftModal) {
+                    closeNftModal.addEventListener('click', () => nftModal.classList.remove('active'));
+                }
+                if (nftModal) {
+                    nftModal.addEventListener('click', (e) => { if (e.target === nftModal) nftModal.classList.remove('active'); });
+                }
                 
-                sellBtn.addEventListener('click', () => {
-                    alert('Функция продажи временно недоступна');
-                });
+                if (sellBtn) {
+                    sellBtn.addEventListener('click', () => {
+                        alert('Функция продажи временно недоступна');
+                    });
+                }
                 
-                withdrawBtn.addEventListener('click', () => {
-                    alert('Функция вывода средств временно недоступна');
-                });
+                if (withdrawBtn) {
+                    withdrawBtn.addEventListener('click', () => {
+                        alert('Функция вывода средств временно недоступна');
+                    });
+                }
 
                 const navMarket = document.getElementById('navMarket');
                 const navProfile = document.getElementById('navProfile');
-                navMarket.addEventListener('click', e => {
-                    e.preventDefault();
-                    window.location.href = 'market.html';
-                });
-                navProfile.addEventListener('click', e => e.preventDefault());
+                if (navMarket) {
+                    navMarket.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        window.location.href = 'market.html';
+                    });
+                }
+                if (navProfile) {
+                    navProfile.addEventListener('click', (e) => e.preventDefault());
+                }
             }
 
             if (document.readyState === 'loading') {
