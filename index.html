@@ -23,6 +23,7 @@
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         body::before {
@@ -56,6 +57,7 @@
             padding-bottom: 100px;
             min-height: 100vh;
             z-index: 1;
+            margin: 0 auto;
         }
 
         .notification {
@@ -416,23 +418,32 @@
 
         .filter-modal {
             position: fixed;
-            bottom: 0;
+            top: 0;
             left: 0;
             right: 0;
-            max-width: 440px;
-            margin: 0 auto;
-            background: rgba(20, 20, 35, 0.95);
+            bottom: 0;
+            max-width: 100%;
+            width: 100%;
+            background: rgba(20, 20, 35, 0.98);
             backdrop-filter: blur(40px);
-            border-radius: 32px 32px 0 0;
-            padding: 20px 20px 30px;
             z-index: 1500;
             transform: translateY(100%);
             transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            border-top: 0.5px solid rgba(184, 122, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
         }
 
         .filter-modal.active {
             transform: translateY(0);
+        }
+
+        .filter-content {
+            max-width: 440px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px 20px 30px;
+            flex: 1;
         }
 
         .filter-header {
@@ -441,6 +452,7 @@
             align-items: center;
             margin-bottom: 20px;
             position: relative;
+            padding: 0 20px;
         }
 
         .filter-header h3 {
@@ -451,7 +463,7 @@
 
         .filter-close {
             position: absolute;
-            right: 0;
+            right: 20px;
             color: #b87aff;
             font-size: 24px;
             font-weight: 500;
@@ -461,6 +473,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
         }
 
         .filter-tabs {
@@ -501,6 +515,7 @@
             display: flex;
             gap: 12px;
             margin-bottom: 20px;
+            padding: 0 4px;
         }
 
         .filter-search-box {
@@ -541,7 +556,7 @@
         }
 
         .filter-list {
-            max-height: 450px;
+            max-height: 60vh;
             overflow-y: auto;
             padding-right: 4px;
         }
@@ -790,6 +805,29 @@
         .overlay.active {
             display: block;
         }
+
+        @media (min-width: 768px) {
+            .filter-modal {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: rgba(0, 0, 0, 0.8);
+            }
+            .filter-content {
+                max-width: 440px;
+                max-height: 80vh;
+                background: rgba(20, 20, 35, 0.95);
+                backdrop-filter: blur(40px);
+                border-radius: 32px;
+                overflow-y: auto;
+            }
+            .filter-header {
+                padding: 0;
+            }
+            .filter-close {
+                right: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -818,26 +856,28 @@
     </div>
 
     <div class="filter-modal" id="filterModal">
-        <div class="filter-header">
-            <h3>Фильтр</h3>
-            <div class="filter-close" id="filterClose">✕</div>
-        </div>
-        <div class="filter-tabs">
-            <div class="filter-tab active" data-tab="collection">Коллекция</div>
-            <div class="filter-tab" data-tab="model">Модель</div>
-            <div class="filter-tab" data-tab="background">Фон</div>
-            <div class="filter-tab" data-tab="pattern">Узор</div>
-        </div>
-        <div class="filter-search">
-            <div class="filter-search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="filterSearchInput" placeholder="Поиск...">
+        <div class="filter-content">
+            <div class="filter-header">
+                <h3>Фильтр</h3>
+                <div class="filter-close" id="filterClose">✕</div>
             </div>
-            <div class="filter-sort-arrow" id="filterSortArrow">
-                <i class="fas fa-arrow-up"></i>
+            <div class="filter-tabs">
+                <div class="filter-tab active" data-tab="collection">Коллекция</div>
+                <div class="filter-tab" data-tab="model">Модель</div>
+                <div class="filter-tab" data-tab="background">Фон</div>
+                <div class="filter-tab" data-tab="pattern">Узор</div>
             </div>
+            <div class="filter-search">
+                <div class="filter-search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="filterSearchInput" placeholder="Поиск...">
+                </div>
+                <div class="filter-sort-arrow" id="filterSortArrow">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+            </div>
+            <div class="filter-list" id="filterList"></div>
         </div>
-        <div class="filter-list" id="filterList"></div>
     </div>
 
     <div class="app">
@@ -888,6 +928,9 @@
             const STORAGE_KEY = 'nft_balance';
             const PURCHASED_KEY = 'nft_purchased_items';
             const BOT_USERNAME = 'yeter16_bot';
+            
+            // Базовый URL для фоток на GitHub
+            const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/ur12163008-bot/yeter-game/main/nft/';
 
             const COLLECTION_NAMES = [
                 "Artisan Brick", "B-Day Candle", "Berry Box", "Big Year", "Bling Binky",
@@ -912,6 +955,11 @@
                 "Witch Hat", "Xmas Stocking"
             ];
 
+            function getImagePath(name) {
+                const encodedName = name.replace(/ /g, '_').replace(/[()]/g, '');
+                return `${GITHUB_BASE_URL}${encodedName}.png`;
+            }
+
             let NFT_ITEMS = [];
             
             for (let i = 0; i < COLLECTION_NAMES.length; i++) {
@@ -919,7 +967,7 @@
                     id: i + 1,
                     name: COLLECTION_NAMES[i],
                     price: Math.floor(Math.random() * 400) + 50,
-                    image: `nft/${encodeURIComponent(COLLECTION_NAMES[i].replace(/ /g, '_'))}.png`,
+                    image: getImagePath(COLLECTION_NAMES[i]),
                     collection: COLLECTION_NAMES[i],
                     pattern: ["Классический", "Современный", "Винтажный", "Неоновый"][i % 4],
                     background: ["Темный", "Светлый", "Градиент", "Звездный"][i % 4],
@@ -1097,7 +1145,7 @@
                     const opt = options[i];
                     const isSelected = selections.includes(opt);
                     if (currentTab === 'collection') {
-                        const imgPath = `nft/${encodeURIComponent(opt.replace(/ /g, '_'))}.png`;
+                        const imgPath = getImagePath(opt);
                         html += `<div class="filter-option ${isSelected ? 'selected' : ''}" data-value="${escapeHtml(opt)}">
                             <img src="${imgPath}" class="filter-option-image" loading="lazy" onerror="this.src='https://picsum.photos/id/${(i % 100) + 1}/100/100'">
                             <div class="filter-option-name">${escapeHtml(opt)}</div>
