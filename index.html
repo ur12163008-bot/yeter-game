@@ -1,1419 +1,581 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Market · NFT Shop</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #03050a;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(ellipse at 40% 50%, #0a0e1a 0%, #03050a 70%, #000103 100%);
-            z-index: -2;
-        }
-
-        .stars {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-        
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            width: 2px;
-            height: 2px;
-            opacity: 0.3;
-        }
-
-        .app {
-            max-width: 440px;
-            width: 100%;
-            background: transparent;
-            padding-bottom: 100px;
-            min-height: 100vh;
-            z-index: 1;
-            margin: 0 auto;
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 12px 20px;
-            border-radius: 60px;
-            background: rgba(0, 200, 83, 0.9);
-            backdrop-filter: blur(20px);
-            color: white;
-            font-weight: 500;
-            font-size: 14px;
-            z-index: 3000;
-            transform: translateX(150%);
-            transition: transform 0.2s ease;
-            border: 0.5px solid rgba(255, 255, 255, 0.2);
-            pointer-events: none;
-        }
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            z-index: 2000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .deposit-modal {
-            max-width: 360px;
-            width: 90%;
-            background: rgba(20, 20, 35, 0.85);
-            backdrop-filter: blur(40px);
-            border: 0.5px solid rgba(255, 255, 255, 0.2);
-            border-radius: 32px;
-            padding: 28px 20px 24px;
-            position: relative;
-            animation: slideUp 0.25s ease;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            color: #b87aff;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            transition: all 0.1s ease;
-        }
-
-        .modal-close:active {
-            background: rgba(184, 122, 255, 0.2);
-            transform: scale(0.92);
-        }
-
-        .deposit-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: white;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .amount-input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(8px);
-            border: 0.5px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            padding: 14px 18px;
-            font-size: 18px;
-            color: white;
-            outline: none;
-            margin-bottom: 18px;
-        }
-
-        .amount-input:focus {
-            border-color: rgba(184, 122, 255, 0.6);
-        }
-
-        .deposit-button {
-            background: rgba(106, 13, 173, 0.7);
-            backdrop-filter: blur(20px);
-            border: 0.5px solid rgba(184, 122, 255, 0.4);
-            border-radius: 60px;
-            padding: 14px 22px;
-            width: 100%;
-            color: white;
-            font-size: 17px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.1s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .deposit-button:active {
-            transform: scale(0.97);
-        }
-
-        .deposit-button span:last-child {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 4px 12px;
-            border-radius: 30px;
-        }
-
-        .quick-amounts {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .quick-amount {
-            background: rgba(106, 13, 173, 0.2);
-            backdrop-filter: blur(8px);
-            border: 0.5px solid rgba(184, 122, 255, 0.3);
-            border-radius: 30px;
-            padding: 8px 14px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #b87aff;
-            cursor: pointer;
-            transition: all 0.1s ease;
-            min-width: 70px;
-            text-align: center;
-        }
-
-        .quick-amount:active {
-            background: rgba(106, 13, 173, 0.4);
-            transform: scale(0.95);
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin: 16px 20px 20px;
-            gap: 12px;
-        }
-
-        .profile-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex: 1;
-            min-width: 0;
-        }
-
-        .avatar {
-            width: 52px;
-            height: 52px;
-            border-radius: 18px;
-            background: rgba(106, 13, 173, 0.5);
-            backdrop-filter: blur(16px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: 600;
-            color: white;
-            border: 0.5px solid rgba(184, 122, 255, 0.5);
-            flex-shrink: 0;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .name-box {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-width: 0;
-            flex: 1;
-        }
-
-        .fullname {
-            font-size: 18px;
-            font-weight: 600;
-            color: white;
-            line-height: 1.3;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .username {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.5);
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .balance-block {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            border: 0.5px solid rgba(138, 43, 226, 0.3);
-            border-radius: 40px;
-            padding: 6px 8px 6px 14px;
-            flex-shrink: 0;
-        }
-
-        .balance-stars {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-weight: 600;
-            font-size: 15px;
-            color: white;
-        }
-
-        .puzzle-icon {
-            font-size: 14px;
-            color: #ffd700;
-        }
-
-        .plus-btn {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(8px);
-            border: 0.5px solid rgba(138, 43, 226, 0.5);
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #b87aff;
-            font-size: 18px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.1s ease;
-            margin-top: -2px;
-            margin-right: -2px;
-        }
-
-        .plus-btn:active {
-            background: rgba(106, 13, 173, 0.6);
-            transform: scale(0.92);
-        }
-
-        .market-frame {
-            margin: 0 20px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(24px);
-            border: 0.5px solid rgba(138, 43, 226, 0.2);
-            border-radius: 32px;
-            padding: 18px;
-        }
-
-        .search-section {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            align-items: center;
-        }
-
-        .search-box {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(8px);
-            border: 0.5px solid rgba(255, 255, 255, 0.15);
-            border-radius: 30px;
-            padding: 12px 16px;
-        }
-
-        .search-box i {
-            color: rgba(255, 255, 255, 0.5);
-            margin-right: 10px;
-            font-size: 16px;
-        }
-
-        .search-box input {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 15px;
-            outline: none;
-            width: 100%;
-        }
-
-        .search-box input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        .filter-btn {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(8px);
-            border: 0.5px solid rgba(184, 122, 255, 0.3);
-            border-radius: 30px;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.1s ease;
-            color: #b87aff;
-            font-size: 18px;
-        }
-
-        .filter-btn:active {
-            transform: scale(0.95);
-        }
-
-        .sort-btn {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(8px);
-            border: 0.5px solid rgba(184, 122, 255, 0.3);
-            border-radius: 30px;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.1s ease;
-            color: #b87aff;
-            font-size: 18px;
-        }
-
-        .sort-btn:active {
-            transform: scale(0.95);
-        }
-
-        .filter-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            max-width: 100%;
-            width: 100%;
-            background: rgba(20, 20, 35, 0.98);
-            backdrop-filter: blur(40px);
-            z-index: 1500;
-            transform: translateY(100%);
-            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
-
-        .filter-modal.active {
-            transform: translateY(0);
-        }
-
-        .filter-content {
-            max-width: 440px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 20px 20px 30px;
-            flex: 1;
-        }
-
-        .filter-header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            position: relative;
-            padding: 0 20px;
-        }
-
-        .filter-header h3 {
-            font-size: 20px;
-            font-weight: 600;
-            color: white;
-        }
-
-        .filter-close {
-            position: absolute;
-            right: 20px;
-            color: #b87aff;
-            font-size: 24px;
-            font-weight: 500;
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-        }
-
-        .filter-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            justify-content: center;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            padding-bottom: 4px;
-        }
-
-        .filter-tab {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(8px);
-            border: 0.5px solid rgba(184, 122, 255, 0.3);
-            border-radius: 40px;
-            padding: 8px 16px;
-            font-size: 13px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.7);
-            cursor: pointer;
-            transition: all 0.1s ease;
-            white-space: nowrap;
-        }
-
-        .filter-tab:active {
-            transform: scale(0.96);
-        }
-
-        .filter-tab.active {
-            background: rgba(106, 13, 173, 0.5);
-            border-color: #b87aff;
-            color: white;
-        }
-
-        .filter-search {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            padding: 0 4px;
-        }
-
-        .filter-search-box {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.08);
-            border: 0.5px solid rgba(255, 255, 255, 0.15);
-            border-radius: 30px;
-            padding: 12px 16px;
-        }
-
-        .filter-search-box i {
-            color: rgba(255, 255, 255, 0.5);
-            margin-right: 10px;
-        }
-
-        .filter-search-box input {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 14px;
-            outline: none;
-            width: 100%;
-        }
-
-        .filter-sort-arrow {
-            background: rgba(255, 255, 255, 0.08);
-            border: 0.5px solid rgba(184, 122, 255, 0.3);
-            border-radius: 30px;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #b87aff;
-        }
-
-        .filter-list {
-            max-height: 60vh;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-
-        .filter-list::-webkit-scrollbar {
-            width: 3px;
-        }
-
-        .filter-list::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
-        .filter-list::-webkit-scrollbar-thumb {
-            background: #b87aff;
-            border-radius: 10px;
-        }
-
-        .filter-option {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.1s ease;
-        }
-
-        .filter-option:active {
-            background: rgba(106, 13, 173, 0.2);
-        }
-
-        .filter-option.selected {
-            background: rgba(106, 13, 173, 0.3);
-            border: 0.5px solid rgba(184, 122, 255, 0.5);
-        }
-
-        .filter-option-image {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            object-fit: cover;
-            background: rgba(255, 255, 255, 0.1);
-            flex-shrink: 0;
-        }
-
-        .filter-option-name {
-            flex: 1;
-            font-size: 14px;
-            font-weight: 500;
-            color: white;
-        }
-
-        .filter-option-check {
-            width: 24px;
-            height: 24px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(184, 122, 255, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #b87aff;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-
-        .filter-option.selected .filter-option-check {
-            background: #b87aff;
-            border-color: #b87aff;
-            color: white;
-        }
-
-        .market-scroll {
-            max-height: 500px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-
-        .market-scroll::-webkit-scrollbar {
-            width: 3px;
-        }
-
-        .market-scroll::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
-        .market-scroll::-webkit-scrollbar-thumb {
-            background: #b87aff;
-            border-radius: 10px;
-        }
-
-        .market-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .market-item {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
-            border: 0.5px solid rgba(138, 43, 226, 0.25);
-            border-radius: 20px;
-            padding: 12px 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.08s ease;
-        }
-
-        .market-item:active {
-            transform: scale(0.97);
-        }
-
-        .market-item-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 18px;
-            object-fit: cover;
-            margin-bottom: 10px;
-            background: rgba(42, 30, 58, 0.5);
-        }
-
-        .market-item-name {
-            font-size: 13px;
-            font-weight: 500;
-            color: white;
-            text-align: center;
-            margin-bottom: 6px;
-            line-height: 1.3;
-        }
-
-        .market-item-price {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #b87aff;
-            margin-bottom: 10px;
-        }
-
-        .buy-btn {
-            background: rgba(106, 13, 173, 0.6);
-            backdrop-filter: blur(8px);
-            border: 0.5px solid rgba(184, 122, 255, 0.3);
-            border-radius: 40px;
-            padding: 8px 20px;
-            width: 100%;
-            color: white;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.1s ease;
-            text-align: center;
-        }
-
-        .buy-btn:active {
-            transform: scale(0.96);
-        }
-
-        .empty-market {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.5);
-            padding: 40px 0;
-        }
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            max-width: 440px;
-            margin: 0 auto;
-            background: rgba(20, 20, 30, 0.75);
-            backdrop-filter: blur(28px);
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 16px;
-            border-radius: 36px;
-            border: 0.5px solid rgba(184, 122, 255, 0.2);
-            margin-bottom: 18px;
-            width: calc(100% - 36px);
-            left: 18px;
-            right: 18px;
-            z-index: 1000;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 10px;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 6px 14px;
-            border-radius: 28px;
-            text-decoration: none;
-            transition: all 0.1s ease;
-            background: transparent;
-            border: none;
-            min-width: 70px;
-        }
-
-        .nav-item:active {
-            background: rgba(106, 13, 173, 0.25);
-            transform: scale(0.95);
-        }
-
-        .nav-item i {
-            font-size: 20px;
-            margin-bottom: 1px;
-        }
-
-        .nav-item span {
-            font-size: 10px;
-            font-weight: 500;
-        }
-
-        .nav-item.active {
-            background: rgba(106, 13, 173, 0.25);
-            color: #b87aff;
-        }
-
-        .nav-item.active i {
-            color: #b87aff;
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1400;
-            display: none;
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
-        @media (min-width: 768px) {
-            .filter-modal {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background: rgba(0, 0, 0, 0.8);
-            }
-            .filter-content {
-                max-width: 440px;
-                max-height: 80vh;
-                background: rgba(20, 20, 35, 0.95);
-                backdrop-filter: blur(40px);
-                border-radius: 32px;
-                overflow-y: auto;
-            }
-            .filter-header {
-                padding: 0;
-            }
-            .filter-close {
-                right: 0;
-            }
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<title>NFT Market</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#03050a;--purple:#6a0dad;--purple-light:#b87aff;
+  --purple-dim:rgba(106,13,173,.45);--purple-border:rgba(184,122,255,.28);
+  --border-dim:rgba(138,43,226,.2);--text-dim:rgba(255,255,255,.48);
+}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:#fff;min-height:100dvh;overflow-x:hidden}
+
+/* ── Stars ── */
+.stars-bg{position:fixed;inset:0;background:radial-gradient(ellipse at 40% 50%,#0a0e1a 0%,#03050a 70%,#000103 100%);z-index:0;pointer-events:none}
+.stars-bg::before,.stars-bg::after{content:'';position:absolute;inset:0}
+.stars-bg::before{background-image:radial-gradient(1.5px 1.5px at 15% 20%,rgba(255,255,255,.32) 0%,transparent 100%),radial-gradient(1px 1px at 82% 10%,rgba(255,255,255,.22) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 60% 35%,rgba(255,255,255,.28) 0%,transparent 100%),radial-gradient(1px 1px at 30% 65%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 75% 55%,rgba(255,255,255,.25) 0%,transparent 100%),radial-gradient(1px 1px at 5% 45%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 50% 80%,rgba(255,255,255,.2) 0%,transparent 100%),radial-gradient(1px 1px at 90% 75%,rgba(255,255,255,.16) 0%,transparent 100%),radial-gradient(1px 1px at 25% 90%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 40% 5%,rgba(255,255,255,.28) 0%,transparent 100%),radial-gradient(1px 1px at 68% 15%,rgba(255,255,255,.2) 0%,transparent 100%),radial-gradient(1px 1px at 12% 78%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 55% 60%,rgba(255,255,255,.22) 0%,transparent 100%),radial-gradient(1px 1px at 88% 40%,rgba(255,255,255,.16) 0%,transparent 100%),radial-gradient(1px 1px at 35% 48%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 72% 88%,rgba(255,255,255,.22) 0%,transparent 100%),radial-gradient(1px 1px at 18% 32%,rgba(255,255,255,.16) 0%,transparent 100%),radial-gradient(1px 1px at 95% 25%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 45% 95%,rgba(255,255,255,.2) 0%,transparent 100%),radial-gradient(1px 1px at 65% 70%,rgba(255,255,255,.18) 0%,transparent 100%)}
+.stars-bg::after{background-image:radial-gradient(1px 1px at 22% 15%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 77% 28%,rgba(255,255,255,.24) 0%,transparent 100%),radial-gradient(1px 1px at 43% 42%,rgba(255,255,255,.16) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 8% 60%,rgba(255,255,255,.22) 0%,transparent 100%),radial-gradient(1px 1px at 58% 22%,rgba(255,255,255,.2) 0%,transparent 100%),radial-gradient(1px 1px at 85% 65%,rgba(255,255,255,.16) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 33% 85%,rgba(255,255,255,.26) 0%,transparent 100%),radial-gradient(1px 1px at 70% 50%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(1px 1px at 48% 72%,rgba(255,255,255,.16) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 92% 12%,rgba(255,255,255,.22) 0%,transparent 100%)}
+
+/* ── Ambient orbs ── */
+@keyframes orb1{0%,100%{transform:translate(0,0) scale(1);opacity:.12}50%{transform:translate(30px,-20px) scale(1.08);opacity:.18}}
+@keyframes orb2{0%,100%{transform:translate(0,0) scale(1);opacity:.08}50%{transform:translate(-25px,30px) scale(1.05);opacity:.14}}
+.ambient-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;will-change:transform,opacity}
+.orb1{width:340px;height:340px;background:radial-gradient(circle,rgba(148,38,255,.22) 0%,transparent 70%);top:-60px;left:-60px;animation:orb1 8s ease-in-out infinite}
+.orb2{width:300px;height:300px;background:radial-gradient(circle,rgba(90,20,200,.18) 0%,transparent 70%);bottom:60px;right:-50px;animation:orb2 10s ease-in-out infinite}
+
+/* ── Toast ── */
+.notif{position:fixed;top:20px;right:20px;padding:11px 18px;border-radius:60px;background:#1a8a4a;border:1px solid rgba(0,220,90,.3);color:#fff;font-weight:500;font-size:13px;z-index:3000;transform:translateX(160%);transition:transform .22s cubic-bezier(.34,1.56,.64,1);pointer-events:none;will-change:transform;max-width:280px}
+.notif.show{transform:translateX(0)}
+.notif.error{background:#8b1a1a;border-color:rgba(220,50,50,.3)}
+
+/* ── App ── */
+.app{position:relative;z-index:1;max-width:440px;width:100%;margin:0 auto;padding-bottom:110px;min-height:100dvh}
+
+/* ── Profile header ── */
+.profile-header{display:flex;align-items:center;justify-content:space-between;margin:16px 20px 18px;gap:12px}
+.profile-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.avatar{width:50px;height:50px;border-radius:16px;background:rgba(88,10,148,.55);border:1px solid rgba(184,122,255,.45);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;flex-shrink:0}
+.fullname{font-size:16px;font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.username{font-size:13px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.balance-block{display:flex;align-items:center;gap:6px;background:rgba(18,18,34,.92);border:1px solid var(--border-dim);border-radius:60px;padding:6px 8px 6px 14px;flex-shrink:0}
+.balance-val{font-size:15px;font-weight:600;display:flex;align-items:center;gap:5px}
+.plus-btn{background:rgba(255,255,255,.1);border:1px solid rgba(138,43,226,.38);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:var(--purple-light);font-size:20px;font-weight:300;cursor:pointer;transition:background .1s,transform .1s;line-height:1;user-select:none}
+.plus-btn:active{transform:scale(.88);background:rgba(106,13,173,.5)}
+
+/* ── Market frame ── */
+.market-frame{margin:0 20px;background:rgba(13,14,24,.9);border:1px solid var(--border-dim);border-radius:28px;padding:16px}
+.search-row{display:flex;gap:10px;margin-bottom:16px;align-items:center}
+.search-box{flex:1;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:60px;padding:10px 14px}
+.search-box input{background:transparent;border:none;color:#fff;font-size:14px;outline:none;width:100%;font-family:inherit}
+.search-box input::placeholder{color:var(--text-dim)}
+.icon-btn{background:rgba(255,255,255,.06);border:1px solid var(--purple-border);border-radius:60px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--purple-light);font-size:15px;flex-shrink:0;transition:background .1s,transform .08s,border-color .15s;user-select:none}
+.icon-btn:active{transform:scale(.91);background:rgba(106,13,173,.28)}
+.icon-btn.active-filter{border-color:var(--purple-light);box-shadow:0 0 10px rgba(184,122,255,.25)}
+
+/* ── Cards ── */
+@keyframes cardShine{0%{left:-120%}100%{left:120%}}
+.market-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.market-item{background:rgba(18,18,36,.92);border:none;border-radius:20px;padding:14px 10px 12px;display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform .15s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;user-select:none;position:relative;overflow:hidden;will-change:transform}
+.market-item::after{content:'';position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.06) 50%,transparent 60%);pointer-events:none}
+.market-item:hover{box-shadow:0 0 20px rgba(148,38,255,.12)}
+.market-item:hover::after{animation:cardShine .7s ease forwards}
+.market-item.pressed{transform:scale(.94)}
+.market-item-img{width:100px;height:100px;border-radius:16px;object-fit:cover;margin-bottom:10px;background:rgba(40,25,65,.6);transition:transform .2s ease}
+.market-item:hover .market-item-img{transform:scale(1.04)}
+.placeholder-img{display:flex;align-items:center;justify-content:center}
+.market-item-name{font-size:12px;font-weight:500;text-align:center;margin-bottom:5px;line-height:1.3;color:rgba(255,255,255,.88)}
+.market-item-price{font-size:13px;font-weight:700;color:var(--purple-light);display:flex;align-items:center;gap:4px}
+.empty-msg{text-align:center;color:var(--text-dim);padding:36px 0;font-size:14px}
+
+/* ── Overlay ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .18s ease}
+.overlay.open{opacity:1;pointer-events:all}
+
+/* ── Detail modal ── */
+.detail-modal{max-width:320px;width:88%;background:rgba(14,14,26,.98);border:1px solid rgba(184,122,255,.25);border-radius:28px;padding:24px 20px 22px;position:relative;transform:translateY(20px) scale(.96);transition:transform .22s cubic-bezier(.34,1.56,.64,1);text-align:center}
+.overlay.open .detail-modal,.overlay.open .deposit-modal{transform:translateY(0) scale(1)}
+.detail-img-wrap{display:inline-block;margin-bottom:16px}
+.detail-img{width:130px;height:130px;border-radius:22px;object-fit:cover;display:block}
+.detail-name{font-size:18px;font-weight:700;margin-bottom:10px}
+.detail-meta{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.detail-tag{background:rgba(88,10,148,.25);border:1px solid rgba(184,122,255,.22);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:500;color:rgba(255,255,255,.7)}
+.detail-price{font-size:20px;font-weight:800;color:var(--purple-light);margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:6px}
+.detail-buy-btn{background:linear-gradient(135deg,rgba(106,13,173,.9),rgba(148,38,255,.7));border:1px solid rgba(184,122,255,.4);border-radius:60px;padding:13px 24px;width:100%;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .1s,box-shadow .2s;box-shadow:0 4px 20px rgba(106,13,173,.35)}
+.detail-buy-btn:active{transform:scale(.96)}
+
+/* ── Close btn ── */
+.modal-close-btn{position:absolute;top:10px;right:12px;width:26px;height:26px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.2);border-radius:50%;color:var(--purple-light);font-size:17px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;font-weight:400;transition:background .1s,transform .1s;padding:0}
+.modal-close-btn:active{background:rgba(106,13,173,.4);transform:scale(.9)}
+
+/* ── Bottom nav ── */
+.bottom-nav{position:fixed;bottom:18px;left:18px;right:18px;max-width:404px;margin:0 auto;background:rgba(12,12,22,.95);border:1px solid rgba(184,122,255,.16);border-radius:28px;display:flex;justify-content:space-around;padding:8px 16px;z-index:1000}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text-dim);font-size:10px;font-weight:500;cursor:pointer;padding:6px 14px;border-radius:22px;transition:background .12s,color .12s,transform .08s;min-width:70px;user-select:none}
+.nav-item i{font-size:20px}
+.nav-item.active{color:var(--purple-light);background:rgba(106,13,173,.2)}
+.nav-item:not(.active):active{transform:scale(.92)}
+
+/* ── Filter panel ── */
+.filter-panel{position:fixed;inset:0;background:rgba(8,8,18,.98);z-index:1500;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .28s cubic-bezier(.22,1,.36,1);overflow-y:auto;scrollbar-width:none}
+.filter-panel::-webkit-scrollbar{display:none}
+.filter-panel.open{transform:translateY(0)}
+.filter-content{max-width:440px;width:100%;margin:0 auto;padding:22px 20px 40px;flex:1}
+.filter-head{display:flex;justify-content:center;align-items:center;position:relative;margin-bottom:20px}
+.filter-head h3{font-size:18px;font-weight:700}
+.filter-close-btn{position:absolute;right:0;width:28px;height:28px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.22);border-radius:50%;color:var(--purple-light);font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;font-weight:400;transition:background .1s,transform .1s;padding:0}
+.filter-close-btn:active{background:rgba(106,13,173,.4);transform:scale(.88)}
+.filter-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:18px}
+.ftab{background:rgba(255,255,255,.06);border:1px solid rgba(184,122,255,.22);border-radius:40px;padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-dim);cursor:pointer;font-family:inherit;transition:background .1s,color .1s,border-color .1s;display:flex;align-items:center;gap:5px}
+.ftab.active{background:rgba(88,10,148,.5);border-color:var(--purple-light);color:#fff}
+.ftab-count{background:var(--purple-light);color:#fff;font-size:10px;font-weight:700;border-radius:20px;padding:0 6px;min-width:16px;text-align:center}
+.filter-actions-row{display:flex;gap:10px;margin-bottom:12px;align-items:center}
+.reset-btn{display:flex;align-items:center;gap:8px;margin-bottom:16px;background:rgba(180,30,30,.12);border:1px solid rgba(220,50,50,.25);border-radius:40px;padding:8px 18px;color:rgba(255,120,120,.85);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .1s,transform .08s;width:100%;justify-content:center}
+.reset-btn:active{background:rgba(180,30,30,.25);transform:scale(.97)}
+.filter-list{display:flex;flex-direction:column;gap:8px}
+.filter-list-inner{display:flex;flex-direction:column;gap:8px}
+.filter-empty{color:var(--text-dim);text-align:center;padding:24px 0;font-size:14px}
+.foption{display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid transparent;border-radius:16px;cursor:pointer;transition:background .1s,border-color .1s;user-select:none}
+.foption:active{background:rgba(88,10,148,.15)}
+.foption.sel{background:rgba(88,10,148,.25);border-color:rgba(184,122,255,.4)}
+.foption-img{width:46px;height:46px;border-radius:12px;object-fit:cover;background:rgba(255,255,255,.07);flex-shrink:0}
+.foption-info{flex:1;min-width:0}
+.foption-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.foption-price{font-size:12px;color:var(--purple-light);font-weight:600;margin-top:2px}
+.foption-check{width:22px;height:22px;border-radius:7px;border:1px solid rgba(184,122,255,.3);background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;flex-shrink:0}
+.foption-check.checked{background:var(--purple-light);border-color:var(--purple-light)}
+.model-grid{display:flex;flex-direction:column;gap:8px}
+.model-nft-tile{display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid transparent;border-radius:16px;cursor:pointer;transition:background .1s,border-color .1s;user-select:none}
+.model-nft-tile:active{background:rgba(88,10,148,.15)}
+.model-nft-img{width:46px;height:46px;border-radius:12px;object-fit:cover;background:rgba(40,25,65,.6);flex-shrink:0}
+.model-nft-name{flex:1;font-size:13px;font-weight:500}
+.model-nft-arrow{color:var(--purple-light);font-size:12px}
+.model-back{display:flex;align-items:center;gap:8px;color:var(--purple-light);font-size:14px;font-weight:600;cursor:pointer;margin-bottom:16px;user-select:none}
+.model-nft-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.08);font-size:15px;font-weight:600}
+.model-nft-header-img{width:40px;height:40px;border-radius:10px;object-fit:cover;background:rgba(40,25,65,.6)}
+
+/* ── Deposit modal ── */
+.deposit-modal{max-width:360px;width:90%;background:rgba(14,14,26,.98);border:1px solid rgba(255,255,255,.15);border-radius:28px;padding:28px 20px 22px;position:relative;transform:translateY(22px) scale(.97);transition:transform .22s cubic-bezier(.34,1.56,.64,1)}
+.modal-title{font-size:21px;font-weight:700;text-align:center;margin-bottom:20px}
+.quick-amounts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+.q-btn{background:rgba(88,10,148,.2);border:1px solid rgba(184,122,255,.25);border-radius:30px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--purple-light);cursor:pointer;font-family:inherit;transition:background .1s,border-color .1s,transform .08s}
+.q-btn.active{background:rgba(88,10,148,.5);border-color:var(--purple-light);color:#fff}
+.q-btn:active{transform:scale(.93)}
+.amount-input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:13px 16px;font-size:16px;color:#fff;outline:none;margin-bottom:14px;font-family:inherit;transition:border-color .15s}
+.amount-input:focus{border-color:rgba(184,122,255,.5)}
+.deposit-btn{background:linear-gradient(135deg,rgba(88,10,148,.85),rgba(148,38,255,.65));border:1px solid rgba(184,122,255,.35);border-radius:60px;padding:13px 20px;width:100%;color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:inherit;transition:transform .08s,box-shadow .15s;box-shadow:0 4px 18px rgba(88,10,148,.3)}
+.deposit-btn:active{transform:scale(.97)}
+.deposit-badge{background:rgba(255,255,255,.15);padding:3px 12px;border-radius:30px;font-size:14px}
+</style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
-    <div class="notification" id="notification"></div>
-    <div class="overlay" id="overlay"></div>
 
-    <div class="modal-overlay" id="depositModal">
-        <div class="deposit-modal">
-            <div class="modal-close" id="closeDepositModal">✕</div>
-            <div class="deposit-title">Пополнение</div>
-            <div class="quick-amounts">
-                <span class="quick-amount" data-amount="50">50 ⭐</span>
-                <span class="quick-amount" data-amount="100">100 ⭐</span>
-                <span class="quick-amount" data-amount="200">200 ⭐</span>
-                <span class="quick-amount" data-amount="500">500 ⭐</span>
-                <span class="quick-amount" data-amount="1000">1000 ⭐</span>
-                <span class="quick-amount" data-amount="2000">2000 ⭐</span>
-            </div>
-            <input type="text" class="amount-input" id="amountInput" placeholder="Введите количество звезд" inputmode="numeric">
-            <button class="deposit-button" id="depositButton">
-                <span>Пополнить</span>
-                <span id="selectedAmount">0</span>
-            </button>
-        </div>
+<div class="stars-bg"></div>
+<div class="ambient-orb orb1"></div>
+<div class="ambient-orb orb2"></div>
+<div class="notif" id="toast"></div>
+
+<div class="app">
+  <div class="profile-header">
+    <div class="profile-left">
+      <div class="avatar">А</div>
+      <div>
+        <div class="fullname">Алексей Иванов</div>
+        <div class="username">@alexey</div>
+      </div>
     </div>
-
-    <div class="filter-modal" id="filterModal">
-        <div class="filter-content">
-            <div class="filter-header">
-                <h3>Фильтр</h3>
-                <div class="filter-close" id="filterClose">✕</div>
-            </div>
-            <div class="filter-tabs">
-                <div class="filter-tab active" data-tab="collection">Коллекция</div>
-                <div class="filter-tab" data-tab="model">Модель</div>
-                <div class="filter-tab" data-tab="background">Фон</div>
-                <div class="filter-tab" data-tab="pattern">Узор</div>
-            </div>
-            <div class="filter-search">
-                <div class="filter-search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="filterSearchInput" placeholder="Поиск...">
-                </div>
-                <div class="filter-sort-arrow" id="filterSortArrow">
-                    <i class="fas fa-arrow-up"></i>
-                </div>
-            </div>
-            <div class="filter-list" id="filterList"></div>
-        </div>
+    <div class="balance-block">
+      <div class="balance-val"><span>🧩</span><span id="balance-num">5 000</span></div>
+      <div class="plus-btn" onclick="openDeposit()">+</div>
     </div>
+  </div>
 
-    <div class="app">
-        <div class="profile-header">
-            <div class="profile-left">
-                <div class="avatar" id="avatar">A</div>
-                <div class="name-box">
-                    <span class="fullname" id="fullName">Алексей Иванов</span>
-                    <span class="username" id="username">@alexey</span>
-                </div>
-            </div>
-            <div class="balance-block">
-                <div class="balance-stars">
-                    <span class="puzzle-icon">🧩</span>
-                    <span id="balanceValue">5000</span>
-                </div>
-                <div class="plus-btn" id="plusBtn">+</div>
-            </div>
-        </div>
-
-        <div class="market-frame">
-            <div class="search-section">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Поиск NFT...">
-                </div>
-                <div class="filter-btn" id="filterBtn">
-                    <i class="fas fa-sliders-h"></i>
-                </div>
-                <div class="sort-btn" id="sortBtn">
-                    <i class="fas fa-arrow-up"></i>
-                </div>
-            </div>
-
-            <div class="market-scroll" id="marketScroll">
-                <div id="marketContainer"></div>
-            </div>
-        </div>
-
-        <div class="bottom-nav">
-            <a href="#" class="nav-item active" id="navMarket"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
-            <a href="profle.html" class="nav-item" id="navProfile"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
-        </div>
+  <div class="market-frame">
+    <div class="search-row">
+      <div class="search-box">
+        <i class="fas fa-search" style="color:rgba(255,255,255,.35);font-size:13px"></i>
+        <input id="market-search" placeholder="Поиск NFT..." oninput="renderMarket()"/>
+      </div>
+      <div class="icon-btn" id="filter-btn" onclick="openFilter()">
+        <i class="fas fa-sliders-h"></i>
+      </div>
+      <div class="icon-btn" id="sort-btn" onclick="toggleSort()">
+        <i class="fas fa-arrow-up" id="sort-icon"></i>
+      </div>
     </div>
+    <div id="market-grid"></div>
+  </div>
 
-    <script>
-        (function() {
-            const STORAGE_KEY = 'nft_balance';
-            const PURCHASED_KEY = 'nft_purchased_items';
-            const BOT_USERNAME = 'yeter16_bot';
-            
-            // Базовый URL для фоток на GitHub
-            const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/ur12163008-bot/yeter-game/main/nft/';
+  <div class="bottom-nav">
+    <div class="nav-item active"><i class="fas fa-store"></i><span>МАРКЕТ</span></div>
+    <div class="nav-item"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></div>
+  </div>
+</div>
 
-            // Полный список названий файлов (как они лежат в папке)
-            const COLLECTION_NAMES = [
-                "Artisan Brick", "B-Day Candle", "Berry Box", "Big Year", "Bling Binky",
-                "Bonded Ring", "Bow Tie", "Bunny Muffin", "Candy Cane", "Clover Pin",
-                "Cookie Heart", "Crystal Ball", "Cupid Charm", "Desk Calendar", "Diamond Ring",
-                "Easter Egg", "Electric Skull", "Eternal Candle", "Eternal Rose", "Evil Eye",
-                "Faith Amulet", "Flying Broom", "Fresh Socks", "Gem Signet", "Genie Lamp",
-                "Ginger Cookie", "Hanging Star", "Heroic Helmet", "Hex Pot", "Holiday Drink",
-                "Homemade Cake", "Hypno Lollipop", "Ice Cream", "Image (3)_upscayl_16x_high-fidelity-4x",
-                "Input Key", "Instant Ramen", "Ionic Dryer", "Jack-in-the-Box", "Jelly Bunny",
-                "Jester Hat", "Jingle Bells", "Jolly Chimp", "Joyful Bundle", "Khabibs Papakha",
-                "Kissed Frog", "Light Sword", "Lol Pop", "Lon Gem", "Love Candle", "Love Potion",
-                "Low Rider", "Lunar Snake", "Lush Bouquet", "Mad Pumpkin", "Magic Potion",
-                "Mini Oscar", "Money Pot", "Moon Pendant", "Mousse Cake", "Nail Bracelet",
-                "Neko Helmet", "Perfume Bottle", "Pet Snake", "Pretty Posy", "Rare Bird",
-                "Record Player", "Restless Jar", "Sakura Flower", "Santa Hat", "Sharp Tongue",
-                "Signet Ring", "Skull Flower", "Sky Stilettos", "Sleigh Bell", "Snake Box",
-                "Snoop Cigar", "Snow Globe", "Snow Mittens", "Spiced Wine", "Spring Basket",
-                "Spy Agaric", "Star Notepad", "Stellar Rocket", "Swag Bag", "Swiss Watch",
-                "Tama Gadget", "Top Hat", "Toy Bear", "Trapped Heart", "UFC Strike",
-                "Valentine Box", "Victory Medal", "Vintage Cigar", "Voodoo Doll", "Westside Sign",
-                "Whip Cupcake", "Winter Wreath", "Witch Hat", "Xmas Stocking"
-            ];
+<!-- Detail Modal -->
+<div class="overlay" id="detail-overlay" onclick="if(event.target===this)closeDetail()">
+  <div class="detail-modal">
+    <button class="modal-close-btn" onclick="closeDetail()">×</button>
+    <div class="detail-img-wrap">
+      <img id="detail-img" class="detail-img" alt="" onerror="this.style.display='none'"/>
+    </div>
+    <div class="detail-name" id="detail-name"></div>
+    <div class="detail-meta" id="detail-meta"></div>
+    <div class="detail-price" id="detail-price"></div>
+    <button class="detail-buy-btn" id="detail-buy-btn">Купить</button>
+  </div>
+</div>
 
-            // Функция для правильного формирования имени файла
-            function getFileName(name) {
-                let fileName = name;
-                // Для специального файла
-                if (name === "Image (3)_upscayl_16x_high-fidelity-4x") {
-                    return "Image (3)_upscayl_16x_high-fidelity-4x.png";
-                }
-                // Оставляем пробелы как есть, они правильно закодируются в URL
-                return fileName + ".png";
-            }
+<!-- Filter Panel -->
+<div class="filter-panel" id="filter-panel">
+  <div class="filter-content">
+    <div class="filter-head">
+      <h3>Фильтры</h3>
+      <button class="filter-close-btn" onclick="closeFilter()">×</button>
+    </div>
+    <div class="filter-tabs" id="filter-tabs"></div>
+    <div class="filter-actions-row">
+      <div class="search-box" style="flex:1">
+        <i class="fas fa-search" style="color:rgba(255,255,255,.35);font-size:13px"></i>
+        <input id="filter-search" placeholder="Поиск..." oninput="renderFilterList()"/>
+        <i class="fas fa-times" style="color:rgba(255,255,255,.35);font-size:12px;cursor:pointer" onclick="clearFilterSearch()"></i>
+      </div>
+      <div class="icon-btn" id="filter-sort-btn" onclick="toggleFilterSort()" style="display:none;flex-shrink:0">
+        <i class="fas fa-arrow-up" id="filter-sort-icon"></i>
+      </div>
+    </div>
+    <button class="reset-btn" id="reset-btn" onclick="resetAll()" style="display:none">
+      <i class="fas fa-rotate-left"></i> Сбросить всё
+    </button>
+    <div class="filter-list" id="filter-list"></div>
+  </div>
+</div>
 
-            function getImagePath(name) {
-                const fileName = getFileName(name);
-                return GITHUB_BASE_URL + encodeURIComponent(fileName);
-            }
+<!-- Deposit Modal -->
+<div class="overlay" id="deposit-overlay" onclick="if(event.target===this)closeDeposit()">
+  <div class="deposit-modal">
+    <button class="modal-close-btn" onclick="closeDeposit()">×</button>
+    <div class="modal-title">Пополнение</div>
+    <div class="quick-amounts" id="quick-amounts"></div>
+    <input class="amount-input" id="deposit-input" type="text" inputmode="numeric" placeholder="Введите количество звёзд" oninput="onDepositInput()"/>
+    <button class="deposit-btn" onclick="doDeposit()">
+      <span>Пополнить</span>
+      <span class="deposit-badge" id="deposit-badge">0 ⭐</span>
+    </button>
+  </div>
+</div>
 
-            let NFT_ITEMS = [];
-            
-            for (let i = 0; i < COLLECTION_NAMES.length; i++) {
-                NFT_ITEMS.push({
-                    id: i + 1,
-                    name: COLLECTION_NAMES[i],
-                    price: Math.floor(Math.random() * 400) + 50,
-                    image: getImagePath(COLLECTION_NAMES[i]),
-                    collection: COLLECTION_NAMES[i],
-                    pattern: ["Классический", "Современный", "Винтажный", "Неоновый"][i % 4],
-                    background: ["Темный", "Светлый", "Градиент", "Звездный"][i % 4],
-                    model: ["2D", "3D", "Pixel", "Vector"][i % 4]
-                });
-            }
+<script>
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+const GITHUB_BASE = 'https://raw.githubusercontent.com/ur12163008-bot/yeter-game/main/nft/';
+const COLLECTION_NAMES = [
+  "Artisan Brick","B-Day Candle","Berry Box","Big Year","Bling Binky",
+  "Bonded Ring","Bow Tie","Bunny Muffin","Candy Cane","Clover Pin",
+  "Cookie Heart","Crystal Ball","Cupid Charm","Desk Calendar","Diamond Ring",
+  "Easter Egg","Electric Skull","Eternal Candle","Eternal Rose","Evil Eye",
+  "Faith Amulet","Flying Broom","Fresh Socks","Gem Signet","Genie Lamp",
+  "Ginger Cookie","Hanging Star","Heroic Helmet","Hex Pot","Holiday Drink",
+  "Homemade Cake","Hypno Lollipop","Ice Cream","Input Key","Instant Ramen",
+  "Ionic Dryer","Jack-in-the-Box","Jelly Bunny","Jester Hat","Jingle Bells",
+  "Jolly Chimp","Joyful Bundle","Khabibs Papakha","Kissed Frog","Light Sword",
+  "Lol Pop","Lon Gem","Love Candle","Love Potion","Low Rider",
+  "Lunar Snake","Lush Bouquet","Mad Pumpkin","Magic Potion","Mini Oscar",
+  "Money Pot","Moon Pendant","Mousse Cake","Nail Bracelet","Neko Helmet",
+  "Perfume Bottle","Pet Snake","Pretty Posy","Rare Bird","Record Player",
+  "Restless Jar","Sakura Flower","Santa Hat","Sharp Tongue","Signet Ring",
+  "Skull Flower","Sky Stilettos","Sleigh Bell","Snake Box","Snoop Cigar",
+  "Snow Globe","Snow Mittens","Spiced Wine","Spring Basket","Spy Agaric",
+  "Star Notepad","Stellar Rocket","Swag Bag","Swiss Watch","Tama Gadget",
+  "Top Hat","Toy Bear","Trapped Heart","UFC Strike","Valentine Box",
+  "Victory Medal","Vintage Cigar","Voodoo Doll","Westside Sign","Whip Cupcake",
+  "Winter Wreath","Witch Hat","Xmas Stocking"
+];
+const PATTERNS    = ["Классический","Современный","Винтажный","Неоновый"];
+const BACKGROUNDS = ["Темный","Светлый","Градиент","Звездный"];
+const MODELS      = ["2D","3D","Pixel","Vector"];
+const PATTERN_IMAGES = {
+  "Классический":"https://images.unsplash.com/photo-1519741497674-611481863552?w=80&h=80&fit=crop&auto=format",
+  "Современный":"https://images.unsplash.com/photo-1464802686167-b939a6910659?w=80&h=80&fit=crop&auto=format",
+  "Винтажный":"https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=80&h=80&fit=crop&auto=format",
+  "Неоновый":"https://images.unsplash.com/photo-1518235506717-e1ed3306a89b?w=80&h=80&fit=crop&auto=format"
+};
+const BG_IMAGES = {
+  "Темный":"https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=80&h=80&fit=crop&auto=format",
+  "Светлый":"https://images.unsplash.com/photo-1579547621113-e4bb2a19bdd6?w=80&h=80&fit=crop&auto=format",
+  "Градиент":"https://images.unsplash.com/photo-1620121692029-d088224ddc74?w=80&h=80&fit=crop&auto=format",
+  "Звездный":"https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=80&h=80&fit=crop&auto=format"
+};
+const MODEL_ICONS = {
+  "2D":"https://images.unsplash.com/photo-1607706189992-eae578626c86?w=80&h=80&fit=crop&auto=format",
+  "3D":"https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=80&h=80&fit=crop&auto=format",
+  "Pixel":"https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=80&h=80&fit=crop&auto=format",
+  "Vector":"https://images.unsplash.com/photo-1461344577544-4e5dc9487184?w=80&h=80&fit=crop&auto=format"
+};
+const BASE_PRICES = [
+  215,87,342,163,421,78,290,155,380,99,265,440,118,330,195,275,410,143,388,222,
+  157,300,93,350,178,425,112,255,395,168,310,84,230,445,205,137,365,192,285,96,
+  420,173,318,244,401,127,355,198,283,110,375,151,294,438,185,322,107,268,433,162,
+  307,89,241,390,174,315,98,258,416,139,362,213,292,428,166,335,103,276,449,188,
+  302,132,379,221,146,398,117,263,434,181,327,95,283,412,158,340,119,271,447,136
+];
+const NFT_BASE_PRICES = {};
+COLLECTION_NAMES.forEach((n,i) => NFT_BASE_PRICES[n] = BASE_PRICES[i % BASE_PRICES.length]);
+const NFT_ITEMS = COLLECTION_NAMES.map((name,i) => ({
+  id:i+1, name,
+  price: BASE_PRICES[i % BASE_PRICES.length],
+  image: GITHUB_BASE + encodeURIComponent(name+'.png'),
+  collection:name,
+  pattern:PATTERNS[i%4],
+  background:BACKGROUNDS[i%4],
+  model:MODELS[i%4]
+}));
 
-            let currentItems = [...NFT_ITEMS];
-            let currentSort = 'asc';
-            let currentTab = 'collection';
-            let filterSelections = {
-                collection: [],
-                model: [],
-                background: [],
-                pattern: []
-            };
-            let filterSearchTerm = '';
-            let collectionSortDirection = 'asc';
+// ══════════════════════════════════════════
+// PRICE ENGINE (авто-обновление каждые ~1ч)
+// ══════════════════════════════════════════
+const PRICE_TTL = 60*60*1000;
+function seeded(s,e){const x=Math.sin(s*9301+e*49297+233)*1e4;return x-Math.floor(x)}
+function buildPrices(seed){
+  const out={};
+  COLLECTION_NAMES.forEach((n,i)=>{
+    const f=0.85+seeded(seed,i)*0.30;
+    out[n]=Math.max(10,Math.round(NFT_BASE_PRICES[n]*f));
+  });
+  return out;
+}
+function loadPrices(){
+  try{
+    const ts=parseInt(localStorage.getItem('nft_prices_ts')||'0');
+    if(Date.now()-ts<PRICE_TTL){const r=localStorage.getItem('nft_live_prices');if(r)return JSON.parse(r)}
+  }catch{}
+  return refreshPrices();
+}
+function refreshPrices(){
+  const p=buildPrices(Math.floor(Date.now()/PRICE_TTL));
+  try{localStorage.setItem('nft_live_prices',JSON.stringify(p));localStorage.setItem('nft_prices_ts',String(Date.now()))}catch{}
+  return p;
+}
+let livePrices = loadPrices();
+setInterval(()=>{livePrices=refreshPrices();renderMarket();renderFilterList();},PRICE_TTL+Math.random()*30*60*1000);
 
-            function getBalance() {
-                try {
-                    return parseInt(localStorage.getItem(STORAGE_KEY)) || 5000;
-                } catch {
-                    return 5000;
-                }
-            }
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let balance = (()=>{try{return parseInt(localStorage.getItem('nft_balance')||'')||5000}catch{return 5000}})();
+let sortDir = 'asc';
+let selections = {collection:[],model:[],background:[],pattern:[]};
+let filterTab = 'collection';
+let filterSortDir = 'asc';
+let modelNft = null; // drill-down в табе Модель
+let detailItem = null;
 
-            function setBalance(newBalance) {
-                localStorage.setItem(STORAGE_KEY, newBalance);
-                updateBalanceDisplay();
-                localStorage.setItem('balance_updated', Date.now().toString());
-            }
+function saveBalance(n){balance=n;localStorage.setItem('nft_balance',String(n));document.getElementById('balance-num').textContent=n.toLocaleString('ru')}
 
-            function updateBalanceDisplay() {
-                const el = document.getElementById('balanceValue');
-                if (el) el.innerText = getBalance();
-            }
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+let toastTimer=null;
+function showToast(msg,isErr=false){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.className='notif'+(isErr?' error':'');
+  void el.offsetWidth;el.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2400);
+}
 
-            function showNotification(message) {
-                const notif = document.getElementById('notification');
-                notif.innerText = message;
-                notif.classList.add('show');
-                setTimeout(() => notif.classList.remove('show'), 2000);
-            }
+// ══════════════════════════════════════════
+// MARKET
+// ══════════════════════════════════════════
+function toggleSort(){
+  sortDir=sortDir==='asc'?'desc':'asc';
+  document.getElementById('sort-icon').className='fas fa-arrow-'+(sortDir==='asc'?'up':'down');
+  renderMarket();
+}
+function renderMarket(){
+  const q=document.getElementById('market-search').value.toLowerCase();
+  const filterBtn=document.getElementById('filter-btn');
+  const hasF=Object.values(selections).some(a=>a.length>0);
+  filterBtn.className='icon-btn'+(hasF?' active-filter':'');
+  let items=[...NFT_ITEMS].map(item=>({...item,price:livePrices[item.name]??item.price}));
+  if(selections.collection.length) items=items.filter(x=>selections.collection.includes(x.collection));
+  if(selections.model.length)      items=items.filter(x=>selections.model.includes(x.model));
+  if(selections.background.length) items=items.filter(x=>selections.background.includes(x.background));
+  if(selections.pattern.length)    items=items.filter(x=>selections.pattern.includes(x.pattern));
+  if(q) items=items.filter(x=>x.name.toLowerCase().includes(q));
+  items.sort((a,b)=>sortDir==='asc'?a.price-b.price:b.price-a.price);
+  items=items.slice(0,4);
+  const grid=document.getElementById('market-grid');
+  if(!items.length){
+    grid.innerHTML=`<div class="empty-msg"><i class="fas fa-store" style="font-size:28px;margin-bottom:10px;display:block;opacity:.5"></i>Товаров не найдено</div>`;
+    return;
+  }
+  grid.innerHTML=`<div class="market-grid">`+items.map(item=>`
+    <div class="market-item" data-id="${item.id}" ontouchstart="" onclick="openDetail(${item.id})">
+      <img src="${item.image}" class="market-item-img" loading="lazy" onerror="this.style.opacity=0" alt="${item.name}"/>
+      <div class="market-item-name">${item.name}</div>
+      <div class="market-item-price"><span>🧩</span>${item.price}</div>
+    </div>`).join('')+`</div>`;
+  grid.querySelectorAll('.market-item').forEach(el=>{
+    el.addEventListener('pointerdown',()=>el.classList.add('pressed'));
+    el.addEventListener('pointerup',()=>el.classList.remove('pressed'));
+    el.addEventListener('pointerleave',()=>el.classList.remove('pressed'));
+  });
+}
 
-            function applyFilters() {
-                let filtered = [...NFT_ITEMS];
-                
-                if (filterSelections.collection.length > 0) {
-                    filtered = filtered.filter(item => filterSelections.collection.includes(item.collection));
-                }
-                if (filterSelections.model.length > 0) {
-                    filtered = filtered.filter(item => filterSelections.model.includes(item.model));
-                }
-                if (filterSelections.background.length > 0) {
-                    filtered = filtered.filter(item => filterSelections.background.includes(item.background));
-                }
-                if (filterSelections.pattern.length > 0) {
-                    filtered = filtered.filter(item => filterSelections.pattern.includes(item.pattern));
-                }
-                
-                currentItems = filtered;
-                renderMarket();
-            }
+// ══════════════════════════════════════════
+// DETAIL MODAL
+// ══════════════════════════════════════════
+function openDetail(id){
+  const liveItem={...NFT_ITEMS.find(x=>x.id===id),price:livePrices[NFT_ITEMS.find(x=>x.id===id).name]??NFT_ITEMS.find(x=>x.id===id).price};
+  detailItem=liveItem;
+  document.getElementById('detail-img').src=liveItem.image;
+  document.getElementById('detail-img').style.display='block';
+  document.getElementById('detail-name').textContent=liveItem.name;
+  document.getElementById('detail-meta').innerHTML=
+    `<span class="detail-tag">${liveItem.model}</span><span class="detail-tag">${liveItem.background}</span><span class="detail-tag">${liveItem.pattern}</span>`;
+  document.getElementById('detail-price').innerHTML=`<span>🧩</span>${liveItem.price} звёзд`;
+  document.getElementById('detail-buy-btn').onclick=()=>{doBuy(liveItem);closeDetail()};
+  document.getElementById('detail-overlay').classList.add('open');
+}
+function closeDetail(){document.getElementById('detail-overlay').classList.remove('open');detailItem=null}
 
-            function renderMarket() {
-                const container = document.getElementById('marketContainer');
-                let itemsToShow = [...currentItems];
-                const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+// ══════════════════════════════════════════
+// BUY
+// ══════════════════════════════════════════
+function doBuy(item){
+  if(balance<item.price){showToast(`❌ Недостаточно звёзд! Нужно ${item.price} ⭐`,true);return}
+  saveBalance(balance-item.price);
+  const purchased=JSON.parse(localStorage.getItem('nft_purchased_items')||'[]');
+  purchased.push({name:item.name,price:item.price,purchaseTime:Date.now()});
+  localStorage.setItem('nft_purchased_items',JSON.stringify(purchased));
+  showToast(`✅ Вы купили подарок «${item.name}» за ${item.price} ⭐`);
+  renderMarket();
+}
 
-                if (searchTerm) {
-                    itemsToShow = itemsToShow.filter(item => 
-                        item.name.toLowerCase().includes(searchTerm)
-                    );
-                }
+// ══════════════════════════════════════════
+// DEPOSIT
+// ══════════════════════════════════════════
+const QUICK=[50,100,200,500,1000,2000];
+function openDeposit(){
+  document.getElementById('deposit-overlay').classList.add('open');
+  document.getElementById('deposit-input').value='';
+  document.getElementById('deposit-badge').textContent='0 ⭐';
+  const qa=document.getElementById('quick-amounts');
+  qa.innerHTML=QUICK.map(n=>`<button class="q-btn" onclick="setQuick(${n})">${n} ⭐</button>`).join('');
+}
+function closeDeposit(){document.getElementById('deposit-overlay').classList.remove('open')}
+function setQuick(n){
+  document.getElementById('deposit-input').value=n;
+  document.getElementById('deposit-badge').textContent=n+' ⭐';
+  document.querySelectorAll('.q-btn').forEach(b=>b.classList.toggle('active',b.textContent===n+' ⭐'));
+}
+function onDepositInput(){
+  const v=parseInt(document.getElementById('deposit-input').value)||0;
+  document.getElementById('deposit-badge').textContent=v+' ⭐';
+}
+function doDeposit(){
+  const v=Math.min(100000,Math.max(1,parseInt(document.getElementById('deposit-input').value)||0));
+  if(!v)return;
+  closeDeposit();
+  setTimeout(()=>{saveBalance(balance+v);showToast(`✅ Пополнено на ${v} ⭐`)},400);
+}
 
-                if (currentSort === 'asc') {
-                    itemsToShow.sort((a, b) => a.price - b.price);
-                } else {
-                    itemsToShow.sort((a, b) => b.price - a.price);
-                }
+// ══════════════════════════════════════════
+// FILTER
+// ══════════════════════════════════════════
+function openFilter(){document.getElementById('filter-panel').classList.add('open');renderFilterTabs();renderFilterList()}
+function closeFilter(){document.getElementById('filter-panel').classList.remove('open')}
+function clearFilterSearch(){document.getElementById('filter-search').value='';renderFilterList()}
+function toggleFilterSort(){
+  filterSortDir=filterSortDir==='asc'?'desc':'asc';
+  document.getElementById('filter-sort-icon').className='fas fa-arrow-'+(filterSortDir==='asc'?'up':'down');
+  renderFilterList();
+}
+function resetAll(){selections={collection:[],model:[],background:[],pattern:[]};renderFilterTabs();renderFilterList();renderMarket()}
 
-                if (!itemsToShow.length) {
-                    container.innerHTML = '<div class="empty-market"><i class="fas fa-store"></i><p>Товаров не найдено</p></div>';
-                    return;
-                }
+function renderFilterTabs(){
+  const tabs=[['collection','Коллекция'],['model','Модель'],['background','Фон'],['pattern','Узор']];
+  document.getElementById('filter-tabs').innerHTML=tabs.map(([key,label])=>{
+    const cnt=selections[key].length;
+    return`<button class="ftab${filterTab===key?' active':''}" onclick="setFilterTab('${key}')">${label}${cnt?`<span class="ftab-count">${cnt}</span>`:''}</button>`;
+  }).join('');
+  const total=Object.values(selections).reduce((s,a)=>s+a.length,0);
+  document.getElementById('reset-btn').style.display=total>0?'flex':'none';
+  document.getElementById('filter-sort-btn').style.display=filterTab==='collection'?'flex':'none';
+}
+function setFilterTab(t){filterTab=t;modelNft=null;document.getElementById('filter-search').value='';renderFilterTabs();renderFilterList()}
 
-                let html = '<div class="market-grid">';
-                for (let i = 0; i < itemsToShow.length; i++) {
-                    const item = itemsToShow[i];
-                    html += `<div class="market-item">
-                        <img src="${item.image}" alt="${escapeHtml(item.name)}" class="market-item-image" loading="lazy" onerror="this.src='https://picsum.photos/id/${(i % 100) + 1}/200/200'">
-                        <div class="market-item-name">${escapeHtml(item.name)}</div>
-                        <div class="market-item-price"><span class="price-icon">🧩</span> ${item.price}</div>
-                        <div class="buy-btn" data-price="${item.price}" data-name="${escapeHtml(item.name)}" data-image="${item.image}">Купить</div>
-                    </div>`;
-                }
-                html += '</div>';
-                container.innerHTML = html;
+function renderFilterList(){
+  const q=document.getElementById('filter-search').value.toLowerCase();
+  const list=document.getElementById('filter-list');
 
-                document.querySelectorAll('.buy-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const price = parseInt(btn.dataset.price);
-                        const name = btn.dataset.name;
-                        const image = btn.dataset.image;
-                        buyItem(price, name, image);
-                    });
-                });
-            }
+  if(filterTab==='collection'){
+    let opts=[...COLLECTION_NAMES];
+    if(q) opts=opts.filter(o=>o.toLowerCase().includes(q));
+    opts=filterSortDir==='asc'?opts.sort():opts.sort().reverse();
+    list.innerHTML=opts.length?opts.map(name=>{
+      const sel=selections.collection.includes(name);
+      const p=livePrices[name]??NFT_BASE_PRICES[name];
+      return`<div class="foption${sel?' sel':''}" onclick="toggleSel('collection','${name.replace(/'/g,"\\'")}')">
+        <img src="${GITHUB_BASE+encodeURIComponent(name+'.png')}" class="foption-img" loading="lazy" onerror="this.style.opacity=0"/>
+        <div class="foption-info"><div class="foption-name">${name}</div><div class="foption-price">🧩 ${p}</div></div>
+        <div class="foption-check${sel?' checked':''}">${sel?'<i class="fas fa-check"></i>':''}</div>
+      </div>`;
+    }).join(''):`<p class="filter-empty">Ничего не найдено</p>`;
+  }
 
-            function escapeHtml(str) {
-                if (!str) return '';
-                return str.replace(/[&<>]/g, function(m) {
-                    if (m === '&') return '&amp;';
-                    if (m === '<') return '&lt;';
-                    if (m === '>') return '&gt;';
-                    return m;
-                });
-            }
+  else if(filterTab==='model'){
+    if(!modelNft){
+      let items=selections.collection.length>0?NFT_ITEMS.filter(x=>selections.collection.includes(x.collection)):NFT_ITEMS;
+      if(q) items=items.filter(x=>x.name.toLowerCase().includes(q));
+      list.innerHTML=`<div class="model-grid">`+items.map(item=>`
+        <div class="model-nft-tile" onclick="setModelNft('${item.name.replace(/'/g,"\\'")}')">
+          <img src="${item.image}" class="model-nft-img" loading="lazy" onerror="this.style.opacity=0"/>
+          <div class="model-nft-name">${item.name}</div>
+          <i class="fas fa-chevron-right model-nft-arrow"></i>
+        </div>`).join('')+`</div>`;
+    } else {
+      const imgSrc=GITHUB_BASE+encodeURIComponent(modelNft+'.png');
+      list.innerHTML=`
+        <div class="model-back" onclick="setModelNft(null)"><i class="fas fa-arrow-left"></i> Назад</div>
+        <div class="model-nft-header">
+          <img src="${imgSrc}" class="model-nft-header-img" onerror="this.style.opacity=0"/>
+          <span>${modelNft}</span>
+        </div>
+        <div class="filter-list-inner">`+MODELS.map(m=>{
+          const sel=selections.model.includes(m);
+          return`<div class="foption${sel?' sel':''}" onclick="toggleSel('model','${m}')">
+            <img src="${MODEL_ICONS[m]}" class="foption-img" loading="lazy" onerror="this.style.opacity=0"/>
+            <div class="foption-info"><div class="foption-name">${m}</div><div class="foption-price" style="color:rgba(255,255,255,.4)">Модель</div></div>
+            <div class="foption-check${sel?' checked':''}">${sel?'<i class="fas fa-check"></i>':''}</div>
+          </div>`;
+        }).join('')+`</div>`;
+    }
+  }
 
-            function buyItem(price, name, image) {
-                const currentBalance = getBalance();
-                if (currentBalance >= price) {
-                    const newBalance = currentBalance - price;
-                    setBalance(newBalance);
-                    
-                    const purchasedItems = JSON.parse(localStorage.getItem(PURCHASED_KEY)) || [];
-                    purchasedItems.push({ name, price, image, purchaseTime: Date.now() });
-                    localStorage.setItem(PURCHASED_KEY, JSON.stringify(purchasedItems));
-                    
-                    showNotification(`✅ Куплено: ${name} за ${price} ⭐`);
-                    renderMarket();
-                } else {
-                    showNotification(`❌ Недостаточно звезд! Нужно ${price} ⭐`);
-                }
-            }
+  else if(filterTab==='background'){
+    let opts=q?BACKGROUNDS.filter(o=>o.toLowerCase().includes(q)):BACKGROUNDS;
+    list.innerHTML=opts.map(bg=>{
+      const sel=selections.background.includes(bg);
+      return`<div class="foption${sel?' sel':''}" onclick="toggleSel('background','${bg}')">
+        <img src="${BG_IMAGES[bg]}" class="foption-img" loading="lazy" onerror="this.style.opacity=0"/>
+        <div class="foption-info"><div class="foption-name">${bg}</div></div>
+        <div class="foption-check${sel?' checked':''}">${sel?'<i class="fas fa-check"></i>':''}</div>
+      </div>`;
+    }).join('');
+  }
 
-            function updateFilterOptions() {
-                let options = [];
-                const currentSelections = filterSelections[currentTab];
-                
-                if (currentTab === 'collection') {
-                    options = [...COLLECTION_NAMES];
-                } else if (currentTab === 'model') {
-                    options = [...new Set(NFT_ITEMS.map(item => item.model))];
-                } else if (currentTab === 'background') {
-                    options = [...new Set(NFT_ITEMS.map(item => item.background))];
-                } else if (currentTab === 'pattern') {
-                    options = [...new Set(NFT_ITEMS.map(item => item.pattern))];
-                }
-                
-                if (filterSearchTerm) {
-                    options = options.filter(opt => opt.toLowerCase().includes(filterSearchTerm.toLowerCase()));
-                }
-                
-                if (collectionSortDirection === 'asc') {
-                    options.sort();
-                } else {
-                    options.sort().reverse();
-                }
-                
-                renderFilterList(options, currentSelections);
-            }
+  else if(filterTab==='pattern'){
+    let opts=q?PATTERNS.filter(o=>o.toLowerCase().includes(q)):PATTERNS;
+    list.innerHTML=opts.map(pt=>{
+      const sel=selections.pattern.includes(pt);
+      return`<div class="foption${sel?' sel':''}" onclick="toggleSel('pattern','${pt}')">
+        <img src="${PATTERN_IMAGES[pt]}" class="foption-img" loading="lazy" onerror="this.style.opacity=0"/>
+        <div class="foption-info"><div class="foption-name">${pt}</div></div>
+        <div class="foption-check${sel?' checked':''}">${sel?'<i class="fas fa-check"></i>':''}</div>
+      </div>`;
+    }).join('');
+  }
+}
 
-            function renderFilterList(options, selections) {
-                const container = document.getElementById('filterList');
-                if (!options.length) {
-                    container.innerHTML = '<div class="empty-market">Ничего не найдено</div>';
-                    return;
-                }
-                
-                let html = '';
-                for (let i = 0; i < options.length; i++) {
-                    const opt = options[i];
-                    const isSelected = selections.includes(opt);
-                    if (currentTab === 'collection') {
-                        const imgPath = getImagePath(opt);
-                        html += `<div class="filter-option ${isSelected ? 'selected' : ''}" data-value="${escapeHtml(opt)}">
-                            <img src="${imgPath}" class="filter-option-image" loading="lazy" onerror="this.src='https://picsum.photos/id/${(i % 100) + 1}/100/100'">
-                            <div class="filter-option-name">${escapeHtml(opt)}</div>
-                            <div class="filter-option-check">
-                                ${isSelected ? '<i class="fas fa-check"></i>' : ''}
-                            </div>
-                        </div>`;
-                    } else {
-                        html += `<div class="filter-option ${isSelected ? 'selected' : ''}" data-value="${escapeHtml(opt)}">
-                            <div class="filter-option-image" style="background: rgba(184,122,255,0.2); display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-cube"></i>
-                            </div>
-                            <div class="filter-option-name">${escapeHtml(opt)}</div>
-                            <div class="filter-option-check">
-                                ${isSelected ? '<i class="fas fa-check"></i>' : ''}
-                            </div>
-                        </div>`;
-                    }
-                }
-                container.innerHTML = html;
-                
-                document.querySelectorAll('.filter-option').forEach(opt => {
-                    opt.addEventListener('click', () => {
-                        const value = opt.dataset.value;
-                        const currentSelections = filterSelections[currentTab];
-                        const index = currentSelections.indexOf(value);
-                        
-                        if (index === -1) {
-                            currentSelections.push(value);
-                        } else {
-                            currentSelections.splice(index, 1);
-                        }
-                        
-                        filterSelections[currentTab] = currentSelections;
-                        updateFilterOptions();
-                        applyFilters();
-                    });
-                });
-            }
+function toggleSel(tab,val){
+  const arr=selections[tab];
+  const idx=arr.indexOf(val);
+  if(idx>=0) arr.splice(idx,1); else arr.push(val);
+  renderFilterTabs();renderFilterList();renderMarket();
+}
+function setModelNft(name){modelNft=name;renderFilterList()}
 
-            function validateAndFormatAmount(value) {
-                let cleaned = value.replace(/[^\d.]/g, '');
-                let num = parseFloat(cleaned);
-                if (isNaN(num)) return 1;
-                num = Math.floor(num);
-                if (num < 1) return 1;
-                if (num > 100000) return 100000;
-                return num;
-            }
-
-            function openTelegramPayment(amount) {
-                const tg = window.Telegram?.WebApp;
-                if (!tg) {
-                    alert('Это приложение работает только в Telegram');
-                    return;
-                }
-                window.location.href = `https://t.me/${BOT_USERNAME}?start=pay_${amount}`;
-                showNotification(`⏳ Открываю оплату на ${amount} ⭐...`);
-                document.getElementById('depositModal').classList.remove('active');
-                
-                setTimeout(() => {
-                    const confirmed = confirm(`Подтверди тестовую оплату ${amount} ⭐?`);
-                    if (confirmed) {
-                        setBalance(getBalance() + amount);
-                        showNotification(`✅ Успешное пополнение на ${amount} ⭐`);
-                    }
-                }, 3000);
-            }
-
-            function init() {
-                const starsContainer = document.getElementById('stars');
-                if (starsContainer && starsContainer.children.length === 0) {
-                    for (let i = 0; i < 40; i++) {
-                        const star = document.createElement('div');
-                        star.className = 'star';
-                        star.style.left = Math.random() * 100 + '%';
-                        star.style.top = Math.random() * 100 + '%';
-                        starsContainer.appendChild(star);
-                    }
-                }
-
-                const tg = window.Telegram?.WebApp;
-                let firstName = 'Игрок', lastName = '', tgUsername = '';
-                
-                if (tg?.initDataUnsafe?.user) {
-                    const user = tg.initDataUnsafe.user;
-                    firstName = user.first_name || 'Игрок';
-                    lastName = user.last_name || '';
-                    tgUsername = user.username ? '@' + user.username : '';
-                }
-
-                const fullName = (firstName + ' ' + lastName).trim();
-                document.getElementById('fullName').innerText = fullName || 'Игрок';
-                document.getElementById('username').innerText = tgUsername || '@' + firstName.toLowerCase().replace(/\s+/g, '');
-
-                const avatarDiv = document.getElementById('avatar');
-                if (tg?.initDataUnsafe?.user?.photo_url) {
-                    avatarDiv.style.backgroundImage = `url('${tg.initDataUnsafe.user.photo_url}')`;
-                    avatarDiv.style.backgroundSize = 'cover';
-                    avatarDiv.innerText = '';
-                } else {
-                    avatarDiv.innerText = firstName.charAt(0).toUpperCase();
-                }
-
-                updateBalanceDisplay();
-                renderMarket();
-
-                window.addEventListener('storage', (e) => {
-                    if (e.key === STORAGE_KEY || e.key === 'balance_updated') {
-                        updateBalanceDisplay();
-                    }
-                });
-
-                const depositModal = document.getElementById('depositModal');
-                const plusBtn = document.getElementById('plusBtn');
-                const amountInput = document.getElementById('amountInput');
-                const depositButton = document.getElementById('depositButton');
-                const selectedAmountSpan = document.getElementById('selectedAmount');
-                const quickAmounts = document.querySelectorAll('.quick-amount');
-
-                if (plusBtn) {
-                    plusBtn.addEventListener('click', () => {
-                        if (amountInput) amountInput.value = '';
-                        if (selectedAmountSpan) selectedAmountSpan.innerText = '0';
-                        depositModal.classList.add('active');
-                    });
-                }
-
-                quickAmounts.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const amount = btn.dataset.amount;
-                        if (amountInput) amountInput.value = amount;
-                        if (selectedAmountSpan) selectedAmountSpan.innerText = amount;
-                    });
-                });
-
-                document.getElementById('closeDepositModal')?.addEventListener('click', () => depositModal.classList.remove('active'));
-                depositModal?.addEventListener('click', (e) => { if (e.target === depositModal) depositModal.classList.remove('active'); });
-
-                if (amountInput) {
-                    amountInput.addEventListener('input', (e) => {
-                        let value = e.target.value.replace(/[^\d.]/g, '');
-                        e.target.value = value;
-                        if (selectedAmountSpan) selectedAmountSpan.innerText = (value && value !== '.') ? value : '0';
-                    });
-                    amountInput.addEventListener('blur', (e) => {
-                        const formatted = validateAndFormatAmount(e.target.value);
-                        e.target.value = formatted;
-                        if (selectedAmountSpan) selectedAmountSpan.innerText = formatted;
-                    });
-                }
-
-                if (depositButton) {
-                    depositButton.addEventListener('click', () => {
-                        const amount = validateAndFormatAmount(amountInput?.value || '0');
-                        if (amount > 0) openTelegramPayment(amount);
-                    });
-                }
-
-                const searchInput = document.getElementById('searchInput');
-                if (searchInput) {
-                    searchInput.addEventListener('input', () => renderMarket());
-                }
-
-                const sortBtn = document.getElementById('sortBtn');
-                if (sortBtn) {
-                    sortBtn.addEventListener('click', () => {
-                        if (currentSort === 'asc') {
-                            currentSort = 'desc';
-                            sortBtn.innerHTML = '<i class="fas fa-arrow-down"></i>';
-                        } else {
-                            currentSort = 'asc';
-                            sortBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-                        }
-                        renderMarket();
-                    });
-                }
-
-                const filterBtn = document.getElementById('filterBtn');
-                const filterModal = document.getElementById('filterModal');
-                const filterClose = document.getElementById('filterClose');
-                const overlay = document.getElementById('overlay');
-                const filterTabs = document.querySelectorAll('.filter-tab');
-                const filterSearchInput = document.getElementById('filterSearchInput');
-                const filterSortArrow = document.getElementById('filterSortArrow');
-
-                if (filterBtn) {
-                    filterBtn.addEventListener('click', () => {
-                        filterModal.classList.add('active');
-                        overlay.classList.add('active');
-                        filterSearchTerm = '';
-                        if (filterSearchInput) filterSearchInput.value = '';
-                        updateFilterOptions();
-                    });
-                }
-
-                function closeFilter() {
-                    filterModal.classList.remove('active');
-                    overlay.classList.remove('active');
-                }
-
-                if (filterClose) filterClose.addEventListener('click', closeFilter);
-                if (overlay) overlay.addEventListener('click', closeFilter);
-
-                filterTabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        filterTabs.forEach(t => t.classList.remove('active'));
-                        tab.classList.add('active');
-                        currentTab = tab.dataset.tab;
-                        filterSearchTerm = '';
-                        if (filterSearchInput) filterSearchInput.value = '';
-                        
-                        if (currentTab === 'collection') {
-                            filterSortArrow.style.display = 'flex';
-                        } else {
-                            filterSortArrow.style.display = 'none';
-                        }
-                        
-                        updateFilterOptions();
-                    });
-                });
-
-                if (filterSortArrow) {
-                    filterSortArrow.addEventListener('click', () => {
-                        collectionSortDirection = collectionSortDirection === 'asc' ? 'desc' : 'asc';
-                        filterSortArrow.innerHTML = collectionSortDirection === 'asc' ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>';
-                        updateFilterOptions();
-                    });
-                }
-
-                if (filterSearchInput) {
-                    filterSearchInput.addEventListener('input', (e) => {
-                        filterSearchTerm = e.target.value;
-                        updateFilterOptions();
-                    });
-                }
-
-                const navMarket = document.getElementById('navMarket');
-                const navProfile = document.getElementById('navProfile');
-                if (navProfile) {
-                    navProfile.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        window.location.href = 'profle.html';
-                    });
-                }
-                if (navMarket) {
-                    navMarket.addEventListener('click', (e) => e.preventDefault());
-                }
-            }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', init);
-            } else {
-                init();
-            }
-        })();
-    </script>
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+document.getElementById('balance-num').textContent=balance.toLocaleString('ru');
+renderMarket();
+</script>
 </body>
 </html>
