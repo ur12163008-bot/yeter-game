@@ -1,273 +1,517 @@
-import { useState, useEffect, useRef } from 'react';
-import { ProfileHeader } from '../components/ProfileHeader';
-import { FilterPanel, FilterSelections } from '../components/FilterPanel';
-import { getImageUrl, onCacheUpdate } from '../lib/imageCache';
-import { useBalance, useMarketListings, buyFromMarket, seedMarketIfEmpty } from '../lib/store';
-import { TelegramUser } from '../lib/telegram';
-import { MarketListing } from '../lib/nftData';
-import { showToast } from '../components/Toast';
-import { ScrollWithIndicator } from '../components/ScrollWithIndicator';
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>NFT Market</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;justify-content:center;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 40% 50%,#0a0e1a 0%,#03050a 70%,#000103 100%);z-index:-2}
+.stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.star{position:absolute;background:white;border-radius:50%;width:2px;height:2px;opacity:.3}
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0}
+.orb1{width:340px;height:340px;background:radial-gradient(circle,rgba(148,38,255,.22) 0%,transparent 70%);top:-60px;left:-60px;animation:orb1 8s ease-in-out infinite}
+.orb2{width:300px;height:300px;background:radial-gradient(circle,rgba(90,20,200,.18) 0%,transparent 70%);bottom:60px;right:-50px;animation:orb2 10s ease-in-out infinite}
+@keyframes orb1{0%,100%{transform:translate(0,0) scale(1);opacity:.12}50%{transform:translate(30px,-20px) scale(1.08);opacity:.18}}
+@keyframes orb2{0%,100%{transform:translate(0,0) scale(1);opacity:.08}50%{transform:translate(-25px,30px) scale(1.05);opacity:.14}}
+.app{max-width:440px;width:100%;padding-bottom:110px;min-height:100vh;position:relative;z-index:1}
+.notif{position:fixed;top:20px;right:20px;padding:11px 18px;border-radius:60px;background:rgba(0,200,83,.9);color:#fff;font-weight:500;font-size:13px;z-index:3000;transform:translateX(160%);transition:transform .22s;border:.5px solid rgba(255,255,255,.2);pointer-events:none;max-width:280px}
+.notif.err{background:#8b1a1a}
+.notif.show{transform:translateX(0)}
+.profile-header{display:flex;align-items:center;justify-content:space-between;margin:16px 20px 20px;gap:12px}
+.profile-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.avatar{width:52px;height:52px;border-radius:18px;background:rgba(106,13,173,.5);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;border:.5px solid rgba(184,122,255,.5);flex-shrink:0;background-size:cover;background-position:center;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.fullname{font-size:17px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.username-txt{font-size:13px;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.balance-block{display:flex;align-items:center;gap:8px;background:rgba(18,18,34,.92);border:.5px solid rgba(138,43,226,.2);border-radius:40px;padding:6px 8px 6px 14px;flex-shrink:0}
+.balance-val{font-weight:600;font-size:15px;display:flex;align-items:center;gap:4px}
+.plus-btn{background:rgba(255,255,255,.1);border:.5px solid rgba(138,43,226,.38);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:20px;font-weight:300;cursor:pointer}
+.plus-btn:active{background:rgba(106,13,173,.6);transform:scale(.92)}
+.search-row{display:flex;gap:10px;margin:0 20px 14px;align-items:center}
+.search-box{flex:1;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:60px;padding:10px 14px}
+.search-box input{background:transparent;border:none;color:#fff;font-size:14px;outline:none;width:100%;font-family:inherit}
+.search-box i{color:rgba(255,255,255,.35);font-size:13px}
+.icon-btn{background:rgba(255,255,255,.06);border:1px solid rgba(184,122,255,.28);border-radius:60px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#b87aff;font-size:15px;flex-shrink:0}
+.icon-btn:active{transform:scale(.92)}
+.icon-btn.active{border-color:#b87aff;box-shadow:0 0 10px rgba(184,122,255,.25)}
+.market-wrap{margin:0 20px;background:rgba(13,14,24,.9);border:1px solid rgba(138,43,226,.2);border-radius:28px;padding:16px;position:relative}
+.market-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mcard{background:rgba(18,18,36,.92);border:1px solid rgba(138,43,226,.2);border-radius:20px;padding:14px 10px 12px;display:flex;flex-direction:column;align-items:center;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s cubic-bezier(.34,1.56,.64,1)}
+.mcard:active{transform:scale(.94)}
+.mcard img{width:100px;height:100px;border-radius:16px;object-fit:cover;margin-bottom:10px;background:rgba(40,25,65,.6)}
+.mcard-name{font-size:12px;font-weight:500;text-align:center;margin-bottom:5px;color:rgba(255,255,255,.88);width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mcard-seller{display:flex;align-items:center;gap:5px;margin-bottom:6px;width:100%;justify-content:center}
+.mcard-avatar{width:16px;height:16px;border-radius:4px;background:rgba(88,10,148,.55);border:1px solid rgba(184,122,255,.45);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0}
+.mcard-sellername{font-size:10px;color:rgba(255,255,255,.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px}
+.mcard-price{font-size:13px;font-weight:700;color:#b87aff}
+.empty-msg{text-align:center;color:rgba(255,255,255,.48);padding:48px 0;font-size:14px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:2000;display:none;justify-content:center;align-items:center}
+.overlay.show{display:flex}
+.modal-box{max-width:320px;width:88%;background:rgba(14,14,26,.98);border:1px solid rgba(184,122,255,.25);border-radius:28px;padding:24px 20px 22px;position:relative;text-align:center}
+.modal-close{position:absolute;top:8px;right:8px;width:28px;height:28px;background:rgba(255,255,255,.08);border:.5px solid rgba(184,122,255,.2);border-radius:50%;color:#b87aff;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.modal-close:active{background:rgba(184,122,255,.2);transform:scale(.92)}
+.modal-nft-img{width:130px;height:130px;border-radius:22px;object-fit:cover;margin:0 auto 16px;display:block}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:10px}
+.modal-seller{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:12px;padding:8px 14px;background:rgba(255,255,255,.04);border-radius:16px}
+.modal-seller-av{width:28px;height:28px;border-radius:8px;background:rgba(88,10,148,.55);border:1px solid rgba(184,122,255,.45);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.tags{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.tag{background:rgba(88,10,148,.25);border:1px solid rgba(184,122,255,.22);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:500;color:rgba(255,255,255,.7)}
+.modal-price{font-size:20px;font-weight:800;color:#b87aff;margin-bottom:18px}
+.buy-btn{background:linear-gradient(135deg,rgba(106,13,173,.9),rgba(148,38,255,.7));border:1px solid rgba(184,122,255,.4);border-radius:60px;padding:13px 24px;width:100%;color:#fff;font-size:15px;font-weight:700;cursor:pointer}
+.buy-btn:disabled{opacity:.6;cursor:not-allowed}
+.buy-btn:not(:disabled):active{transform:scale(.97)}
+.dep-modal{max-width:360px;width:90%;background:rgba(20,20,35,.85);backdrop-filter:blur(40px);border:.5px solid rgba(255,255,255,.2);border-radius:32px;padding:28px 20px 24px;position:relative}
+.dep-title{font-size:24px;font-weight:600;text-align:center;margin-bottom:24px}
+.quick-amounts{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;justify-content:center}
+.qa{background:rgba(106,13,173,.2);border:.5px solid rgba(184,122,255,.3);border-radius:30px;padding:8px 14px;font-size:13px;font-weight:600;color:#b87aff;cursor:pointer;min-width:70px;text-align:center}
+.qa:active{background:rgba(106,13,173,.4);transform:scale(.95)}
+.qa.selected{background:rgba(88,10,148,.5);border-color:#b87aff;color:#fff}
+.amount-input{width:100%;background:rgba(255,255,255,.08);border:.5px solid rgba(255,255,255,.15);border-radius:20px;padding:14px 18px;font-size:18px;color:#fff;outline:none;margin-bottom:18px;font-family:inherit}
+.amount-input:focus{border-color:rgba(184,122,255,.6)}
+.dep-btn{background:rgba(106,13,173,.7);border:.5px solid rgba(184,122,255,.4);border-radius:60px;padding:14px 22px;width:100%;color:#fff;font-size:17px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+.dep-btn:active{transform:scale(.97)}
+.dep-btn span:last-child{background:rgba(255,255,255,.15);padding:4px 12px;border-radius:30px;font-size:15px}
+.filter-panel{position:fixed;inset:0;background:rgba(8,8,18,.98);z-index:1500;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .28s cubic-bezier(.22,1,.36,1);pointer-events:none}
+.filter-panel.open{transform:translateY(0);pointer-events:auto}
+.fp-inner{max-width:440px;width:100%;margin:0 auto;display:flex;flex-direction:column;height:100%;overflow:hidden}
+.fp-header{display:flex;justify-content:center;align-items:center;position:relative;padding:22px 20px 12px;flex-shrink:0}
+.fp-header h3{font-size:18px;font-weight:700}
+.fp-close{position:absolute;right:12px;top:18px;width:28px;height:28px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.22);border-radius:50%;color:#b87aff;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.fp-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 20px 16px;flex-shrink:0}
+.fp-tab{background:rgba(255,255,255,.06);border:1px solid rgba(184,122,255,.22);border-radius:40px;padding:9px 4px;font-size:12px;font-weight:500;color:rgba(255,255,255,.48);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px}
+.fp-tab.active{background:rgba(88,10,148,.5);border-color:#b87aff;color:#fff}
+.fp-badge{background:#b87aff;color:#fff;font-size:10px;font-weight:700;border-radius:20px;padding:0 5px;min-width:14px;text-align:center}
+.fp-search{display:flex;gap:10px;margin:0 20px 12px;flex-shrink:0}
+.fp-search .search-box{flex:1}
+.fp-reset{display:flex;align-items:center;gap:8px;margin:0 20px 12px;background:rgba(180,30,30,.12);border:1px solid rgba(220,50,50,.25);border-radius:40px;padding:8px 18px;color:rgba(255,120,120,.85);font-size:13px;font-weight:600;cursor:pointer;justify-content:center}
+.fp-list{flex:1;overflow-y:auto;padding:0 20px 30px}
+.fi{display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid transparent;border-radius:16px;cursor:pointer;margin-bottom:8px}
+.fi.sel{background:rgba(88,10,148,.25);border-color:rgba(184,122,255,.4)}
+.fi img{width:46px;height:46px;border-radius:12px;object-fit:cover;background:rgba(40,25,65,.6);flex-shrink:0}
+.fi-name{flex:1;font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fi-sub{font-size:12px;color:#b87aff;font-weight:600;margin-top:2px}
+.fi-check{width:22px;height:22px;border-radius:7px;border:1px solid rgba(184,122,255,.3);background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;flex-shrink:0}
+.fi-check.chk{background:#b87aff;border-color:#b87aff}
+.fi-arrow{color:#b87aff;font-size:12px}
+.back-btn{display:flex;align-items:center;gap:8px;color:#b87aff;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:16px}
+.model-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.08);font-size:15px;font-weight:600}
+.model-header img{width:40px;height:40px;border-radius:10px;object-fit:cover}
+.fp-loading{text-align:center;color:rgba(255,255,255,.48);padding:36px 0;font-size:14px}
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(184,122,255,.3);border-top-color:#b87aff;border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bottom-nav{position:fixed;bottom:18px;left:18px;right:18px;max-width:404px;margin:0 auto;background:rgba(12,12,22,.95);border:1px solid rgba(184,122,255,.16);border-radius:28px;display:flex;justify-content:space-around;padding:8px 16px;z-index:1000}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,.48);font-size:10px;font-weight:500;cursor:pointer;padding:6px 14px;border-radius:22px;min-width:70px;text-decoration:none;background:transparent;border:none;font-family:inherit}
+.nav-item i{font-size:20px;color:rgba(255,255,255,.48)}
+.nav-item.active{background:rgba(106,13,173,.2);color:#b87aff}
+.nav-item.active i{color:#b87aff}
+.nav-item:active{background:rgba(106,13,173,.2)}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="notif" id="notif"></div>
 
-interface Props {
-  user: TelegramUser;
+<div class="app">
+  <div class="profile-header">
+    <div class="profile-left">
+      <div class="avatar" id="avatar">И</div>
+      <div>
+        <div class="fullname" id="fullname">Игрок</div>
+        <div class="username-txt" id="usernametxt">@player</div>
+      </div>
+    </div>
+    <div class="balance-block">
+      <div class="balance-val">⭐ <span id="balVal">5000</span></div>
+      <div class="plus-btn" id="plusBtn">+</div>
+    </div>
+  </div>
+
+  <div class="search-row">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Поиск NFT...">
+    </div>
+    <div class="icon-btn" id="filterBtn"><i class="fas fa-sliders-h"></i></div>
+    <div class="icon-btn" id="sortBtn"><i class="fas fa-arrow-up" id="sortIcon"></i></div>
+  </div>
+
+  <div class="market-wrap">
+    <div class="market-grid" id="marketGrid"></div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="market.html" class="nav-item active"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
+    <a href="profile.html" class="nav-item"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
+  </div>
+</div>
+
+<div class="overlay" id="buyOverlay">
+  <div class="modal-box">
+    <div class="modal-close" id="buyClose">✕</div>
+    <img src="" alt="" class="modal-nft-img" id="buyImg">
+    <div class="modal-title" id="buyName"></div>
+    <div class="modal-seller" id="buySeller"></div>
+    <div class="tags" id="buyTags"></div>
+    <div class="modal-price" id="buyPrice"></div>
+    <button class="buy-btn" id="buyBtn">Купить</button>
+  </div>
+</div>
+
+<div class="overlay" id="depOverlay">
+  <div class="dep-modal">
+    <div class="modal-close" id="depClose">✕</div>
+    <div class="dep-title">Пополнение</div>
+    <div class="quick-amounts" id="quickAmounts"></div>
+    <input type="text" class="amount-input" id="depInput" placeholder="Введите количество звёзд" inputmode="numeric">
+    <button class="dep-btn" id="depBtn"><span>Пополнить</span><span id="depAmt">0 ⭐</span></button>
+  </div>
+</div>
+
+<div class="filter-panel" id="filterPanel">
+  <div class="fp-inner">
+    <div class="fp-header">
+      <h3>Фильтры</h3>
+      <div class="fp-close" id="fpClose">×</div>
+    </div>
+    <div class="fp-tabs" id="fpTabs"></div>
+    <div class="fp-search">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="fpSearch" placeholder="Поиск...">
+      </div>
+      <div class="icon-btn" id="fpSortBtn" style="display:none"><i class="fas fa-arrow-up" id="fpSortIcon"></i></div>
+    </div>
+    <button class="fp-reset" id="fpReset" style="display:none"><i class="fas fa-rotate-left"></i> Сбросить всё</button>
+    <div class="fp-list" id="fpList"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+const GITHUB_BASE = 'https://raw.githubusercontent.com/ur12163008-bot/yeter-game/main/nft/';
+const COLLECTION_NAMES = [
+  "Artisan Brick","B-Day Candle","Berry Box","Big Year","Bling Binky","Bonded Ring","Bow Tie","Bunny Muffin","Candy Cane","Clover Pin",
+  "Cookie Heart","Crystal Ball","Cupid Charm","Desk Calendar","Diamond Ring","Easter Egg","Electric Skull","Eternal Candle","Eternal Rose","Evil Eye",
+  "Faith Amulet","Flying Broom","Fresh Socks","Gem Signet","Genie Lamp","Ginger Cookie","Hanging Star","Heroic Helmet","Hex Pot","Holiday Drink",
+  "Homemade Cake","Hypno Lollipop","Ice Cream","Input Key","Instant Ramen","Ionic Dryer","Jack-in-the-Box","Jelly Bunny","Jester Hat","Jingle Bells",
+  "Jolly Chimp","Joyful Bundle","Khabibs Papakha","Kissed Frog","Light Sword","Lol Pop","Lon Gem","Love Candle","Love Potion","Low Rider",
+  "Lunar Snake","Lush Bouquet","Mad Pumpkin","Magic Potion","Mini Oscar","Money Pot","Moon Pendant","Mousse Cake","Nail Bracelet","Neko Helmet",
+  "Perfume Bottle","Pet Snake","Pretty Posy","Rare Bird","Record Player","Restless Jar","Sakura Flower","Santa Hat","Sharp Tongue","Signet Ring",
+  "Skull Flower","Sky Stilettos","Sleigh Bell","Snake Box","Snoop Cigar","Snow Globe","Snow Mittens","Spiced Wine","Spring Basket","Spy Agaric",
+  "Star Notepad","Stellar Rocket","Swag Bag","Swiss Watch","Tama Gadget","Top Hat","Toy Bear","Trapped Heart","UFC Strike","Valentine Box",
+  "Victory Medal","Vintage Cigar","Voodoo Doll","Westside Sign","Whip Cupcake","Winter Wreath","Witch Hat","Xmas Stocking"
+];
+const BASE_PRICES = [215,87,342,163,421,78,290,155,380,99,265,440,118,330,195,275,410,143,388,222,157,300,93,350,178,425,112,255,395,168,310,84,230,445,205,137,365,192,285,96,307,89,241,390,174,315,98,258,416,139,362,213,292,428,166,335,103,276,449,188,302,132,379,221,146,398,117,263,434,181,327,95,283,412,158,340,119,271,447,136];
+const PATTERNS = ["Классический","Современный","Винтажный","Неоновый"];
+const BACKGROUNDS = ["Темный","Светлый","Градиент","Звездный"];
+const MODELS = ["2D","3D","Pixel","Vector"];
+const PATTERN_IMG = {"Классический":"https://images.unsplash.com/photo-1519741497674-611481863552?w=80&h=80&fit=crop","Современный":"https://images.unsplash.com/photo-1464802686167-b939a6910659?w=80&h=80&fit=crop","Винтажный":"https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=80&h=80&fit=crop","Неоновый":"https://images.unsplash.com/photo-1518235506717-e1ed3306a89b?w=80&h=80&fit=crop"};
+const BG_IMG = {"Темный":"https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=80&h=80&fit=crop","Светлый":"https://images.unsplash.com/photo-1579547621113-e4bb2a19bdd6?w=80&h=80&fit=crop","Градиент":"https://images.unsplash.com/photo-1620121692029-d088224ddc74?w=80&h=80&fit=crop","Звездный":"https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=80&h=80&fit=crop"};
+const MODEL_IMG = {"2D":"https://images.unsplash.com/photo-1607706189992-eae578626c86?w=80&h=80&fit=crop","3D":"https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=80&h=80&fit=crop","Pixel":"https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=80&h=80&fit=crop","Vector":"https://images.unsplash.com/photo-1461344577544-4e5dc9487184?w=80&h=80&fit=crop"};
+const FAKE_SELLERS = [
+  {id:1001,name:'Алексей',av:'А'},{id:1002,name:'Мария',av:'М'},{id:1003,name:'Дмитрий',av:'Д'},{id:1004,name:'Анна',av:'А'},
+  {id:1005,name:'Иван',av:'И'},{id:1006,name:'Екатерина',av:'Е'},{id:1007,name:'Михаил',av:'М'},{id:1008,name:'Ольга',av:'О'}
+];
+function nftImg(name){ return GITHUB_BASE + encodeURIComponent(name + '.png'); }
+
+const BAL_KEY = 'nft_balance';
+const MARKET_KEY = 'nft_market_listings';
+const INV_KEY = 'nft_inventory';
+function getBalance(){ try{ return parseInt(localStorage.getItem(BAL_KEY))||5000; }catch{ return 5000; } }
+function setBalance(n){ localStorage.setItem(BAL_KEY, n); updateBalUI(); }
+function getMarket(){ try{ return JSON.parse(localStorage.getItem(MARKET_KEY)||'[]')||[]; }catch{ return []; } }
+function saveMarket(d){ localStorage.setItem(MARKET_KEY, JSON.stringify(d)); }
+function getInv(){ try{ return JSON.parse(localStorage.getItem(INV_KEY)||'[]')||[]; }catch{ return []; } }
+function saveInv(d){ localStorage.setItem(INV_KEY, JSON.stringify(d)); }
+
+function seedMarket(){
+  if(getMarket().length > 0) return;
+  const listings = COLLECTION_NAMES.map((name,i)=>{
+    const s = FAKE_SELLERS[i % FAKE_SELLERS.length];
+    return {id:i+1,nftName:name,price:BASE_PRICES[i%BASE_PRICES.length],
+      sellerId:s.id,sellerName:s.name,sellerAvatar:s.av,
+      pattern:PATTERNS[i%4],background:BACKGROUNDS[i%4],model:MODELS[i%4],
+      listedAt:Date.now()};
+  });
+  saveMarket(listings);
 }
 
-export function MarketPage({ user }: Props) {
-  const [balance, updateBalance] = useBalance();
-  const listings = useMarketListings();
-  const [search, setSearch] = useState('');
-  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
-  const [filterOpen, setFilterOpen] = useState(false);
-  const [selections, setSelections] = useState<FilterSelections>({ collection: [], model: [], background: [], pattern: [] });
-  const [detail, setDetail] = useState<MarketListing | null>(null);
-  const [, forceUpdate] = useState(0);
-  const [buying, setBuying] = useState(false);
+for(let i=0;i<40;i++){ let s=document.createElement('div'); s.className='star'; s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%'; document.getElementById('stars').appendChild(s); }
 
-  useEffect(() => { seedMarketIfEmpty(); }, []);
+const notifEl = document.getElementById('notif');
+let notifTimer;
+function showNotif(msg, isErr=false){
+  clearTimeout(notifTimer);
+  notifEl.textContent = msg;
+  notifEl.className = 'notif' + (isErr?' err':'') + ' show';
+  notifTimer = setTimeout(()=>notifEl.classList.remove('show'), 2400);
+}
 
-  useEffect(() => {
-    const unsub = onCacheUpdate(() => forceUpdate(n => n + 1));
-    return unsub;
-  }, []);
+const tg = window.Telegram?.WebApp;
+let tgUser = {firstName:'Игрок',lastName:'',username:'@player',avatarChar:'И',fullName:'Игрок',photoUrl:null};
+if(tg?.initDataUnsafe?.user){
+  const u = tg.initDataUnsafe.user;
+  tgUser.firstName = u.first_name||'Игрок';
+  tgUser.lastName = u.last_name||'';
+  tgUser.fullName = (tgUser.firstName+' '+tgUser.lastName).trim();
+  tgUser.username = u.username ? '@'+u.username : '@'+tgUser.firstName.toLowerCase();
+  tgUser.avatarChar = tgUser.firstName.charAt(0).toUpperCase();
+  tgUser.photoUrl = u.photo_url||null;
+}
+document.getElementById('fullname').textContent = tgUser.fullName;
+document.getElementById('usernametxt').textContent = tgUser.username;
+const avEl = document.getElementById('avatar');
+if(tgUser.photoUrl){ avEl.innerHTML=`<img src="${tgUser.photoUrl}" alt="">`; }
+else{ avEl.textContent = tgUser.avatarChar; }
 
-  const hasFilter = Object.values(selections).some(a => a.length > 0);
+function updateBalUI(){ document.getElementById('balVal').textContent = getBalance(); }
+updateBalUI();
 
-  let items = [...listings];
-  if (selections.collection.length) items = items.filter(x => selections.collection.includes(x.nftName));
-  if (selections.model.length) items = items.filter(x => selections.model.includes(x.model));
-  if (selections.background.length) items = items.filter(x => selections.background.includes(x.background));
-  if (selections.pattern.length) items = items.filter(x => selections.pattern.includes(x.pattern));
-  if (search) items = items.filter(x => x.nftName.toLowerCase().includes(search.toLowerCase()));
-  items.sort((a, b) => sortDir === 'asc' ? a.price - b.price : b.price - a.price);
+const depOverlay = document.getElementById('depOverlay');
+const depInput = document.getElementById('depInput');
+const depAmt = document.getElementById('depAmt');
+document.getElementById('plusBtn').addEventListener('click',()=>{
+  depInput.value=''; depAmt.textContent='0 ⭐';
+  document.querySelectorAll('.qa').forEach(q=>q.classList.remove('selected'));
+  depOverlay.classList.add('show');
+});
+document.getElementById('depClose').addEventListener('click',()=>depOverlay.classList.remove('show'));
+depOverlay.addEventListener('click',e=>{ if(e.target===depOverlay) depOverlay.classList.remove('show'); });
+const qaDiv = document.getElementById('quickAmounts');
+[50,100,200,500,1000,2000].forEach(a=>{
+  let btn=document.createElement('span'); btn.className='qa'; btn.textContent=a+' ⭐'; btn.dataset.a=a;
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.qa').forEach(x=>x.classList.remove('selected'));
+    btn.classList.add('selected');
+    depInput.value = a;
+    depAmt.textContent = a+' ⭐';
+  });
+  qaDiv.appendChild(btn);
+});
+depInput.addEventListener('input',e=>{
+  let v = e.target.value.replace(/\D/g,'');
+  e.target.value = v;
+  depAmt.textContent = (v||'0')+' ⭐';
+  document.querySelectorAll('.qa').forEach(q=>q.classList.remove('selected'));
+});
+document.getElementById('depBtn').addEventListener('click',()=>{
+  let amt = Math.min(100000, Math.max(0, parseInt(depInput.value)||0));
+  if(!amt) return;
+  setBalance(getBalance()+amt);
+  showNotif(`✅ Баланс пополнен на ${amt} ⭐`);
+  depOverlay.classList.remove('show');
+});
 
-  function handleBuy(listing: MarketListing) {
-    if (buying) return;
-    if (balance < listing.price) {
-      showToast(`❌ Недостаточно звёзд! Нужно ${listing.price} ⭐`, true);
+let imgCache = {};
+let imagesReady = false;
+let loadedCount = 0;
+COLLECTION_NAMES.forEach(name=>{
+  let cached = localStorage.getItem('img_'+name);
+  if(cached){ imgCache[name]=cached; loadedCount++; }
+});
+if(loadedCount === COLLECTION_NAMES.length) imagesReady=true;
+COLLECTION_NAMES.forEach(name=>{
+  if(imgCache[name]) return;
+  fetch(nftImg(name)).then(r=>r.blob()).then(blob=>{
+    let reader=new FileReader();
+    reader.onloadend=()=>{
+      imgCache[name]=reader.result;
+      localStorage.setItem('img_'+name,reader.result);
+      loadedCount++;
+      if(loadedCount===COLLECTION_NAMES.length) imagesReady=true;
+    };
+    reader.readAsDataURL(blob);
+  }).catch(()=>{ loadedCount++; });
+});
+function getImgUrl(name){ return imgCache[name] || nftImg(name); }
+
+let filterSel = {collection:[],model:[],background:[],pattern:[]};
+let curTab = 'collection';
+let fpSortDir = 'asc';
+let fpSearch = '';
+let modelNft = null;
+let searchVal = '';
+let sortDir = 'asc';
+let currentListing = null;
+
+function renderMarket(){
+  let items = [...getMarket()];
+  if(filterSel.collection.length) items=items.filter(x=>filterSel.collection.includes(x.nftName));
+  if(filterSel.model.length) items=items.filter(x=>filterSel.model.includes(x.model));
+  if(filterSel.background.length) items=items.filter(x=>filterSel.background.includes(x.background));
+  if(filterSel.pattern.length) items=items.filter(x=>filterSel.pattern.includes(x.pattern));
+  if(searchVal) items=items.filter(x=>x.nftName.toLowerCase().includes(searchVal.toLowerCase()));
+  items.sort((a,b)=>sortDir==='asc'?a.price-b.price:b.price-a.price);
+  const grid = document.getElementById('marketGrid');
+  if(!items.length){
+    grid.innerHTML='<div class="empty-msg"><i class="fas fa-store" style="font-size:28px;margin-bottom:10px;display:block;opacity:.5"></i>Товаров не найдено</div>';
+    return;
+  }
+  grid.innerHTML = items.map(item=>`
+    <div class="mcard" data-id="${item.id}" onclick="openBuyModal(${item.id})">
+      <img src="${getImgUrl(item.nftName)}" alt="${item.nftName}" loading="lazy" onerror="this.style.opacity='.3'">
+      <div class="mcard-name">${item.nftName}</div>
+      <div class="mcard-seller">
+        <div class="mcard-avatar">${item.sellerAvatar}</div>
+        <span class="mcard-sellername">${item.sellerName}</span>
+      </div>
+      <div class="mcard-price">⭐ ${item.price}</div>
+    </div>
+  `).join('');
+}
+window.openBuyModal = function(id){
+  let item = getMarket().find(l=>l.id===id);
+  if(!item) return;
+  currentListing = item;
+  document.getElementById('buyImg').src = getImgUrl(item.nftName);
+  document.getElementById('buyName').textContent = item.nftName;
+  document.getElementById('buySeller').innerHTML = `<div class="modal-seller-av">${item.sellerAvatar}</div><span style="font-size:13px;font-weight:600">${item.sellerName}</span>`;
+  document.getElementById('buyTags').innerHTML = [item.model,item.background,item.pattern].filter(Boolean).map(t=>`<span class="tag">${t}</span>`).join('');
+  document.getElementById('buyPrice').textContent = '⭐ '+item.price;
+  let btn = document.getElementById('buyBtn');
+  if(getBalance() < item.price){
+    btn.textContent = `Не хватает ${item.price-getBalance()} ⭐`;
+    btn.disabled = true;
+  } else {
+    btn.textContent = 'Купить';
+    btn.disabled = false;
+  }
+  document.getElementById('buyOverlay').classList.add('show');
+};
+document.getElementById('buyClose').addEventListener('click',()=>document.getElementById('buyOverlay').classList.remove('show'));
+document.getElementById('buyOverlay').addEventListener('click',e=>{ if(e.target===e.currentTarget) document.getElementById('buyOverlay').classList.remove('show'); });
+document.getElementById('buyBtn').addEventListener('click',()=>{
+  if(!currentListing) return;
+  let bal = getBalance();
+  if(bal < currentListing.price){ showNotif('❌ Недостаточно звёзд!', true); return; }
+  setBalance(bal - currentListing.price);
+  let listings = getMarket().filter(l=>l.id!==currentListing.id);
+  saveMarket(listings);
+  let inv = getInv();
+  inv.push({id:Date.now()+Math.random(),name:currentListing.nftName,price:currentListing.price,image:nftImg(currentListing.nftName),purchaseTime:Date.now()});
+  saveInv(inv);
+  showNotif(`✅ Куплено «${currentListing.nftName}» за ${currentListing.price} ⭐`);
+  document.getElementById('buyOverlay').classList.remove('show');
+  renderMarket();
+  currentListing = null;
+});
+
+document.getElementById('searchInput').addEventListener('input',e=>{ searchVal=e.target.value; renderMarket(); });
+document.getElementById('sortBtn').addEventListener('click',()=>{
+  sortDir = sortDir==='asc'?'desc':'asc';
+  document.getElementById('sortIcon').className = 'fas fa-arrow-'+(sortDir==='asc'?'up':'down');
+  renderMarket();
+});
+
+const filterPanel = document.getElementById('filterPanel');
+document.getElementById('filterBtn').addEventListener('click',()=>{ filterPanel.classList.add('open'); renderFilterContent(); });
+document.getElementById('fpClose').addEventListener('click',()=>{ filterPanel.classList.remove('open'); });
+
+function renderFilterTabs(){
+  const tabs = [{key:'collection',label:'Коллекция'},{key:'model',label:'Модель'},{key:'background',label:'Фон'},{key:'pattern',label:'Узор'}];
+  document.getElementById('fpTabs').innerHTML = tabs.map(t=>`
+    <button class="fp-tab ${curTab===t.key?'active':''}" data-tab="${t.key}" onclick="setFilterTab('${t.key}')">
+      ${t.label}${filterSel[t.key].length?`<span class="fp-badge">${filterSel[t.key].length}</span>`:''}
+    </button>
+  `).join('');
+  let total = Object.values(filterSel).reduce((s,a)=>s+a.length,0);
+  document.getElementById('fpReset').style.display = total?'flex':'none';
+  document.getElementById('fpSortBtn').style.display = curTab==='collection'?'flex':'none';
+}
+window.setFilterTab = function(tab){ curTab=tab; modelNft=null; document.getElementById('fpSearch').value=''; fpSearch=''; renderFilterContent(); };
+document.getElementById('fpSearch').addEventListener('input',e=>{ fpSearch=e.target.value; renderFilterContent(); });
+document.getElementById('fpSortBtn').addEventListener('click',()=>{
+  fpSortDir = fpSortDir==='asc'?'desc':'asc';
+  document.getElementById('fpSortIcon').className = 'fas fa-arrow-'+(fpSortDir==='asc'?'up':'down');
+  renderFilterContent();
+});
+document.getElementById('fpReset').addEventListener('click',()=>{
+  filterSel={collection:[],model:[],background:[],pattern:[]};
+  renderFilterTabs(); renderFilterContent(); renderMarket();
+});
+
+function renderFilterContent(){
+  const listDiv = document.getElementById('fpList');
+  if(curTab==='collection'){
+    if(!imagesReady){
+      listDiv.innerHTML='<div class="fp-loading"><span class="spinner"></span>Загрузка коллекции...</div>';
       return;
     }
-    setBuying(true);
-    try {
-      buyFromMarket(listing.id, { name: user.fullName, username: user.username, avatar: user.avatarChar });
-      showToast(`✅ Вы купили «${listing.nftName}» за ${listing.price} ⭐`);
-      setDetail(null);
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : 'Ошибка';
-      showToast(`❌ ${msg}`, true);
+    let opts = [...COLLECTION_NAMES];
+    if(fpSearch) opts=opts.filter(o=>o.toLowerCase().includes(fpSearch.toLowerCase()));
+    opts = fpSortDir==='asc'?opts.sort():opts.sort().reverse();
+    listDiv.innerHTML = opts.map(name=>{
+      let sel = filterSel.collection.includes(name);
+      return `<div class="fi ${sel?'sel':''}" onclick="toggleFilter('collection','${name.replace(/'/g,"\\'")}')">
+        <img src="${getImgUrl(name)}" loading="lazy" onerror="this.style.opacity='.3'">
+        <div class="fi-name">${name}</div>
+        <div class="fi-check ${sel?'chk':''}">${sel?'<i class="fas fa-check"></i>':''}</div>
+      </div>`;
+    }).join('');
+  } else if(curTab==='model'){
+    if(!modelNft){
+      let items = filterSel.collection.length ? COLLECTION_NAMES.filter(n=>filterSel.collection.includes(n)) : COLLECTION_NAMES;
+      if(fpSearch) items=items.filter(n=>n.toLowerCase().includes(fpSearch.toLowerCase()));
+      listDiv.innerHTML = items.map(name=>`
+        <div class="fi" onclick="setModelNft('${name.replace(/'/g,"\\'")}')">
+          <img src="${getImgUrl(name)}" loading="lazy" onerror="this.style.opacity='.3'">
+          <div class="fi-name">${name}</div>
+          <i class="fas fa-chevron-right fi-arrow"></i>
+        </div>
+      `).join('');
+    } else {
+      listDiv.innerHTML = `<div class="back-btn" onclick="setModelNft(null)"><i class="fas fa-arrow-left"></i> Назад</div>
+        <div class="model-header"><img src="${getImgUrl(modelNft)}" onerror="this.style.opacity='.3'"><span>${modelNft}</span></div>` +
+        MODELS.map(m=>{
+          let sel = filterSel.model.includes(m);
+          return `<div class="fi ${sel?'sel':''}" onclick="toggleFilter('model','${m}')">
+            <img src="${MODEL_IMG[m]}" loading="lazy">
+            <div class="fi-name">${m}</div>
+            <div class="fi-check ${sel?'chk':''}">${sel?'<i class="fas fa-check"></i>':''}</div>
+          </div>`;
+        }).join('');
     }
-    setBuying(false);
+  } else if(curTab==='background'){
+    let opts = fpSearch?BACKGROUNDS.filter(o=>o.toLowerCase().includes(fpSearch.toLowerCase())):BACKGROUNDS;
+    listDiv.innerHTML = opts.map(bg=>{
+      let sel = filterSel.background.includes(bg);
+      return `<div class="fi ${sel?'sel':''}" onclick="toggleFilter('background','${bg}')">
+        <img src="${BG_IMG[bg]}" loading="lazy">
+        <div class="fi-name">${bg}</div>
+        <div class="fi-check ${sel?'chk':''}">${sel?'<i class="fas fa-check"></i>':''}</div>
+      </div>`;
+    }).join('');
+  } else if(curTab==='pattern'){
+    let opts = fpSearch?PATTERNS.filter(o=>o.toLowerCase().includes(fpSearch.toLowerCase())):PATTERNS;
+    listDiv.innerHTML = opts.map(pt=>{
+      let sel = filterSel.pattern.includes(pt);
+      return `<div class="fi ${sel?'sel':''}" onclick="toggleFilter('pattern','${pt}')">
+        <img src="${PATTERN_IMG[pt]}" loading="lazy">
+        <div class="fi-name">${pt}</div>
+        <div class="fi-check ${sel?'chk':''}">${sel?'<i class="fas fa-check"></i>':''}</div>
+      </div>`;
+    }).join('');
   }
-
-  return (
-    <div style={{ position: 'relative', zIndex: 1, maxWidth: 440, width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column', height: '100dvh' }}>
-      {/* Fixed header part */}
-      <div style={{ flexShrink: 0 }}>
-        <ProfileHeader user={user} balance={balance} onBalanceChange={updateBalance} />
-
-        <div style={{ margin: '0 20px 12px' }}>
-          {/* Search row */}
-          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-            <div style={{
-              flex: 1, display: 'flex', alignItems: 'center', gap: 8,
-              background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.11)',
-              borderRadius: 60, padding: '10px 14px',
-            }}>
-              <i className="fas fa-search" style={{ color: 'rgba(255,255,255,.35)', fontSize: 13 }} />
-              <input
-                data-testid="input-market-search"
-                placeholder="Поиск NFT..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: 14, outline: 'none', width: '100%' }}
-              />
-            </div>
-            <button
-              data-testid="button-filter"
-              onClick={() => setFilterOpen(true)}
-              style={{
-                background: 'rgba(255,255,255,.06)',
-                border: `1px solid ${hasFilter ? '#b87aff' : 'rgba(184,122,255,.28)'}`,
-                boxShadow: hasFilter ? '0 0 10px rgba(184,122,255,.25)' : 'none',
-                borderRadius: 60, width: 42, height: 42, display: 'flex', alignItems: 'center',
-                justifyContent: 'center', cursor: 'pointer', color: '#b87aff', fontSize: 15, flexShrink: 0,
-              }}
-            >
-              <i className="fas fa-sliders-h" />
-            </button>
-            <button
-              data-testid="button-sort"
-              onClick={() => setSortDir(d => d === 'asc' ? 'desc' : 'asc')}
-              style={{
-                background: 'rgba(255,255,255,.06)', border: '1px solid rgba(184,122,255,.28)',
-                borderRadius: 60, width: 42, height: 42, display: 'flex', alignItems: 'center',
-                justifyContent: 'center', cursor: 'pointer', color: '#b87aff', fontSize: 15, flexShrink: 0,
-              }}
-            >
-              <i className={`fas fa-arrow-${sortDir === 'asc' ? 'up' : 'down'}`} />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Scrollable grid with indicator */}
-      <ScrollWithIndicator style={{ flex: 1, overflow: 'hidden', paddingBottom: 110 }}>
-        <div style={{ padding: '0 20px 20px' }}>
-          {items.length === 0 ? (
-            <div style={{ textAlign: 'center', color: 'rgba(255,255,255,.48)', padding: '60px 0', fontSize: 14 }}>
-              <i className="fas fa-store" style={{ fontSize: 28, marginBottom: 10, display: 'block', opacity: .5 }} />
-              Товаров не найдено
-            </div>
-          ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-              {items.map(item => (
-                <MarketCard key={item.id} item={item} onClick={() => setDetail(item)} />
-              ))}
-            </div>
-          )}
-        </div>
-      </ScrollWithIndicator>
-
-      {/* Filter panel */}
-      <FilterPanel
-        open={filterOpen}
-        onClose={() => setFilterOpen(false)}
-        selections={selections}
-        onSelectionsChange={setSelections}
-      />
-
-      {/* Detail modal */}
-      {detail && (
-        <div
-          style={{
-            position: 'fixed', inset: 0, background: 'rgba(0,0,0,.72)',
-            zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-          onClick={e => { if (e.target === e.currentTarget) setDetail(null); }}
-        >
-          <div style={{
-            maxWidth: 320, width: '88%', background: 'rgba(14,14,26,.98)',
-            border: '1px solid rgba(184,122,255,.25)', borderRadius: 28,
-            padding: '24px 20px 22px', position: 'relative', textAlign: 'center',
-            animation: 'modalIn .22s cubic-bezier(.34,1.56,.64,1)',
-          }}>
-            <button onClick={() => setDetail(null)} style={{
-              position: 'absolute', top: 10, right: 12, width: 26, height: 26,
-              background: 'rgba(255,255,255,.08)', border: '1px solid rgba(184,122,255,.2)',
-              borderRadius: '50%', color: '#b87aff', fontSize: 17, display: 'flex',
-              alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
-            }}>×</button>
-
-            <img
-              src={getImageUrl(detail.nftName)}
-              alt={detail.nftName}
-              style={{ width: 130, height: 130, borderRadius: 22, objectFit: 'cover', display: 'block', margin: '0 auto 16px' }}
-              onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3'; }}
-            />
-            <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 10 }}>{detail.nftName}</div>
-
-            {/* Seller info — avatar + name only, no username */}
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center',
-              marginBottom: 12, padding: '8px 14px',
-              background: 'rgba(255,255,255,.04)', borderRadius: 16,
-            }}>
-              <div style={{
-                width: 28, height: 28, borderRadius: 8, background: 'rgba(88,10,148,.55)',
-                border: '1px solid rgba(184,122,255,.45)', display: 'flex', alignItems: 'center',
-                justifyContent: 'center', fontSize: 12, fontWeight: 700, flexShrink: 0,
-              }}>{detail.sellerAvatar}</div>
-              <div style={{ fontSize: 13, fontWeight: 600 }}>{detail.sellerName}</div>
-            </div>
-
-            <div style={{ display: 'flex', gap: 6, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 14 }}>
-              {[detail.model, detail.background, detail.pattern].filter(Boolean).map(tag => (
-                <span key={tag} style={{
-                  background: 'rgba(88,10,148,.25)', border: '1px solid rgba(184,122,255,.22)',
-                  borderRadius: 20, padding: '3px 10px', fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,.7)',
-                }}>{tag}</span>
-              ))}
-            </div>
-
-            <div style={{ fontSize: 20, fontWeight: 800, color: '#b87aff', marginBottom: 18 }}>⭐ {detail.price}</div>
-
-            <button
-              data-testid="button-buy-confirm"
-              onClick={() => handleBuy(detail)}
-              disabled={buying || balance < detail.price}
-              style={{
-                background: 'linear-gradient(135deg,rgba(106,13,173,.9),rgba(148,38,255,.7))',
-                border: '1px solid rgba(184,122,255,.4)', borderRadius: 60,
-                padding: '13px 24px', width: '100%', color: '#fff',
-                fontSize: 15, fontWeight: 700,
-                cursor: buying || balance < detail.price ? 'not-allowed' : 'pointer',
-                opacity: buying || balance < detail.price ? 0.6 : 1,
-              }}
-            >
-              {balance < detail.price ? `Не хватает ${detail.price - balance} ⭐` : 'Купить'}
-            </button>
-          </div>
-        </div>
-      )}
-      <style>{`@keyframes modalIn { from { transform: translateY(20px) scale(.96); opacity: 0; } to { transform: none; opacity: 1; } }`}</style>
-    </div>
-  );
 }
+window.toggleFilter = function(tab,val){
+  let arr = filterSel[tab];
+  let idx = arr.indexOf(val);
+  if(idx>=0) arr.splice(idx,1); else arr.push(val);
+  renderFilterTabs(); renderFilterContent(); renderMarket();
+};
+window.setModelNft = function(name){ modelNft=name; if(!name){ document.getElementById('fpSearch').value=''; fpSearch=''; } renderFilterContent(); };
 
-function MarketCard({ item, onClick }: { item: MarketListing; onClick: () => void }) {
-  const [pressed, setPressed] = useState(false);
-  const imgUrl = getImageUrl(item.nftName);
-
-  return (
-    <div
-      data-testid={`card-market-${item.id}`}
-      onClick={onClick}
-      onPointerDown={() => setPressed(true)}
-      onPointerUp={() => setPressed(false)}
-      onPointerLeave={() => setPressed(false)}
-      className="market-card-shine"
-      style={{
-        background: 'rgba(18,18,36,.92)', border: '1px solid rgba(138,43,226,.2)',
-        borderRadius: 20, padding: '14px 10px 12px',
-        display: 'flex', flexDirection: 'column', alignItems: 'center',
-        cursor: 'pointer', userSelect: 'none', position: 'relative', overflow: 'hidden',
-        transform: pressed ? 'scale(.94)' : 'scale(1)',
-        transition: 'transform .15s cubic-bezier(.34,1.56,.64,1)',
-        willChange: 'transform',
-      }}
-    >
-      <img
-        src={imgUrl}
-        alt={item.nftName}
-        loading="lazy"
-        style={{ width: 100, height: 100, borderRadius: 16, objectFit: 'cover', marginBottom: 10, background: 'rgba(40,25,65,.6)' }}
-        onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3'; }}
-      />
-      <div style={{
-        fontSize: 12, fontWeight: 500, textAlign: 'center', marginBottom: 5,
-        lineHeight: 1.3, color: 'rgba(255,255,255,.88)',
-        width: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-      }}>
-        {item.nftName}
-      </div>
-
-      {/* Seller — avatar + name only, no username */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 6, width: '100%', justifyContent: 'center' }}>
-        <div style={{
-          width: 16, height: 16, borderRadius: 4, background: 'rgba(88,10,148,.55)',
-          border: '1px solid rgba(184,122,255,.45)', display: 'flex', alignItems: 'center',
-          justifyContent: 'center', fontSize: 8, fontWeight: 700, flexShrink: 0,
-        }}>{item.sellerAvatar}</div>
-        <span style={{
-          fontSize: 10, color: 'rgba(255,255,255,.55)',
-          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 80,
-        }}>
-          {item.sellerName}
-        </span>
-      </div>
-
-      <div style={{ fontSize: 13, fontWeight: 700, color: '#b87aff', display: 'flex', alignItems: 'center', gap: 4 }}>
-        ⭐ {item.price}
-      </div>
-    </div>
-  );
-}
+seedMarket();
+renderMarket();
+renderFilterTabs();
+})();
+</script>
+</body>
+</html>
