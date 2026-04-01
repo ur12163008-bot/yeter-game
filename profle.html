@@ -1,513 +1,461 @@
-import { useState, useEffect } from 'react';
-import { ProfileHeader } from '../components/ProfileHeader';
-import { useBalance, useInventory, listNftForSale } from '../lib/store';
-import { TelegramUser } from '../lib/telegram';
-import { InventoryItem } from '../lib/nftData';
-import { getImageUrl } from '../lib/imageCache';
-import { showToast } from '../components/Toast';
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>NFT Profile</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;justify-content:center;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 40% 50%,#0a0e1a 0%,#03050a 70%,#000103 100%);z-index:-2}
+.stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.star{position:absolute;background:white;border-radius:50%;width:2px;height:2px;opacity:.3}
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0}
+.orb1{width:340px;height:340px;background:radial-gradient(circle,rgba(148,38,255,.22) 0%,transparent 70%);top:-60px;left:-60px;animation:orb1 8s ease-in-out infinite}
+.orb2{width:300px;height:300px;background:radial-gradient(circle,rgba(90,20,200,.18) 0%,transparent 70%);bottom:60px;right:-50px;animation:orb2 10s ease-in-out infinite}
+@keyframes orb1{0%,100%{transform:translate(0,0) scale(1);opacity:.12}50%{transform:translate(30px,-20px) scale(1.08);opacity:.18}}
+@keyframes orb2{0%,100%{transform:translate(0,0) scale(1);opacity:.08}50%{transform:translate(-25px,30px) scale(1.05);opacity:.14}}
+.app{max-width:440px;width:100%;padding-bottom:110px;min-height:100vh;position:relative;z-index:1}
+.notif{position:fixed;top:20px;right:20px;padding:11px 18px;border-radius:60px;background:rgba(0,200,83,.9);color:#fff;font-weight:500;font-size:13px;z-index:3000;transform:translateX(160%);transition:transform .22s;border:.5px solid rgba(255,255,255,.2);pointer-events:none;max-width:280px}
+.notif.err{background:#8b1a1a}
+.notif.show{transform:translateX(0)}
+.profile-header{display:flex;align-items:center;justify-content:space-between;margin:16px 20px 20px;gap:12px}
+.profile-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.avatar{width:52px;height:52px;border-radius:18px;background:rgba(106,13,173,.5);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;border:.5px solid rgba(184,122,255,.5);flex-shrink:0;background-size:cover;background-position:center;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.fullname{font-size:17px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.username-txt{font-size:13px;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.balance-block{display:flex;align-items:center;gap:8px;background:rgba(18,18,34,.92);border:.5px solid rgba(138,43,226,.2);border-radius:40px;padding:6px 8px 6px 14px;flex-shrink:0}
+.balance-val{font-weight:600;font-size:15px;display:flex;align-items:center;gap:4px}
+.plus-btn{background:rgba(255,255,255,.1);border:.5px solid rgba(138,43,226,.38);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:20px;font-weight:300;cursor:pointer}
+.plus-btn:active{background:rgba(106,13,173,.6);transform:scale(.92)}
+.inventory-wrap{margin:0 20px;background:rgba(13,14,24,.9);border:1px solid rgba(138,43,226,.2);border-radius:28px;padding:20px 18px 22px}
+.inventory-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.inventory-header h3{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:600}
+.info-btn{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);border:.5px solid rgba(184,122,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(184,122,255,.7);font-size:16px;font-weight:600}
+.info-btn.active{background:rgba(106,13,173,.4);border-color:#b87aff;color:#b87aff}
+.hint-popup{position:absolute;top:58px;right:18px;width:260px;background:rgba(106,13,173,.85);backdrop-filter:blur(28px);border-radius:22px;padding:14px 16px;border:.5px solid rgba(255,255,255,.2);z-index:10;animation:fadeInHint .12s ease}
+.hint-popup::before{content:'';position:absolute;top:-8px;right:14px;border-left:10px solid transparent;border-right:10px solid transparent;border-bottom:10px solid rgba(106,13,173,.85);width:0;height:0}
+.add-gift-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px 0;min-height:76px;border:1.5px dashed rgba(184,122,255,.4);border-radius:60px;background:rgba(106,13,173,.08);cursor:pointer;margin-bottom:20px}
+.add-gift-btn:active{background:rgba(106,13,173,.2)}
+.inventory-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.inv-card{background:rgba(255,255,255,.05);border:.5px solid rgba(138,43,226,.25);border-radius:18px;padding:10px 6px 8px;display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:all .08s}
+.inv-card:active{transform:scale(.96);border-color:rgba(184,122,255,.6)}
+.inv-card img{width:76px;height:76px;border-radius:16px;object-fit:cover;margin-bottom:6px;background:rgba(42,30,58,.5);border:.5px solid rgba(184,122,255,.2)}
+.inv-name{font-size:12px;font-weight:500;color:#f0f0f0;text-align:center;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.inv-price{display:flex;align-items:center;gap:3px;font-size:12px;font-weight:600;color:#b87aff}
+.empty-inv{text-align:center;color:rgba(255,255,255,.5);font-size:13px;padding:28px 0}
+.empty-inv i{font-size:44px;color:#b87aff;opacity:.3;display:block;margin-bottom:12px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:2000;display:none;justify-content:center;align-items:center}
+.overlay.show{display:flex}
+.modal-box{max-width:310px;width:85%;background:rgba(20,20,35,.85);backdrop-filter:blur(40px);border:.5px solid rgba(184,122,255,.3);border-radius:30px;padding:28px 18px 22px;position:relative;text-align:center}
+.modal-close{position:absolute;top:8px;right:8px;width:28px;height:28px;background:transparent;border:none;color:#b87aff;font-size:18px;font-weight:700;cursor:pointer;border-radius:50%}
+.modal-img{width:130px;height:130px;border-radius:24px;margin:4px auto 12px;display:block;object-fit:cover;background:rgba(42,42,58,.5);border:.5px solid rgba(184,122,255,.2)}
+.modal-name{font-size:20px;font-weight:600;color:rgba(255,255,255,.85);text-align:center;margin-bottom:6px}
+.modal-price{font-size:22px;font-weight:700;margin-bottom:18px;color:#b87aff}
+.sell-btn{display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px 18px;border-radius:60px;font-size:15px;font-weight:600;border:.5px solid rgba(184,122,255,.2);background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);cursor:default}
+.sell-btn-active{background:rgba(106,13,173,.7);border:.5px solid rgba(184,122,255,.4);color:#fff;cursor:pointer}
+.sell-btn-active:active{transform:scale(.97)}
+.sell-lock{background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);cursor:default}
+.timer-badge{font-weight:500;background:rgba(0,0,0,.3);padding:3px 9px;border-radius:30px;font-size:13px}
+.input-sell{width:100%;background:rgba(255,255,255,.08);border:.5px solid rgba(255,255,255,.15);border-radius:20px;padding:13px 16px;font-size:16px;color:#fff;outline:none;margin-bottom:12px}
+.btn-row{display:flex;gap:8px;margin-top:8px}
+.btn-cancel{flex:1;background:rgba(255,255,255,.05);border:.5px solid rgba(184,122,255,.2);border-radius:60px;padding:12px;color:rgba(255,255,255,.6);font-size:15px;font-weight:600;cursor:pointer}
+.btn-confirm{flex:1;background:rgba(106,13,173,.7);border:.5px solid rgba(184,122,255,.4);border-radius:60px;padding:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+.btn-withdraw{background:rgba(255,255,255,.05);border:.5px solid rgba(184,122,255,.3);border-radius:60px;padding:12px;width:100%;color:#b87aff;font-size:15px;font-weight:600;cursor:pointer;text-align:center;margin-top:8px}
+.gift-modal{max-width:360px;width:90%;background:rgba(20,20,35,.85);backdrop-filter:blur(40px);border:.5px solid rgba(184,122,255,.3);border-radius:32px;padding:28px 20px 24px;position:relative}
+.gift-step{display:flex;align-items:center;gap:14px;margin-bottom:18px;background:rgba(255,255,255,.03);border-radius:18px;padding:12px 14px;border:.5px solid rgba(255,255,255,.05)}
+.gift-icon{width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:26px;color:rgba(255,255,255,.7);flex-shrink:0}
+.warning-box{background:rgba(184,77,77,.2);border-radius:18px;padding:14px 16px;margin-bottom:22px;border:.5px solid rgba(255,255,255,.1)}
+.warning-box div:first-child{color:#ff8888;font-size:15px;font-weight:600;margin-bottom:5px}
+.bottom-nav{position:fixed;bottom:18px;left:18px;right:18px;max-width:404px;margin:0 auto;background:rgba(12,12,22,.95);border:1px solid rgba(184,122,255,.16);border-radius:28px;display:flex;justify-content:space-around;padding:8px 16px;z-index:1000}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,.48);font-size:10px;font-weight:500;cursor:pointer;padding:6px 14px;border-radius:22px;min-width:70px;text-decoration:none;background:transparent;border:none;font-family:inherit}
+.nav-item i{font-size:20px;color:rgba(255,255,255,.48)}
+.nav-item.active{background:rgba(106,13,173,.2);color:#b87aff}
+.nav-item.active i{color:#b87aff}
+.nav-item:active{background:rgba(106,13,173,.2)}
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(184,122,255,.3);border-top-color:#b87aff;border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeInHint{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.custom-scroll{overflow-y:auto;scrollbar-width:none}
+.custom-scroll::-webkit-scrollbar{display:none}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="notif" id="notif"></div>
 
-interface Props {
-  user: TelegramUser;
-  userId: number;
+<div class="app">
+  <div class="profile-header">
+    <div class="profile-left">
+      <div class="avatar" id="avatar">И</div>
+      <div>
+        <div class="fullname" id="fullname">Игрок</div>
+        <div class="username-txt" id="usernametxt">@player</div>
+      </div>
+    </div>
+    <div class="balance-block">
+      <div class="balance-val">⭐ <span id="balVal">5000</span></div>
+      <div class="plus-btn" id="plusBtn">+</div>
+    </div>
+  </div>
+
+  <div class="inventory-wrap" style="position:relative">
+    <div class="inventory-header">
+      <h3><i class="fas fa-box" style="color:#b87aff"></i> Инвентарь</h3>
+      <div class="info-btn" id="infoBtn">i</div>
+    </div>
+    <div id="hintPopup" style="display:none" class="hint-popup">
+      <div style="font-size:13px;color:rgba(255,255,255,.95);line-height:1.45">
+        Воспользуйся кнопкой <span style="font-weight:700;background:rgba(255,255,255,.15);padding:2px 7px;border-radius:40px;display:inline-block;margin:0 2px">«Добавить подарок»</span>, чтобы добавить NFT в инвентарь и выставить его на продажу в магазине
+      </div>
+    </div>
+    <div id="addGiftBtn" class="add-gift-btn">
+      <span style="font-size:30px;font-weight:300;line-height:1;margin-bottom:3px;color:rgba(255,255,255,.7)">+</span>
+      <span style="font-size:13px;color:rgba(255,255,255,.5);font-weight:500">Добавить подарок</span>
+    </div>
+    <div id="inventoryGrid" class="inventory-grid"></div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="market.html" class="nav-item"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
+    <a href="profile.html" class="nav-item active"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
+  </div>
+</div>
+
+<div class="overlay" id="nftModal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">✕</button>
+    <img src="" alt="" class="modal-img" id="modalImg">
+    <div class="modal-name" id="modalName"></div>
+    <div class="modal-price" id="modalPrice"></div>
+    <div id="modalSellArea"></div>
+  </div>
+</div>
+
+<div class="overlay" id="giftModal">
+  <div class="gift-modal">
+    <button class="modal-close" id="giftModalClose" style="position:absolute;top:8px;right:8px">✕</button>
+    <div class="warning-box">
+      <div>Не дарите подарки с Telegram Маркета</div>
+      <div style="color:rgba(255,255,255,.8);font-size:13px">Отправляйте подарки только напрямую со своего аккаунта</div>
+    </div>
+    <div class="gift-step" id="openBotBtn" style="cursor:pointer">
+      <div class="gift-icon"><i class="fas fa-robot"></i></div>
+      <div><div style="font-size:15px;font-weight:600;margin-bottom:3px">Перейдите в бота</div><div style="font-size:13px;color:#b87aff;font-weight:500">@yeter16_bot</div></div>
+    </div>
+    <div class="gift-step">
+      <div class="gift-icon"><i class="fas fa-gift"></i></div>
+      <div><div style="font-size:15px;font-weight:600;margin-bottom:3px">Отправьте ему подарок</div><div style="font-size:13px;color:rgba(255,255,255,.5)">(любой из Telegram)</div></div>
+    </div>
+    <div class="gift-step">
+      <div class="gift-icon"><i class="fas fa-clock"></i></div>
+      <div><div style="font-size:15px;font-weight:600;margin-bottom:3px">Подарок добавится в инвентарь</div><div style="font-size:13px;color:rgba(255,255,255,.5)">в течение нескольких минут</div></div>
+    </div>
+    <button id="openBotBtn2" style="background:rgba(106,13,173,.7);border:.5px solid rgba(184,122,255,.3);border-radius:60px;padding:14px;width:100%;color:#fff;font-size:17px;font-weight:600;cursor:pointer;margin-top:8px">Перейти в бота</button>
+  </div>
+</div>
+
+<div class="overlay" id="depOverlay">
+  <div class="gift-modal" style="padding:28px 20px 24px">
+    <button class="modal-close" id="depClose" style="position:absolute;top:8px;right:8px">✕</button>
+    <div class="dep-title" style="font-size:24px;font-weight:600;text-align:center;margin-bottom:24px">Пополнение</div>
+    <div class="quick-amounts" id="quickAmounts" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:20px"></div>
+    <input type="text" class="input-sell" id="depInput" placeholder="Введите количество звёзд" inputmode="numeric" style="margin-bottom:18px">
+    <button class="btn-confirm" id="depBtn" style="width:100%">Пополнить</button>
+  </div>
+</div>
+
+<script>
+(function(){
+const GITHUB_BASE = 'https://raw.githubusercontent.com/ur12163008-bot/yeter-game/main/nft/';
+const COLLECTION_NAMES = [
+  "Artisan Brick","B-Day Candle","Berry Box","Big Year","Bling Binky","Bonded Ring","Bow Tie","Bunny Muffin","Candy Cane","Clover Pin",
+  "Cookie Heart","Crystal Ball","Cupid Charm","Desk Calendar","Diamond Ring","Easter Egg","Electric Skull","Eternal Candle","Eternal Rose","Evil Eye",
+  "Faith Amulet","Flying Broom","Fresh Socks","Gem Signet","Genie Lamp","Ginger Cookie","Hanging Star","Heroic Helmet","Hex Pot","Holiday Drink",
+  "Homemade Cake","Hypno Lollipop","Ice Cream","Input Key","Instant Ramen","Ionic Dryer","Jack-in-the-Box","Jelly Bunny","Jester Hat","Jingle Bells",
+  "Jolly Chimp","Joyful Bundle","Khabibs Papakha","Kissed Frog","Light Sword","Lol Pop","Lon Gem","Love Candle","Love Potion","Low Rider",
+  "Lunar Snake","Lush Bouquet","Mad Pumpkin","Magic Potion","Mini Oscar","Money Pot","Moon Pendant","Mousse Cake","Nail Bracelet","Neko Helmet",
+  "Perfume Bottle","Pet Snake","Pretty Posy","Rare Bird","Record Player","Restless Jar","Sakura Flower","Santa Hat","Sharp Tongue","Signet Ring",
+  "Skull Flower","Sky Stilettos","Sleigh Bell","Snake Box","Snoop Cigar","Snow Globe","Snow Mittens","Spiced Wine","Spring Basket","Spy Agaric",
+  "Star Notepad","Stellar Rocket","Swag Bag","Swiss Watch","Tama Gadget","Top Hat","Toy Bear","Trapped Heart","UFC Strike","Valentine Box",
+  "Victory Medal","Vintage Cigar","Voodoo Doll","Westside Sign","Whip Cupcake","Winter Wreath","Witch Hat","Xmas Stocking"
+];
+const BASE_PRICES = [215,87,342,163,421,78,290,155,380,99,265,440,118,330,195,275,410,143,388,222,157,300,93,350,178,425,112,255,395,168,310,84,230,445,205,137,365,192,285,96,307,89,241,390,174,315,98,258,416,139,362,213,292,428,166,335,103,276,449,188,302,132,379,221,146,398,117,263,434,181,327,95,283,412,158,340,119,271,447,136];
+const PATTERNS = ["Классический","Современный","Винтажный","Неоновый"];
+const BACKGROUNDS = ["Темный","Светлый","Градиент","Звездный"];
+const MODELS = ["2D","3D","Pixel","Vector"];
+const FAKE_SELLERS = [
+  {id:1001,name:'Алексей',av:'А'},{id:1002,name:'Мария',av:'М'},{id:1003,name:'Дмитрий',av:'Д'},{id:1004,name:'Анна',av:'А'},
+  {id:1005,name:'Иван',av:'И'},{id:1006,name:'Екатерина',av:'Е'},{id:1007,name:'Михаил',av:'М'},{id:1008,name:'Ольга',av:'О'}
+];
+function nftImg(name){ return GITHUB_BASE + encodeURIComponent(name + '.png'); }
+
+const BAL_KEY = 'nft_balance';
+const MARKET_KEY = 'nft_market_listings';
+const INV_KEY = 'nft_inventory';
+function getBalance(){ try{ return parseInt(localStorage.getItem(BAL_KEY))||5000; }catch{ return 5000; } }
+function setBalance(n){ localStorage.setItem(BAL_KEY, n); updateBalUI(); }
+function getMarket(){ try{ return JSON.parse(localStorage.getItem(MARKET_KEY)||'[]')||[]; }catch{ return []; } }
+function saveMarket(d){ localStorage.setItem(MARKET_KEY, JSON.stringify(d)); }
+function getInv(){ try{ return JSON.parse(localStorage.getItem(INV_KEY)||'[]')||[]; }catch{ return []; } }
+function saveInv(d){ localStorage.setItem(INV_KEY, JSON.stringify(d)); }
+
+function seedMarket(){
+  if(getMarket().length > 0) return;
+  const listings = COLLECTION_NAMES.map((name,i)=>{
+    const s = FAKE_SELLERS[i % FAKE_SELLERS.length];
+    return {id:i+1,nftName:name,price:BASE_PRICES[i%BASE_PRICES.length],
+      sellerId:s.id,sellerName:s.name,sellerAvatar:s.av,
+      pattern:PATTERNS[i%4],background:BACKGROUNDS[i%4],model:MODELS[i%4],
+      listedAt:Date.now()};
+  });
+  saveMarket(listings);
+}
+seedMarket();
+
+for(let i=0;i<40;i++){ let s=document.createElement('div'); s.className='star'; s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%'; document.getElementById('stars').appendChild(s); }
+
+const notifEl = document.getElementById('notif');
+let notifTimer;
+function showNotif(msg, isErr=false){
+  clearTimeout(notifTimer);
+  notifEl.textContent = msg;
+  notifEl.className = 'notif' + (isErr?' err':'') + ' show';
+  notifTimer = setTimeout(()=>notifEl.classList.remove('show'), 2400);
 }
 
-const SELL_LOCK_MS = 30 * 60 * 1000;
-const BOT_USERNAME = 'yeter16_bot';
+const tg = window.Telegram?.WebApp;
+let tgUser = {firstName:'Игрок',lastName:'',username:'@player',avatarChar:'И',fullName:'Игрок',photoUrl:null};
+if(tg?.initDataUnsafe?.user){
+  const u = tg.initDataUnsafe.user;
+  tgUser.firstName = u.first_name||'Игрок';
+  tgUser.lastName = u.last_name||'';
+  tgUser.fullName = (tgUser.firstName+' '+tgUser.lastName).trim();
+  tgUser.username = u.username ? '@'+u.username : '@'+tgUser.firstName.toLowerCase();
+  tgUser.avatarChar = tgUser.firstName.charAt(0).toUpperCase();
+  tgUser.photoUrl = u.photo_url||null;
+}
+document.getElementById('fullname').textContent = tgUser.fullName;
+document.getElementById('usernametxt').textContent = tgUser.username;
+const avEl = document.getElementById('avatar');
+if(tgUser.photoUrl){ avEl.innerHTML=`<img src="${tgUser.photoUrl}" alt="">`; }
+else{ avEl.textContent = tgUser.avatarChar; }
 
-function formatTimer(ms: number) {
-  const total = Math.ceil(ms / 1000);
-  const m = Math.floor(total / 60).toString().padStart(2, '0');
-  const s = (total % 60).toString().padStart(2, '0');
+function updateBalUI(){ document.getElementById('balVal').textContent = getBalance(); }
+updateBalUI();
+
+let imgCache = {};
+let loadedCount = 0;
+COLLECTION_NAMES.forEach(name=>{
+  let cached = localStorage.getItem('img_'+name);
+  if(cached){ imgCache[name]=cached; loadedCount++; }
+});
+COLLECTION_NAMES.forEach(name=>{
+  if(imgCache[name]) return;
+  fetch(nftImg(name)).then(r=>r.blob()).then(blob=>{
+    let reader=new FileReader();
+    reader.onloadend=()=>{
+      imgCache[name]=reader.result;
+      localStorage.setItem('img_'+name,reader.result);
+      loadedCount++;
+      if(loadedCount===COLLECTION_NAMES.length) renderInventory();
+    };
+    reader.readAsDataURL(blob);
+  }).catch(()=>{ loadedCount++; });
+});
+function getImgUrl(name){ return imgCache[name] || nftImg(name); }
+
+const SELL_LOCK_MS = 30 * 60 * 1000;
+function formatTimer(ms){
+  let total = Math.ceil(ms/1000);
+  let m = Math.floor(total/60).toString().padStart(2,'0');
+  let s = (total%60).toString().padStart(2,'0');
   return `${m}:${s}`;
 }
 
-function useSellTimer(purchaseTime: number) {
-  const getRemaining = () => Math.max(0, SELL_LOCK_MS - (Date.now() - purchaseTime));
-  const [remaining, setRemaining] = useState(getRemaining);
-  useEffect(() => {
-    if (getRemaining() <= 0) { setRemaining(0); return; }
-    const id = setInterval(() => {
-      const r = getRemaining();
-      setRemaining(r);
-      if (r <= 0) clearInterval(id);
-    }, 1000);
-    return () => clearInterval(id);
-  }, [purchaseTime]);
-  return remaining;
-}
+let currentItem = null;
+let currentModalItem = null;
 
-/* ── Gift modal ── */
-function GiftModal({ onClose }: { onClose: () => void }) {
-  const openBot = () => window.open(`https://t.me/${BOT_USERNAME}`, '_blank');
-  return (
-    <div
-      style={{
-        position: 'fixed', inset: 0, background: 'rgba(0,0,0,.6)',
-        backdropFilter: 'blur(8px)', zIndex: 2000,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-      }}
-      onClick={e => { if (e.target === e.currentTarget) onClose(); }}
-    >
-      <div style={{
-        maxWidth: 360, width: '90%',
-        background: 'rgba(20,20,35,.85)', backdropFilter: 'blur(40px)',
-        border: '0.5px solid rgba(184,122,255,.3)', borderRadius: 32,
-        padding: '28px 20px 24px', position: 'relative',
-        animation: 'slideUp .25s ease',
-      }}>
-        <button onClick={onClose} style={{
-          position: 'absolute', top: 8, right: 8, width: 28, height: 28,
-          background: 'transparent', border: 'none', color: '#b87aff',
-          fontSize: 18, fontWeight: 700, cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          borderRadius: '50%', fontFamily: 'system-ui, Inter, sans-serif',
-        }}>✕</button>
-
-        {/* Warning */}
-        <div style={{
-          background: 'rgba(184,77,77,.2)', borderRadius: 18,
-          padding: '14px 16px', margin: '0 0 22px',
-          border: '0.5px solid rgba(255,255,255,.1)',
-        }}>
-          <div style={{ color: '#ff8888', fontSize: 15, fontWeight: 600, marginBottom: 5 }}>
-            Не дарите подарки с Telegram Маркета
-          </div>
-          <div style={{ color: 'rgba(255,255,255,.8)', fontSize: 13 }}>
-            Отправляйте подарки только напрямую со своего аккаунта
-          </div>
-        </div>
-
-        {/* Step 1 — clickable */}
-        <div
-          onClick={openBot}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 14, marginBottom: 18,
-            background: 'rgba(255,255,255,.03)', backdropFilter: 'blur(8px)',
-            borderRadius: 18, padding: '12px 14px', cursor: 'pointer',
-            border: '0.5px solid rgba(255,255,255,.05)', transition: 'all .1s',
-          }}
-          onPointerDown={e => (e.currentTarget.style.background = 'rgba(184,122,255,.2)')}
-          onPointerUp={e => (e.currentTarget.style.background = 'rgba(255,255,255,.03)')}
-          onPointerLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,.03)')}
-        >
-          <div style={{
-            width: 48, height: 48, borderRadius: 16,
-            background: 'rgba(255,255,255,.05)', border: '0.5px solid rgba(255,255,255,.1)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 26, color: 'rgba(255,255,255,.7)', flexShrink: 0,
-          }}>
-            <i className="fas fa-robot" />
-          </div>
-          <div>
-            <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 3 }}>Перейдите в бота</div>
-            <div style={{ fontSize: 13, color: '#b87aff', fontWeight: 500 }}>@yeter16</div>
-          </div>
-        </div>
-
-        {/* Step 2 */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 14, marginBottom: 18,
-          background: 'rgba(255,255,255,.03)', borderRadius: 18, padding: '12px 14px',
-          border: '0.5px solid rgba(255,255,255,.05)',
-        }}>
-          <div style={{
-            width: 48, height: 48, borderRadius: 16,
-            background: 'rgba(255,255,255,.05)', border: '0.5px solid rgba(255,255,255,.1)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 26, color: 'rgba(255,255,255,.7)', flexShrink: 0,
-          }}>
-            <i className="fas fa-gift" />
-          </div>
-          <div>
-            <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 3 }}>Отправьте ему подарок</div>
-            <div style={{ fontSize: 13, color: 'rgba(255,255,255,.5)' }}>(любой из Telegram)</div>
-          </div>
-        </div>
-
-        {/* Step 3 */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 14, marginBottom: 8,
-          background: 'rgba(255,255,255,.03)', borderRadius: 18, padding: '12px 14px',
-          border: '0.5px solid rgba(255,255,255,.05)',
-        }}>
-          <div style={{
-            width: 48, height: 48, borderRadius: 16,
-            background: 'rgba(255,255,255,.05)', border: '0.5px solid rgba(255,255,255,.1)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 26, color: 'rgba(255,255,255,.7)', flexShrink: 0,
-          }}>
-            <i className="fas fa-clock" />
-          </div>
-          <div>
-            <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 3 }}>Подарок добавится в инвентарь</div>
-            <div style={{ fontSize: 13, color: 'rgba(255,255,255,.5)' }}>в течение нескольких минут</div>
-          </div>
-        </div>
-
-        <button
-          onClick={openBot}
-          style={{
-            background: 'rgba(106,13,173,.7)', backdropFilter: 'blur(20px)',
-            border: '0.5px solid rgba(184,122,255,.3)', borderRadius: 60,
-            padding: 14, width: '100%', color: '#fff', fontSize: 17,
-            fontWeight: 600, cursor: 'pointer', textAlign: 'center', marginTop: 8,
-          }}
-        >Перейти в бота</button>
-      </div>
-      <style>{`@keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: none; opacity: 1; } }`}</style>
-    </div>
-  );
-}
-
-/* ── Sell button with timer ── */
-function SellTimerButton({ purchaseTime, onSellClick }: { purchaseTime: number; onSellClick: () => void }) {
-  const remaining = useSellTimer(purchaseTime);
-  const locked = remaining > 0;
-
-  if (locked) {
-    return (
-      <button style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        width: '100%', padding: '12px 18px', borderRadius: 60,
-        fontSize: 15, fontWeight: 600, cursor: 'default',
-        border: '0.5px solid rgba(184,122,255,.2)',
-        background: 'rgba(255,255,255,.05)', backdropFilter: 'blur(8px)',
-        color: 'rgba(255,255,255,.6)',
-      }}>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-          <i className="fas fa-lock" style={{ fontSize: 15, color: 'rgba(255,255,255,.5)' }} />
-          Продать
-        </span>
-        <span style={{
-          fontWeight: 500, background: 'rgba(0,0,0,.3)', backdropFilter: 'blur(4px)',
-          padding: '3px 9px', borderRadius: 30, fontSize: 13,
-        }}>{formatTimer(remaining)}</span>
-      </button>
-    );
+function renderInventory(){
+  let inv = getInv();
+  let grid = document.getElementById('inventoryGrid');
+  if(inv.length===0){
+    grid.innerHTML = '<div class="empty-inv"><i class="fas fa-gift"></i><p>В инвентаре пока пусто</p><p style="font-size:12px;margin-top:4px">Купите NFT в маркете</p></div>';
+    return;
   }
-
-  return (
-    <button
-      data-testid="button-sell"
-      onClick={onSellClick}
-      style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        width: '100%', padding: '12px 18px', borderRadius: 60,
-        fontSize: 15, fontWeight: 600, cursor: 'pointer',
-        background: 'rgba(106,13,173,.7)', backdropFilter: 'blur(20px)',
-        border: '0.5px solid rgba(184,122,255,.4)', color: '#fff',
-      }}
-      onPointerDown={e => (e.currentTarget.style.transform = 'scale(.96)')}
-      onPointerUp={e => (e.currentTarget.style.transform = '')}
-      onPointerLeave={e => (e.currentTarget.style.transform = '')}
-    >
-      Продать
-    </button>
-  );
-}
-
-/* ── NFT detail modal ── */
-function NftModal({
-  item, onClose,
-  user, userId,
-}: {
-  item: InventoryItem; onClose: () => void;
-  user: TelegramUser; userId: number;
-}) {
-  const [showSellInput, setShowSellInput] = useState(false);
-  const [sellPrice, setSellPrice] = useState('');
-
-  function handleSell() {
-    const price = parseInt(sellPrice);
-    if (!price || price <= 0) { showToast('❌ Введите корректную цену', true); return; }
-    listNftForSale(item, price, { name: user.fullName, username: user.username, avatar: user.avatarChar, userId });
-    showToast(`✅ NFT «${item.name}» выставлен за ${price} ⭐`);
-    onClose();
-  }
-
-  return (
-    <div
-      style={{
-        position: 'fixed', inset: 0, background: 'rgba(0,0,0,.6)',
-        backdropFilter: 'blur(8px)', zIndex: 2000,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-      }}
-      onClick={e => { if (e.target === e.currentTarget) onClose(); }}
-    >
-      <div style={{
-        maxWidth: 310, width: '85%',
-        background: 'rgba(20,20,35,.85)', backdropFilter: 'blur(40px)',
-        border: '0.5px solid rgba(184,122,255,.3)', borderRadius: 30,
-        padding: '28px 18px 22px', position: 'relative', animation: 'fadeIn .18s ease',
-      }}>
-        <button onClick={onClose} style={{
-          position: 'absolute', top: 8, right: 8, width: 28, height: 28,
-          background: 'transparent', border: 'none', color: '#b87aff',
-          fontSize: 18, fontWeight: 700, cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          borderRadius: '50%', fontFamily: 'system-ui, Inter, sans-serif',
-        }}>✕</button>
-
-        {/* Original image style */}
-        <img
-          src={getImageUrl(item.name)}
-          alt={item.name}
-          style={{
-            width: 130, height: 130, borderRadius: 24,
-            margin: '4px auto 12px', display: 'block', objectFit: 'cover',
-            background: 'rgba(42,42,58,.5)', border: '0.5px solid rgba(184,122,255,.2)',
-          }}
-          onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3'; }}
-        />
-
-        <div style={{ fontSize: 20, fontWeight: 600, color: 'rgba(255,255,255,.85)', textAlign: 'center', marginBottom: 6 }}>
-          {item.name}
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, fontSize: 22, fontWeight: 700, marginBottom: 18 }}>
-          <span style={{ fontSize: 20, color: '#ffd700' }}>🧩</span>
-          <span>{item.price}</span>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%' }}>
-          {showSellInput ? (
-            <>
-              <input
-                data-testid="input-sell-price"
-                type="text" inputMode="numeric"
-                placeholder="Цена продажи (⭐)"
-                value={sellPrice}
-                onChange={e => setSellPrice(e.target.value.replace(/\D/g, ''))}
-                autoFocus
-                style={{
-                  width: '100%', background: 'rgba(255,255,255,.08)', backdropFilter: 'blur(8px)',
-                  border: '0.5px solid rgba(255,255,255,.15)', borderRadius: 20,
-                  padding: '13px 16px', fontSize: 16, color: '#fff', outline: 'none',
-                }}
-              />
-              <div style={{ display: 'flex', gap: 8 }}>
-                <button onClick={() => { setShowSellInput(false); setSellPrice(''); }}
-                  style={{
-                    flex: 1, background: 'rgba(255,255,255,.05)', backdropFilter: 'blur(8px)',
-                    border: '0.5px solid rgba(184,122,255,.2)', borderRadius: 60,
-                    padding: 12, color: 'rgba(255,255,255,.6)', fontSize: 15, fontWeight: 600, cursor: 'pointer',
-                  }}
-                >Отмена</button>
-                <button data-testid="button-sell-confirm" onClick={handleSell}
-                  style={{
-                    flex: 1, background: 'rgba(106,13,173,.7)', backdropFilter: 'blur(20px)',
-                    border: '0.5px solid rgba(184,122,255,.4)', borderRadius: 60,
-                    padding: 12, color: '#fff', fontSize: 15, fontWeight: 600, cursor: 'pointer',
-                  }}
-                >Продать</button>
-              </div>
-            </>
-          ) : (
-            <>
-              <SellTimerButton
-                purchaseTime={item.purchaseTime}
-                onSellClick={() => setShowSellInput(true)}
-              />
-              {/* Withdraw — purple color like original */}
-              <button
-                data-testid="button-withdraw"
-                onClick={() => showToast('Функция вывода средств временно недоступна', true)}
-                style={{
-                  background: 'rgba(255,255,255,.05)', backdropFilter: 'blur(8px)',
-                  border: '0.5px solid rgba(184,122,255,.3)', borderRadius: 60,
-                  padding: 12, width: '100%', color: '#b87aff',
-                  fontSize: 15, fontWeight: 600, cursor: 'pointer', textAlign: 'center',
-                }}
-              >Вывести</button>
-            </>
-          )}
-        </div>
-      </div>
-      <style>{`@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }`}</style>
+  grid.innerHTML = inv.map(item=>`
+    <div class="inv-card" data-id="${item.id}" onclick="openItemModal('${item.id}')">
+      <img src="${getImgUrl(item.name)}" loading="lazy" onerror="this.style.opacity='.3'">
+      <div class="inv-name">${item.name}</div>
+      <div class="inv-price"><span>⭐</span> ${item.price}</div>
     </div>
-  );
+  `).join('');
 }
-
-/* ── Main page ── */
-export function ProfilePage({ user, userId }: Props) {
-  const [balance, updateBalance] = useBalance();
-  const inventory = useInventory();
-  const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
-  const [hintVisible, setHintVisible] = useState(false);
-  const [giftModalOpen, setGiftModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (!hintVisible) return;
-    const close = (e: MouseEvent) => {
-      const hint = document.getElementById('hint-popup');
-      const btn = document.getElementById('info-btn');
-      if (hint && !hint.contains(e.target as Node) && btn && !btn.contains(e.target as Node)) {
-        setHintVisible(false);
+window.openItemModal = function(id){
+  let inv = getInv();
+  let item = inv.find(i=>String(i.id)===String(id));
+  if(!item) return;
+  currentModalItem = item;
+  document.getElementById('modalImg').src = getImgUrl(item.name);
+  document.getElementById('modalName').textContent = item.name;
+  document.getElementById('modalPrice').innerHTML = `⭐ ${item.price}`;
+  let remaining = Math.max(0, SELL_LOCK_MS - (Date.now() - item.purchaseTime));
+  let sellArea = document.getElementById('modalSellArea');
+  if(remaining > 0){
+    let timer = formatTimer(remaining);
+    let interval = setInterval(()=>{
+      let newRemaining = Math.max(0, SELL_LOCK_MS - (Date.now() - item.purchaseTime));
+      if(newRemaining <= 0){
+        clearInterval(interval);
+        renderSellButton(item, sellArea);
+      } else {
+        let btn = document.getElementById('sellLockBtn');
+        if(btn) btn.querySelector('.timer-badge').textContent = formatTimer(newRemaining);
       }
-    };
-    document.addEventListener('click', close);
-    return () => document.removeEventListener('click', close);
-  }, [hintVisible]);
-
-  return (
-    <div style={{
-      position: 'relative', zIndex: 1, maxWidth: 440, width: '100%',
-      margin: '0 auto', height: '100dvh', display: 'flex', flexDirection: 'column',
-    }}>
-      {/* Fixed header */}
-      <div style={{ flexShrink: 0 }}>
-        <ProfileHeader user={user} balance={balance} onBalanceChange={updateBalance} />
-      </div>
-
-      {/* Scrollable content */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '0 20px 110px' }} className="custom-scroll-hide">
-        <div style={{
-          background: 'rgba(255,255,255,.03)', backdropFilter: 'blur(24px)',
-          border: '0.5px solid rgba(138,43,226,.2)', borderRadius: 32,
-          padding: '20px 18px 22px', position: 'relative',
-        }}>
-          {/* Inventory header */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <i className="fas fa-box" style={{ fontSize: 22, color: '#b87aff' }} />
-              <span style={{ fontSize: 19, fontWeight: 600 }}>Инвентарь</span>
-            </div>
-            {/* Info circle — shows hint on click */}
-            <div
-              id="info-btn"
-              data-testid="button-inventory-info"
-              onClick={(e) => { e.stopPropagation(); setHintVisible(v => !v); }}
-              style={{
-                width: 32, height: 32, borderRadius: '50%',
-                background: hintVisible ? 'rgba(106,13,173,.4)' : 'rgba(255,255,255,.08)',
-                backdropFilter: 'blur(8px)',
-                border: `0.5px solid ${hintVisible ? 'rgba(184,122,255,.8)' : 'rgba(184,122,255,.4)'}`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'pointer', color: hintVisible ? '#b87aff' : 'rgba(184,122,255,.7)',
-                fontSize: 16, fontWeight: 600, userSelect: 'none',
-              }}
-            >i</div>
-          </div>
-
-          {/* Hint popup — matches original with arrow */}
-          {hintVisible && (
-            <div
-              id="hint-popup"
-              style={{
-                position: 'absolute', top: 58, right: 18, width: 260,
-                background: 'rgba(106,13,173,.85)', backdropFilter: 'blur(28px)',
-                borderRadius: 22, padding: '14px 16px',
-                border: '0.5px solid rgba(255,255,255,.2)',
-                zIndex: 10, animation: 'fadeInHint .12s ease',
-              }}
-            >
-              {/* Arrow pointing up */}
-              <div style={{
-                position: 'absolute', top: -8, right: 14,
-                borderLeft: '10px solid transparent', borderRight: '10px solid transparent',
-                borderBottom: '10px solid rgba(106,13,173,.85)',
-                width: 0, height: 0,
-              }} />
-              <div style={{ fontSize: 13, color: 'rgba(255,255,255,.95)', lineHeight: 1.45 }}>
-                Воспользуйся кнопкой{' '}
-                <span style={{
-                  fontWeight: 700, color: '#fff',
-                  background: 'rgba(255,255,255,.15)', padding: '2px 7px',
-                  borderRadius: 40, display: 'inline-block', margin: '0 2px',
-                }}>«Добавить подарок»</span>
-                , чтобы добавить NFT в инвентарь и выставить его на продажу в магазине
-              </div>
-            </div>
-          )}
-
-          {/* Add gift button — opens gift modal */}
-          <button
-            data-testid="button-add-gift"
-            onClick={() => setGiftModalOpen(true)}
-            style={{
-              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-              width: '100%', padding: '14px 0', minHeight: 76,
-              border: '1.5px dashed rgba(184,122,255,.4)', borderRadius: 60,
-              background: 'rgba(106,13,173,.08)', backdropFilter: 'blur(8px)',
-              cursor: 'pointer', marginBottom: 20, transition: 'all .1s',
-            }}
-            onPointerDown={e => (e.currentTarget.style.background = 'rgba(106,13,173,.2)')}
-            onPointerUp={e => (e.currentTarget.style.background = 'rgba(106,13,173,.08)')}
-            onPointerLeave={e => (e.currentTarget.style.background = 'rgba(106,13,173,.08)')}
-          >
-            <span style={{ fontSize: 30, fontWeight: 300, lineHeight: 1, marginBottom: 3, color: 'rgba(255,255,255,.7)' }}>+</span>
-            <span style={{ fontSize: 13, color: 'rgba(255,255,255,.5)', fontWeight: 500 }}>Добавить подарок</span>
-          </button>
-
-          {/* Inventory grid — original style */}
-          {inventory.length === 0 ? (
-            <div style={{ textAlign: 'center', color: 'rgba(255,255,255,.5)', fontSize: 13, padding: '28px 0' }}>
-              <i className="fas fa-gift" style={{ fontSize: 44, color: '#b87aff', opacity: .3, display: 'block', marginBottom: 12 }} />
-              <p>В инвентаре пока пусто</p>
-              <p style={{ fontSize: 12, marginTop: 4 }}>Купите NFT в маркете</p>
-            </div>
-          ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-              {inventory.map((item) => (
-                <div
-                  key={item.id}
-                  data-testid={`card-inventory-${item.id}`}
-                  onClick={() => setSelectedItem(item)}
-                  style={{
-                    background: 'rgba(255,255,255,.05)', backdropFilter: 'blur(12px)',
-                    border: '0.5px solid rgba(138,43,226,.25)', borderRadius: 18,
-                    padding: '10px 6px 8px',
-                    display: 'flex', flexDirection: 'column', alignItems: 'center',
-                    cursor: 'pointer', transition: 'all .08s',
-                  }}
-                  onPointerDown={e => { e.currentTarget.style.transform = 'scale(.96)'; e.currentTarget.style.borderColor = 'rgba(184,122,255,.6)'; }}
-                  onPointerUp={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.borderColor = 'rgba(138,43,226,.25)'; }}
-                  onPointerLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.borderColor = 'rgba(138,43,226,.25)'; }}
-                >
-                  <img
-                    src={getImageUrl(item.name)}
-                    alt={item.name}
-                    loading="lazy"
-                    style={{
-                      width: 76, height: 76, borderRadius: 16, objectFit: 'cover',
-                      marginBottom: 6, background: 'rgba(42,30,58,.5)',
-                      border: '0.5px solid rgba(184,122,255,.2)',
-                    }}
-                    onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3'; }}
-                  />
-                  <div style={{
-                    fontSize: 12, fontWeight: 500, color: '#f0f0f0', textAlign: 'center',
-                    marginBottom: 3, whiteSpace: 'nowrap', overflow: 'hidden',
-                    textOverflow: 'ellipsis', maxWidth: '100%',
-                  }}>{item.name}</div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 12, fontWeight: 600, color: '#b87aff' }}>
-                    <span style={{ fontSize: 11, color: '#ffd700' }}>🧩</span>
-                    <span>{item.price}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Gift modal */}
-      {giftModalOpen && <GiftModal onClose={() => setGiftModalOpen(false)} />}
-
-      {/* NFT detail modal */}
-      {selectedItem && (
-        <NftModal
-          item={selectedItem}
-          onClose={() => setSelectedItem(null)}
-          user={user}
-          userId={userId}
-        />
-      )}
-
-      <style>{`
-        .custom-scroll-hide::-webkit-scrollbar { display: none; }
-        .custom-scroll-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        @keyframes fadeInHint { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
-      `}</style>
-    </div>
-  );
+    }, 1000);
+    sellArea.innerHTML = `<div id="sellLockBtn" class="sell-btn sell-lock" style="justify-content:space-between"><span><i class="fas fa-lock"></i> Продать</span><span class="timer-badge">${timer}</span></div>
+      <button class="btn-withdraw" id="withdrawBtn">Вывести</button>`;
+    document.getElementById('withdrawBtn').onclick = ()=>showNotif('Функция вывода средств временно недоступна', true);
+    window.sellLockInterval = interval;
+  } else {
+    renderSellButton(item, sellArea);
+  }
+  document.getElementById('nftModal').classList.add('show');
+};
+function renderSellButton(item, container){
+  container.innerHTML = `
+    <div id="sellActionArea"></div>
+    <button class="btn-withdraw" id="withdrawBtn">Вывести</button>
+  `;
+  document.getElementById('withdrawBtn').onclick = ()=>showNotif('Функция вывода средств временно недоступна', true);
+  renderSellAction(item);
 }
+function renderSellAction(item){
+  let area = document.getElementById('sellActionArea');
+  area.innerHTML = `
+    <button id="sellBtn" class="sell-btn sell-btn-active" style="justify-content:center;width:100%">Продать</button>
+    <div id="sellInputArea" style="display:none;margin-top:12px">
+      <input type="text" id="sellPriceInput" class="input-sell" placeholder="Цена продажи (⭐)" inputmode="numeric">
+      <div class="btn-row">
+        <button id="cancelSellBtn" class="btn-cancel">Отмена</button>
+        <button id="confirmSellBtn" class="btn-confirm">Продать</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('sellBtn').onclick = ()=>{
+    document.getElementById('sellBtn').style.display = 'none';
+    document.getElementById('sellInputArea').style.display = 'block';
+    document.getElementById('sellPriceInput').focus();
+  };
+  document.getElementById('cancelSellBtn').onclick = ()=>{
+    document.getElementById('sellInputArea').style.display = 'none';
+    document.getElementById('sellBtn').style.display = 'block';
+  };
+  document.getElementById('confirmSellBtn').onclick = ()=>{
+    let price = parseInt(document.getElementById('sellPriceInput').value);
+    if(!price || price<=0){ showNotif('❌ Введите корректную цену', true); return; }
+    let listings = getMarket();
+    let newId = Date.now();
+    let newListing = {
+      id: newId,
+      nftName: currentModalItem.name,
+      price: price,
+      sellerId: 9999,
+      sellerName: tgUser.fullName,
+      sellerAvatar: tgUser.avatarChar,
+      pattern: PATTERNS[Math.floor(Math.random()*4)],
+      background: BACKGROUNDS[Math.floor(Math.random()*4)],
+      model: MODELS[Math.floor(Math.random()*4)],
+      listedAt: Date.now()
+    };
+    listings.push(newListing);
+    saveMarket(listings);
+    let inv = getInv().filter(i=>i.id !== currentModalItem.id);
+    saveInv(inv);
+    showNotif(`✅ NFT «${currentModalItem.name}» выставлен за ${price} ⭐`);
+    document.getElementById('nftModal').classList.remove('show');
+    renderInventory();
+    if(window.sellLockInterval) clearInterval(window.sellLockInterval);
+  };
+}
+document.getElementById('modalClose').addEventListener('click',()=>{
+  document.getElementById('nftModal').classList.remove('show');
+  if(window.sellLockInterval) clearInterval(window.sellLockInterval);
+});
+document.getElementById('nftModal').addEventListener('click',e=>{ if(e.target===e.currentTarget){ document.getElementById('nftModal').classList.remove('show'); if(window.sellLockInterval) clearInterval(window.sellLockInterval); } });
+
+let hintVisible = false;
+const infoBtn = document.getElementById('infoBtn');
+const hintPopup = document.getElementById('hintPopup');
+infoBtn.addEventListener('click',(e)=>{
+  e.stopPropagation();
+  hintVisible = !hintVisible;
+  hintPopup.style.display = hintVisible ? 'block' : 'none';
+  infoBtn.classList.toggle('active', hintVisible);
+});
+document.addEventListener('click',(e)=>{
+  if(hintVisible && !hintPopup.contains(e.target) && !infoBtn.contains(e.target)){
+    hintVisible = false;
+    hintPopup.style.display = 'none';
+    infoBtn.classList.remove('active');
+  }
+});
+
+const giftModal = document.getElementById('giftModal');
+const addGiftBtn = document.getElementById('addGiftBtn');
+const BOT_URL = 'https://t.me/yeter16_bot';
+function openBot(){ window.open(BOT_URL, '_blank'); }
+addGiftBtn.addEventListener('click',()=>giftModal.classList.add('show'));
+document.getElementById('giftModalClose').addEventListener('click',()=>giftModal.classList.remove('show'));
+document.getElementById('openBotBtn').addEventListener('click',openBot);
+document.getElementById('openBotBtn2').addEventListener('click',openBot);
+giftModal.addEventListener('click',e=>{ if(e.target===giftModal) giftModal.classList.remove('show'); });
+
+const depOverlay = document.getElementById('depOverlay');
+document.getElementById('plusBtn').addEventListener('click',()=>{
+  document.getElementById('depInput').value='';
+  document.querySelectorAll('.qa').forEach(q=>q.classList.remove('selected'));
+  depOverlay.classList.add('show');
+});
+document.getElementById('depClose').addEventListener('click',()=>depOverlay.classList.remove('show'));
+depOverlay.addEventListener('click',e=>{ if(e.target===depOverlay) depOverlay.classList.remove('show'); });
+const qaDiv = document.getElementById('quickAmounts');
+[50,100,200,500,1000,2000].forEach(a=>{
+  let btn=document.createElement('span'); btn.className='qa'; btn.textContent=a+' ⭐'; btn.dataset.a=a;
+  btn.style.cssText='background:rgba(106,13,173,.2);border:.5px solid rgba(184,122,255,.3);border-radius:30px;padding:8px 14px;font-size:13px;font-weight:600;color:#b87aff;cursor:pointer;min-width:70px;text-align:center';
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.qa').forEach(x=>x.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('depInput').value = a;
+    document.getElementById('depAmtSpan') && (document.getElementById('depAmtSpan').textContent = a+' ⭐');
+  });
+  qaDiv.appendChild(btn);
+});
+let depAmtSpan = document.createElement('span'); depAmtSpan.id='depAmtSpan'; depAmtSpan.style.display='none';
+document.getElementById('depBtn').appendChild(depAmtSpan);
+const depInput = document.getElementById('depInput');
+depInput.addEventListener('input',e=>{
+  let v = e.target.value.replace(/\D/g,'');
+  e.target.value = v;
+  if(depAmtSpan) depAmtSpan.textContent = (v||'0')+' ⭐';
+  document.querySelectorAll('.qa').forEach(q=>q.classList.remove('selected'));
+});
+document.getElementById('depBtn').addEventListener('click',()=>{
+  let amt = Math.min(100000, Math.max(0, parseInt(depInput.value)||0));
+  if(!amt) return;
+  setBalance(getBalance()+amt);
+  showNotif(`✅ Баланс пополнен на ${amt} ⭐`);
+  depOverlay.classList.remove('show');
+});
+
+renderInventory();
+})();
+</script>
+</body>
+</html>
