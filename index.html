@@ -67,7 +67,7 @@ img{display:block}
 .empty-msg{grid-column:1/-1;text-align:center;padding:60px 20px;color:rgba(255,255,255,.38);font-size:14px}
 
 /* === BOTTOM NAV === */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:62px;background:rgba(8,8,22,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.07);display:flex;z-index:100}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:68px;background:linear-gradient(180deg,rgba(22,14,45,.82) 0%,rgba(10,7,22,.96) 100%);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid rgba(255,255,255,.13);border-radius:22px 22px 0 0;box-shadow:0 -6px 32px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.09);display:flex;z-index:100}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:none;background:none;color:rgba(255,255,255,.4);font-size:11px;font-family:'Inter',sans-serif;font-weight:500;cursor:pointer}
 .nav-btn.active{color:#a855f7}
 .nav-icon-wrap{display:flex;align-items:center;justify-content:center}
@@ -188,7 +188,7 @@ img{display:block}
     <div class="nav-icon-wrap"><i class="fas fa-store"></i></div>
     <span>МАРКЕТ</span>
   </button>
-  <button class="nav-btn" onclick="location.href='profile.html'">
+  <button class="nav-btn" onclick="location.href='/profile.html'">
     <div class="nav-icon-wrap"><i class="fas fa-user"></i></div>
     <span>ПРОФИЛЬ</span>
   </button>
@@ -293,20 +293,21 @@ let selectedListing = null;
 function imgUrl(name){return GITHUB + encodeURIComponent(name+'.png');}
 function fmtNum(n){return Number(n).toLocaleString('ru-RU');}
 
-/* === MARKET LISTINGS === */
-const MARKET_KEY = 'nft_market_listings_v2';
-function getListings(){try{return JSON.parse(localStorage.getItem(MARKET_KEY)||'[]');}catch{return [];}}
-function saveListings(l){localStorage.setItem(MARKET_KEY,JSON.stringify(l));}
-function seedMarket(){
-  if(getListings().length>0)return;
-  const listings = NAMES.map((name,i)=>({
+/* === MARKET LISTINGS — всегда из статичных данных === */
+function getListings(){
+  // Базовые 98 листингов из статики
+  const base = NAMES.map((name,i)=>({
     id:i+1, nftName:name, price:PRICES[i%PRICES.length], image:imgUrl(name),
     sellerName:SELLERS[i%SELLERS.length].name, sellerUsername:SELLERS[i%SELLERS.length].username,
     sellerAvatar:SELLERS[i%SELLERS.length].avatar,
     pattern:PATTERNS[i%4], background:BACKGROUNDS[i%4], model:MODELS[i%4],
-    listedAt:Date.now()-Math.random()*86400000,
+    listedAt:Date.now()-i*3600000,
   }));
-  saveListings(listings);
+  // Добавляем листинги других продавцов из localStorage (если кто-то продаёт)
+  try {
+    const extra = JSON.parse(localStorage.getItem('nft_user_listings')||'[]');
+    return [...extra, ...base];
+  } catch { return base; }
 }
 
 /* === SAVE BALANCE === */
@@ -384,16 +385,11 @@ function confirmBuy(){
   if(balance < selectedListing.price){showToast('⚠ Недостаточно звёзд!','err');return;}
   balance -= selectedListing.price;
   saveBalance();
-  const listings = getListings();
-  const idx = listings.findIndex(l=>l.id===selectedListing.id);
-  if(idx>=0) listings.splice(idx,1);
-  saveListings(listings);
   const inv = JSON.parse(localStorage.getItem('nft_inventory')||'[]');
   inv.push({id:Date.now()+Math.random(),name:selectedListing.nftName,price:selectedListing.price,image:selectedListing.image,purchaseTime:Date.now()});
   localStorage.setItem('nft_inventory',JSON.stringify(inv));
   closeOverlay('buyOverlay');
   renderHeader();
-  applyFiltersAndRender();
   showToast('✓ Куплен «'+selectedListing.nftName+'» за ⭐ '+selectedListing.price,'ok');
 }
 
@@ -548,7 +544,6 @@ function showToast(msg,type=''){
 }
 
 /* === INIT === */
-seedMarket();
 renderHeader();
 applyFiltersAndRender();
 </script>
