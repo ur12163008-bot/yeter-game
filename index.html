@@ -24,7 +24,7 @@ img{display:block;pointer-events:none;user-select:none}
 @keyframes orb1f{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-22px,22px) scale(1.12)}}
 @keyframes orb2f{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(18px,-18px) scale(1.09)}}
 
-/* 🔥 ШАПКА: ТЕЛЕГРАМ СТИЛЬ + БАЛАНС + МЕНЮ */
+/* ========= ШАПКА КАК В TELEGRAM (аватар, имя, фамилия, username) ========= */
 .tg-header{
   display:flex;align-items:center;
   padding:10px 14px;
@@ -39,8 +39,18 @@ img{display:block;pointer-events:none;user-select:none}
   font-size:17px;font-weight:700;color:#fff;flex-shrink:0;
 }
 .tg-user{min-width:0}
-.tg-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tg-username{font-size:12px;color:rgba(255,255,255,.45);margin-top:1px}
+.tg-name{
+  font-size:15px;font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.tg-username{
+  font-size:12px;color:rgba(255,255,255,.55);
+  margin-top:2px;
+}
+.tg-username::before{
+  content:"@";
+  opacity:0.7;
+}
 
 .tg-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .balance-pill{
@@ -66,7 +76,7 @@ img{display:block;pointer-events:none;user-select:none}
   color:#b87aff;font-size:15px;
 }
 
-/* 🔥 ПОИСК + ФИЛЬТРЫ — КРУГЛЫЕ КНОПКИ КАК БЫЛО */
+/* 🔥 ПОИСК + ФИЛЬТРЫ */
 .search-row{display:flex;gap:10px;align-items:center;padding:0 14px 12px;flex-shrink:0}
 .search-wrapper{position:relative;flex:1}
 .search-box{
@@ -81,7 +91,6 @@ img{display:block;pointer-events:none;user-select:none}
 .search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.3);font-size:12px;padding:4px;display:none}
 .search-clear.show{display:block}
 
-/* 🔥 КНОПКИ ФИЛЬТРА И СОРТИРОВКИ — КРУГЛЫЕ КАК БЫЛО */
 .icon-btn{
   background:rgba(255,255,255,.06);
   border:1px solid rgba(184,122,255,.28);
@@ -92,20 +101,18 @@ img{display:block;pointer-events:none;user-select:none}
 }
 .icon-btn.has-filter{border-color:#b87aff;box-shadow:0 0 10px rgba(184,122,255,.25)}
 
-/* 🔥 СКРОЛЛ */
 .scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:30px}
 .scroll-area::-webkit-scrollbar{width:3px}
 .scroll-area::-webkit-scrollbar-thumb{background:rgba(184,122,255,.35);border-radius:3px}
 
-/* 🔥🔥🔥 NFT СЕТКА 🔥🔥🔥 */
+/* ========= NFT СЕТКА — КАРТОЧКИ МЕНЬШЕ ========= */
 .nft-grid{
   padding:0 14px 130px;
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:12px;
+  gap:10px;
 }
 
-/* 🔥 КАРТОЧКА: ФОТО + ИНФО ПОД НИМ */
 .nft-card{
   background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.06);
@@ -117,7 +124,6 @@ img{display:block;pointer-events:none;user-select:none}
 }
 .nft-card:active{transform:scale(.98);box-shadow:0 8px 25px rgba(138,43,226,.25)}
 
-/* 🔥 ФОТО — ОЧЕНЬ МАЛЕНЬКОЕ */
 .nft-img{
   position:relative;
   padding-top:100%;
@@ -134,35 +140,44 @@ img{display:block;pointer-events:none;user-select:none}
 }
 .nft-card:hover .nft-img img{transform:scale(1.02)}
 
-/* 🔥 ИНФО — ПОД ФОТО, НЕ НА ФОТО */
+/* ========= ИНФО ПОД ФОТО: НАЗВАНИЕ, АВАТАР, ЦЕНА — ВСЁ УВЕЛИЧЕНО ========= */
 .nft-info{
-  padding:6px 8px 8px;
+  padding:10px 10px 12px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:6px;
+  gap:10px;
 }
 .nft-left{flex:1;min-width:0}
 .nft-name{
-  font-size:12px;font-weight:600;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  margin-bottom:3px;
+  font-size:15px;        /* УВЕЛИЧЕНО */
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  margin-bottom:6px;
 }
 .nft-price{
-  font-size:12px;font-weight:700;
-  color:#b87aff;
+  font-size:18px;        /* УВЕЛИЧЕНО + БЕЛЫЙ ЦВЕТ */
+  font-weight:800;
+  color:#ffffff;         /* БЕЛЫЙ */
+  letter-spacing:-0.3px;
 }
 .seller-dot{
-  width:24px;height:24px;
+  width:38px;height:38px;  /* УВЕЛИЧЕНО */
   border-radius:50%;
   background:rgba(88,10,148,.5);
   border:1px solid rgba(184,122,255,.5);
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;font-weight:700;color:#b87aff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;          /* УВЕЛИЧЕНО */
+  font-weight:700;
+  color:#b87aff;
   flex-shrink:0;
 }
 
-/* 🔥🔥🔥 НАВИГАЦИЯ — ВЫДЕЛЕНИЕ ТОЛЬКО ИКОНКИ И ТЕКСТА, НЕ ВСЕЙ КНОПКИ 🔥🔥🔥 */
+/* остальные стили без изменений */
 .bottom-nav{
   position:fixed;bottom:16px;left:16px;right:16px;
   background:rgba(30,20,55,.65);
@@ -182,21 +197,17 @@ img{display:block;pointer-events:none;user-select:none}
   border-radius:26px;position:relative;overflow:hidden;
   transition:all .2s ease;
 }
-/* Зеркальный эффект при нажатии */
 .nav-btn::before{
   content:'';position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,0) 50%,rgba(255,255,255,.08) 100%);
   opacity:0;transition:opacity .2s ease;pointer-events:none;border-radius:26px;
 }
 .nav-btn:active::before{opacity:1}
-
-/* 🔥 ВЫДЕЛЕНИЕ ТОЛЬКО ИКОНКИ + ТЕКСТА — КАК РАНЬШЕ */
 .nav-content{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 16px;border-radius:24px;transition:all .2s ease}
 .nav-btn.active .nav-content{background:rgba(168,85,247,.2);border-radius:24px}
 .nav-btn.active{color:#a855f7}
 .nav-btn i{font-size:19px}
 
-/* 🔥 МОДАЛКА — ПЛАВНАЯ */
 .overlay{
   position:fixed;inset:0;
   background:rgba(0,0,0,0);
@@ -209,7 +220,6 @@ img{display:block;pointer-events:none;user-select:none}
 }
 .overlay.visible{opacity:1;visibility:visible;pointer-events:auto;background:rgba(0,0,0,.75)}
 .overlay.hidden{opacity:0;visibility:hidden;pointer-events:none;background:rgba(0,0,0,0)}
-
 .sheet{
   max-width:420px;width:94%;
   background:rgba(20,18,35,.98);
@@ -225,7 +235,6 @@ img{display:block;pointer-events:none;user-select:none}
 .sheet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding:0 4px}
 .sheet-title{font-size:19px;font-weight:700}
 .close-btn{width:34px;height:34px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.4);border-radius:50%;color:#b87aff;font-size:19px;display:flex;align-items:center;justify-content:center}
-
 .detail-top{display:flex;gap:16px;margin-bottom:20px;align-items:flex-start}
 .detail-img{width:115px;height:115px;border-radius:20px;object-fit:cover;flex-shrink:0;border:1px solid rgba(184,122,255,.25);box-shadow:0 10px 30px rgba(0,0,0,.4)}
 .detail-attrs{flex:1;display:flex;flex-direction:column;gap:9px}
@@ -233,16 +242,13 @@ img{display:block;pointer-events:none;user-select:none}
 .attr-row:last-child{border-bottom:none}
 .attr-lbl{color:rgba(255,255,255,.45);font-weight:500}
 .attr-val{font-weight:600;color:#fff}
-
 .seller-row{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.05);border-radius:18px;padding:14px 16px;margin-bottom:22px;border:1px solid rgba(184,122,255,.15)}
 .seller-ava-big{width:44px;height:44px;border-radius:50%;background:rgba(88,10,148,.4);border:2px solid rgba(184,122,255,.45);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff}
 .seller-name{font-size:14px;font-weight:600;color:rgba(255,255,255,.9)}
-
 .buy-btn{width:100%;border-radius:60px;padding:15px 20px;font-size:16px;font-weight:700;border:none;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));color:#fff;box-shadow:0 8px 28px rgba(138,43,226,.35);transition:transform .15s ease, box-shadow .2s ease}
 .buy-btn:active{transform:scale(.99);box-shadow:0 6px 20px rgba(138,43,226,.25)}
 .buy-btn .price-badge{background:rgba(255,255,255,.18);padding:5px 18px;border-radius:30px;font-size:15px;font-weight:700}
 .buy-btn:disabled{background:rgba(255,255,255,.1);color:rgba(255,255,255,.4);box-shadow:none;cursor:not-allowed}
-
 .dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:20px}
 .dep-amount{padding:13px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);text-align:center;font-size:14px;color:rgba(255,255,255,.85);transition:all .15s ease}
 .dep-amount.sel{background:rgba(88,10,148,.45);border-color:#b87aff;color:#fff;box-shadow:0 4px 14px rgba(138,43,226,.25)}
@@ -250,8 +256,6 @@ img{display:block;pointer-events:none;user-select:none}
 .dep-info{display:flex;justify-content:space-between;margin-bottom:20px;background:rgba(255,255,255,.04);padding:15px 18px;border-radius:18px;font-size:14px;border:1px solid rgba(255,255,255,.08)}
 .purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border-radius:60px;padding:15px;color:#fff;font-weight:700;font-size:16px;border:none;box-shadow:0 8px 28px rgba(138,43,226,.3)}
 .ghost-btn{width:100%;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:60px;padding:14px;color:rgba(255,255,255,.7);margin-top:10px;font-size:15px}
-
-/* ФИЛЬТРЫ */
 #filterPanel{position:fixed;inset:0;background:rgba(8,8,18,.98);z-index:1500;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);pointer-events:none}
 #filterPanel.open{transform:translateY(0);pointer-events:auto}
 .fp-inner{max-width:440px;width:100%;margin:0 auto;display:flex;flex-direction:column;height:100%;overflow:hidden}
@@ -276,10 +280,8 @@ img{display:block;pointer-events:none;user-select:none}
 .back-link{display:flex;align-items:center;gap:8px;color:#b87aff;font-size:14px;font-weight:600;margin-bottom:16px;padding:8px 0}
 .fp-footer{position:sticky;bottom:0;padding:12px 20px;background:rgba(8,8,18,.98);border-top:1px solid rgba(255,255,255,.07)}
 .fp-apply{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border:none;border-radius:60px;padding:14px;color:#fff;font-size:14px;font-weight:700}
-
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(26,24,56,.97);border:1px solid rgba(184,122,255,.3);border-radius:16px;padding:10px 18px;font-size:14px;z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
-
 body.modal-open{overflow:hidden;position:fixed;width:100%;height:100%}
 </style>
 </head>
@@ -289,13 +291,13 @@ body.modal-open{overflow:hidden;position:fixed;width:100%;height:100%}
 <div class="orb orb2"></div>
 
 <div id="app">
-  <!-- 🔥 ШАПКА: ТЕЛЕГРАМ + БАЛАНС + МЕНЮ -->
+  <!-- ШАПКА КАК В TELEGRAM: аватар, имя + фамилия, username -->
   <div class="tg-header">
     <div class="tg-left">
-      <div class="tg-avatar" id="tgAva">А</div>
+      <div class="tg-avatar" id="tgAva">АС</div>
       <div class="tg-user">
-        <div class="tg-name" id="tgName">Алексей Смирнов</div>
-        <div class="tg-username" id="tgUsername">@alex_smirnov</div>
+        <div class="tg-name" id="tgName">Алексей Соколов</div>
+        <div class="tg-username" id="tgUsername">alex_sokolov</div>
       </div>
     </div>
     <div class="tg-right">
@@ -315,7 +317,6 @@ body.modal-open{overflow:hidden;position:fixed;width:100%;height:100%}
       </div>
       <div class="search-clear" id="mainSearchClear" onclick="clearMainSearch()"><i class="fas fa-times-circle"></i></div>
     </div>
-    <!-- 🔥 КРУГЛЫЕ КНОПКИ КАК БЫЛО -->
     <button class="icon-btn" id="filterBtn" onclick="openFilter()"><i class="fas fa-sliders-h"></i></button>
     <button class="icon-btn" id="sortBtn" onclick="toggleSort()"><i class="fas fa-sort-amount-up" id="sortIcon"></i></button>
   </div>
@@ -323,7 +324,6 @@ body.modal-open{overflow:hidden;position:fixed;width:100%;height:100%}
   <div class="scroll-area"><div class="nft-grid" id="nftGrid"></div></div>
 </div>
 
-<!-- 🔥 НАВИГАЦИЯ — ВЫДЕЛЕНИЕ ТОЛЬКО ИКОНКИ+ТЕКСТА -->
 <div class="bottom-nav">
   <button class="nav-btn active" id="navMarketBtn">
     <div class="nav-content"><i class="fas fa-store"></i><span>МАРКЕТ</span></div>
@@ -333,7 +333,7 @@ body.modal-open{overflow:hidden;position:fixed;width:100%;height:100%}
   </button>
 </div>
 
-<!-- МОДАЛКА ПОКУПКИ -->
+<!-- МОДАЛКИ (без изменений) -->
 <div class="overlay hidden" id="buyOverlay" data-dismissible="true">
   <div class="sheet" id="buySheet" data-dismissible="true">
     <div class="sheet-handle" id="buyHandle"></div>
@@ -353,7 +353,6 @@ body.modal-open{overflow:hidden;position:fixed;width:100%;height:100%}
   </div>
 </div>
 
-<!-- МОДАЛКА ПОПОЛНЕНИЯ -->
 <div class="overlay hidden" id="depOverlay" data-dismissible="true">
   <div class="sheet" data-dismissible="true">
     <div class="sheet-handle"></div>
@@ -392,6 +391,22 @@ let selectedDep = 500;
 let selectedListing = null;
 let fpTab = 'collection', fpSortAsc = true, fpModelNft = null;
 
+// Telegram WebApp инициализация (получаем реальные данные пользователя)
+if(window.Telegram && Telegram.WebApp){
+  const tg = Telegram.WebApp;
+  tg.expand();
+  const user = tg.initDataUnsafe?.user;
+  if(user){
+    const firstName = user.first_name || 'Алексей';
+    const lastName = user.last_name || 'Соколов';
+    const username = user.username || 'alex_user';
+    document.getElementById('tgName').innerHTML = `${firstName} ${lastName}`;
+    document.getElementById('tgUsername').innerHTML = username;
+    const avatarDiv = document.getElementById('tgAva');
+    if(avatarDiv) avatarDiv.innerHTML = firstName.charAt(0) + (lastName.charAt(0) || '');
+  }
+}
+
 function imgUrl(name){return GITHUB + encodeURIComponent(name+'.png');}
 function fmtNum(n){return n.toLocaleString('ru-RU');}
 function getListings(){return NAMES.map((name,i)=>({id:i+1,nftName:name,price:PRICES[i%PRICES.length],image:imgUrl(name),sellerName:SELLERS[i%SELLERS.length].name,sellerAvatar:SELLERS[i%SELLERS.length].avatar,pattern:PATTERNS[i%4],background:BACKGROUNDS[i%4],model:MODELS[i%4]}));}
@@ -413,7 +428,8 @@ function applyFiltersAndRender(){
   else filterBtn.classList.remove('has-filter');
   const grid=document.getElementById('nftGrid');
   if(!items.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:rgba(255,255,255,.4);font-size:13px">Ничего не найдено</div>';return;}
-  // 🔥 ФОТО + ИНФО ПОД ФОТО (НЕ НА ФОТО)
+  
+  // Рендер NFT с увеличенными названием, ценой (белый цвет) и аватаркой
   grid.innerHTML=items.map(l=>`
     <div class="nft-card" onclick="openBuy(${l.id})">
       <div class="nft-img"><img src="${l.image}" onerror="this.style.opacity='.2'"/></div>
@@ -433,7 +449,6 @@ function clearMainSearch(){document.getElementById('searchInput').value='';apply
 function clearFpSearch(){document.getElementById('fpSearch').value='';renderFpContent();document.activeElement?.blur();}
 function toggleSort(){sortAsc=!sortAsc;document.getElementById('sortIcon').className=sortAsc?'fas fa-sort-amount-up':'fas fa-sort-amount-down';applyFiltersAndRender();}
 
-// 🔥 ПЛАВНОЕ ОТКРЫТИЕ МОДАЛКИ
 function openBuy(id){
   const l=getListings().find(x=>x.id===id);
   if(!l)return;
@@ -567,5 +582,6 @@ function toggleFilter(key,val){const arr=filters[key];const idx=arr.indexOf(val)
 renderHeader();applyFiltersAndRender();
 document.addEventListener('keydown',(e)=>{if(e.key==='Escape'){if(!document.getElementById('buyOverlay').classList.contains('hidden'))closeOverlay('buyOverlay');if(!document.getElementById('depOverlay').classList.contains('hidden'))closeOverlay('depOverlay');}});
 </script>
+<script src="https://telegram.org/js/telegram-web-app.js?56"></script>
 </body>
 </html>
