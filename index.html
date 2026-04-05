@@ -10,13 +10,14 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;width:100%;overflow:hidden;background:#07070e}
-body{font-family:'Inter',sans-serif;color:#fff;-webkit-user-select:none;user-select:none}
-button{font-family:'Inter',sans-serif;cursor:pointer}
+body{font-family:'Inter',sans-serif;color:#fff;-webkit-user-select:none;user-select:none;-webkit-font-smoothing:antialiased}
+button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none}
 input{font-family:'Inter',sans-serif}
-img{display:block;pointer-events:none}
+img{display:block;pointer-events:none;user-select:none}
 
 #app{position:relative;z-index:1;max-width:440px;width:100%;margin:0 auto;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
 
+/* 🔥 ФОН */
 .bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 50%,rgba(88,10,148,.22) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(30,10,80,.28) 0%,transparent 60%),linear-gradient(180deg,#07070f 0%,#0a0a1c 50%,#050510 100%)}
 .orb{position:fixed;border-radius:50%;filter:blur(80px);z-index:0;pointer-events:none}
 .orb1{width:320px;height:320px;background:radial-gradient(circle,rgba(88,10,148,.4) 0%,transparent 70%);top:-70px;right:-70px;animation:orb1f 9s ease-in-out infinite}
@@ -24,164 +25,262 @@ img{display:block;pointer-events:none}
 @keyframes orb1f{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-22px,22px) scale(1.12)}}
 @keyframes orb2f{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(18px,-18px) scale(1.09)}}
 
-.header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 18px;flex-shrink:0}
-.user-row{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
-.avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#5a0a94,#9b3de0);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;flex-shrink:0}
-.user-info{min-width:0}
-.user-name{font-size:16px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.user-handle{font-size:13px;color:rgba(255,255,255,.48)}
-.balance-area{display:flex;align-items:center;gap:6px}
-.balance-pill{display:flex;align-items:center;gap:5px;background:rgba(18,18,34,.92);border:1px solid rgba(138,43,226,.2);border-radius:60px;padding:5px 8px 5px 12px}
-.balance-num{font-size:14px;font-weight:600;display:flex;align-items:center;gap:4px}
-.plus-btn{background:rgba(255,255,255,.1);border:1px solid rgba(138,43,226,.38);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:18px}
-.menu-circle{width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:16px}
+/* 🔥🔥🔥 ШАПКА КАК В ТЕЛЕГРАМ 🔥🔥🔥 */
+.tg-header{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px 10px;
+  background:rgba(22,14,45,.85);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  flex-shrink:0;
+  z-index:50;
+}
+.tg-avatar{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,#5a0a94,#9b3de0);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:700;color:#fff;
+  flex-shrink:0;
+  box-shadow:0 4px 12px rgba(138,43,226,.3);
+}
+.tg-user{flex:1;min-width:0}
+.tg-name{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tg-username{font-size:13px;color:rgba(255,255,255,.45);margin-top:2px}
+.tg-status{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:rgba(255,255,255,.5);
+}
+.tg-status::before{
+  content:'';width:8px;height:8px;border-radius:50%;
+  background:#34c759;display:inline-block;
+}
 
+/* 🔥 ПОИСК И ФИЛЬТРЫ */
+.search-row{display:flex;gap:10px;align-items:center;padding:10px 16px 12px;flex-shrink:0}
 .search-wrapper{position:relative;flex:1}
-.search-box{width:100%;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:60px;padding:10px 14px}
+.search-box{
+  width:100%;display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:14px;padding:10px 14px;
+}
 .search-box i{color:rgba(255,255,255,.35);font-size:13px}
-.search-box input{background:transparent;border:none;color:#fff;font-size:14px;outline:none;width:100%}
+.search-box input{
+  background:transparent;border:none;color:#fff;
+  font-size:14px;outline:none;width:100%;
+}
 .search-box input::placeholder{color:rgba(255,255,255,.35)}
-.search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.3);font-size:12px;padding:4px;display:none}
+.search-clear{
+  position:absolute;right:12px;top:50%;
+  transform:translateY(-50%);
+  color:rgba(255,255,255,.3);font-size:12px;
+  padding:4px;display:none;
+}
 .search-clear.show{display:block}
-.search-row{display:flex;gap:10px;align-items:center;padding:0 20px 12px;flex-shrink:0}
-.icon-btn{background:rgba(255,255,255,.06);border:1px solid rgba(184,122,255,.28);border-radius:60px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;flex-shrink:0}
+.icon-btn{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(184,122,255,.28);
+  border-radius:12px;
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  color:#b87aff;font-size:15px;flex-shrink:0;
+}
 .icon-btn.has-filter{border-color:#b87aff;box-shadow:0 0 10px rgba(184,122,255,.25)}
 
-.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:20px}
+/* 🔥 СКРОЛЛ */
+.scroll-area{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:30px;
+}
 .scroll-area::-webkit-scrollbar{width:3px}
 .scroll-area::-webkit-scrollbar-thumb{background:rgba(184,122,255,.35);border-radius:3px}
 
-/* 🔥 ОБНОВЛЁННАЯ СЕТКА И КАРТОЧКИ */
+/* 🔥🔥🔥 NFT СЕТКА — ФОТО РЕАЛЬНО МАЛЕНЬКИЕ 🔥🔥🔥 */
 .nft-grid{
-  padding:0 20px 120px; /* 🔥 Увеличен отступ снизу, чтобы фото не обрезались */
+  padding:0 14px 130px;
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:16px; /* 🔥 Чуть меньше расстояние между карточками */
+  gap:12px;
 }
 
+/* 🔥 КАРТОЧКА — НОВЫЙ ЛЕЙАУТ */
 .nft-card{
   background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.06);
-  border-radius:14px; /* 🔥 Чуть меньше скругление */
+  border-radius:14px;
   overflow:hidden;
   cursor:pointer;
   transition:transform .15s ease, box-shadow .2s ease;
   aspect-ratio:3/4;
-  display:flex;
-  flex-direction:column;
+  display:flex;flex-direction:column;
+  position:relative;
 }
-.nft-card:active{transform:scale(.97); box-shadow:0 8px 25px rgba(138,43,226,.25)}
+.nft-card:active{transform:scale(.98);box-shadow:0 8px 25px rgba(138,43,226,.25)}
 
+/* 🔥 ФОТО — МАЛЕНЬКОЕ И АККУРАТНОЕ */
 .nft-img{
   position:relative;
-  padding-top:100%;
+  padding-top:95%;
   background:rgba(40,25,65,.6);
-  margin:2px 2px 0 2px; /* 🔥 Чуть меньше отступ */
-  border-radius:12px 12px 0 0; /* 🔥 Подогнано под карточку */
+  margin:3px;
+  border-radius:11px;
 }
 .nft-img img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
+  position:absolute;inset:0;
+  width:100%;height:100%;
   object-fit:cover;
-  border-radius:12px 12px 0 0;
+  border-radius:11px;
   transition:transform .2s ease;
 }
-.nft-card:hover .nft-img img{transform:scale(1.03)}
+.nft-card:hover .nft-img img{transform:scale(1.02)}
 
-/* 🔥 ИНФО — УВЕЛИЧЕНО И УЛУЧШЕНО */
+/* 🔥 ИНФО — ЛЕВЫЙ ВЕРХ: НАЗВАНИЕ + ЦЕНА, ПРАВЫЙ ВЕРХ: АВАТАР ПО ВСЕЙ ВЫСОТЕ */
 .nft-info{
-  padding:8px 10px 10px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  flex:1;
+  position:absolute;
+  top:8px;left:8px;right:8px;
+  display:flex;justify-content:space-between;align-items:flex-start;
+  z-index:2;pointer-events:none;
+}
+.nft-text{
+  display:flex;flex-direction:column;gap:3px;
+  pointer-events:auto;
 }
 .nft-name{
-  font-size:12px; /* 🔥 Было 10px → теперь 12px */
-  font-weight:600;
-  margin-bottom:6px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  text-align:center;
-  line-height:1.3;
-}
-.nft-foot{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:6px;
+  font-size:13px;font-weight:700;
+  color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.4);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:110px;
 }
 .nft-price{
-  font-size:13px; /* 🔥 Было 11px → теперь 13px */
-  font-weight:700;
-  color:#fff;
+  font-size:13px;font-weight:700;
+  color:#fff;background:rgba(0,0,0,.45);
+  padding:3px 8px;border-radius:8px;
+  display:inline-flex;align-items:center;gap:3px;
 }
-.seller-dot{
-  width:24px; /* 🔥 Было 20px → теперь 24px */
-  height:24px;
-  border-radius:50%;
-  background:rgba(88,10,148,.5);
-  border:1px solid rgba(184,122,255,.5);
+.nft-price::before{
+  content:'💎';font-size:11px;
+}
+
+/* 🔥 АВАТАР ПРОДАВЦА — СПРАВА, ПОЧТИ ПО ВСЕЙ ВЫСОТЕ КАРТОЧКИ */
+.seller-avatar{
+  position:absolute;
+  right:6px;top:6px;bottom:6px;
+  width:36px;
+  border-radius:10px;
+  background:rgba(88,10,148,.6);
+  border:1.5px solid rgba(184,122,255,.6);
   display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:700;color:#b87aff; /* 🔥 Шрифт аватара увеличен */
-  flex-shrink:0;
+  font-size:14px;font-weight:700;color:#fff;
+  box-shadow:0 4px 12px rgba(0,0,0,.3);
+  pointer-events:auto;
 }
 
-.bottom-nav{position:fixed;bottom:16px;left:16px;right:16px;background:linear-gradient(180deg,rgba(22,14,45,.92) 0%,rgba(10,7,22,.96) 100%);backdrop-filter:blur(28px);border-radius:40px;border:1px solid rgba(255,255,255,.13);box-shadow:0 6px 24px rgba(0,0,0,.5);display:flex;z-index:100;height:68px;padding:0 8px}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;color:rgba(255,255,255,.4);font-size:11px;font-weight:500;border-radius:34px}
-.nav-btn.active{color:#a855f7}
-.nav-btn.active .nav-content{background:rgba(168,85,247,.2);border-radius:30px;padding:6px 18px}
-.nav-content{display:flex;flex-direction:column;align-items:center;gap:3px}
-.nav-btn i{font-size:20px}
+/* 🔥🔥🔥 НАВИГАЦИЯ — iOS 27 MIRROR EFFECT 🔥🔥🔥 */
+.bottom-nav{
+  position:fixed;bottom:16px;left:16px;right:16px;
+  background:rgba(30,20,55,.65);
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter:blur(25px);
+  border-radius:32px;
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,.4),
+    inset 0 1px 0 rgba(255,255,255,.1),
+    inset 0 -1px 0 rgba(0,0,0,.2);
+  display:flex;z-index:100;height:64px;padding:0 6px;
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:4px;
+  color:rgba(255,255,255,.45);font-size:11px;font-weight:500;
+  border-radius:26px;position:relative;overflow:hidden;
+  transition:all .2s ease;
+}
+/* 🔥 ЗЕРКАЛЬНЫЙ ЭФФЕКТ КАК В iOS */
+.nav-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    rgba(255,255,255,.12) 0%,
+    rgba(255,255,255,0) 50%,
+    rgba(255,255,255,.08) 100%);
+  opacity:0;transition:opacity .2s ease;
+  pointer-events:none;border-radius:26px;
+}
+.nav-btn:active::before{opacity:1}
+.nav-btn.active{
+  color:#a855f7;
+  background:rgba(168,85,247,.15);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.2),
+    0 4px 16px rgba(168,85,247,.25);
+}
+.nav-btn.active::before{opacity:.3}
+.nav-btn i{font-size:19px}
 
-/* 🔥🔥🔥 МОДАЛЬНОЕ ОКНО — БОЛЬШОЕ И ПЛАВНОЕ 🔥🔥🔥 */
+/* 🔥🔥🔥 МОДАЛКА — ПЛАВНАЯ АНИМАЦИЯ ВСЕГДА 🔥🔥🔥 */
 .overlay{
   position:fixed;inset:0;
-  background:rgba(0,0,0,.7);
+  background:rgba(0,0,0,0);
   backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
   z-index:2000;
   display:flex;align-items:flex-end;justify-content:center;
   opacity:0;visibility:hidden;pointer-events:none;
-  transition:opacity .3s ease, visibility .3s ease;
+  transition:opacity .35s ease, visibility .35s ease, background .35s ease;
 }
-.overlay.visible{opacity:1;visibility:visible;pointer-events:auto}
-.overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.overlay.visible{opacity:1;visibility:visible;pointer-events:auto;background:rgba(0,0,0,.75)}
+.overlay.hidden{opacity:0;visibility:hidden;pointer-events:none;background:rgba(0,0,0,0)}
 
 .sheet{
-  max-width:420px;width:92%;
-  background:rgba(18,18,32,.98);
-  border:0.5px solid rgba(184,122,255,.25);
-  border-radius:28px 28px 0 0;
-  padding:18px 20px 28px;
+  max-width:420px;width:94%;
+  background:rgba(20,18,35,.98);
+  border:0.5px solid rgba(184,122,255,.3);
+  border-radius:26px 26px 0 0;
+  padding:20px 22px 30px;
   transform:translateY(100%);
-  transition:transform .35s cubic-bezier(0.22,1,0.36,1);
+  transition:transform .45s cubic-bezier(0.16,1,0.3,1);
   will-change:transform;
   touch-action:pan-y;
-  max-height:85vh;
+  max-height:88vh;
   overflow-y:auto;
 }
-.overlay.visible .sheet{transform:translateY(0)}
 
-.sheet-handle{width:42px;height:4px;background:rgba(255,255,255,.25);border-radius:2px;margin:0 auto 16px;touch-action:none}
-.sheet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding:0 4px}
-.sheet-title{font-size:18px;font-weight:700}
-.close-btn{width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;color:#b87aff;font-size:18px;display:flex;align-items:center;justify-content:center}
-
-/* 🔥 КОНТЕНТ МОДАЛКИ — КРУПНЫЙ */
-.detail-top{display:flex;gap:16px;margin-bottom:18px;align-items:flex-start}
-.detail-img{
-  width:130px;height:130px; /* 🔥 Было 72px → теперь 130px */
-  border-radius:20px;
-  object-fit:cover;
-  flex-shrink:0;
-  border:1px solid rgba(184,122,255,.2);
-  box-shadow:0 8px 24px rgba(0,0,0,.3);
+.sheet-handle{
+  width:48px;height:5px;
+  background:rgba(255,255,255,.25);
+  border-radius:3px;margin:0 auto 18px;
+  touch-action:none;
 }
-.detail-attrs{flex:1;display:flex;flex-direction:column;gap:8px}
-.attr-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+.sheet-title-row{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;padding:0 4px;
+}
+.sheet-title{font-size:19px;font-weight:700}
+.close-btn{
+  width:34px;height:34px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(184,122,255,.4);
+  border-radius:50%;
+  color:#b87aff;font-size:19px;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* 🔥 КОНТЕНТ МОДАЛКИ */
+.detail-top{display:flex;gap:16px;margin-bottom:20px;align-items:flex-start}
+.detail-img{
+  width:115px;height:115px;
+  border-radius:20px;object-fit:cover;flex-shrink:0;
+  border:1px solid rgba(184,122,255,.25);
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+.detail-attrs{flex:1;display:flex;flex-direction:column;gap:9px}
+.attr-row{
+  display:flex;justify-content:space-between;
+  font-size:14px;padding:7px 0;
+  border-bottom:1px dashed rgba(255,255,255,.1);
+}
 .attr-row:last-child{border-bottom:none}
 .attr-lbl{color:rgba(255,255,255,.45);font-weight:500}
 .attr-val{font-weight:600;color:#fff}
@@ -189,80 +288,155 @@ img{display:block;pointer-events:none}
 .seller-row{
   display:flex;align-items:center;gap:14px;
   background:rgba(255,255,255,.05);
-  border-radius:20px;
+  border-radius:18px;
   padding:14px 16px;
-  margin-bottom:20px;
+  margin-bottom:22px;
   border:1px solid rgba(184,122,255,.15);
 }
 .seller-ava-big{
-  width:42px;height:42px; /* 🔥 Увеличен аватар продавца */
-  border-radius:50%;
-  background:rgba(88,10,148,.35);
-  border:2px solid rgba(184,122,255,.4);
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(88,10,148,.4);
+  border:2px solid rgba(184,122,255,.45);
   display:flex;align-items:center;justify-content:center;
   font-size:16px;font-weight:700;color:#fff;
 }
-.seller-name{font-size:14px;font-weight:600;color:rgba(255,255,255,.85)}
+.seller-name{font-size:14px;font-weight:600;color:rgba(255,255,255,.9)}
 
 .buy-btn{
-  width:100%;border-radius:60px;padding:14px 18px;
-  font-size:15px;font-weight:700;border:none;
+  width:100%;border-radius:60px;padding:15px 20px;
+  font-size:16px;font-weight:700;border:none;
   display:flex;align-items:center;justify-content:space-between;
-  background:linear-gradient(135deg,rgba(88,10,148,.9),rgba(148,38,255,.75));
+  background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));
   color:#fff;
-  box-shadow:0 6px 20px rgba(138,43,226,.3);
+  box-shadow:0 8px 28px rgba(138,43,226,.35);
   transition:transform .15s ease, box-shadow .2s ease;
 }
-.buy-btn:active{transform:scale(.98);box-shadow:0 4px 14px rgba(138,43,226,.2)}
+.buy-btn:active{transform:scale(.99);box-shadow:0 6px 20px rgba(138,43,226,.25)}
 .buy-btn .price-badge{
   background:rgba(255,255,255,.18);
-  padding:4px 16px;border-radius:30px;
-  font-size:14px;font-weight:700;
+  padding:5px 18px;border-radius:30px;
+  font-size:15px;font-weight:700;
 }
 .buy-btn:disabled{
   background:rgba(255,255,255,.1);
   color:rgba(255,255,255,.4);
-  box-shadow:none;
-  cursor:not-allowed;
+  box-shadow:none;cursor:not-allowed;
 }
 
-/* Депозит модалка */
-.dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
-.dep-amount{padding:12px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);text-align:center;font-size:13px;color:rgba(255,255,255,.8);transition:all .15s ease}
-.dep-amount.sel{background:rgba(88,10,148,.4);border-color:#b87aff;color:#fff;box-shadow:0 4px 12px rgba(138,43,226,.2)}
-.dep-amount:active{transform:scale(.97)}
-.dep-info{display:flex;justify-content:space-between;margin-bottom:18px;background:rgba(255,255,255,.04);padding:14px 16px;border-radius:18px;font-size:13px;border:1px solid rgba(255,255,255,.08)}
-.purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.9),rgba(148,38,255,.75));border-radius:60px;padding:14px;color:#fff;font-weight:700;font-size:15px;border:none;box-shadow:0 6px 20px rgba(138,43,226,.25)}
-.ghost-btn{width:100%;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:60px;padding:13px;color:rgba(255,255,255,.7);margin-top:10px;font-size:14px}
+/* Депозит */
+.dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:20px}
+.dep-amount{
+  padding:13px;border-radius:18px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  text-align:center;font-size:14px;color:rgba(255,255,255,.85);
+  transition:all .15s ease;
+}
+.dep-amount.sel{
+  background:rgba(88,10,148,.45);
+  border-color:#b87aff;color:#fff;
+  box-shadow:0 4px 14px rgba(138,43,226,.25);
+}
+.dep-amount:active{transform:scale(.98)}
+.dep-info{
+  display:flex;justify-content:space-between;
+  margin-bottom:20px;
+  background:rgba(255,255,255,.04);
+  padding:15px 18px;border-radius:18px;
+  font-size:14px;border:1px solid rgba(255,255,255,.08);
+}
+.purple-btn{
+  width:100%;
+  background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));
+  border-radius:60px;padding:15px;color:#fff;
+  font-weight:700;font-size:16px;border:none;
+  box-shadow:0 8px 28px rgba(138,43,226,.3);
+}
+.ghost-btn{
+  width:100%;background:transparent;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:60px;padding:14px;
+  color:rgba(255,255,255,.7);margin-top:10px;font-size:15px;
+}
 
 /* ФИЛЬТРЫ */
-#filterPanel{position:fixed;inset:0;background:rgba(8,8,18,.98);z-index:1500;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s cubic-bezier(.22,1,.36,1);pointer-events:none}
+#filterPanel{
+  position:fixed;inset:0;
+  background:rgba(8,8,18,.98);z-index:1500;
+  display:flex;flex-direction:column;
+  transform:translateY(100%);
+  transition:transform .35s cubic-bezier(.22,1,.36,1);
+  pointer-events:none;
+}
 #filterPanel.open{transform:translateY(0);pointer-events:auto}
 .fp-inner{max-width:440px;width:100%;margin:0 auto;display:flex;flex-direction:column;height:100%;overflow:hidden}
 .fp-header{display:flex;justify-content:center;align-items:center;position:relative;padding:22px 20px 12px}
 .fp-title{font-size:18px;font-weight:700}
 .fp-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 20px 16px}
-.fp-tab{border-radius:40px;padding:9px 4px;font-size:12px;font-weight:500;border:1px solid rgba(184,122,255,.22);background:rgba(255,255,255,.06);color:rgba(255,255,255,.48);display:flex;align-items:center;justify-content:center;gap:4px}
+.fp-tab{
+  border-radius:40px;padding:9px 4px;font-size:12px;font-weight:500;
+  border:1px solid rgba(184,122,255,.22);
+  background:rgba(255,255,255,.06);
+  color:rgba(255,255,255,.48);
+  display:flex;align-items:center;justify-content:center;gap:4px;
+}
 .fp-tab.active{background:rgba(88,10,148,.5);border-color:#b87aff;color:#fff}
 .fp-tab-badge{background:#b87aff;color:#fff;font-size:10px;border-radius:20px;padding:0 5px}
-.fp-search-wrapper{position:relative;flex:1}
 .fp-search-row{display:flex;gap:10px;margin:0 20px 12px}
 .fp-reset-all{width:100%;padding:0 20px;margin-bottom:12px}
-.reset-text{width:100%;background:transparent;border:1px solid #ff4d4d;border-radius:40px;padding:12px;color:#ff4d4d;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px}
+.reset-text{
+  width:100%;background:transparent;
+  border:1px solid #ff4d4d;border-radius:40px;
+  padding:12px;color:#ff4d4d;font-size:14px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
 .fp-scroll{flex:1;overflow-y:auto}
 .fp-list{padding:0 20px 100px}
-.fp-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:16px;margin-bottom:8px;background:rgba(255,255,255,.03);transition:background .15s ease}
+.fp-row{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;border-radius:16px;
+  margin-bottom:8px;background:rgba(255,255,255,.03);
+  transition:background .15s ease;
+}
 .fp-row.sel{background:rgba(88,10,148,.25);border:1px solid rgba(184,122,255,.4)}
 .fp-row:active{background:rgba(255,255,255,.08)}
 .fp-row img{width:46px;height:46px;border-radius:12px;object-fit:cover}
 .fp-row-name{flex:1;font-size:13px;font-weight:500}
-.fp-check{width:22px;height:22px;border-radius:30px;border:1.5px solid rgba(184,122,255,.5);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:12px}
+.fp-check{
+  width:22px;height:22px;border-radius:30px;
+  border:1.5px solid rgba(184,122,255,.5);
+  background:rgba(255,255,255,.05);
+  display:flex;align-items:center;justify-content:center;font-size:12px;
+}
 .fp-check.checked{background:#b87aff;border-color:#b87aff;color:#fff}
-.back-link{display:flex;align-items:center;gap:8px;color:#b87aff;font-size:14px;font-weight:600;margin-bottom:16px;padding:8px 0}
-.fp-footer{position:sticky;bottom:0;padding:12px 20px;background:rgba(8,8,18,.98);border-top:1px solid rgba(255,255,255,.07)}
-.fp-apply{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.9),rgba(148,38,255,.75));border:none;border-radius:60px;padding:14px;color:#fff;font-size:14px;font-weight:700}
+.back-link{
+  display:flex;align-items:center;gap:8px;
+  color:#b87aff;font-size:14px;font-weight:600;
+  margin-bottom:16px;padding:8px 0;
+}
+.fp-footer{
+  position:sticky;bottom:0;
+  padding:12px 20px;
+  background:rgba(8,8,18,.98);
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.fp-apply{
+  width:100%;
+  background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));
+  border:none;border-radius:60px;padding:14px;
+  color:#fff;font-size:14px;font-weight:700;
+}
 
-.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(26,24,56,.97);border:1px solid rgba(184,122,255,.3);border-radius:16px;padding:10px 18px;font-size:14px;z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.toast{
+  position:fixed;bottom:100px;left:50%;
+  transform:translateX(-50%);
+  background:rgba(26,24,56,.97);
+  border:1px solid rgba(184,122,255,.3);
+  border-radius:16px;padding:10px 18px;font-size:14px;
+  z-index:9999;opacity:0;transition:all .3s;
+  white-space:nowrap;pointer-events:none;
+  box-shadow:0 8px 24px rgba(0,0,0,.3);
+}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
 
 body.modal-open{overflow:hidden;position:fixed;width:100%;height:100%}
@@ -274,24 +448,46 @@ body.modal-open{overflow:hidden;position:fixed;width:100%;height:100%}
 <div class="orb orb2"></div>
 
 <div id="app">
-  <div class="header">
-    <div class="user-row"><div class="avatar" id="hAva">А</div><div class="user-info"><div class="user-name" id="hName">Алексей Смирнов</div><div class="user-handle" id="hHandle">@alex_smirnov</div></div></div>
-    <div class="balance-area"><div class="balance-pill"><div class="balance-num"><span id="hBalance">5000</span> ₽</div><button class="plus-btn" onclick="openDeposit()">+</button></div><div class="menu-circle" id="menuCircleBtn"><i class="fas fa-bars"></i></div></div>
+  <!-- 🔥 ШАПКА КАК В ТЕЛЕГРАМ -->
+  <div class="tg-header">
+    <div class="tg-avatar" id="tgAva">А</div>
+    <div class="tg-user">
+      <div class="tg-name" id="tgName">Алексей Смирнов</div>
+      <div class="tg-username" id="tgUsername">@alex_smirnov</div>
+    </div>
+    <div class="tg-status">онлайн</div>
   </div>
   
   <div class="search-row">
-    <div class="search-wrapper" id="mainSearchWrapper">
-      <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Поиск NFT..." oninput="applyFiltersAndRender()"/></div>
-      <div class="search-clear" id="mainSearchClear" onclick="clearMainSearch()"><i class="fas fa-times-circle"></i></div>
+    <div class="search-wrapper">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Поиск NFT..." oninput="applyFiltersAndRender()"/>
+      </div>
+      <div class="search-clear" id="mainSearchClear" onclick="clearMainSearch()">
+        <i class="fas fa-times-circle"></i>
+      </div>
     </div>
-    <button class="icon-btn" id="filterBtn" onclick="openFilter()"><i class="fas fa-sliders-h"></i></button>
-    <button class="icon-btn" id="sortBtn" onclick="toggleSort()"><i class="fas fa-sort-amount-up" id="sortIcon"></i></button>
+    <button class="icon-btn" id="filterBtn" onclick="openFilter()">
+      <i class="fas fa-sliders-h"></i>
+    </button>
+    <button class="icon-btn" id="sortBtn" onclick="toggleSort()">
+      <i class="fas fa-sort-amount-up" id="sortIcon"></i>
+    </button>
   </div>
   
   <div class="scroll-area"><div class="nft-grid" id="nftGrid"></div></div>
 </div>
 
-<div class="bottom-nav"><button class="nav-btn active" id="navMarketBtn"><div class="nav-content"><i class="fas fa-store"></i><span>МАРКЕТ</span></div></button><button class="nav-btn" id="navProfileBtn"><div class="nav-content"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></div></button></div>
+<!-- 🔥 НАВИГАЦИЯ С iOS MIRROR EFFECT -->
+<div class="bottom-nav">
+  <button class="nav-btn active" id="navMarketBtn">
+    <i class="fas fa-store"></i><span>МАРКЕТ</span>
+  </button>
+  <button class="nav-btn" id="navProfileBtn">
+    <i class="fas fa-user"></i><span>ПРОФИЛЬ</span>
+  </button>
+</div>
 
 <!-- МОДАЛКА ПОКУПКИ -->
 <div class="overlay hidden" id="buyOverlay" data-dismissible="true">
@@ -309,7 +505,10 @@ body.modal-open{overflow:hidden;position:fixed;width:100%;height:100%}
       <div class="seller-ava-big" id="bSellerAva"></div>
       <div><div class="seller-name" id="bSellerName"></div></div>
     </div>
-    <button class="buy-btn" id="bBuyBtn"><span>Купить</span><span class="price-badge" id="bPriceBadge"></span></button>
+    <button class="buy-btn" id="bBuyBtn">
+      <span>Купить</span>
+      <span class="price-badge" id="bPriceBadge"></span>
+    </button>
   </div>
 </div>
 
@@ -322,13 +521,50 @@ body.modal-open{overflow:hidden;position:fixed;width:100%;height:100%}
       <button class="close-btn" onclick="closeOverlay('depOverlay')">×</button>
     </div>
     <div class="dep-grid" id="depGrid"></div>
-    <div class="dep-info"><span>Текущий баланс</span><span><span id="depBalanceVal">5000</span> ₽</span></div>
+    <div class="dep-info">
+      <span>Текущий баланс</span>
+      <span><span id="depBalanceVal">5000</span> ₽</span>
+    </div>
     <button class="purple-btn" onclick="confirmDeposit()">Пополнить</button>
     <button class="ghost-btn" onclick="closeOverlay('depOverlay')">Отмена</button>
   </div>
 </div>
 
-<div id="filterPanel"><div class="fp-inner"><div class="fp-header"><span class="fp-title">Фильтры</span><button class="close-btn" style="position:absolute;right:12px;top:18px" onclick="closeFilter()">×</button></div><div class="fp-tabs" id="fpTabs"></div><div class="fp-search-row"><div class="fp-search-wrapper" id="fpSearchWrapper"><div class="search-box" style="flex:1"><i class="fas fa-search"></i><input type="text" id="fpSearch" placeholder="Поиск..." oninput="renderFpContent()"/></div><div class="search-clear" id="fpSearchClear" onclick="clearFpSearch()"><i class="fas fa-times-circle"></i></div></div><button class="icon-btn" id="fpSortBtn" onclick="toggleFpSort()"><i class="fas fa-sort-amount-up" id="fpSortIcon"></i></button></div><div id="resetContainer" style="display:none"><div class="fp-reset-all"><div class="reset-text" onclick="resetAllFilters()"><i class="fas fa-undo-alt"></i> Сбросить все <span id="resetCount"></span></div></div></div><div class="fp-scroll"><div class="fp-list" id="fpList"></div></div><div class="fp-footer" id="applyFooter"><button class="fp-apply" id="applyBtn" onclick="closeFilter()">Применить</button></div></div></div>
+<!-- ФИЛЬТРЫ -->
+<div id="filterPanel">
+  <div class="fp-inner">
+    <div class="fp-header">
+      <span class="fp-title">Фильтры</span>
+      <button class="close-btn" style="position:absolute;right:12px;top:18px" onclick="closeFilter()">×</button>
+    </div>
+    <div class="fp-tabs" id="fpTabs"></div>
+    <div class="fp-search-row">
+      <div class="search-wrapper" id="fpSearchWrapper">
+        <div class="search-box" style="flex:1">
+          <i class="fas fa-search"></i>
+          <input type="text" id="fpSearch" placeholder="Поиск..." oninput="renderFpContent()"/>
+        </div>
+        <div class="search-clear" id="fpSearchClear" onclick="clearFpSearch()">
+          <i class="fas fa-times-circle"></i>
+        </div>
+      </div>
+      <button class="icon-btn" id="fpSortBtn" onclick="toggleFpSort()">
+        <i class="fas fa-sort-amount-up" id="fpSortIcon"></i>
+      </button>
+    </div>
+    <div id="resetContainer" style="display:none">
+      <div class="fp-reset-all">
+        <div class="reset-text" onclick="resetAllFilters()">
+          <i class="fas fa-undo-alt"></i> Сбросить все <span id="resetCount"></span>
+        </div>
+      </div>
+    </div>
+    <div class="fp-scroll"><div class="fp-list" id="fpList"></div></div>
+    <div class="fp-footer" id="applyFooter">
+      <button class="fp-apply" id="applyBtn" onclick="closeFilter()">Применить</button>
+    </div>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -354,9 +590,23 @@ let fpTab = 'collection', fpSortAsc = true, fpModelNft = null;
 
 function imgUrl(name){return GITHUB + encodeURIComponent(name+'.png');}
 function fmtNum(n){return n.toLocaleString('ru-RU');}
-function getListings(){return NAMES.map((name,i)=>({id:i+1,nftName:name,price:PRICES[i%PRICES.length],image:imgUrl(name),sellerName:SELLERS[i%SELLERS.length].name,sellerAvatar:SELLERS[i%SELLERS.length].avatar,pattern:PATTERNS[i%4],background:BACKGROUNDS[i%4],model:MODELS[i%4]}));}
+function getListings(){
+  return NAMES.map((name,i)=>({
+    id:i+1,
+    nftName:name,
+    price:PRICES[i%PRICES.length],
+    image:imgUrl(name),
+    sellerName:SELLERS[i%SELLERS.length].name,
+    sellerAvatar:SELLERS[i%SELLERS.length].avatar,
+    pattern:PATTERNS[i%4],
+    background:BACKGROUNDS[i%4],
+    model:MODELS[i%4]
+  }));
+}
 function saveBalance(){localStorage.setItem('nft_balance',balance);}
-function renderHeader(){document.getElementById('hBalance').textContent=fmtNum(balance);document.getElementById('depBalanceVal').textContent=fmtNum(balance);}
+function renderHeader(){
+  document.getElementById('depBalanceVal').textContent=fmtNum(balance);
+}
 
 function applyFiltersAndRender(){
   let items=getListings();
@@ -367,24 +617,60 @@ function applyFiltersAndRender(){
   if(filters.background.length) items=items.filter(x=>filters.background.includes(x.background));
   if(filters.pattern.length) items=items.filter(x=>filters.pattern.includes(x.pattern));
   items.sort((a,b)=>sortAsc?a.price-b.price:b.price-a.price);
+  
   const total=Object.values(filters).reduce((s,a)=>s+a.length,0);
   const filterBtn=document.getElementById('filterBtn');
   if(total>0) filterBtn.classList.add('has-filter');
   else filterBtn.classList.remove('has-filter');
+  
   const grid=document.getElementById('nftGrid');
-  if(!items.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:rgba(255,255,255,.4);font-size:13px">Ничего не найдено</div>';return;}
-  grid.innerHTML=items.map(l=>`<div class="nft-card" onclick="openBuy(${l.id})"><div class="nft-img"><img src="${l.image}" onerror="this.style.opacity='.2'"/></div><div class="nft-info"><div class="nft-name">${l.nftName}</div><div class="nft-foot"><div class="nft-price">${l.price} ₽</div><div class="seller-dot">${l.sellerAvatar}</div></div></div></div>`).join('');
+  if(!items.length){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:rgba(255,255,255,.4);font-size:13px">Ничего не найдено</div>';
+    return;
+  }
+  // 🔥 НОВЫЙ ЛЕЙАУТ КАРТОЧКИ
+  grid.innerHTML=items.map(l=>`
+    <div class="nft-card" onclick="openBuy(${l.id})">
+      <div class="nft-img"><img src="${l.image}" onerror="this.style.opacity='.2'"/></div>
+      <div class="nft-info">
+        <div class="nft-text">
+          <div class="nft-name">${l.nftName}</div>
+          <div class="nft-price">${l.price} ₽</div>
+        </div>
+      </div>
+      <div class="seller-avatar">${l.sellerAvatar}</div>
+    </div>
+  `).join('');
   updateMainSearchClear();
 }
-function updateMainSearchClear(){const input=document.getElementById('searchInput');const clear=document.getElementById('mainSearchClear');if(input.value.length>0)clear.classList.add('show');else clear.classList.remove('show');}
-function clearMainSearch(){document.getElementById('searchInput').value='';applyFiltersAndRender();document.activeElement?.blur();}
-function clearFpSearch(){document.getElementById('fpSearch').value='';renderFpContent();document.activeElement?.blur();}
-function toggleSort(){sortAsc=!sortAsc;document.getElementById('sortIcon').className=sortAsc?'fas fa-sort-amount-up':'fas fa-sort-amount-down';applyFiltersAndRender();}
+function updateMainSearchClear(){
+  const input=document.getElementById('searchInput');
+  const clear=document.getElementById('mainSearchClear');
+  if(input.value.length>0)clear.classList.add('show');
+  else clear.classList.remove('show');
+}
+function clearMainSearch(){
+  document.getElementById('searchInput').value='';
+  applyFiltersAndRender();
+  document.activeElement?.blur();
+}
+function clearFpSearch(){
+  document.getElementById('fpSearch').value='';
+  renderFpContent();
+  document.activeElement?.blur();
+}
+function toggleSort(){
+  sortAsc=!sortAsc;
+  document.getElementById('sortIcon').className=sortAsc?'fas fa-sort-amount-up':'fas fa-sort-amount-down';
+  applyFiltersAndRender();
+}
 
+// 🔥🔥🔥 ПЛАВНОЕ ОТКРЫТИЕ — ВСЕГДА С ОДНОЙ ТОЧКИ 🔥🔥🔥
 function openBuy(id){
   const l=getListings().find(x=>x.id===id);
   if(!l)return;
   selectedListing=l;
+  
   document.getElementById('bTitle').textContent=l.nftName;
   document.getElementById('bImg').src=l.image;
   const attrs=[];
@@ -395,20 +681,44 @@ function openBuy(id){
   document.getElementById('bSellerAva').textContent=l.sellerAvatar;
   document.getElementById('bSellerName').textContent=l.sellerName;
   document.getElementById('bPriceBadge').textContent=l.price+' ₽';
+  
   const btn=document.getElementById('bBuyBtn');
   const canBuy=balance>=l.price;
   btn.disabled=!canBuy;
   btn.style.opacity=canBuy?'1':'0.6';
   
-  // 🔥 ПЛАВНОЕ ПОЯВЛЕНИЕ МОДАЛКИ
-  const overlay = document.getElementById('buyOverlay');
-  overlay.classList.remove('hidden');
+  // 🔥 СБРОС И ПЛАВНОЕ ПОЯВЛЕНИЕ
+  const overlay=document.getElementById('buyOverlay');
+  const sheet=overlay.querySelector('.sheet');
+  
+  // Полностью сбрасываем
+  overlay.classList.remove('visible','hidden');
+  overlay.style.opacity='0';
+  overlay.style.visibility='hidden';
+  overlay.style.background='rgba(0,0,0,0)';
+  sheet.style.transition='none';
+  sheet.style.transform='translateY(100%)';
+  
+  // 🔥 РЕФЛОУ — ОБЯЗАТЕЛЬНО!
+  void overlay.offsetWidth;
+  
+  // Теперь анимация
+  overlay.style.transition='opacity .35s ease, visibility .35s ease, background .35s ease';
+  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
+  
   overlay.classList.add('visible');
+  overlay.style.opacity='1';
+  overlay.style.visibility='visible';
+  overlay.style.background='rgba(0,0,0,0.75)';
+  sheet.style.transform='translateY(0)';
+  
   document.body.classList.add('modal-open');
 }
 
 function confirmBuy(){
-  if(!selectedListing||balance<selectedListing.price){showToast('Недостаточно средств!');return;}
+  if(!selectedListing||balance<selectedListing.price){
+    showToast('Недостаточно средств!');return;
+  }
   balance-=selectedListing.price;
   saveBalance();
   closeOverlay('buyOverlay');
@@ -419,13 +729,32 @@ function confirmBuy(){
 
 function openDeposit(){
   renderDepGrid();
-  const overlay = document.getElementById('depOverlay');
-  overlay.classList.remove('hidden');
+  const overlay=document.getElementById('depOverlay');
+  const sheet=overlay.querySelector('.sheet');
+  
+  overlay.classList.remove('visible','hidden');
+  overlay.style.opacity='0';
+  overlay.style.visibility='hidden';
+  overlay.style.background='rgba(0,0,0,0)';
+  sheet.style.transition='none';
+  sheet.style.transform='translateY(100%)';
+  void overlay.offsetWidth;
+  
+  overlay.style.transition='opacity .35s ease, visibility .35s ease, background .35s ease';
+  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
+  
   overlay.classList.add('visible');
+  overlay.style.opacity='1';
+  overlay.style.visibility='visible';
+  overlay.style.background='rgba(0,0,0,0.75)';
+  sheet.style.transform='translateY(0)';
+  
   document.body.classList.add('modal-open');
 }
 function renderDepGrid(){
-  document.getElementById('depGrid').innerHTML=DEP_AMOUNTS.map(a=>`<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectedDep=${a};renderDepGrid()">${fmtNum(a)} ₽</div>`).join('');
+  document.getElementById('depGrid').innerHTML=DEP_AMOUNTS.map(a=>
+    `<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectedDep=${a};renderDepGrid()">${fmtNum(a)} ₽</div>`
+  ).join('');
 }
 function confirmDeposit(){
   balance+=selectedDep;
@@ -436,19 +765,31 @@ function confirmDeposit(){
   applyFiltersAndRender();
 }
 
-// 🔥 ПЛАВНОЕ ЗАКРЫТИЕ МОДАЛОК
+// 🔥 ПЛАВНОЕ ЗАКРЫТИЕ
 function closeOverlay(id){
   const overlay=document.getElementById(id);
-  if(!overlay) return;
+  if(!overlay)return;
+  const sheet=overlay.querySelector('.sheet');
   
-  // Сначала убираем видимость через класс
-  overlay.classList.remove('visible');
-  overlay.classList.add('hidden');
+  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
+  overlay.style.transition='opacity .35s ease, background .35s ease';
   
-  // Ждём завершения анимации и снимаем блокировку скролла
+  sheet.style.transform='translateY(100%)';
+  overlay.style.opacity='0';
+  overlay.style.background='rgba(0,0,0,0)';
+  
   setTimeout(()=>{
+    overlay.classList.remove('visible');
+    overlay.classList.add('hidden');
+    overlay.style.visibility='hidden';
     document.body.classList.remove('modal-open');
-  }, 350);
+    // Полный сброс
+    sheet.style.transform='';
+    sheet.style.transition='';
+    overlay.style.opacity='';
+    overlay.style.background='';
+    overlay.style.visibility='';
+  },450);
 }
 
 function showToast(msg){
@@ -458,12 +799,12 @@ function showToast(msg){
   setTimeout(()=>t.classList.remove('show'),2000);
 }
 
-// 🔥 СВАЙП-ДИСМИСС ДЛЯ МОДАЛОК
-function initSwipeDismiss(overlayId, sheetSelector='.sheet', handleSelector='.sheet-handle'){
+// 🔥 СВАЙП
+function initSwipeDismiss(overlayId){
   const overlay=document.getElementById(overlayId);
   if(!overlay)return;
-  const sheet=overlay.querySelector(sheetSelector);
-  const handle=overlay.querySelector(handleSelector);
+  const sheet=overlay.querySelector('.sheet');
+  const handle=overlay.querySelector('.sheet-handle');
   if(!sheet)return;
   
   let startY=0,startYOffset=0,isDragging=false,hasMoved=false;
@@ -477,42 +818,34 @@ function initSwipeDismiss(overlayId, sheetSelector='.sheet', handleSelector='.sh
   };
   
   const onStart=(e)=>{
-    isDragging=true;
-    hasMoved=false;
+    isDragging=true;hasMoved=false;
     startY=e.touches?.[0]?.clientY||e.clientY;
     startYOffset=getTransformY(sheet);
     sheet.style.transition='none';
     sheet.style.willChange='transform';
     e.stopPropagation();
   };
-  
   const onMove=(e)=>{
     if(!isDragging)return;
     const currentY=e.touches?.[0]?.clientY||e.clientY;
     const dy=currentY-startY;
     if(dy>0){
       hasMoved=true;
-      const newY=startYOffset+dy;
-      sheet.style.transform=`translateY(${newY}px)`;
+      sheet.style.transform=`translateY(${startYOffset+dy}px)`;
       const opacity=Math.max(0.3,1-dy/(window.innerHeight*0.4));
-      overlay.style.background=`rgba(0,0,0,${opacity*0.7})`;
+      overlay.style.background=`rgba(0,0,0,${opacity*0.75})`;
     }
     e.preventDefault();
   };
-  
   const onEnd=()=>{
     if(!isDragging)return;
     isDragging=false;
     const currentY=getTransformY(sheet);
     const threshold=window.innerHeight*0.25;
-    sheet.style.transition='transform 0.35s cubic-bezier(0.22,1,0.36,1)';
-    overlay.style.transition='background 0.25s ease';
-    if(hasMoved && currentY>threshold){
-      closeOverlay(overlayId);
-    }else{
-      sheet.style.transform='translateY(0)';
-      overlay.style.background='rgba(0,0,0,0.7)';
-    }
+    sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
+    overlay.style.transition='background .25s ease';
+    if(hasMoved && currentY>threshold){closeOverlay(overlayId);}
+    else{sheet.style.transform='translateY(0)';overlay.style.background='rgba(0,0,0,0.75)';}
     setTimeout(()=>{sheet.style.willChange='auto';},300);
   };
   
@@ -525,18 +858,15 @@ function initSwipeDismiss(overlayId, sheetSelector='.sheet', handleSelector='.sh
   document.addEventListener('mousemove',(e)=>{if(isDragging)onMove(e);});
   document.addEventListener('mouseup',onEnd);
 }
-
 initSwipeDismiss('buyOverlay');
 initSwipeDismiss('depOverlay');
 
-// 🔥 КЛИК ПО ФОНУ ЗАКРЫВАЕТ МОДАЛКУ
+// 🔥 КЛИК ПО ФОНУ
 ['buyOverlay','depOverlay'].forEach(id=>{
   const overlay=document.getElementById(id);
   if(overlay){
     overlay.addEventListener('click',(e)=>{
-      if(e.target.hasAttribute('data-dismissible') && e.target===overlay){
-        closeOverlay(id);
-      }
+      if(e.target.hasAttribute('data-dismissible')&&e.target===overlay)closeOverlay(id);
     });
   }
 });
@@ -544,7 +874,6 @@ initSwipeDismiss('depOverlay');
 document.getElementById('closeBuyX')?.addEventListener('click',()=>closeOverlay('buyOverlay'));
 document.getElementById('navProfileBtn')?.addEventListener('click',()=>{window.location.href='profile.html';});
 document.getElementById('navMarketBtn')?.addEventListener('click',()=>{window.location.reload();});
-document.getElementById('menuCircleBtn')?.addEventListener('click',()=>showToast('Меню'));
 document.getElementById('bBuyBtn')?.addEventListener('click',confirmBuy);
 
 // 🔥 ФИЛЬТРЫ
@@ -552,7 +881,11 @@ function openFilter(){document.getElementById('filterPanel').classList.add('open
 function closeFilter(){document.getElementById('filterPanel').classList.remove('open');applyFiltersAndRender();}
 function renderFpTabs(){
   const tabs=[['collection','Коллекция'],['model','Модель'],['background','Фон'],['pattern','Узор']];
-  document.getElementById('fpTabs').innerHTML=tabs.map(([key,label])=>`<button class="fp-tab${fpTab===key?' active':''}" onclick="fpTab='${key}';fpModelNft=null;renderFpTabs();renderFpContent()">${label}${filters[key].length?`<span class="fp-tab-badge">${filters[key].length}</span>`:''}</button>`).join('');
+  document.getElementById('fpTabs').innerHTML=tabs.map(([key,label])=>
+    `<button class="fp-tab${fpTab===key?' active':''}" onclick="fpTab='${key}';fpModelNft=null;renderFpTabs();renderFpContent()">
+      ${label}${filters[key].length?`<span class="fp-tab-badge">${filters[key].length}</span>`:''}
+    </button>`
+  ).join('');
   document.getElementById('fpSortBtn').style.display=fpTab==='collection'?'flex':'none';
   updateFilterButtons();
 }
@@ -568,31 +901,77 @@ function renderFpContent(){
   const q=document.getElementById('fpSearch').value.trim().toLowerCase();
   const list=document.getElementById('fpList');
   if(fpTab==='collection'){
-    let opts=[...NAMES];if(q)opts=opts.filter(n=>n.toLowerCase().includes(q));opts=fpSortAsc?opts.sort():opts.sort().reverse();
-    list.innerHTML=opts.map(name=>{const sel=filters.collection.includes(name);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('collection','${name.replace(/'/g,"\\'")}')"><img src="${imgUrl(name)}"><span class="fp-row-name">${name}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
+    let opts=[...NAMES];if(q)opts=opts.filter(n=>n.toLowerCase().includes(q));
+    opts=fpSortAsc?opts.sort():opts.sort().reverse();
+    list.innerHTML=opts.map(name=>{
+      const sel=filters.collection.includes(name);
+      return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('collection','${name.replace(/'/g,"\\'")}')">
+        <img src="${imgUrl(name)}"><span class="fp-row-name">${name}</span>
+        <div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div>
+      </div>`;
+    }).join('');
   }else if(fpTab==='model'){
     if(!fpModelNft){
       const base=filters.collection.length?NAMES.filter(n=>filters.collection.includes(n)):NAMES;
       const opts=q?base.filter(n=>n.toLowerCase().includes(q)):base;
-      list.innerHTML=opts.map(name=>`<div class="fp-row" onclick="fpModelNft='${name.replace(/'/g,"\\'")}';renderFpContent()"><img src="${imgUrl(name)}"><span class="fp-row-name">${name}</span><i class="fas fa-chevron-right" style="color:#b87aff"></i></div>`).join('');
+      list.innerHTML=opts.map(name=>
+        `<div class="fp-row" onclick="fpModelNft='${name.replace(/'/g,"\\'")}';renderFpContent()">
+          <img src="${imgUrl(name)}"><span class="fp-row-name">${name}</span>
+          <i class="fas fa-chevron-right" style="color:#b87aff"></i>
+        </div>`
+      ).join('');
     }else{
-      list.innerHTML=`<div class="back-link" onclick="fpModelNft=null;renderFpContent()"><i class="fas fa-arrow-left"></i> Назад</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><img src="${imgUrl(fpModelNft)}" style="width:40px;height:40px;border-radius:10px"><span style="font-weight:600">${fpModelNft}</span></div><div style="height:1px;background:rgba(255,255,255,.08);margin-bottom:14px"></div>`+MODELS.map(m=>{const sel=filters.model.includes(m);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('model','${m}')"><img src="${MODEL_ICONS[m]}"><div style="flex:1"><div>${m}</div><div style="font-size:12px;color:rgba(255,255,255,.4)">Модель</div></div><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
+      list.innerHTML=`<div class="back-link" onclick="fpModelNft=null;renderFpContent()"><i class="fas fa-arrow-left"></i> Назад</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+          <img src="${imgUrl(fpModelNft)}" style="width:40px;height:40px;border-radius:10px">
+          <span style="font-weight:600">${fpModelNft}</span>
+        </div><div style="height:1px;background:rgba(255,255,255,.08);margin-bottom:14px"></div>`+
+        MODELS.map(m=>{
+          const sel=filters.model.includes(m);
+          return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('model','${m}')">
+            <img src="${MODEL_ICONS[m]}"><div style="flex:1"><div>${m}</div><div style="font-size:12px;color:rgba(255,255,255,.4)">Модель</div></div>
+            <div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div>
+          </div>`;
+        }).join('');
     }
   }else if(fpTab==='background'){
     const opts=q?BACKGROUNDS.filter(b=>b.toLowerCase().includes(q)):BACKGROUNDS;
-    list.innerHTML=opts.map(bg=>{const sel=filters.background.includes(bg);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('background','${bg}')"><img src="${BG_IMAGES[bg]}"><span class="fp-row-name">${bg}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
+    list.innerHTML=opts.map(bg=>{
+      const sel=filters.background.includes(bg);
+      return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('background','${bg}')">
+        <img src="${BG_IMAGES[bg]}"><span class="fp-row-name">${bg}</span>
+        <div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div>
+      </div>`;
+    }).join('');
   }else if(fpTab==='pattern'){
     const opts=q?PATTERNS.filter(p=>p.toLowerCase().includes(q)):PATTERNS;
-    list.innerHTML=opts.map(pt=>{const sel=filters.pattern.includes(pt);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('pattern','${pt}')"><img src="${PATTERN_IMAGES[pt]}"><span class="fp-row-name">${pt}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
+    list.innerHTML=opts.map(pt=>{
+      const sel=filters.pattern.includes(pt);
+      return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('pattern','${pt}')">
+        <img src="${PATTERN_IMAGES[pt]}"><span class="fp-row-name">${pt}</span>
+        <div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div>
+      </div>`;
+    }).join('');
   }
-  const fpClear=document.getElementById('fpSearchClear');const fpInput=document.getElementById('fpSearch');if(fpInput.value.length>0)fpClear.classList.add('show');else fpClear.classList.remove('show');
+  const fpClear=document.getElementById('fpSearchClear');
+  const fpInput=document.getElementById('fpSearch');
+  if(fpInput.value.length>0)fpClear.classList.add('show');else fpClear.classList.remove('show');
 }
-function toggleFilter(key,val){const arr=filters[key];const idx=arr.indexOf(val);if(idx>=0)arr.splice(idx,1);else arr.push(val);renderFpTabs();renderFpContent();updateFilterButtons();}
+function toggleFilter(key,val){
+  const arr=filters[key];const idx=arr.indexOf(val);
+  if(idx>=0)arr.splice(idx,1);else arr.push(val);
+  renderFpTabs();renderFpContent();updateFilterButtons();
+}
 
 // 🔥 ИНИЦИАЛИЗАЦИЯ
 renderHeader();
 applyFiltersAndRender();
-document.addEventListener('keydown',(e)=>{if(e.key==='Escape'){if(!document.getElementById('buyOverlay').classList.contains('hidden'))closeOverlay('buyOverlay');if(!document.getElementById('depOverlay').classList.contains('hidden'))closeOverlay('depOverlay');}});
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='Escape'){
+    if(!document.getElementById('buyOverlay').classList.contains('hidden'))closeOverlay('buyOverlay');
+    if(!document.getElementById('depOverlay').classList.contains('hidden'))closeOverlay('depOverlay');
+  }
+});
 </script>
 </body>
 </html>
