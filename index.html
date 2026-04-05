@@ -47,39 +47,37 @@ img{display:block;pointer-events:none}
 .icon-btn{background:rgba(255,255,255,.06);border:1px solid rgba(184,122,255,.28);border-radius:60px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;flex-shrink:0}
 .icon-btn.has-filter{border-color:#b87aff;box-shadow:0 0 10px rgba(184,122,255,.25)}
 
-.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:20px}
 .scroll-area::-webkit-scrollbar{width:3px}
 .scroll-area::-webkit-scrollbar-thumb{background:rgba(184,122,255,.35);border-radius:3px}
 
-/* 🔥🔥🔥 ИЗМЕНЕНИЯ ЗДЕСЬ 🔥🔥🔥 */
+/* 🔥 ОБНОВЛЁННАЯ СЕТКА И КАРТОЧКИ */
 .nft-grid{
-  padding:0 20px 100px;
+  padding:0 20px 120px; /* 🔥 Увеличен отступ снизу, чтобы фото не обрезались */
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:20px; /* 🔥 ОЧЕНЬ ДАЛЕКО ДРУГ ОТ ДРУГА */
+  gap:16px; /* 🔥 Чуть меньше расстояние между карточками */
 }
 
-/* 🔥 КАРТОЧКА: МАЛЕНЬКАЯ + ЛЕГКОЕ СКРУГЛЕНИЕ (НЕ КАПСУЛА) */
 .nft-card{
   background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.06);
-  border-radius:16px; /* 🔥 Легкое скругление (было 999px) */
+  border-radius:14px; /* 🔥 Чуть меньше скругление */
   overflow:hidden;
   cursor:pointer;
-  transition:transform .15s;
-  aspect-ratio:3/4; /* Вертикальная форма */
+  transition:transform .15s ease, box-shadow .2s ease;
+  aspect-ratio:3/4;
   display:flex;
   flex-direction:column;
 }
-.nft-card:active{transform:scale(.95)}
+.nft-card:active{transform:scale(.97); box-shadow:0 8px 25px rgba(138,43,226,.25)}
 
-/* 🔥 ИЗОБРАЖЕНИЕ */
 .nft-img{
   position:relative;
   padding-top:100%;
   background:rgba(40,25,65,.6);
-  margin:3px 3px 0 3px;
-  border-radius:14px 14px 0 0; /* Скругление под карточку */
+  margin:2px 2px 0 2px; /* 🔥 Чуть меньше отступ */
+  border-radius:12px 12px 0 0; /* 🔥 Подогнано под карточку */
 }
 .nft-img img{
   position:absolute;
@@ -87,44 +85,49 @@ img{display:block;pointer-events:none}
   width:100%;
   height:100%;
   object-fit:cover;
-  border-radius:14px 14px 0 0;
+  border-radius:12px 12px 0 0;
+  transition:transform .2s ease;
 }
+.nft-card:hover .nft-img img{transform:scale(1.03)}
 
-/* 🔥 ИНФО - КОМПАКТНОЕ */
+/* 🔥 ИНФО — УВЕЛИЧЕНО И УЛУЧШЕНО */
 .nft-info{
-  padding:6px 8px 8px;
+  padding:8px 10px 10px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
   flex:1;
 }
 .nft-name{
-  font-size:10px; /* 🔥 МЕЛКИЙ ШРИФТ */
+  font-size:12px; /* 🔥 Было 10px → теперь 12px */
   font-weight:600;
-  margin-bottom:4px;
+  margin-bottom:6px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
   text-align:center;
+  line-height:1.3;
 }
 .nft-foot{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:6px;
 }
 .nft-price{
-  font-size:11px;
+  font-size:13px; /* 🔥 Было 11px → теперь 13px */
   font-weight:700;
   color:#fff;
 }
 .seller-dot{
-  width:20px;
-  height:20px;
+  width:24px; /* 🔥 Было 20px → теперь 24px */
+  height:24px;
   border-radius:50%;
   background:rgba(88,10,148,.5);
   border:1px solid rgba(184,122,255,.5);
   display:flex;align-items:center;justify-content:center;
-  font-size:9px;font-weight:700;color:#b87aff;
+  font-size:11px;font-weight:700;color:#b87aff; /* 🔥 Шрифт аватара увеличен */
+  flex-shrink:0;
 }
 
 .bottom-nav{position:fixed;bottom:16px;left:16px;right:16px;background:linear-gradient(180deg,rgba(22,14,45,.92) 0%,rgba(10,7,22,.96) 100%);backdrop-filter:blur(28px);border-radius:40px;border:1px solid rgba(255,255,255,.13);box-shadow:0 6px 24px rgba(0,0,0,.5);display:flex;z-index:100;height:68px;padding:0 8px}
@@ -134,35 +137,106 @@ img{display:block;pointer-events:none}
 .nav-content{display:flex;flex-direction:column;align-items:center;gap:3px}
 .nav-btn i{font-size:20px}
 
-/* 🔥 МОДАЛКИ */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);z-index:2000;display:flex;align-items:flex-end;justify-content:center;opacity:1;visibility:visible;transition:opacity .2s ease}
+/* 🔥🔥🔥 МОДАЛЬНОЕ ОКНО — БОЛЬШОЕ И ПЛАВНОЕ 🔥🔥🔥 */
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.7);
+  backdrop-filter:blur(10px);
+  z-index:2000;
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .3s ease, visibility .3s ease;
+}
+.overlay.visible{opacity:1;visibility:visible;pointer-events:auto}
 .overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
-.sheet{max-width:400px;width:100%;background:rgba(18,18,32,.98);border:0.5px solid rgba(184,122,255,.25);border-radius:28px 28px 0 0;padding:12px 16px 24px;transform:translateY(0);will-change:transform;touch-action:pan-y}
-.sheet-handle{width:36px;height:3px;background:rgba(255,255,255,.2);border-radius:2px;margin:0 auto 12px;touch-action:none}
-.sheet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:0 4px}
-.sheet-title{font-size:15px;font-weight:700}
-.close-btn{width:28px;height:28px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;color:#b87aff;font-size:16px;display:flex;align-items:center;justify-content:center}
-.detail-top{display:flex;gap:12px;margin-bottom:14px}
-.detail-img{width:72px;height:72px;border-radius:14px;object-fit:cover;flex-shrink:0}
-.detail-attrs{flex:1;display:flex;flex-direction:column;gap:5px}
-.attr-row{display:flex;justify-content:space-between;font-size:11px}
-.attr-lbl{color:rgba(255,255,255,.45)}
-.seller-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border-radius:16px;padding:10px;margin-bottom:14px}
-.seller-ava-big{width:32px;height:32px;border-radius:50%;background:rgba(88,10,148,.35);border:1px solid rgba(184,122,255,.28);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
-.seller-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.7)}
-.buy-btn{width:100%;border-radius:60px;padding:12px;font-size:14px;font-weight:700;border:none;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(88,10,148,.85),rgba(148,38,255,.65));color:#fff}
-.buy-btn .price-badge{background:rgba(255,255,255,.15);padding:2px 12px;border-radius:30px;font-size:12px}
-.buy-btn:disabled{background:rgba(255,255,255,.1);color:rgba(255,255,255,.4)}
 
-.dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px}
-.dep-amount{padding:9px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);text-align:center;font-size:12px;color:rgba(255,255,255,.75)}
-.dep-amount.sel{background:rgba(88,10,148,.35);border-color:#b87aff;color:#fff}
-.dep-info{display:flex;justify-content:space-between;margin-bottom:14px;background:rgba(255,255,255,.04);padding:10px;border-radius:16px;font-size:12px}
-.purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.85),rgba(148,38,255,.65));border-radius:60px;padding:12px;color:#fff;font-weight:700;font-size:14px}
-.ghost-btn{width:100%;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:60px;padding:11px;color:rgba(255,255,255,.6);margin-top:8px;font-size:13px}
+.sheet{
+  max-width:420px;width:92%;
+  background:rgba(18,18,32,.98);
+  border:0.5px solid rgba(184,122,255,.25);
+  border-radius:28px 28px 0 0;
+  padding:18px 20px 28px;
+  transform:translateY(100%);
+  transition:transform .35s cubic-bezier(0.22,1,0.36,1);
+  will-change:transform;
+  touch-action:pan-y;
+  max-height:85vh;
+  overflow-y:auto;
+}
+.overlay.visible .sheet{transform:translateY(0)}
+
+.sheet-handle{width:42px;height:4px;background:rgba(255,255,255,.25);border-radius:2px;margin:0 auto 16px;touch-action:none}
+.sheet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding:0 4px}
+.sheet-title{font-size:18px;font-weight:700}
+.close-btn{width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;color:#b87aff;font-size:18px;display:flex;align-items:center;justify-content:center}
+
+/* 🔥 КОНТЕНТ МОДАЛКИ — КРУПНЫЙ */
+.detail-top{display:flex;gap:16px;margin-bottom:18px;align-items:flex-start}
+.detail-img{
+  width:130px;height:130px; /* 🔥 Было 72px → теперь 130px */
+  border-radius:20px;
+  object-fit:cover;
+  flex-shrink:0;
+  border:1px solid rgba(184,122,255,.2);
+  box-shadow:0 8px 24px rgba(0,0,0,.3);
+}
+.detail-attrs{flex:1;display:flex;flex-direction:column;gap:8px}
+.attr-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+.attr-row:last-child{border-bottom:none}
+.attr-lbl{color:rgba(255,255,255,.45);font-weight:500}
+.attr-val{font-weight:600;color:#fff}
+
+.seller-row{
+  display:flex;align-items:center;gap:14px;
+  background:rgba(255,255,255,.05);
+  border-radius:20px;
+  padding:14px 16px;
+  margin-bottom:20px;
+  border:1px solid rgba(184,122,255,.15);
+}
+.seller-ava-big{
+  width:42px;height:42px; /* 🔥 Увеличен аватар продавца */
+  border-radius:50%;
+  background:rgba(88,10,148,.35);
+  border:2px solid rgba(184,122,255,.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:700;color:#fff;
+}
+.seller-name{font-size:14px;font-weight:600;color:rgba(255,255,255,.85)}
+
+.buy-btn{
+  width:100%;border-radius:60px;padding:14px 18px;
+  font-size:15px;font-weight:700;border:none;
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(135deg,rgba(88,10,148,.9),rgba(148,38,255,.75));
+  color:#fff;
+  box-shadow:0 6px 20px rgba(138,43,226,.3);
+  transition:transform .15s ease, box-shadow .2s ease;
+}
+.buy-btn:active{transform:scale(.98);box-shadow:0 4px 14px rgba(138,43,226,.2)}
+.buy-btn .price-badge{
+  background:rgba(255,255,255,.18);
+  padding:4px 16px;border-radius:30px;
+  font-size:14px;font-weight:700;
+}
+.buy-btn:disabled{
+  background:rgba(255,255,255,.1);
+  color:rgba(255,255,255,.4);
+  box-shadow:none;
+  cursor:not-allowed;
+}
+
+/* Депозит модалка */
+.dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.dep-amount{padding:12px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);text-align:center;font-size:13px;color:rgba(255,255,255,.8);transition:all .15s ease}
+.dep-amount.sel{background:rgba(88,10,148,.4);border-color:#b87aff;color:#fff;box-shadow:0 4px 12px rgba(138,43,226,.2)}
+.dep-amount:active{transform:scale(.97)}
+.dep-info{display:flex;justify-content:space-between;margin-bottom:18px;background:rgba(255,255,255,.04);padding:14px 16px;border-radius:18px;font-size:13px;border:1px solid rgba(255,255,255,.08)}
+.purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.9),rgba(148,38,255,.75));border-radius:60px;padding:14px;color:#fff;font-weight:700;font-size:15px;border:none;box-shadow:0 6px 20px rgba(138,43,226,.25)}
+.ghost-btn{width:100%;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:60px;padding:13px;color:rgba(255,255,255,.7);margin-top:10px;font-size:14px}
 
 /* ФИЛЬТРЫ */
-#filterPanel{position:fixed;inset:0;background:rgba(8,8,18,.98);z-index:1500;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .28s cubic-bezier(.22,1,.36,1);pointer-events:none}
+#filterPanel{position:fixed;inset:0;background:rgba(8,8,18,.98);z-index:1500;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s cubic-bezier(.22,1,.36,1);pointer-events:none}
 #filterPanel.open{transform:translateY(0);pointer-events:auto}
 .fp-inner{max-width:440px;width:100%;margin:0 auto;display:flex;flex-direction:column;height:100%;overflow:hidden}
 .fp-header{display:flex;justify-content:center;align-items:center;position:relative;padding:22px 20px 12px}
@@ -177,16 +251,18 @@ img{display:block;pointer-events:none}
 .reset-text{width:100%;background:transparent;border:1px solid #ff4d4d;border-radius:40px;padding:12px;color:#ff4d4d;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px}
 .fp-scroll{flex:1;overflow-y:auto}
 .fp-list{padding:0 20px 100px}
-.fp-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:16px;margin-bottom:8px;background:rgba(255,255,255,.03)}
+.fp-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:16px;margin-bottom:8px;background:rgba(255,255,255,.03);transition:background .15s ease}
 .fp-row.sel{background:rgba(88,10,148,.25);border:1px solid rgba(184,122,255,.4)}
+.fp-row:active{background:rgba(255,255,255,.08)}
 .fp-row img{width:46px;height:46px;border-radius:12px;object-fit:cover}
 .fp-row-name{flex:1;font-size:13px;font-weight:500}
 .fp-check{width:22px;height:22px;border-radius:30px;border:1.5px solid rgba(184,122,255,.5);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:12px}
 .fp-check.checked{background:#b87aff;border-color:#b87aff;color:#fff}
-.back-link{display:flex;align-items:center;gap:8px;color:#b87aff;font-size:14px;font-weight:600;margin-bottom:16px}
+.back-link{display:flex;align-items:center;gap:8px;color:#b87aff;font-size:14px;font-weight:600;margin-bottom:16px;padding:8px 0}
 .fp-footer{position:sticky;bottom:0;padding:12px 20px;background:rgba(8,8,18,.98);border-top:1px solid rgba(255,255,255,.07)}
-.fp-apply{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.85),rgba(148,38,255,.65));border:none;border-radius:60px;padding:14px;color:#fff;font-size:14px;font-weight:700}
-.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(26,24,56,.97);border:1px solid rgba(184,122,255,.3);border-radius:16px;padding:10px 18px;font-size:14px;z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none}
+.fp-apply{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.9),rgba(148,38,255,.75));border:none;border-radius:60px;padding:14px;color:#fff;font-size:14px;font-weight:700}
+
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(26,24,56,.97);border:1px solid rgba(184,122,255,.3);border-radius:16px;padding:10px 18px;font-size:14px;z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
 
 body.modal-open{overflow:hidden;position:fixed;width:100%;height:100%}
@@ -312,9 +388,9 @@ function openBuy(id){
   document.getElementById('bTitle').textContent=l.nftName;
   document.getElementById('bImg').src=l.image;
   const attrs=[];
-  if(l.model)attrs.push(`<div class="attr-row"><span class="attr-lbl">Модель</span><span>${l.model}</span></div>`);
-  if(l.background)attrs.push(`<div class="attr-row"><span class="attr-lbl">Фон</span><span>${l.background}</span></div>`);
-  if(l.pattern)attrs.push(`<div class="attr-row"><span class="attr-lbl">Узор</span><span>${l.pattern}</span></div>`);
+  if(l.model)attrs.push(`<div class="attr-row"><span class="attr-lbl">Модель</span><span class="attr-val">${l.model}</span></div>`);
+  if(l.background)attrs.push(`<div class="attr-row"><span class="attr-lbl">Фон</span><span class="attr-val">${l.background}</span></div>`);
+  if(l.pattern)attrs.push(`<div class="attr-row"><span class="attr-lbl">Узор</span><span class="attr-val">${l.pattern}</span></div>`);
   document.getElementById('bAttrs').innerHTML=attrs.join('');
   document.getElementById('bSellerAva').textContent=l.sellerAvatar;
   document.getElementById('bSellerName').textContent=l.sellerName;
@@ -323,7 +399,11 @@ function openBuy(id){
   const canBuy=balance>=l.price;
   btn.disabled=!canBuy;
   btn.style.opacity=canBuy?'1':'0.6';
-  document.getElementById('buyOverlay').classList.remove('hidden');
+  
+  // 🔥 ПЛАВНОЕ ПОЯВЛЕНИЕ МОДАЛКИ
+  const overlay = document.getElementById('buyOverlay');
+  overlay.classList.remove('hidden');
+  overlay.classList.add('visible');
   document.body.classList.add('modal-open');
 }
 
@@ -339,7 +419,9 @@ function confirmBuy(){
 
 function openDeposit(){
   renderDepGrid();
-  document.getElementById('depOverlay').classList.remove('hidden');
+  const overlay = document.getElementById('depOverlay');
+  overlay.classList.remove('hidden');
+  overlay.classList.add('visible');
   document.body.classList.add('modal-open');
 }
 function renderDepGrid(){
@@ -354,29 +436,19 @@ function confirmDeposit(){
   applyFiltersAndRender();
 }
 
-// 🔥 ИСПРАВЛЕННОЕ ЗАКРЫТИЕ (Сброс стилей для предотвращения бага "мутного экрана")
+// 🔥 ПЛАВНОЕ ЗАКРЫТИЕ МОДАЛОК
 function closeOverlay(id){
   const overlay=document.getElementById(id);
-  if(overlay){
-    // Сначала сбрасываем стили модалки, чтобы она улетела вниз
-    const sheet=overlay.querySelector('.sheet');
-    if(sheet){
-        sheet.style.transition='transform 0.25s ease';
-        sheet.style.transform='translateY(100%)';
-    }
-    
-    // Ждем завершения анимации и скрываем оверлей
-    setTimeout(()=>{
-        overlay.classList.add('hidden');
-        document.body.classList.remove('modal-open');
-        // Полностью очищаем инлайн стили, чтобы следующий раз открылось чисто
-        if(sheet){
-            sheet.style.transform='';
-            sheet.style.transition='';
-            overlay.style.background='';
-        }
-    }, 250);
-  }
+  if(!overlay) return;
+  
+  // Сначала убираем видимость через класс
+  overlay.classList.remove('visible');
+  overlay.classList.add('hidden');
+  
+  // Ждём завершения анимации и снимаем блокировку скролла
+  setTimeout(()=>{
+    document.body.classList.remove('modal-open');
+  }, 350);
 }
 
 function showToast(msg){
@@ -433,10 +505,10 @@ function initSwipeDismiss(overlayId, sheetSelector='.sheet', handleSelector='.sh
     isDragging=false;
     const currentY=getTransformY(sheet);
     const threshold=window.innerHeight*0.25;
-    sheet.style.transition='transform 0.25s cubic-bezier(0.4,0,0.2,1)';
+    sheet.style.transition='transform 0.35s cubic-bezier(0.22,1,0.36,1)';
     overlay.style.transition='background 0.25s ease';
     if(hasMoved && currentY>threshold){
-      closeOverlay(overlayId); // Используем нашу новую функцию закрытия
+      closeOverlay(overlayId);
     }else{
       sheet.style.transform='translateY(0)';
       overlay.style.background='rgba(0,0,0,0.7)';
