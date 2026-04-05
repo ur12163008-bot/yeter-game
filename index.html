@@ -2,145 +2,194 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no"/>
 <title>NFT Маркет</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <style>
-/* === RESET === */
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;width:100%;overflow:hidden;background:#07070e}
-body{font-family:'Inter',sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
-button{font-family:'Inter',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}
+body{font-family:'Inter',sans-serif;color:#fff;-webkit-user-select:none;user-select:none}
+button{font-family:'Inter',sans-serif;cursor:pointer}
 input{font-family:'Inter',sans-serif}
-img{display:block}
+img{display:block;pointer-events:none}
 
-/* === LAYOUT === */
 #app{position:relative;z-index:1;max-width:440px;width:100%;margin:0 auto;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
 
-/* === BACKGROUND === */
 .bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 50%,rgba(88,10,148,.22) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(30,10,80,.28) 0%,transparent 60%),linear-gradient(180deg,#07070f 0%,#0a0a1c 50%,#050510 100%)}
-.bg::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 12% 28%,rgba(255,255,255,.55) .5px,transparent .5px),radial-gradient(circle at 45% 8%,rgba(255,255,255,.45) .5px,transparent .5px),radial-gradient(circle at 68% 22%,rgba(255,255,255,.5) .5px,transparent .5px),radial-gradient(circle at 88% 52%,rgba(255,255,255,.4) .5px,transparent .5px),radial-gradient(circle at 5% 68%,rgba(255,255,255,.35) .5px,transparent .5px),radial-gradient(circle at 33% 78%,rgba(255,255,255,.4) .5px,transparent .5px),radial-gradient(circle at 58% 62%,rgba(255,255,255,.3) .5px,transparent .5px),radial-gradient(circle at 82% 88%,rgba(255,255,255,.45) .5px,transparent .5px),radial-gradient(circle at 22% 45%,rgba(255,255,255,.3) .5px,transparent .5px),radial-gradient(circle at 52% 35%,rgba(255,255,255,.35) .5px,transparent .5px),radial-gradient(circle at 3% 12%,rgba(255,255,255,.4) .5px,transparent .5px),radial-gradient(circle at 74% 4%,rgba(255,255,255,.3) .5px,transparent .5px),radial-gradient(circle at 48% 93%,rgba(255,255,255,.25) .5px,transparent .5px),radial-gradient(circle at 93% 38%,rgba(255,255,255,.35) .5px,transparent .5px),radial-gradient(circle at 28% 58%,rgba(255,255,255,.2) .5px,transparent .5px)}
 .orb{position:fixed;border-radius:50%;filter:blur(80px);z-index:0;pointer-events:none}
 .orb1{width:320px;height:320px;background:radial-gradient(circle,rgba(88,10,148,.4) 0%,transparent 70%);top:-70px;right:-70px;animation:orb1f 9s ease-in-out infinite}
 .orb2{width:260px;height:260px;background:radial-gradient(circle,rgba(30,10,100,.35) 0%,transparent 70%);bottom:90px;left:-50px;animation:orb2f 11s ease-in-out infinite}
 @keyframes orb1f{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-22px,22px) scale(1.12)}}
 @keyframes orb2f{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(18px,-18px) scale(1.09)}}
 
-/* === HEADER === */
 .header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 18px;flex-shrink:0}
 .user-row{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
 .avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#5a0a94,#9b3de0);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;flex-shrink:0}
+.user-info{min-width:0}
 .user-name{font-size:16px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.user-handle{font-size:13px;color:rgba(255,255,255,.48);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.balance-pill{display:flex;align-items:center;gap:6px;background:rgba(18,18,34,.92);border:1px solid rgba(138,43,226,.2);border-radius:60px;padding:6px 8px 6px 14px;flex-shrink:0}
-.balance-num{font-size:15px;font-weight:600;display:flex;align-items:center;gap:5px}
-.plus-btn{background:rgba(255,255,255,.1);border:1px solid rgba(138,43,226,.38);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:20px;font-weight:300;line-height:1;cursor:pointer}
+.user-handle{font-size:13px;color:rgba(255,255,255,.48)}
+.balance-area{display:flex;align-items:center;gap:6px}
+.balance-pill{display:flex;align-items:center;gap:5px;background:rgba(18,18,34,.92);border:1px solid rgba(138,43,226,.2);border-radius:60px;padding:5px 8px 5px 12px}
+.balance-num{font-size:14px;font-weight:600;display:flex;align-items:center;gap:4px}
+.plus-btn{background:rgba(255,255,255,.1);border:1px solid rgba(138,43,226,.38);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:18px}
+.menu-circle{width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:16px}
 
-/* === SEARCH ROW === */
-.search-row{display:flex;gap:10px;align-items:center;padding:0 20px 12px;flex-shrink:0}
-.search-box{flex:1;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:60px;padding:10px 14px}
-.search-box i{color:rgba(255,255,255,.35);font-size:13px;flex-shrink:0}
+.search-wrapper{position:relative;flex:1}
+.search-box{width:100%;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:60px;padding:10px 14px}
+.search-box i{color:rgba(255,255,255,.35);font-size:13px}
 .search-box input{background:transparent;border:none;color:#fff;font-size:14px;outline:none;width:100%}
 .search-box input::placeholder{color:rgba(255,255,255,.35)}
+.search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.3);font-size:12px;padding:4px;display:none}
+.search-clear.show{display:block}
+.search-row{display:flex;gap:10px;align-items:center;padding:0 20px 12px;flex-shrink:0}
 .icon-btn{background:rgba(255,255,255,.06);border:1px solid rgba(184,122,255,.28);border-radius:60px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;flex-shrink:0}
 .icon-btn.has-filter{border-color:#b87aff;box-shadow:0 0 10px rgba(184,122,255,.25)}
 
-/* === COUNT === */
-.count-label{padding:0 20px 10px;font-size:12px;color:rgba(255,255,255,.38);flex-shrink:0}
-
-/* === GRID === */
-.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden}
+.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .scroll-area::-webkit-scrollbar{width:3px}
 .scroll-area::-webkit-scrollbar-thumb{background:rgba(184,122,255,.35);border-radius:3px}
-.nft-grid{padding:0 20px 100px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.nft-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden;cursor:pointer;transition:border-color .12s}
-.nft-card:hover{border-color:rgba(184,122,255,.3)}
-.nft-img{position:relative;padding-top:100%;background:rgba(40,25,65,.6)}
-.nft-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.nft-info{padding:10px 12px}
-.nft-name{font-size:12px;font-weight:600;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.nft-foot{display:flex;align-items:center;justify-content:space-between}
-.nft-price{font-size:13px;font-weight:700;color:#b87aff}
-.seller-dot{width:28px;height:28px;border-radius:50%;background:rgba(88,10,148,.35);border:1px solid rgba(184,122,255,.28);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#b87aff;flex-shrink:0}
-.empty-msg{grid-column:1/-1;text-align:center;padding:60px 20px;color:rgba(255,255,255,.38);font-size:14px}
 
-/* === BOTTOM NAV === */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:68px;background:linear-gradient(180deg,rgba(22,14,45,.82) 0%,rgba(10,7,22,.96) 100%);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid rgba(255,255,255,.13);border-radius:22px 22px 0 0;box-shadow:0 -6px 32px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.09);display:flex;z-index:100}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:none;background:none;color:rgba(255,255,255,.4);font-size:11px;font-family:'Inter',sans-serif;font-weight:500;cursor:pointer}
+/* 🔥🔥🔥 ИЗМЕНЕНИЯ ЗДЕСЬ 🔥🔥🔥 */
+.nft-grid{
+  padding:0 20px 100px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px; /* 🔥 ОЧЕНЬ ДАЛЕКО ДРУГ ОТ ДРУГА */
+}
+
+/* 🔥 КАРТОЧКА: МАЛЕНЬКАЯ + ЛЕГКОЕ СКРУГЛЕНИЕ (НЕ КАПСУЛА) */
+.nft-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:16px; /* 🔥 Легкое скругление (было 999px) */
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform .15s;
+  aspect-ratio:3/4; /* Вертикальная форма */
+  display:flex;
+  flex-direction:column;
+}
+.nft-card:active{transform:scale(.95)}
+
+/* 🔥 ИЗОБРАЖЕНИЕ */
+.nft-img{
+  position:relative;
+  padding-top:100%;
+  background:rgba(40,25,65,.6);
+  margin:3px 3px 0 3px;
+  border-radius:14px 14px 0 0; /* Скругление под карточку */
+}
+.nft-img img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:14px 14px 0 0;
+}
+
+/* 🔥 ИНФО - КОМПАКТНОЕ */
+.nft-info{
+  padding:6px 8px 8px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  flex:1;
+}
+.nft-name{
+  font-size:10px; /* 🔥 МЕЛКИЙ ШРИФТ */
+  font-weight:600;
+  margin-bottom:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  text-align:center;
+}
+.nft-foot{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.nft-price{
+  font-size:11px;
+  font-weight:700;
+  color:#fff;
+}
+.seller-dot{
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:rgba(88,10,148,.5);
+  border:1px solid rgba(184,122,255,.5);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:700;color:#b87aff;
+}
+
+.bottom-nav{position:fixed;bottom:16px;left:16px;right:16px;background:linear-gradient(180deg,rgba(22,14,45,.92) 0%,rgba(10,7,22,.96) 100%);backdrop-filter:blur(28px);border-radius:40px;border:1px solid rgba(255,255,255,.13);box-shadow:0 6px 24px rgba(0,0,0,.5);display:flex;z-index:100;height:68px;padding:0 8px}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;color:rgba(255,255,255,.4);font-size:11px;font-weight:500;border-radius:34px}
 .nav-btn.active{color:#a855f7}
-.nav-icon-wrap{display:flex;align-items:center;justify-content:center}
-.nav-btn.active .nav-icon-wrap{background:rgba(168,85,247,.2);border-radius:12px;padding:4px 18px}
+.nav-btn.active .nav-content{background:rgba(168,85,247,.2);border-radius:30px;padding:6px 18px}
+.nav-content{display:flex;flex-direction:column;align-items:center;gap:3px}
 .nav-btn i{font-size:20px}
 
-/* === MODALS === */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);z-index:2000;display:flex;align-items:flex-end;justify-content:center}
-.overlay.hidden{display:none}
-.sheet{max-width:440px;width:100%;background:rgba(16,16,28,.97);border:0.5px solid rgba(184,122,255,.25);border-radius:32px 32px 0 0;padding:24px 20px 36px;animation:slideUp .25s ease}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.sheet-handle{width:40px;height:4px;background:rgba(255,255,255,.18);border-radius:2px;margin:0 auto 20px}
-.sheet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.sheet-title{font-size:17px;font-weight:700}
-.close-btn{width:28px;height:28px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.22);border-radius:50%;color:#b87aff;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1}
+/* 🔥 МОДАЛКИ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);z-index:2000;display:flex;align-items:flex-end;justify-content:center;opacity:1;visibility:visible;transition:opacity .2s ease}
+.overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.sheet{max-width:400px;width:100%;background:rgba(18,18,32,.98);border:0.5px solid rgba(184,122,255,.25);border-radius:28px 28px 0 0;padding:12px 16px 24px;transform:translateY(0);will-change:transform;touch-action:pan-y}
+.sheet-handle{width:36px;height:3px;background:rgba(255,255,255,.2);border-radius:2px;margin:0 auto 12px;touch-action:none}
+.sheet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:0 4px}
+.sheet-title{font-size:15px;font-weight:700}
+.close-btn{width:28px;height:28px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;color:#b87aff;font-size:16px;display:flex;align-items:center;justify-content:center}
+.detail-top{display:flex;gap:12px;margin-bottom:14px}
+.detail-img{width:72px;height:72px;border-radius:14px;object-fit:cover;flex-shrink:0}
+.detail-attrs{flex:1;display:flex;flex-direction:column;gap:5px}
+.attr-row{display:flex;justify-content:space-between;font-size:11px}
+.attr-lbl{color:rgba(255,255,255,.45)}
+.seller-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border-radius:16px;padding:10px;margin-bottom:14px}
+.seller-ava-big{width:32px;height:32px;border-radius:50%;background:rgba(88,10,148,.35);border:1px solid rgba(184,122,255,.28);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.seller-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.7)}
+.buy-btn{width:100%;border-radius:60px;padding:12px;font-size:14px;font-weight:700;border:none;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(88,10,148,.85),rgba(148,38,255,.65));color:#fff}
+.buy-btn .price-badge{background:rgba(255,255,255,.15);padding:2px 12px;border-radius:30px;font-size:12px}
+.buy-btn:disabled{background:rgba(255,255,255,.1);color:rgba(255,255,255,.4)}
 
-/* BUY MODAL */
-.detail-top{display:flex;gap:16px;margin-bottom:20px}
-.detail-img{width:100px;height:100px;border-radius:20px;object-fit:cover;background:rgba(40,25,65,.6);flex-shrink:0}
-.detail-attrs{flex:1;display:flex;flex-direction:column;gap:8px}
-.attr-row{display:flex;justify-content:space-between;font-size:13px}
-.attr-lbl{color:rgba(255,255,255,.48)}
-.attr-val{font-weight:500}
-.seller-row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:0.5px solid rgba(255,255,255,.06);border-radius:18px;padding:12px 14px;margin-bottom:20px}
-.seller-ava-big{width:40px;height:40px;border-radius:50%;background:rgba(88,10,148,.35);border:1px solid rgba(184,122,255,.28);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
-.seller-name{font-size:14px;font-weight:600}
-.seller-username{font-size:12px;color:#b87aff}
-.buy-btn{width:100%;border-radius:60px;padding:14px 20px;font-size:15px;font-weight:700;border:none;display:flex;align-items:center;justify-content:space-between;transition:opacity .15s}
-.buy-btn:active{opacity:.85}
-.buy-btn .price-badge{background:rgba(255,255,255,.15);padding:3px 14px;border-radius:30px;font-size:14px}
-
-/* DEPOSIT */
-.dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
-.dep-amount{padding:11px 6px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);font-size:13px;font-weight:600;color:rgba(255,255,255,.75);text-align:center;cursor:pointer;transition:all .15s}
+.dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px}
+.dep-amount{padding:9px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);text-align:center;font-size:12px;color:rgba(255,255,255,.75)}
 .dep-amount.sel{background:rgba(88,10,148,.35);border-color:#b87aff;color:#fff}
-.dep-info{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.04);border-radius:18px;padding:12px 16px;margin-bottom:16px;font-size:13px}
-.dep-info-lbl{color:rgba(255,255,255,.48)}
-.dep-info-val{font-weight:600}
-.purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.85),rgba(148,38,255,.65));border:1px solid rgba(184,122,255,.35);border-radius:60px;padding:14px;color:#fff;font-size:15px;font-weight:700}
-.ghost-btn{width:100%;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:60px;padding:13px;color:rgba(255,255,255,.6);font-size:14px;font-weight:600;margin-top:10px}
+.dep-info{display:flex;justify-content:space-between;margin-bottom:14px;background:rgba(255,255,255,.04);padding:10px;border-radius:16px;font-size:12px}
+.purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.85),rgba(148,38,255,.65));border-radius:60px;padding:12px;color:#fff;font-weight:700;font-size:14px}
+.ghost-btn{width:100%;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:60px;padding:11px;color:rgba(255,255,255,.6);margin-top:8px;font-size:13px}
 
-/* === FILTER PANEL (FULL SCREEN) === */
+/* ФИЛЬТРЫ */
 #filterPanel{position:fixed;inset:0;background:rgba(8,8,18,.98);z-index:1500;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .28s cubic-bezier(.22,1,.36,1);pointer-events:none}
 #filterPanel.open{transform:translateY(0);pointer-events:auto}
 .fp-inner{max-width:440px;width:100%;margin:0 auto;display:flex;flex-direction:column;height:100%;overflow:hidden}
-.fp-header{display:flex;justify-content:center;align-items:center;position:relative;padding:22px 20px 12px;flex-shrink:0}
+.fp-header{display:flex;justify-content:center;align-items:center;position:relative;padding:22px 20px 12px}
 .fp-title{font-size:18px;font-weight:700}
-.fp-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 20px 16px;flex-shrink:0}
-.fp-tab{border-radius:40px;padding:9px 4px;font-size:12px;font-weight:500;border:1px solid rgba(184,122,255,.22);background:rgba(255,255,255,.06);color:rgba(255,255,255,.48);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;width:100%}
+.fp-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 20px 16px}
+.fp-tab{border-radius:40px;padding:9px 4px;font-size:12px;font-weight:500;border:1px solid rgba(184,122,255,.22);background:rgba(255,255,255,.06);color:rgba(255,255,255,.48);display:flex;align-items:center;justify-content:center;gap:4px}
 .fp-tab.active{background:rgba(88,10,148,.5);border-color:#b87aff;color:#fff}
-.fp-tab-badge{background:#b87aff;color:#fff;font-size:10px;font-weight:700;border-radius:20px;padding:0 5px;min-width:14px;text-align:center}
-.fp-search-row{display:flex;gap:10px;margin:0 20px 12px;flex-shrink:0}
-.fp-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
-.fp-scroll::-webkit-scrollbar{width:3px}
-.fp-scroll::-webkit-scrollbar-thumb{background:rgba(184,122,255,.3);border-radius:3px}
+.fp-tab-badge{background:#b87aff;color:#fff;font-size:10px;border-radius:20px;padding:0 5px}
+.fp-search-wrapper{position:relative;flex:1}
+.fp-search-row{display:flex;gap:10px;margin:0 20px 12px}
+.fp-reset-all{width:100%;padding:0 20px;margin-bottom:12px}
+.reset-text{width:100%;background:transparent;border:1px solid #ff4d4d;border-radius:40px;padding:12px;color:#ff4d4d;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px}
+.fp-scroll{flex:1;overflow-y:auto}
 .fp-list{padding:0 20px 100px}
-.fp-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:16px;cursor:pointer;margin-bottom:8px;border:1px solid transparent;background:rgba(255,255,255,.03);transition:all .12s}
-.fp-row.sel{background:rgba(88,10,148,.25);border-color:rgba(184,122,255,.4)}
-.fp-row img{width:46px;height:46px;border-radius:12px;object-fit:cover;background:rgba(40,25,65,.6);flex-shrink:0}
-.fp-row-name{flex:1;font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.fp-check{width:22px;height:22px;border-radius:7px;border:1px solid rgba(184,122,255,.3);background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;flex-shrink:0}
-.fp-check.checked{background:#b87aff;border-color:#b87aff}
-.fp-footer{padding:12px 20px;display:flex;gap:10px;flex-shrink:0;border-top:1px solid rgba(255,255,255,.07)}
-.fp-reset{flex:1;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:60px;padding:13px;color:rgba(255,255,255,.6);font-size:14px;font-weight:600}
-.fp-apply{flex:2;background:linear-gradient(135deg,rgba(88,10,148,.85),rgba(148,38,255,.65));border:1px solid rgba(184,122,255,.35);border-radius:60px;padding:13px;color:#fff;font-size:14px;font-weight:700}
-.back-link{display:flex;align-items:center;gap:8px;color:#b87aff;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:16px}
-.fp-divider{height:1px;background:rgba(255,255,255,.08);margin-bottom:14px}
+.fp-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:16px;margin-bottom:8px;background:rgba(255,255,255,.03)}
+.fp-row.sel{background:rgba(88,10,148,.25);border:1px solid rgba(184,122,255,.4)}
+.fp-row img{width:46px;height:46px;border-radius:12px;object-fit:cover}
+.fp-row-name{flex:1;font-size:13px;font-weight:500}
+.fp-check{width:22px;height:22px;border-radius:30px;border:1.5px solid rgba(184,122,255,.5);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:12px}
+.fp-check.checked{background:#b87aff;border-color:#b87aff;color:#fff}
+.back-link{display:flex;align-items:center;gap:8px;color:#b87aff;font-size:14px;font-weight:600;margin-bottom:16px}
+.fp-footer{position:sticky;bottom:0;padding:12px 20px;background:rgba(8,8,18,.98);border-top:1px solid rgba(255,255,255,.07)}
+.fp-apply{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.85),rgba(148,38,255,.65));border:none;border-radius:60px;padding:14px;color:#fff;font-size:14px;font-weight:700}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(26,24,56,.97);border:1px solid rgba(184,122,255,.3);border-radius:16px;padding:10px 18px;font-size:14px;z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
 
-/* === TOAST === */
-.toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(12px);background:rgba(26,24,56,.97);border:1px solid rgba(184,122,255,.3);border-radius:16px;padding:10px 18px;font-size:14px;font-weight:500;white-space:nowrap;z-index:9999;opacity:0;transition:all .3s;pointer-events:none;color:#fff}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.toast.err{border-color:rgba(248,113,113,.5);color:#fca5a5}
-.toast.ok{border-color:rgba(74,222,128,.4);color:#86efac}
+body.modal-open{overflow:hidden;position:fixed;width:100%;height:100%}
 </style>
 </head>
 <body>
@@ -149,403 +198,329 @@ img{display:block}
 <div class="orb orb2"></div>
 
 <div id="app">
-  <!-- HEADER -->
   <div class="header">
-    <div class="user-row">
-      <div class="avatar" id="hAva">И</div>
-      <div style="min-width:0">
-        <div class="user-name" id="hName">Игрок</div>
-        <div class="user-handle" id="hHandle">@user</div>
-      </div>
-    </div>
-    <div class="balance-pill">
-      <div class="balance-num"><span>⭐</span><span id="hBalance">5 000</span></div>
-      <button class="plus-btn" onclick="openDeposit()">+</button>
-    </div>
+    <div class="user-row"><div class="avatar" id="hAva">А</div><div class="user-info"><div class="user-name" id="hName">Алексей Смирнов</div><div class="user-handle" id="hHandle">@alex_smirnov</div></div></div>
+    <div class="balance-area"><div class="balance-pill"><div class="balance-num"><span id="hBalance">5000</span> ₽</div><button class="plus-btn" onclick="openDeposit()">+</button></div><div class="menu-circle" id="menuCircleBtn"><i class="fas fa-bars"></i></div></div>
   </div>
-
-  <!-- SEARCH -->
+  
   <div class="search-row">
-    <div class="search-box">
-      <i class="fas fa-search"></i>
-      <input type="text" id="searchInput" placeholder="Поиск NFT..." oninput="applyFiltersAndRender()"/>
+    <div class="search-wrapper" id="mainSearchWrapper">
+      <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Поиск NFT..." oninput="applyFiltersAndRender()"/></div>
+      <div class="search-clear" id="mainSearchClear" onclick="clearMainSearch()"><i class="fas fa-times-circle"></i></div>
     </div>
     <button class="icon-btn" id="filterBtn" onclick="openFilter()"><i class="fas fa-sliders-h"></i></button>
     <button class="icon-btn" id="sortBtn" onclick="toggleSort()"><i class="fas fa-sort-amount-up" id="sortIcon"></i></button>
   </div>
-
-  <div class="count-label" id="countLabel">98 NFT</div>
-
-  <!-- GRID -->
-  <div class="scroll-area">
-    <div class="nft-grid" id="nftGrid"></div>
-  </div>
+  
+  <div class="scroll-area"><div class="nft-grid" id="nftGrid"></div></div>
 </div>
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <button class="nav-btn active">
-    <div class="nav-icon-wrap"><i class="fas fa-store"></i></div>
-    <span>МАРКЕТ</span>
-  </button>
-  <button class="nav-btn" onclick="location.href='/profile.html'">
-    <div class="nav-icon-wrap"><i class="fas fa-user"></i></div>
-    <span>ПРОФИЛЬ</span>
-  </button>
-</div>
+<div class="bottom-nav"><button class="nav-btn active" id="navMarketBtn"><div class="nav-content"><i class="fas fa-store"></i><span>МАРКЕТ</span></div></button><button class="nav-btn" id="navProfileBtn"><div class="nav-content"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></div></button></div>
 
-<!-- BUY MODAL -->
-<div class="overlay hidden" id="buyOverlay">
-  <div class="sheet" id="buySheet">
-    <div class="sheet-handle"></div>
+<!-- МОДАЛКА ПОКУПКИ -->
+<div class="overlay hidden" id="buyOverlay" data-dismissible="true">
+  <div class="sheet" id="buySheet" data-dismissible="true">
+    <div class="sheet-handle" id="buyHandle"></div>
     <div class="sheet-title-row">
       <span class="sheet-title" id="bTitle"></span>
-      <button class="close-btn" onclick="closeOverlay('buyOverlay')">×</button>
+      <button class="close-btn" id="closeBuyX">×</button>
     </div>
     <div class="detail-top">
-      <img class="detail-img" id="bImg" src="" alt=""/>
+      <img class="detail-img" id="bImg"/>
       <div class="detail-attrs" id="bAttrs"></div>
     </div>
     <div class="seller-row">
       <div class="seller-ava-big" id="bSellerAva"></div>
-      <div>
-        <div class="seller-name" id="bSellerName"></div>
-        <div class="seller-username" id="bSellerUsername"></div>
-      </div>
+      <div><div class="seller-name" id="bSellerName"></div></div>
     </div>
-    <button class="buy-btn" id="bBuyBtn" onclick="confirmBuy()">
-      <span>Купить</span>
-      <span class="price-badge" id="bPriceBadge"></span>
-    </button>
+    <button class="buy-btn" id="bBuyBtn"><span>Купить</span><span class="price-badge" id="bPriceBadge"></span></button>
   </div>
 </div>
 
-<!-- DEPOSIT MODAL -->
-<div class="overlay hidden" id="depOverlay">
-  <div class="sheet">
+<!-- МОДАЛКА ПОПОЛНЕНИЯ -->
+<div class="overlay hidden" id="depOverlay" data-dismissible="true">
+  <div class="sheet" data-dismissible="true">
     <div class="sheet-handle"></div>
     <div class="sheet-title-row">
       <span class="sheet-title">Пополнение баланса</span>
       <button class="close-btn" onclick="closeOverlay('depOverlay')">×</button>
     </div>
     <div class="dep-grid" id="depGrid"></div>
-    <div class="dep-info">
-      <span class="dep-info-lbl">Текущий баланс</span>
-      <span class="dep-info-val">⭐ <span id="depBalanceVal"></span></span>
-    </div>
+    <div class="dep-info"><span>Текущий баланс</span><span><span id="depBalanceVal">5000</span> ₽</span></div>
     <button class="purple-btn" onclick="confirmDeposit()">Пополнить</button>
     <button class="ghost-btn" onclick="closeOverlay('depOverlay')">Отмена</button>
   </div>
 </div>
 
-<!-- FILTER PANEL -->
-<div id="filterPanel">
-  <div class="fp-inner">
-    <div class="fp-header">
-      <span class="fp-title">Фильтры</span>
-      <button class="close-btn" style="position:absolute;right:12px;top:18px" onclick="closeFilter()">×</button>
-    </div>
-    <div class="fp-tabs" id="fpTabs"></div>
-    <div class="fp-search-row">
-      <div class="search-box" style="flex:1">
-        <i class="fas fa-search"></i>
-        <input type="text" id="fpSearch" placeholder="Поиск..." oninput="renderFpContent()"/>
-      </div>
-      <button class="icon-btn" id="fpSortBtn" onclick="toggleFpSort()"><i class="fas fa-sort-amount-up" id="fpSortIcon"></i></button>
-    </div>
-    <div class="fp-scroll">
-      <div class="fp-list" id="fpList"></div>
-    </div>
-    <div class="fp-footer">
-      <button class="fp-reset" id="fpResetBtn" style="display:none" onclick="resetFilters()">Сбросить</button>
-      <button class="fp-apply" onclick="closeFilter()">Применить</button>
-    </div>
-  </div>
-</div>
+<div id="filterPanel"><div class="fp-inner"><div class="fp-header"><span class="fp-title">Фильтры</span><button class="close-btn" style="position:absolute;right:12px;top:18px" onclick="closeFilter()">×</button></div><div class="fp-tabs" id="fpTabs"></div><div class="fp-search-row"><div class="fp-search-wrapper" id="fpSearchWrapper"><div class="search-box" style="flex:1"><i class="fas fa-search"></i><input type="text" id="fpSearch" placeholder="Поиск..." oninput="renderFpContent()"/></div><div class="search-clear" id="fpSearchClear" onclick="clearFpSearch()"><i class="fas fa-times-circle"></i></div></div><button class="icon-btn" id="fpSortBtn" onclick="toggleFpSort()"><i class="fas fa-sort-amount-up" id="fpSortIcon"></i></button></div><div id="resetContainer" style="display:none"><div class="fp-reset-all"><div class="reset-text" onclick="resetAllFilters()"><i class="fas fa-undo-alt"></i> Сбросить все <span id="resetCount"></span></div></div></div><div class="fp-scroll"><div class="fp-list" id="fpList"></div></div><div class="fp-footer" id="applyFooter"><button class="fp-apply" id="applyBtn" onclick="closeFilter()">Применить</button></div></div></div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-/* === DATA === */
 const GITHUB = 'https://raw.githubusercontent.com/ur12163008-bot/yeter-game/main/nft/';
 const NAMES = ["Artisan Brick","B-Day Candle","Berry Box","Big Year","Bling Binky","Bonded Ring","Bow Tie","Bunny Muffin","Candy Cane","Clover Pin","Cookie Heart","Crystal Ball","Cupid Charm","Desk Calendar","Diamond Ring","Easter Egg","Electric Skull","Eternal Candle","Eternal Rose","Evil Eye","Faith Amulet","Flying Broom","Fresh Socks","Gem Signet","Genie Lamp","Ginger Cookie","Hanging Star","Heroic Helmet","Hex Pot","Holiday Drink","Homemade Cake","Hypno Lollipop","Ice Cream","Input Key","Instant Ramen","Ionic Dryer","Jack-in-the-Box","Jelly Bunny","Jester Hat","Jingle Bells","Jolly Chimp","Joyful Bundle","Khabibs Papakha","Kissed Frog","Light Sword","Lol Pop","Lon Gem","Love Candle","Love Potion","Low Rider","Lunar Snake","Lush Bouquet","Mad Pumpkin","Magic Potion","Mini Oscar","Money Pot","Moon Pendant","Mousse Cake","Nail Bracelet","Neko Helmet","Perfume Bottle","Pet Snake","Pretty Posy","Rare Bird","Record Player","Restless Jar","Sakura Flower","Santa Hat","Sharp Tongue","Signet Ring","Skull Flower","Sky Stilettos","Sleigh Bell","Snake Box","Snoop Cigar","Snow Globe","Snow Mittens","Spiced Wine","Spring Basket","Spy Agaric","Star Notepad","Stellar Rocket","Swag Bag","Swiss Watch","Tama Gadget","Top Hat","Toy Bear","Trapped Heart","UFC Strike","Valentine Box","Victory Medal","Vintage Cigar","Voodoo Doll","Westside Sign","Whip Cupcake","Winter Wreath","Witch Hat","Xmas Stocking"];
-const PRICES = [215,87,342,163,421,78,290,155,380,99,265,440,118,330,195,275,410,143,388,222,157,300,93,350,178,425,112,255,395,168,310,84,230,445,205,137,365,192,285,96,307,89,241,390,174,315,98,258,416,139,362,213,292,428,166,335,103,276,449,188,302,132,379,221,146,398,117,263,434,181,327,95,283,412,158,340,119,271,447,136,215,87,342,163,421,78,290,155,380,99,265,440,118,330,195,275,410,143,388,222];
+const PRICES = [215,87,342,163,421,78,290,155,380,99,265,440,118,330,195,275,410,143,388,222,157,300,93,350,178,425,112,255,395,168,310,84,230,445,205,137,365,192,285,96,307,89,241,390,174,315,98,258,416,139,362,213,292,428,166,335,103,276,449,188,302,132,379,221,146,398,117,263,434,181,327,95,283,412,158,340,119,271,447,136];
 const PATTERNS = ["Классический","Современный","Винтажный","Неоновый"];
 const BACKGROUNDS = ["Тёмный","Светлый","Градиент","Звёздный"];
 const MODELS = ["2D","3D","Pixel","Vector"];
 const BG_IMAGES = {"Тёмный":"https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=80&h=80&fit=crop","Светлый":"https://images.unsplash.com/photo-1579547621113-e4bb2a19bdd6?w=80&h=80&fit=crop","Градиент":"https://images.unsplash.com/photo-1620121692029-d088224ddc74?w=80&h=80&fit=crop","Звёздный":"https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=80&h=80&fit=crop"};
 const MODEL_ICONS = {"2D":"https://images.unsplash.com/photo-1607706189992-eae578626c86?w=80&h=80&fit=crop","3D":"https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=80&h=80&fit=crop","Pixel":"https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=80&h=80&fit=crop","Vector":"https://images.unsplash.com/photo-1461344577544-4e5dc9487184?w=80&h=80&fit=crop"};
 const PATTERN_IMAGES = {"Классический":"https://images.unsplash.com/photo-1519741497674-611481863552?w=80&h=80&fit=crop","Современный":"https://images.unsplash.com/photo-1464802686167-b939a6910659?w=80&h=80&fit=crop","Винтажный":"https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=80&h=80&fit=crop","Неоновый":"https://images.unsplash.com/photo-1518235506717-e1ed3306a89b?w=80&h=80&fit=crop"};
-const SELLERS = [{name:'Алексей Смирнов',username:'@a.smirnov',avatar:'А'},{name:'Мария Иванова',username:'@m.ivanova',avatar:'М'},{name:'Дмитрий Козлов',username:'@d.kozlov',avatar:'Д'},{name:'Анна Новикова',username:'@a.novikova',avatar:'А'},{name:'Иван Попов',username:'@i.popov',avatar:'И'},{name:'Екатерина Соколова',username:'@e.sokolova',avatar:'Е'},{name:'Михаил Лебедев',username:'@m.lebedev',avatar:'М'},{name:'Ольга Морозова',username:'@o.morozova',avatar:'О'},{name:'Николай Петров',username:'@n.petrov',avatar:'Н'},{name:'Светлана Волкова',username:'@s.volkova',avatar:'С'}];
+const SELLERS = [{name:'Алексей Смирнов',avatar:'А'},{name:'Мария Иванова',avatar:'М'},{name:'Дмитрий Козлов',avatar:'Д'},{name:'Анна Новикова',avatar:'А'},{name:'Иван Попов',avatar:'И'}];
 const DEP_AMOUNTS = [100,250,500,1000,2500,5000];
 
-/* === STATE === */
-let balance = parseInt(localStorage.getItem('nft_balance') || '') || 5000;
+let balance = parseInt(localStorage.getItem('nft_balance') || '5000');
 let sortAsc = true;
-let filterOpen = false;
-let fpTab = 'collection';
-let fpSortAsc = true;
-let fpModelNft = null;
 let filters = {collection:[],model:[],background:[],pattern:[]};
 let selectedDep = 500;
 let selectedListing = null;
+let fpTab = 'collection', fpSortAsc = true, fpModelNft = null;
 
 function imgUrl(name){return GITHUB + encodeURIComponent(name+'.png');}
-function fmtNum(n){return Number(n).toLocaleString('ru-RU');}
-
-/* === MARKET LISTINGS — всегда из статичных данных === */
-function getListings(){
-  // Базовые 98 листингов из статики
-  const base = NAMES.map((name,i)=>({
-    id:i+1, nftName:name, price:PRICES[i%PRICES.length], image:imgUrl(name),
-    sellerName:SELLERS[i%SELLERS.length].name, sellerUsername:SELLERS[i%SELLERS.length].username,
-    sellerAvatar:SELLERS[i%SELLERS.length].avatar,
-    pattern:PATTERNS[i%4], background:BACKGROUNDS[i%4], model:MODELS[i%4],
-    listedAt:Date.now()-i*3600000,
-  }));
-  // Добавляем листинги других продавцов из localStorage (если кто-то продаёт)
-  try {
-    const extra = JSON.parse(localStorage.getItem('nft_user_listings')||'[]');
-    return [...extra, ...base];
-  } catch { return base; }
-}
-
-/* === SAVE BALANCE === */
+function fmtNum(n){return n.toLocaleString('ru-RU');}
+function getListings(){return NAMES.map((name,i)=>({id:i+1,nftName:name,price:PRICES[i%PRICES.length],image:imgUrl(name),sellerName:SELLERS[i%SELLERS.length].name,sellerAvatar:SELLERS[i%SELLERS.length].avatar,pattern:PATTERNS[i%4],background:BACKGROUNDS[i%4],model:MODELS[i%4]}));}
 function saveBalance(){localStorage.setItem('nft_balance',balance);}
+function renderHeader(){document.getElementById('hBalance').textContent=fmtNum(balance);document.getElementById('depBalanceVal').textContent=fmtNum(balance);}
 
-/* === HEADER === */
-function renderHeader(){
-  document.getElementById('hBalance').textContent = fmtNum(balance);
-  document.getElementById('depBalanceVal').textContent = fmtNum(balance);
-}
-
-/* === MAIN GRID === */
 function applyFiltersAndRender(){
-  let items = getListings();
-  const q = document.getElementById('searchInput').value.trim().toLowerCase();
-  if(q) items = items.filter(x=>x.nftName.toLowerCase().includes(q));
-  if(filters.collection.length) items = items.filter(x=>filters.collection.includes(x.nftName));
-  if(filters.model.length) items = items.filter(x=>filters.model.includes(x.model));
-  if(filters.background.length) items = items.filter(x=>filters.background.includes(x.background));
-  if(filters.pattern.length) items = items.filter(x=>filters.pattern.includes(x.pattern));
+  let items=getListings();
+  const q=document.getElementById('searchInput').value.trim().toLowerCase();
+  if(q) items=items.filter(x=>x.nftName.toLowerCase().includes(q));
+  if(filters.collection.length) items=items.filter(x=>filters.collection.includes(x.nftName));
+  if(filters.model.length) items=items.filter(x=>filters.model.includes(x.model));
+  if(filters.background.length) items=items.filter(x=>filters.background.includes(x.background));
+  if(filters.pattern.length) items=items.filter(x=>filters.pattern.includes(x.pattern));
   items.sort((a,b)=>sortAsc?a.price-b.price:b.price-a.price);
-  document.getElementById('countLabel').textContent = items.length+' NFT';
-  const total = Object.values(filters).reduce((s,a)=>s+a.length,0);
-  document.getElementById('filterBtn').className = 'icon-btn'+(total>0?' has-filter':'');
-  const grid = document.getElementById('nftGrid');
-  if(!items.length){grid.innerHTML='<div class="empty-msg">Ничего не найдено</div>';return;}
-  grid.innerHTML = items.map(l=>`
-    <div class="nft-card" onclick="openBuy(${l.id})">
-      <div class="nft-img"><img src="${l.image}" alt="${l.nftName}" loading="lazy" onerror="this.style.opacity='.2'"/></div>
-      <div class="nft-info">
-        <div class="nft-name">${l.nftName}</div>
-        <div class="nft-foot">
-          <div class="nft-price">⭐ ${l.price}</div>
-          <div class="seller-dot">${l.sellerAvatar}</div>
-        </div>
-      </div>
-    </div>`).join('');
+  const total=Object.values(filters).reduce((s,a)=>s+a.length,0);
+  const filterBtn=document.getElementById('filterBtn');
+  if(total>0) filterBtn.classList.add('has-filter');
+  else filterBtn.classList.remove('has-filter');
+  const grid=document.getElementById('nftGrid');
+  if(!items.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:rgba(255,255,255,.4);font-size:13px">Ничего не найдено</div>';return;}
+  grid.innerHTML=items.map(l=>`<div class="nft-card" onclick="openBuy(${l.id})"><div class="nft-img"><img src="${l.image}" onerror="this.style.opacity='.2'"/></div><div class="nft-info"><div class="nft-name">${l.nftName}</div><div class="nft-foot"><div class="nft-price">${l.price} ₽</div><div class="seller-dot">${l.sellerAvatar}</div></div></div></div>`).join('');
+  updateMainSearchClear();
 }
+function updateMainSearchClear(){const input=document.getElementById('searchInput');const clear=document.getElementById('mainSearchClear');if(input.value.length>0)clear.classList.add('show');else clear.classList.remove('show');}
+function clearMainSearch(){document.getElementById('searchInput').value='';applyFiltersAndRender();document.activeElement?.blur();}
+function clearFpSearch(){document.getElementById('fpSearch').value='';renderFpContent();document.activeElement?.blur();}
+function toggleSort(){sortAsc=!sortAsc;document.getElementById('sortIcon').className=sortAsc?'fas fa-sort-amount-up':'fas fa-sort-amount-down';applyFiltersAndRender();}
 
-function toggleSort(){
-  sortAsc=!sortAsc;
-  document.getElementById('sortIcon').className=sortAsc?'fas fa-sort-amount-up':'fas fa-sort-amount-down';
-  applyFiltersAndRender();
-}
-
-/* === BUY === */
 function openBuy(id){
-  const l = getListings().find(x=>x.id===id);
+  const l=getListings().find(x=>x.id===id);
   if(!l)return;
-  selectedListing = l;
-  document.getElementById('bTitle').textContent = l.nftName;
-  document.getElementById('bImg').src = l.image;
-  const attrs = [];
-  if(l.model) attrs.push(`<div class="attr-row"><span class="attr-lbl">Модель</span><span class="attr-val">${l.model}</span></div>`);
-  if(l.background) attrs.push(`<div class="attr-row"><span class="attr-lbl">Фон</span><span class="attr-val">${l.background}</span></div>`);
-  if(l.pattern) attrs.push(`<div class="attr-row"><span class="attr-lbl">Узор</span><span class="attr-val">${l.pattern}</span></div>`);
-  document.getElementById('bAttrs').innerHTML = attrs.join('');
-  document.getElementById('bSellerAva').textContent = l.sellerAvatar;
-  document.getElementById('bSellerName').textContent = l.sellerName;
-  document.getElementById('bSellerUsername').textContent = l.sellerUsername;
-  document.getElementById('bPriceBadge').textContent = '⭐ '+l.price;
-  const btn = document.getElementById('bBuyBtn');
-  const canBuy = balance >= l.price;
-  btn.style.background = canBuy ? 'linear-gradient(135deg,rgba(88,10,148,.85),rgba(148,38,255,.65))' : 'rgba(255,255,255,.06)';
-  btn.style.border = '1px solid '+(canBuy ? 'rgba(184,122,255,.4)' : 'rgba(255,255,255,.12)');
-  btn.style.color = canBuy ? '#fff' : 'rgba(255,255,255,.35)';
-  btn.style.cursor = canBuy ? 'pointer' : 'not-allowed';
-  btn.disabled = !canBuy;
+  selectedListing=l;
+  document.getElementById('bTitle').textContent=l.nftName;
+  document.getElementById('bImg').src=l.image;
+  const attrs=[];
+  if(l.model)attrs.push(`<div class="attr-row"><span class="attr-lbl">Модель</span><span>${l.model}</span></div>`);
+  if(l.background)attrs.push(`<div class="attr-row"><span class="attr-lbl">Фон</span><span>${l.background}</span></div>`);
+  if(l.pattern)attrs.push(`<div class="attr-row"><span class="attr-lbl">Узор</span><span>${l.pattern}</span></div>`);
+  document.getElementById('bAttrs').innerHTML=attrs.join('');
+  document.getElementById('bSellerAva').textContent=l.sellerAvatar;
+  document.getElementById('bSellerName').textContent=l.sellerName;
+  document.getElementById('bPriceBadge').textContent=l.price+' ₽';
+  const btn=document.getElementById('bBuyBtn');
+  const canBuy=balance>=l.price;
+  btn.disabled=!canBuy;
+  btn.style.opacity=canBuy?'1':'0.6';
   document.getElementById('buyOverlay').classList.remove('hidden');
-  document.getElementById('buyOverlay').onclick = e=>{if(e.target===e.currentTarget)closeOverlay('buyOverlay');};
+  document.body.classList.add('modal-open');
 }
 
 function confirmBuy(){
-  if(!selectedListing)return;
-  if(balance < selectedListing.price){showToast('⚠ Недостаточно звёзд!','err');return;}
-  balance -= selectedListing.price;
+  if(!selectedListing||balance<selectedListing.price){showToast('Недостаточно средств!');return;}
+  balance-=selectedListing.price;
   saveBalance();
-  const inv = JSON.parse(localStorage.getItem('nft_inventory')||'[]');
-  inv.push({id:Date.now()+Math.random(),name:selectedListing.nftName,price:selectedListing.price,image:selectedListing.image,purchaseTime:Date.now()});
-  localStorage.setItem('nft_inventory',JSON.stringify(inv));
   closeOverlay('buyOverlay');
   renderHeader();
-  showToast('✓ Куплен «'+selectedListing.nftName+'» за ⭐ '+selectedListing.price,'ok');
+  showToast('Куплен '+selectedListing.nftName);
+  applyFiltersAndRender();
 }
 
-/* === DEPOSIT === */
 function openDeposit(){
   renderDepGrid();
-  document.getElementById('depBalanceVal').textContent = fmtNum(balance);
   document.getElementById('depOverlay').classList.remove('hidden');
-  document.getElementById('depOverlay').onclick = e=>{if(e.target===e.currentTarget)closeOverlay('depOverlay');};
+  document.body.classList.add('modal-open');
 }
 function renderDepGrid(){
-  document.getElementById('depGrid').innerHTML = DEP_AMOUNTS.map(a=>`
-    <div class="dep-amount${a===selectedDep?' sel':''}" onclick="selDep(${a})">${fmtNum(a)} ⭐</div>`).join('');
+  document.getElementById('depGrid').innerHTML=DEP_AMOUNTS.map(a=>`<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectedDep=${a};renderDepGrid()">${fmtNum(a)} ₽</div>`).join('');
 }
-function selDep(a){selectedDep=a;renderDepGrid();}
 function confirmDeposit(){
   balance+=selectedDep;
   saveBalance();
   closeOverlay('depOverlay');
   renderHeader();
-  showToast('✅ Пополнено на '+fmtNum(selectedDep)+' ⭐','ok');
-}
-
-/* === FILTER PANEL === */
-const FP_TABS = [['collection','Коллекция'],['model','Модель'],['background','Фон'],['pattern','Узор']];
-
-function openFilter(){
-  filterOpen=true;
-  document.getElementById('filterPanel').classList.add('open');
-  renderFpTabs();
-  renderFpContent();
-}
-function closeFilter(){
-  filterOpen=false;
-  document.getElementById('filterPanel').classList.remove('open');
+  showToast('Пополнено на '+fmtNum(selectedDep)+' ₽');
   applyFiltersAndRender();
 }
-function renderFpTabs(){
-  document.getElementById('fpTabs').innerHTML = FP_TABS.map(([key,label])=>{
-    const cnt = filters[key].length;
-    return `<button class="fp-tab${fpTab===key?' active':''}" onclick="switchFpTab('${key}')">
-      ${label}${cnt>0?`<span class="fp-tab-badge">${cnt}</span>`:''}
-    </button>`;
-  }).join('');
-  const totalSel = Object.values(filters).reduce((s,a)=>s+a.length,0);
-  const rb = document.getElementById('fpResetBtn');
-  rb.style.display = totalSel>0?'':'none';
-  rb.textContent = 'Сбросить ('+totalSel+')';
-  const applyBtn = document.querySelector('.fp-apply');
-  if(applyBtn) applyBtn.textContent = 'Применить'+(totalSel>0?' ('+totalSel+')':'');
-  const sortRow = document.getElementById('fpSortBtn');
-  if(sortRow) sortRow.style.display = fpTab==='collection'?'flex':'none';
-}
-function switchFpTab(key){
-  fpTab=key;
-  fpModelNft=null;
-  document.getElementById('fpSearch').value='';
-  renderFpTabs();
-  renderFpContent();
-}
-function toggleFpSort(){
-  fpSortAsc=!fpSortAsc;
-  document.getElementById('fpSortIcon').className=fpSortAsc?'fas fa-sort-amount-up':'fas fa-sort-amount-down';
-  renderFpContent();
-}
-function renderFpContent(){
-  const q = document.getElementById('fpSearch').value.trim().toLowerCase();
-  const list = document.getElementById('fpList');
 
-  if(fpTab==='collection'){
-    let opts = [...NAMES];
-    if(q) opts=opts.filter(n=>n.toLowerCase().includes(q));
-    opts = fpSortAsc ? opts.sort() : opts.sort().reverse();
-    list.innerHTML = opts.map(name=>{
-      const sel = filters.collection.includes(name);
-      return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('collection','${name.replace(/'/g,"\\'")}')">
-        <img src="${imgUrl(name)}" alt="${name}" loading="lazy" onerror="this.style.opacity='.2'"/>
-        <span class="fp-row-name">${name}</span>
-        <div class="fp-check${sel?' checked':''}">${sel?'<i class="fas fa-check"></i>':''}</div>
-      </div>`;
-    }).join('');
-  } else if(fpTab==='model'){
-    if(!fpModelNft){
-      const base = filters.collection.length ? NAMES.filter(n=>filters.collection.includes(n)) : NAMES;
-      const opts = q ? base.filter(n=>n.toLowerCase().includes(q)) : base;
-      list.innerHTML = opts.map(name=>`
-        <div class="fp-row" onclick="setFpModelNft('${name.replace(/'/g,"\\'")}')">
-          <img src="${imgUrl(name)}" alt="${name}" loading="lazy" onerror="this.style.opacity='.2'"/>
-          <span class="fp-row-name">${name}</span>
-          <i class="fas fa-chevron-right" style="color:#b87aff;font-size:12px;flex-shrink:0"></i>
-        </div>`).join('');
-    } else {
-      list.innerHTML = `<div class="back-link" onclick="fpModelNft=null;renderFpContent()"><i class="fas fa-arrow-left"></i> Назад</div>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-          <img src="${imgUrl(fpModelNft)}" style="width:40px;height:40px;border-radius:10px;object-fit:cover;background:rgba(40,25,65,.6)"/>
-          <span style="font-size:15px;font-weight:600">${fpModelNft}</span>
-        </div>
-        <div class="fp-divider"></div>` +
-        MODELS.map(m=>{
-          const sel=filters.model.includes(m);
-          return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('model','${m}')">
-            <img src="${MODEL_ICONS[m]}" alt="${m}" loading="lazy"/>
-            <div style="flex:1"><div style="font-size:13px;font-weight:500">${m}</div><div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:2px">Модель</div></div>
-            <div class="fp-check${sel?' checked':''}">${sel?'<i class="fas fa-check"></i>':''}</div>
-          </div>`;
-        }).join('');
+// 🔥 ИСПРАВЛЕННОЕ ЗАКРЫТИЕ (Сброс стилей для предотвращения бага "мутного экрана")
+function closeOverlay(id){
+  const overlay=document.getElementById(id);
+  if(overlay){
+    // Сначала сбрасываем стили модалки, чтобы она улетела вниз
+    const sheet=overlay.querySelector('.sheet');
+    if(sheet){
+        sheet.style.transition='transform 0.25s ease';
+        sheet.style.transform='translateY(100%)';
     }
-  } else if(fpTab==='background'){
-    const opts = q ? BACKGROUNDS.filter(b=>b.toLowerCase().includes(q)) : BACKGROUNDS;
-    list.innerHTML = opts.map(bg=>{
-      const sel=filters.background.includes(bg);
-      return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('background','${bg}')">
-        <img src="${BG_IMAGES[bg]}" alt="${bg}" loading="lazy"/>
-        <span class="fp-row-name">${bg}</span>
-        <div class="fp-check${sel?' checked':''}">${sel?'<i class="fas fa-check"></i>':''}</div>
-      </div>`;
-    }).join('');
-  } else if(fpTab==='pattern'){
-    const opts = q ? PATTERNS.filter(p=>p.toLowerCase().includes(q)) : PATTERNS;
-    list.innerHTML = opts.map(pt=>{
-      const sel=filters.pattern.includes(pt);
-      return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('pattern','${pt}')">
-        <img src="${PATTERN_IMAGES[pt]}" alt="${pt}" loading="lazy"/>
-        <span class="fp-row-name">${pt}</span>
-        <div class="fp-check${sel?' checked':''}">${sel?'<i class="fas fa-check"></i>':''}</div>
-      </div>`;
-    }).join('');
+    
+    // Ждем завершения анимации и скрываем оверлей
+    setTimeout(()=>{
+        overlay.classList.add('hidden');
+        document.body.classList.remove('modal-open');
+        // Полностью очищаем инлайн стили, чтобы следующий раз открылось чисто
+        if(sheet){
+            sheet.style.transform='';
+            sheet.style.transition='';
+            overlay.style.background='';
+        }
+    }, 250);
   }
 }
-function setFpModelNft(name){fpModelNft=name;renderFpContent();}
-function toggleFilter(key,val){
-  const arr=filters[key];
-  const idx=arr.indexOf(val);
-  if(idx>=0) arr.splice(idx,1); else arr.push(val);
-  renderFpTabs();
-  renderFpContent();
-}
-function resetFilters(){
-  filters={collection:[],model:[],background:[],pattern:[]};
-  renderFpTabs();
-  renderFpContent();
-}
 
-/* === HELPERS === */
-function closeOverlay(id){document.getElementById(id).classList.add('hidden');}
-function showToast(msg,type=''){
+function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;
-  t.className='toast show'+(type?' '+type:'');
-  clearTimeout(t._t);
-  t._t=setTimeout(()=>{t.className='toast';},2600);
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
 }
 
-/* === INIT === */
+// 🔥 СВАЙП-ДИСМИСС ДЛЯ МОДАЛОК
+function initSwipeDismiss(overlayId, sheetSelector='.sheet', handleSelector='.sheet-handle'){
+  const overlay=document.getElementById(overlayId);
+  if(!overlay)return;
+  const sheet=overlay.querySelector(sheetSelector);
+  const handle=overlay.querySelector(handleSelector);
+  if(!sheet)return;
+  
+  let startY=0,startYOffset=0,isDragging=false,hasMoved=false;
+  
+  const getTransformY=(el)=>{
+    const style=window.getComputedStyle(el);
+    const matrix=style.transform;
+    if(matrix==='none')return 0;
+    const values=matrix.split('(')[1]?.split(')')[0]?.split(',');
+    return values?parseFloat(values[5])||0:0;
+  };
+  
+  const onStart=(e)=>{
+    isDragging=true;
+    hasMoved=false;
+    startY=e.touches?.[0]?.clientY||e.clientY;
+    startYOffset=getTransformY(sheet);
+    sheet.style.transition='none';
+    sheet.style.willChange='transform';
+    e.stopPropagation();
+  };
+  
+  const onMove=(e)=>{
+    if(!isDragging)return;
+    const currentY=e.touches?.[0]?.clientY||e.clientY;
+    const dy=currentY-startY;
+    if(dy>0){
+      hasMoved=true;
+      const newY=startYOffset+dy;
+      sheet.style.transform=`translateY(${newY}px)`;
+      const opacity=Math.max(0.3,1-dy/(window.innerHeight*0.4));
+      overlay.style.background=`rgba(0,0,0,${opacity*0.7})`;
+    }
+    e.preventDefault();
+  };
+  
+  const onEnd=()=>{
+    if(!isDragging)return;
+    isDragging=false;
+    const currentY=getTransformY(sheet);
+    const threshold=window.innerHeight*0.25;
+    sheet.style.transition='transform 0.25s cubic-bezier(0.4,0,0.2,1)';
+    overlay.style.transition='background 0.25s ease';
+    if(hasMoved && currentY>threshold){
+      closeOverlay(overlayId); // Используем нашу новую функцию закрытия
+    }else{
+      sheet.style.transform='translateY(0)';
+      overlay.style.background='rgba(0,0,0,0.7)';
+    }
+    setTimeout(()=>{sheet.style.willChange='auto';},300);
+  };
+  
+  sheet.addEventListener('touchstart',onStart,{passive:true});
+  sheet.addEventListener('touchmove',onMove,{passive:false});
+  sheet.addEventListener('touchend',onEnd);
+  sheet.addEventListener('touchcancel',onEnd);
+  if(handle){handle.addEventListener('touchstart',onStart,{passive:true});handle.style.cursor='grab';}
+  sheet.addEventListener('mousedown',onStart);
+  document.addEventListener('mousemove',(e)=>{if(isDragging)onMove(e);});
+  document.addEventListener('mouseup',onEnd);
+}
+
+initSwipeDismiss('buyOverlay');
+initSwipeDismiss('depOverlay');
+
+// 🔥 КЛИК ПО ФОНУ ЗАКРЫВАЕТ МОДАЛКУ
+['buyOverlay','depOverlay'].forEach(id=>{
+  const overlay=document.getElementById(id);
+  if(overlay){
+    overlay.addEventListener('click',(e)=>{
+      if(e.target.hasAttribute('data-dismissible') && e.target===overlay){
+        closeOverlay(id);
+      }
+    });
+  }
+});
+
+document.getElementById('closeBuyX')?.addEventListener('click',()=>closeOverlay('buyOverlay'));
+document.getElementById('navProfileBtn')?.addEventListener('click',()=>{window.location.href='profile.html';});
+document.getElementById('navMarketBtn')?.addEventListener('click',()=>{window.location.reload();});
+document.getElementById('menuCircleBtn')?.addEventListener('click',()=>showToast('Меню'));
+document.getElementById('bBuyBtn')?.addEventListener('click',confirmBuy);
+
+// 🔥 ФИЛЬТРЫ
+function openFilter(){document.getElementById('filterPanel').classList.add('open');renderFpTabs();renderFpContent();}
+function closeFilter(){document.getElementById('filterPanel').classList.remove('open');applyFiltersAndRender();}
+function renderFpTabs(){
+  const tabs=[['collection','Коллекция'],['model','Модель'],['background','Фон'],['pattern','Узор']];
+  document.getElementById('fpTabs').innerHTML=tabs.map(([key,label])=>`<button class="fp-tab${fpTab===key?' active':''}" onclick="fpTab='${key}';fpModelNft=null;renderFpTabs();renderFpContent()">${label}${filters[key].length?`<span class="fp-tab-badge">${filters[key].length}</span>`:''}</button>`).join('');
+  document.getElementById('fpSortBtn').style.display=fpTab==='collection'?'flex':'none';
+  updateFilterButtons();
+}
+function updateFilterButtons(){
+  const total=Object.values(filters).reduce((s,a)=>s+a.length,0);
+  const resetContainer=document.getElementById('resetContainer');
+  if(total>0){resetContainer.style.display='block';document.getElementById('resetCount').innerText=total;}
+  else{resetContainer.style.display='none';}
+}
+function resetAllFilters(){filters={collection:[],model:[],background:[],pattern:[]};fpModelNft=null;renderFpTabs();renderFpContent();updateFilterButtons();}
+function toggleFpSort(){fpSortAsc=!fpSortAsc;document.getElementById('fpSortIcon').className=fpSortAsc?'fas fa-sort-amount-up':'fas fa-sort-amount-down';renderFpContent();}
+function renderFpContent(){
+  const q=document.getElementById('fpSearch').value.trim().toLowerCase();
+  const list=document.getElementById('fpList');
+  if(fpTab==='collection'){
+    let opts=[...NAMES];if(q)opts=opts.filter(n=>n.toLowerCase().includes(q));opts=fpSortAsc?opts.sort():opts.sort().reverse();
+    list.innerHTML=opts.map(name=>{const sel=filters.collection.includes(name);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('collection','${name.replace(/'/g,"\\'")}')"><img src="${imgUrl(name)}"><span class="fp-row-name">${name}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
+  }else if(fpTab==='model'){
+    if(!fpModelNft){
+      const base=filters.collection.length?NAMES.filter(n=>filters.collection.includes(n)):NAMES;
+      const opts=q?base.filter(n=>n.toLowerCase().includes(q)):base;
+      list.innerHTML=opts.map(name=>`<div class="fp-row" onclick="fpModelNft='${name.replace(/'/g,"\\'")}';renderFpContent()"><img src="${imgUrl(name)}"><span class="fp-row-name">${name}</span><i class="fas fa-chevron-right" style="color:#b87aff"></i></div>`).join('');
+    }else{
+      list.innerHTML=`<div class="back-link" onclick="fpModelNft=null;renderFpContent()"><i class="fas fa-arrow-left"></i> Назад</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><img src="${imgUrl(fpModelNft)}" style="width:40px;height:40px;border-radius:10px"><span style="font-weight:600">${fpModelNft}</span></div><div style="height:1px;background:rgba(255,255,255,.08);margin-bottom:14px"></div>`+MODELS.map(m=>{const sel=filters.model.includes(m);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('model','${m}')"><img src="${MODEL_ICONS[m]}"><div style="flex:1"><div>${m}</div><div style="font-size:12px;color:rgba(255,255,255,.4)">Модель</div></div><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
+    }
+  }else if(fpTab==='background'){
+    const opts=q?BACKGROUNDS.filter(b=>b.toLowerCase().includes(q)):BACKGROUNDS;
+    list.innerHTML=opts.map(bg=>{const sel=filters.background.includes(bg);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('background','${bg}')"><img src="${BG_IMAGES[bg]}"><span class="fp-row-name">${bg}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
+  }else if(fpTab==='pattern'){
+    const opts=q?PATTERNS.filter(p=>p.toLowerCase().includes(q)):PATTERNS;
+    list.innerHTML=opts.map(pt=>{const sel=filters.pattern.includes(pt);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('pattern','${pt}')"><img src="${PATTERN_IMAGES[pt]}"><span class="fp-row-name">${pt}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
+  }
+  const fpClear=document.getElementById('fpSearchClear');const fpInput=document.getElementById('fpSearch');if(fpInput.value.length>0)fpClear.classList.add('show');else fpClear.classList.remove('show');
+}
+function toggleFilter(key,val){const arr=filters[key];const idx=arr.indexOf(val);if(idx>=0)arr.splice(idx,1);else arr.push(val);renderFpTabs();renderFpContent();updateFilterButtons();}
+
+// 🔥 ИНИЦИАЛИЗАЦИЯ
 renderHeader();
 applyFiltersAndRender();
+document.addEventListener('keydown',(e)=>{if(e.key==='Escape'){if(!document.getElementById('buyOverlay').classList.contains('hidden'))closeOverlay('buyOverlay');if(!document.getElementById('depOverlay').classList.contains('hidden'))closeOverlay('depOverlay');}});
 </script>
 </body>
 </html>
