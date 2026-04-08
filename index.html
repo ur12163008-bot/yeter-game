@@ -1,375 +1,228 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no"/>
-<title>NFT Маркет</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>NFT Маркет — Swill Way</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;width:100%;overflow:hidden;background:#07070e}
-body{font-family:'Inter',sans-serif;color:#fff;-webkit-user-select:none;user-select:none;-webkit-font-smoothing:antialiased}
-button{font-family:'Inter',sans-serif;cursor:pointer;border:none;background:none}
-input{font-family:'Inter',sans-serif}
-img{display:block;pointer-events:none;user-select:none}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#07070e}
+body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
 
-#app{position:relative;z-index:1;max-width:440px;width:100%;margin:0 auto;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+.app{max-width:440px;width:100%;height:100dvh;display:flex;flex-direction:column;position:relative;z-index:1;overflow:hidden}
 
-.bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 50%,rgba(88,10,148,.22) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(30,10,80,.28) 0%,transparent 60%),linear-gradient(180deg,#07070f 0%,#0a0a1c 50%,#050510 100%)}
+.bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 40% 50%,#0a0e1a 0%,#03050a 70%,#000103 100%)}
 .orb{position:fixed;border-radius:50%;filter:blur(80px);z-index:0;pointer-events:none}
 .orb1{width:320px;height:320px;background:radial-gradient(circle,rgba(88,10,148,.4) 0%,transparent 70%);top:-70px;right:-70px;animation:orb1f 9s ease-in-out infinite}
 .orb2{width:260px;height:260px;background:radial-gradient(circle,rgba(30,10,100,.35) 0%,transparent 70%);bottom:90px;left:-50px;animation:orb2f 11s ease-in-out infinite}
 @keyframes orb1f{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-22px,22px) scale(1.12)}}
 @keyframes orb2f{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(18px,-18px) scale(1.09)}}
 
-/* ========= ШАПКА КАК В TELEGRAM (аватар, имя, фамилия, username) ========= */
-.tg-header{
-  display:flex;align-items:center;
-  padding:10px 14px;
-  flex-shrink:0;gap:10px;
-  z-index:50;
-}
-.tg-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
-.tg-avatar{
-  width:42px;height:42px;border-radius:50%;
-  background:linear-gradient(135deg,#5a0a94,#9b3de0);
-  display:flex;align-items:center;justify-content:center;
-  font-size:17px;font-weight:700;color:#fff;flex-shrink:0;
-}
-.tg-user{min-width:0}
-.tg-name{
-  font-size:15px;font-weight:600;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.tg-username{
-  font-size:12px;color:rgba(255,255,255,.55);
-  margin-top:2px;
-}
-.tg-username::before{
-  content:"@";
-  opacity:0.7;
-}
+/* ШАПКА */
+.phdr{display:flex;align-items:center;justify-content:space-between;margin:16px 20px 18px;gap:12px;flex-shrink:0}
+.phdr-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.ava{width:50px;height:50px;border-radius:18px;background:rgba(106,13,173,.5);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;border:.5px solid rgba(184,122,255,.5);flex-shrink:0;overflow:hidden}
+.ava img{width:100%;height:100%;object-fit:cover}
+.phdr-name{font-size:16px;font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.phdr-un{font-size:13px;color:rgba(255,255,255,.48);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bal-block{display:flex;align-items:center;gap:6px;background:rgba(18,18,34,.92);border:1px solid rgba(138,43,226,.2);border-radius:60px;padding:6px 8px 6px 14px;flex-shrink:0}
+.bal-val{font-size:15px;font-weight:600;display:flex;align-items:center;gap:5px}
+.plus-btn{background:rgba(255,255,255,.1);border:1px solid rgba(138,43,226,.38);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:20px;font-weight:300;cursor:pointer;transition:all .2s ease}
+.plus-btn:hover{border-color:#b87aff;box-shadow:0 0 8px rgba(184,122,255,.5);transform:scale(1.05)}
+.menu-circle{width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;cursor:pointer;transition:all .2s ease}
+.menu-circle:hover{border-color:#b87aff;box-shadow:0 0 8px rgba(184,122,255,.5);transform:scale(1.05)}
 
-.tg-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.balance-pill{
-  display:flex;align-items:center;gap:5px;
-  background:rgba(18,18,34,.85);
-  border:1px solid rgba(138,43,226,.2);
-  border-radius:60px;padding:5px 8px 5px 11px;
-}
-.balance-num{font-size:13px;font-weight:600;display:flex;align-items:center;gap:3px}
-.plus-btn{
-  background:rgba(255,255,255,.1);
-  border:1px solid rgba(138,43,226,.38);
-  border-radius:50%;width:24px;height:24px;
-  display:flex;align-items:center;justify-content:center;
-  color:#b87aff;font-size:16px;
-}
-.menu-circle{
-  width:32px;height:32px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(184,122,255,.35);
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  color:#b87aff;font-size:15px;
-}
-
-/* 🔥 ПОИСК + ФИЛЬТРЫ */
-.search-row{display:flex;gap:10px;align-items:center;padding:0 14px 12px;flex-shrink:0}
+/* Поиск */
+.search-row{display:flex;gap:10px;align-items:center;padding:0 20px 12px;flex-shrink:0}
 .search-wrapper{position:relative;flex:1}
-.search-box{
-  width:100%;display:flex;align-items:center;gap:8px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.11);
-  border-radius:60px;padding:10px 14px;
-}
+.search-box{width:100%;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:60px;padding:10px 14px}
 .search-box i{color:rgba(255,255,255,.35);font-size:13px}
 .search-box input{background:transparent;border:none;color:#fff;font-size:14px;outline:none;width:100%}
 .search-box input::placeholder{color:rgba(255,255,255,.35)}
-.search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.3);font-size:12px;padding:4px;display:none}
-.search-clear.show{display:block}
-
-.icon-btn{
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(184,122,255,.28);
-  border-radius:60px;
-  width:42px;height:42px;
-  display:flex;align-items:center;justify-content:center;
-  color:#b87aff;font-size:15px;flex-shrink:0;
-}
+.search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.4);font-size:12px;padding:6px;display:none;cursor:pointer;border-radius:50%;width:24px;height:24px;align-items:center;justify-content:center}
+.search-clear.show{display:flex}
+.icon-btn{background:rgba(255,255,255,.06);border:1px solid rgba(184,122,255,.28);border-radius:60px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;flex-shrink:0;cursor:pointer;transition:all .2s ease}
+.icon-btn:hover{border-color:#b87aff;box-shadow:0 0 8px rgba(184,122,255,.5);transform:scale(1.05)}
 .icon-btn.has-filter{border-color:#b87aff;box-shadow:0 0 10px rgba(184,122,255,.25)}
 
-.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:30px}
+.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:30px}
 .scroll-area::-webkit-scrollbar{width:3px}
 .scroll-area::-webkit-scrollbar-thumb{background:rgba(184,122,255,.35);border-radius:3px}
 
-/* ========= NFT СЕТКА — КАРТОЧКИ МЕНЬШЕ ========= */
-.nft-grid{
-  padding:0 14px 130px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.nft-card{
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:14px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:transform .15s ease, box-shadow .2s ease;
-  display:flex;flex-direction:column;
-}
-.nft-card:active{transform:scale(.98);box-shadow:0 8px 25px rgba(138,43,226,.25)}
-
-.nft-img{
-  position:relative;
-  padding-top:100%;
-  background:rgba(40,25,65,.6);
-  margin:2px 2px 0 2px;
-  border-radius:11px 11px 0 0;
-}
-.nft-img img{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  object-fit:cover;
-  border-radius:11px 11px 0 0;
-  transition:transform .2s ease;
-}
-.nft-card:hover .nft-img img{transform:scale(1.02)}
-
-/* ========= ИНФО ПОД ФОТО: НАЗВАНИЕ, АВАТАР, ЦЕНА — ВСЁ УВЕЛИЧЕНО ========= */
-.nft-info{
-  padding:10px 10px 12px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
+/* NFT СЕТКА — РАМКИ КАК БЫЛИ, ФОТКИ МЕНЬШЕ */
+.nft-grid{padding:0 20px 110px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.nft-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px;overflow:hidden;cursor:pointer}
+.nft-card:active{transform:scale(.98)}
+.nft-img{position:relative;padding-top:50%;background:rgba(40,25,65,.6);margin:2px 2px 0 2px;border-radius:12px 12px 0 0}
+.nft-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0}
+.nft-info{padding:10px 10px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .nft-left{flex:1;min-width:0}
-.nft-name{
-  font-size:15px;        /* УВЕЛИЧЕНО */
-  font-weight:700;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  margin-bottom:6px;
-}
-.nft-price{
-  font-size:18px;        /* УВЕЛИЧЕНО + БЕЛЫЙ ЦВЕТ */
-  font-weight:800;
-  color:#ffffff;         /* БЕЛЫЙ */
-  letter-spacing:-0.3px;
-}
-.seller-dot{
-  width:38px;height:38px;  /* УВЕЛИЧЕНО */
-  border-radius:50%;
-  background:rgba(88,10,148,.5);
-  border:1px solid rgba(184,122,255,.5);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:16px;          /* УВЕЛИЧЕНО */
-  font-weight:700;
-  color:#b87aff;
-  flex-shrink:0;
-}
+.nft-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+.nft-price{font-size:15px;font-weight:800;color:#fff}
+.seller-dot{width:32px;height:32px;border-radius:50%;background:rgba(88,10,148,.5);border:1px solid rgba(184,122,255,.5);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#b87aff;flex-shrink:0}
 
-/* остальные стили без изменений */
-.bottom-nav{
-  position:fixed;bottom:16px;left:16px;right:16px;
-  background:rgba(30,20,55,.65);
-  backdrop-filter:blur(25px);
-  -webkit-backdrop-filter:blur(25px);
-  border-radius:32px;
-  border:1px solid rgba(255,255,255,.15);
-  box-shadow:0 8px 32px rgba(0,0,0,.4),
-    inset 0 1px 0 rgba(255,255,255,.1),
-    inset 0 -1px 0 rgba(0,0,0,.2);
-  display:flex;z-index:100;height:64px;padding:0 6px;
-}
-.nav-btn{
-  flex:1;display:flex;
-  align-items:center;justify-content:center;
-  color:rgba(255,255,255,.45);font-size:11px;font-weight:500;
-  border-radius:26px;position:relative;overflow:hidden;
-  transition:all .2s ease;
-}
-.nav-btn::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,0) 50%,rgba(255,255,255,.08) 100%);
-  opacity:0;transition:opacity .2s ease;pointer-events:none;border-radius:26px;
-}
-.nav-btn:active::before{opacity:1}
-.nav-content{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 16px;border-radius:24px;transition:all .2s ease}
-.nav-btn.active .nav-content{background:rgba(168,85,247,.2);border-radius:24px}
-.nav-btn.active{color:#a855f7}
-.nav-btn i{font-size:19px}
+/* Bottom nav */
+.bnav{position:fixed;bottom:18px;left:18px;right:18px;max-width:404px;margin:0 auto;background:rgba(12,12,22,.95);border:1px solid rgba(184,122,255,.16);border-radius:28px;display:flex;justify-content:space-around;padding:8px 16px;z-index:100}
+.ni{display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,.48);font-size:10px;font-weight:500;cursor:pointer;padding:6px 14px;border-radius:22px;min-width:70px;text-decoration:none;background:transparent;border:none}
+.ni i{font-size:20px}
+.ni.on{background:rgba(106,13,173,.2);color:#b87aff}
 
-.overlay{
-  position:fixed;inset:0;
-  background:rgba(0,0,0,0);
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-  z-index:2000;
-  display:flex;align-items:flex-end;justify-content:center;
-  opacity:0;visibility:hidden;pointer-events:none;
-  transition:opacity .35s ease, visibility .35s ease, background .35s ease;
-}
-.overlay.visible{opacity:1;visibility:visible;pointer-events:auto;background:rgba(0,0,0,.75)}
-.overlay.hidden{opacity:0;visibility:hidden;pointer-events:none;background:rgba(0,0,0,0)}
-.sheet{
-  max-width:420px;width:94%;
-  background:rgba(20,18,35,.98);
-  border:0.5px solid rgba(184,122,255,.3);
-  border-radius:26px 26px 0 0;
-  padding:20px 22px 30px;
-  transform:translateY(100%);
-  transition:transform .45s cubic-bezier(0.16,1,0.3,1);
-  will-change:transform;touch-action:pan-y;
-  max-height:88vh;overflow-y:auto;
-}
-.sheet-handle{width:48px;height:5px;background:rgba(255,255,255,.25);border-radius:3px;margin:0 auto 18px;touch-action:none}
-.sheet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding:0 4px}
+/* Оверлеи */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,0);backdrop-filter:blur(10px);z-index:2000;display:none;align-items:flex-end;justify-content:center}
+.ov.show{display:flex}
+.sheet{max-width:420px;width:94%;background:rgba(20,18,35,.98);border:0.5px solid rgba(184,122,255,.3);border-radius:26px 26px 0 0;padding:20px 22px 30px;transform:translateY(100%);transition:transform .45s cubic-bezier(0.16,1,0.3,1);max-height:88vh;overflow-y:auto}
+.sheet-handle{width:48px;height:5px;background:rgba(255,255,255,.25);border-radius:3px;margin:0 auto 18px;cursor:grab;touch-action:pan-y}
+.sheet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .sheet-title{font-size:19px;font-weight:700}
-.close-btn{width:34px;height:34px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.4);border-radius:50%;color:#b87aff;font-size:19px;display:flex;align-items:center;justify-content:center}
-.detail-top{display:flex;gap:16px;margin-bottom:20px;align-items:flex-start}
-.detail-img{width:115px;height:115px;border-radius:20px;object-fit:cover;flex-shrink:0;border:1px solid rgba(184,122,255,.25);box-shadow:0 10px 30px rgba(0,0,0,.4)}
-.detail-attrs{flex:1;display:flex;flex-direction:column;gap:9px}
-.attr-row{display:flex;justify-content:space-between;font-size:14px;padding:7px 0;border-bottom:1px dashed rgba(255,255,255,.1)}
-.attr-row:last-child{border-bottom:none}
-.attr-lbl{color:rgba(255,255,255,.45);font-weight:500}
-.attr-val{font-weight:600;color:#fff}
-.seller-row{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.05);border-radius:18px;padding:14px 16px;margin-bottom:22px;border:1px solid rgba(184,122,255,.15)}
-.seller-ava-big{width:44px;height:44px;border-radius:50%;background:rgba(88,10,148,.4);border:2px solid rgba(184,122,255,.45);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff}
-.seller-name{font-size:14px;font-weight:600;color:rgba(255,255,255,.9)}
-.buy-btn{width:100%;border-radius:60px;padding:15px 20px;font-size:16px;font-weight:700;border:none;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));color:#fff;box-shadow:0 8px 28px rgba(138,43,226,.35);transition:transform .15s ease, box-shadow .2s ease}
-.buy-btn:active{transform:scale(.99);box-shadow:0 6px 20px rgba(138,43,226,.25)}
-.buy-btn .price-badge{background:rgba(255,255,255,.18);padding:5px 18px;border-radius:30px;font-size:15px;font-weight:700}
-.buy-btn:disabled{background:rgba(255,255,255,.1);color:rgba(255,255,255,.4);box-shadow:none;cursor:not-allowed}
+.close-btn{width:34px;height:34px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.4);border-radius:50%;color:#b87aff;font-size:19px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+
+/* Пополнение */
 .dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:20px}
-.dep-amount{padding:13px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);text-align:center;font-size:14px;color:rgba(255,255,255,.85);transition:all .15s ease}
-.dep-amount.sel{background:rgba(88,10,148,.45);border-color:#b87aff;color:#fff;box-shadow:0 4px 14px rgba(138,43,226,.25)}
-.dep-amount:active{transform:scale(.98)}
-.dep-info{display:flex;justify-content:space-between;margin-bottom:20px;background:rgba(255,255,255,.04);padding:15px 18px;border-radius:18px;font-size:14px;border:1px solid rgba(255,255,255,.08)}
-.purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border-radius:60px;padding:15px;color:#fff;font-weight:700;font-size:16px;border:none;box-shadow:0 8px 28px rgba(138,43,226,.3)}
-.ghost-btn{width:100%;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:60px;padding:14px;color:rgba(255,255,255,.7);margin-top:10px;font-size:15px}
+.dep-amount{padding:13px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);text-align:center;font-size:14px;color:rgba(255,255,255,.85);cursor:pointer}
+.dep-amount.sel{background:rgba(88,10,148,.45);border-color:#b87aff;color:#fff}
+.custom-amount-wrapper{position:relative;margin-bottom:20px}
+.custom-amount-wrapper input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:60px;padding:14px 44px 14px 18px;color:#fff;font-size:15px;outline:none}
+.custom-amount-wrapper input::placeholder{color:rgba(255,255,255,.35)}
+.custom-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.5);font-size:14px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.dep-info{display:flex;justify-content:space-between;margin-bottom:20px;background:rgba(255,255,255,.04);padding:15px 18px;border-radius:18px}
+.purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border-radius:60px;padding:15px;color:#fff;font-weight:700;font-size:16px;border:none;cursor:pointer}
+
+/* Детали покупки */
+.detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.1)}
+.detail-row:last-child{border-bottom:none}
+.detail-label{color:rgba(255,255,255,.55);font-weight:500}
+.detail-value{font-weight:600;color:#fff}
+.seller-block{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.05);border-radius:18px;padding:14px 16px;margin-bottom:22px}
+.seller-ava{width:40px;height:40px;border-radius:50%;background:rgba(88,10,148,.5);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+
+/* Фильтры панель */
 #filterPanel{position:fixed;inset:0;background:rgba(8,8,18,.98);z-index:1500;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);pointer-events:none}
 #filterPanel.open{transform:translateY(0);pointer-events:auto}
 .fp-inner{max-width:440px;width:100%;margin:0 auto;display:flex;flex-direction:column;height:100%;overflow:hidden}
 .fp-header{display:flex;justify-content:center;align-items:center;position:relative;padding:22px 20px 12px}
 .fp-title{font-size:18px;font-weight:700}
 .fp-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 20px 16px}
-.fp-tab{border-radius:40px;padding:9px 4px;font-size:12px;font-weight:500;border:1px solid rgba(184,122,255,.22);background:rgba(255,255,255,.06);color:rgba(255,255,255,.48);display:flex;align-items:center;justify-content:center;gap:4px}
+.fp-tab{border-radius:40px;padding:9px 4px;font-size:12px;font-weight:500;border:1px solid rgba(184,122,255,.22);background:rgba(255,255,255,.06);color:rgba(255,255,255,.48);display:flex;align-items:center;justify-content:center;gap:4px;cursor:pointer}
 .fp-tab.active{background:rgba(88,10,148,.5);border-color:#b87aff;color:#fff}
-.fp-tab-badge{background:#b87aff;color:#fff;font-size:10px;border-radius:20px;padding:0 5px}
 .fp-search-row{display:flex;gap:10px;margin:0 20px 12px}
-.fp-reset-all{width:100%;padding:0 20px;margin-bottom:12px}
-.reset-text{width:100%;background:transparent;border:1px solid #ff4d4d;border-radius:40px;padding:12px;color:#ff4d4d;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px}
-.fp-scroll{flex:1;overflow-y:auto}
+.fp-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
+.fp-scroll::-webkit-scrollbar{width:3px}
+.fp-scroll::-webkit-scrollbar-thumb{background:rgba(184,122,255,.35);border-radius:3px}
 .fp-list{padding:0 20px 100px}
-.fp-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:16px;margin-bottom:8px;background:rgba(255,255,255,.03);transition:background .15s ease}
+.fp-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:16px;margin-bottom:8px;background:rgba(255,255,255,.03);cursor:pointer}
 .fp-row.sel{background:rgba(88,10,148,.25);border:1px solid rgba(184,122,255,.4)}
-.fp-row:active{background:rgba(255,255,255,.08)}
-.fp-row img{width:46px;height:46px;border-radius:12px;object-fit:cover}
+.fp-row img{width:46px;height:46px;border-radius:12px;object-fit:cover;transition:all .2s ease}
+.fp-row img:hover{transform:scale(1.08);border:2px solid #b87aff;box-shadow:0 0 12px rgba(184,122,255,.6)}
 .fp-row-name{flex:1;font-size:13px;font-weight:500}
 .fp-check{width:22px;height:22px;border-radius:30px;border:1.5px solid rgba(184,122,255,.5);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:12px}
 .fp-check.checked{background:#b87aff;border-color:#b87aff;color:#fff}
-.back-link{display:flex;align-items:center;gap:8px;color:#b87aff;font-size:14px;font-weight:600;margin-bottom:16px;padding:8px 0}
 .fp-footer{position:sticky;bottom:0;padding:12px 20px;background:rgba(8,8,18,.98);border-top:1px solid rgba(255,255,255,.07)}
-.fp-apply{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border:none;border-radius:60px;padding:14px;color:#fff;font-size:14px;font-weight:700}
-.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(26,24,56,.97);border:1px solid rgba(184,122,255,.3);border-radius:16px;padding:10px 18px;font-size:14px;z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.fp-apply{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border:none;border-radius:60px;padding:14px;color:#fff;font-size:14px;font-weight:700;cursor:pointer}
+.back-link{display:flex;align-items:center;gap:8px;color:#b87aff;font-size:14px;font-weight:600;margin-bottom:16px;padding:8px 0;cursor:pointer}
+.reset-container{margin:0 20px 12px}
+.reset-text{width:100%;background:transparent;border:1px solid #ff4d4d;border-radius:40px;padding:12px;color:#ff4d4d;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(26,24,56,.97);border:1px solid rgba(184,122,255,.3);border-radius:16px;padding:10px 18px;font-size:14px;z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
-body.modal-open{overflow:hidden;position:fixed;width:100%;height:100%}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="orb orb1"></div>
 <div class="orb orb2"></div>
+<div class="toast" id="toast"></div>
 
-<div id="app">
-  <!-- ШАПКА КАК В TELEGRAM: аватар, имя + фамилия, username -->
-  <div class="tg-header">
-    <div class="tg-left">
-      <div class="tg-avatar" id="tgAva">АС</div>
-      <div class="tg-user">
-        <div class="tg-name" id="tgName">Алексей Соколов</div>
-        <div class="tg-username" id="tgUsername">alex_sokolov</div>
+<div class="app">
+  <div class="phdr">
+    <div class="phdr-left">
+      <div class="ava" id="av">И</div>
+      <div style="flex:1;min-width:0">
+        <div class="phdr-name" id="fn">Игрок</div>
+        <div class="phdr-un" id="un">@player</div>
       </div>
     </div>
-    <div class="tg-right">
-      <div class="balance-pill">
-        <div class="balance-num"><span id="hBalance">5000</span> ₽</div>
-        <button class="plus-btn" onclick="openDeposit()">+</button>
-      </div>
-      <div class="menu-circle" id="menuCircleBtn"><i class="fas fa-bars"></i></div>
+    <div class="bal-block">
+      <div class="bal-val"><span id="bv">5 000</span> ₽</div>
+      <div class="plus-btn" id="plusBtn">+</div>
     </div>
+    <div class="menu-circle" id="menuCircle"><i class="fas fa-bars"></i></div>
   </div>
-  
+
   <div class="search-row">
     <div class="search-wrapper">
       <div class="search-box">
         <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="Поиск NFT..." oninput="applyFiltersAndRender()"/>
+        <input type="text" id="searchInput" placeholder="Поиск NFT..."/>
       </div>
-      <div class="search-clear" id="mainSearchClear" onclick="clearMainSearch()"><i class="fas fa-times-circle"></i></div>
+      <div class="search-clear" id="searchClear"><i class="fas fa-times-circle"></i></div>
     </div>
-    <button class="icon-btn" id="filterBtn" onclick="openFilter()"><i class="fas fa-sliders-h"></i></button>
-    <button class="icon-btn" id="sortBtn" onclick="toggleSort()"><i class="fas fa-sort-amount-up" id="sortIcon"></i></button>
+    <button class="icon-btn" id="filterBtn"><i class="fas fa-sliders-h"></i></button>
+    <button class="icon-btn" id="sortBtn"><i class="fas fa-sort-amount-up" id="sortIcon"></i></button>
   </div>
-  
+
   <div class="scroll-area"><div class="nft-grid" id="nftGrid"></div></div>
 </div>
 
-<div class="bottom-nav">
-  <button class="nav-btn active" id="navMarketBtn">
-    <div class="nav-content"><i class="fas fa-store"></i><span>МАРКЕТ</span></div>
-  </button>
-  <button class="nav-btn" id="navProfileBtn">
-    <div class="nav-content"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></div>
-  </button>
+<div class="bnav">
+  <a href="#" class="ni on" id="navMarket"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
+  <a href="profile.html" class="ni"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
 </div>
 
-<!-- МОДАЛКИ (без изменений) -->
-<div class="overlay hidden" id="buyOverlay" data-dismissible="true">
-  <div class="sheet" id="buySheet" data-dismissible="true">
-    <div class="sheet-handle" id="buyHandle"></div>
-    <div class="sheet-title-row">
-      <span class="sheet-title" id="bTitle"></span>
-      <button class="close-btn" id="closeBuyX">×</button>
-    </div>
-    <div class="detail-top">
-      <img class="detail-img" id="bImg"/>
-      <div class="detail-attrs" id="bAttrs"></div>
-    </div>
-    <div class="seller-row">
-      <div class="seller-ava-big" id="bSellerAva"></div>
-      <div><div class="seller-name" id="bSellerName"></div></div>
-    </div>
-    <button class="buy-btn" id="bBuyBtn"><span>Купить</span><span class="price-badge" id="bPriceBadge"></span></button>
-  </div>
-</div>
-
-<div class="overlay hidden" id="depOverlay" data-dismissible="true">
-  <div class="sheet" data-dismissible="true">
-    <div class="sheet-handle"></div>
+<!-- Модалка пополнения -->
+<div class="ov" id="depOv">
+  <div class="sheet">
+    <div class="sheet-handle" id="depHandle"></div>
     <div class="sheet-title-row">
       <span class="sheet-title">Пополнение баланса</span>
-      <button class="close-btn" onclick="closeOverlay('depOverlay')">×</button>
+      <button class="close-btn" id="closeDepBtn">×</button>
     </div>
     <div class="dep-grid" id="depGrid"></div>
-    <div class="dep-info"><span>Текущий баланс</span><span><span id="depBalanceVal">5000</span> ₽</span></div>
-    <button class="purple-btn" onclick="confirmDeposit()">Пополнить</button>
-    <button class="ghost-btn" onclick="closeOverlay('depOverlay')">Отмена</button>
+    <div class="custom-amount-wrapper">
+      <input type="text" id="customAmount" inputmode="numeric" placeholder="введите сумму пополнения">
+      <div class="custom-clear" id="customClear">✕</div>
+    </div>
+    <div class="dep-info"><span>Текущий баланс</span><span><span id="depBalance">5 000</span> ₽</span></div>
+    <button class="purple-btn" id="confirmDepBtn">Пополнить</button>
   </div>
 </div>
 
-<div id="filterPanel"><div class="fp-inner"><div class="fp-header"><span class="fp-title">Фильтры</span><button class="close-btn" style="position:absolute;right:12px;top:18px" onclick="closeFilter()">×</button></div><div class="fp-tabs" id="fpTabs"></div><div class="fp-search-row"><div class="search-wrapper" id="fpSearchWrapper"><div class="search-box" style="flex:1"><i class="fas fa-search"></i><input type="text" id="fpSearch" placeholder="Поиск..." oninput="renderFpContent()"/></div><div class="search-clear" id="fpSearchClear" onclick="clearFpSearch()"><i class="fas fa-times-circle"></i></div></div><button class="icon-btn" id="fpSortBtn" onclick="toggleFpSort()"><i class="fas fa-sort-amount-up" id="fpSortIcon"></i></button></div><div id="resetContainer" style="display:none"><div class="fp-reset-all"><div class="reset-text" onclick="resetAllFilters()"><i class="fas fa-undo-alt"></i> Сбросить все <span id="resetCount"></span></div></div></div><div class="fp-scroll"><div class="fp-list" id="fpList"></div></div><div class="fp-footer" id="applyFooter"><button class="fp-apply" id="applyBtn" onclick="closeFilter()">Применить</button></div></div></div>
+<!-- Модалка покупки -->
+<div class="ov" id="buyOv">
+  <div class="sheet">
+    <div class="sheet-handle" id="buyHandle"></div>
+    <div class="sheet-title-row">
+      <span class="sheet-title" id="buyTitle"></span>
+      <button class="close-btn" id="closeBuyBtn">×</button>
+    </div>
+    <div style="display:flex;gap:16px;margin-bottom:20px">
+      <img id="buyImg" style="width:100px;height:100px;border-radius:20px;object-fit:cover">
+      <div id="buyAttrs" style="flex:1"></div>
+    </div>
+    <div class="seller-block">
+      <div class="seller-ava" id="sellerAva"></div>
+      <div><div style="font-weight:600" id="sellerName"></div></div>
+    </div>
+    <button class="purple-btn" id="buyConfirmBtn"><span>Купить</span><span id="buyPrice"></span></button>
+  </div>
+</div>
 
-<div class="toast" id="toast"></div>
+<!-- Панель фильтров -->
+<div id="filterPanel">
+  <div class="fp-inner">
+    <div class="fp-header"><span class="fp-title">Фильтры</span><button class="close-btn" id="closeFilterBtn" style="position:absolute;right:12px;top:18px">×</button></div>
+    <div class="fp-tabs" id="fpTabs"></div>
+    <div class="fp-search-row">
+      <div class="search-wrapper"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="fpSearch" placeholder="Поиск..." oninput="renderFpContent()"></div><div class="search-clear" id="fpSearchClear" onclick="clearFpSearch()"><i class="fas fa-times-circle"></i></div></div>
+      <button class="icon-btn" id="fpSortBtn"><i class="fas fa-sort-amount-up" id="fpSortIcon"></i></button>
+    </div>
+    <div id="resetContainer" style="display:none" class="reset-container"><div class="reset-text" id="resetAllBtn"><i class="fas fa-undo-alt"></i> Сбросить все <span id="resetCount"></span></div></div>
+    <div class="fp-scroll"><div class="fp-list" id="fpList"></div></div>
+    <div class="fp-footer"><button class="fp-apply" id="applyFiltersBtn">Применить</button></div>
+  </div>
+</div>
 
 <script>
 const GITHUB = 'https://raw.githubusercontent.com/ur12163008-bot/yeter-game/main/nft/';
@@ -382,28 +235,32 @@ const BG_IMAGES = {"Тёмный":"https://images.unsplash.com/photo-15347966369
 const MODEL_ICONS = {"2D":"https://images.unsplash.com/photo-1607706189992-eae578626c86?w=80&h=80&fit=crop","3D":"https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=80&h=80&fit=crop","Pixel":"https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=80&h=80&fit=crop","Vector":"https://images.unsplash.com/photo-1461344577544-4e5dc9487184?w=80&h=80&fit=crop"};
 const PATTERN_IMAGES = {"Классический":"https://images.unsplash.com/photo-1519741497674-611481863552?w=80&h=80&fit=crop","Современный":"https://images.unsplash.com/photo-1464802686167-b939a6910659?w=80&h=80&fit=crop","Винтажный":"https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=80&h=80&fit=crop","Неоновый":"https://images.unsplash.com/photo-1518235506717-e1ed3306a89b?w=80&h=80&fit=crop"};
 const SELLERS = [{name:'Алексей Смирнов',avatar:'А'},{name:'Мария Иванова',avatar:'М'},{name:'Дмитрий Козлов',avatar:'Д'},{name:'Анна Новикова',avatar:'А'},{name:'Иван Попов',avatar:'И'}];
-const DEP_AMOUNTS = [100,250,500,1000,2500,5000];
+const DEP_AMOUNTS = [100,200,500,1000,2000,5000];
 
 let balance = parseInt(localStorage.getItem('nft_balance') || '5000');
 let sortAsc = true;
-let filters = {collection:[],model:[],background:[],pattern:[]};
+let tempFilters = {collection:[],model:[],background:[],pattern:[]};
+let activeFilters = {collection:[],model:[],background:[],pattern:[]};
 let selectedDep = 500;
 let selectedListing = null;
 let fpTab = 'collection', fpSortAsc = true, fpModelNft = null;
 
-// Telegram WebApp инициализация (получаем реальные данные пользователя)
-if(window.Telegram && Telegram.WebApp){
-  const tg = Telegram.WebApp;
+// Telegram
+const tg = window.Telegram?.WebApp;
+if(tg){
   tg.expand();
   const user = tg.initDataUnsafe?.user;
   if(user){
-    const firstName = user.first_name || 'Алексей';
-    const lastName = user.last_name || 'Соколов';
-    const username = user.username || 'alex_user';
-    document.getElementById('tgName').innerHTML = `${firstName} ${lastName}`;
-    document.getElementById('tgUsername').innerHTML = username;
-    const avatarDiv = document.getElementById('tgAva');
-    if(avatarDiv) avatarDiv.innerHTML = firstName.charAt(0) + (lastName.charAt(0) || '');
+    const firstName = user.first_name || 'Игрок';
+    const lastName = user.last_name || '';
+    const username = user.username || 'player';
+    let fullName = firstName;
+    if(lastName) fullName = firstName + ' ' + lastName;
+    document.getElementById('fn').innerHTML = fullName;
+    document.getElementById('un').innerHTML = '@' + username;
+    const av = document.getElementById('av');
+    if(user.photo_url) av.innerHTML = `<img src="${user.photo_url}">`;
+    else av.innerHTML = firstName.charAt(0) + (lastName.charAt(0) || '');
   }
 }
 
@@ -411,118 +268,96 @@ function imgUrl(name){return GITHUB + encodeURIComponent(name+'.png');}
 function fmtNum(n){return n.toLocaleString('ru-RU');}
 function getListings(){return NAMES.map((name,i)=>({id:i+1,nftName:name,price:PRICES[i%PRICES.length],image:imgUrl(name),sellerName:SELLERS[i%SELLERS.length].name,sellerAvatar:SELLERS[i%SELLERS.length].avatar,pattern:PATTERNS[i%4],background:BACKGROUNDS[i%4],model:MODELS[i%4]}));}
 function saveBalance(){localStorage.setItem('nft_balance',balance);}
-function renderHeader(){document.getElementById('hBalance').textContent=fmtNum(balance);document.getElementById('depBalanceVal').textContent=fmtNum(balance);}
+function renderHeader(){document.getElementById('bv').textContent=fmtNum(balance);document.getElementById('depBalance').textContent=fmtNum(balance);}
+function showToast(msg,err=false){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
 function applyFiltersAndRender(){
   let items=getListings();
   const q=document.getElementById('searchInput').value.trim().toLowerCase();
   if(q) items=items.filter(x=>x.nftName.toLowerCase().includes(q));
-  if(filters.collection.length) items=items.filter(x=>filters.collection.includes(x.nftName));
-  if(filters.model.length) items=items.filter(x=>filters.model.includes(x.model));
-  if(filters.background.length) items=items.filter(x=>filters.background.includes(x.background));
-  if(filters.pattern.length) items=items.filter(x=>filters.pattern.includes(x.pattern));
+  if(activeFilters.collection.length) items=items.filter(x=>activeFilters.collection.includes(x.nftName));
+  if(activeFilters.model.length) items=items.filter(x=>activeFilters.model.includes(x.model));
+  if(activeFilters.background.length) items=items.filter(x=>activeFilters.background.includes(x.background));
+  if(activeFilters.pattern.length) items=items.filter(x=>activeFilters.pattern.includes(x.pattern));
   items.sort((a,b)=>sortAsc?a.price-b.price:b.price-a.price);
-  const total=Object.values(filters).reduce((s,a)=>s+a.length,0);
+  const total=Object.values(activeFilters).reduce((s,a)=>s+a.length,0);
   const filterBtn=document.getElementById('filterBtn');
   if(total>0) filterBtn.classList.add('has-filter');
   else filterBtn.classList.remove('has-filter');
   const grid=document.getElementById('nftGrid');
-  if(!items.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:rgba(255,255,255,.4);font-size:13px">Ничего не найдено</div>';return;}
-  
-  // Рендер NFT с увеличенными названием, ценой (белый цвет) и аватаркой
+  if(!items.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:rgba(255,255,255,.4)">Ничего не найдено</div>';return;}
   grid.innerHTML=items.map(l=>`
     <div class="nft-card" onclick="openBuy(${l.id})">
       <div class="nft-img"><img src="${l.image}" onerror="this.style.opacity='.2'"/></div>
       <div class="nft-info">
-        <div class="nft-left">
-          <div class="nft-name">${l.nftName}</div>
-          <div class="nft-price">${l.price} ₽</div>
-        </div>
+        <div class="nft-left"><div class="nft-name">${l.nftName}</div><div class="nft-price">${l.price} ₽</div></div>
         <div class="seller-dot">${l.sellerAvatar}</div>
       </div>
     </div>
   `).join('');
-  updateMainSearchClear();
+  updateSearchClear();
 }
-function updateMainSearchClear(){const input=document.getElementById('searchInput');const clear=document.getElementById('mainSearchClear');if(input.value.length>0)clear.classList.add('show');else clear.classList.remove('show');}
+function updateSearchClear(){const input=document.getElementById('searchInput');const clear=document.getElementById('searchClear');if(input.value.length>0)clear.classList.add('show');else clear.classList.remove('show');}
 function clearMainSearch(){document.getElementById('searchInput').value='';applyFiltersAndRender();document.activeElement?.blur();}
-function clearFpSearch(){document.getElementById('fpSearch').value='';renderFpContent();document.activeElement?.blur();}
 function toggleSort(){sortAsc=!sortAsc;document.getElementById('sortIcon').className=sortAsc?'fas fa-sort-amount-up':'fas fa-sort-amount-down';applyFiltersAndRender();}
 
-function openBuy(id){
+window.openBuy=function(id){
   const l=getListings().find(x=>x.id===id);
   if(!l)return;
   selectedListing=l;
-  document.getElementById('bTitle').textContent=l.nftName;
-  document.getElementById('bImg').src=l.image;
-  const attrs=[];
-  if(l.model)attrs.push(`<div class="attr-row"><span class="attr-lbl">Модель</span><span class="attr-val">${l.model}</span></div>`);
-  if(l.background)attrs.push(`<div class="attr-row"><span class="attr-lbl">Фон</span><span class="attr-val">${l.background}</span></div>`);
-  if(l.pattern)attrs.push(`<div class="attr-row"><span class="attr-lbl">Узор</span><span class="attr-val">${l.pattern}</span></div>`);
-  document.getElementById('bAttrs').innerHTML=attrs.join('');
-  document.getElementById('bSellerAva').textContent=l.sellerAvatar;
-  document.getElementById('bSellerName').textContent=l.sellerName;
-  document.getElementById('bPriceBadge').textContent=l.price+' ₽';
-  const btn=document.getElementById('bBuyBtn');
-  const canBuy=balance>=l.price;
-  btn.disabled=!canBuy;
-  btn.style.opacity=canBuy?'1':'0.6';
-  
-  const overlay=document.getElementById('buyOverlay');
-  const sheet=overlay.querySelector('.sheet');
-  overlay.classList.remove('visible','hidden');
-  overlay.style.opacity='0';overlay.style.visibility='hidden';overlay.style.background='rgba(0,0,0,0)';
-  sheet.style.transition='none';sheet.style.transform='translateY(100%)';
-  void overlay.offsetWidth;
-  overlay.style.transition='opacity .35s ease, visibility .35s ease, background .35s ease';
-  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
-  overlay.classList.add('visible');
-  overlay.style.opacity='1';overlay.style.visibility='visible';overlay.style.background='rgba(0,0,0,0.75)';
-  sheet.style.transform='translateY(0)';
-  document.body.classList.add('modal-open');
-}
-
+  document.getElementById('buyTitle').textContent=l.nftName;
+  document.getElementById('buyImg').src=l.image;
+  document.getElementById('buyAttrs').innerHTML=`
+    <div class="detail-row"><span class="detail-label">Модель</span><span class="detail-value">${l.model}</span></div>
+    <div class="detail-row"><span class="detail-label">Фон</span><span class="detail-value">${l.background}</span></div>
+    <div class="detail-row"><span class="detail-label">Узор</span><span class="detail-value">${l.pattern}</span></div>
+  `;
+  document.getElementById('sellerAva').textContent=l.sellerAvatar;
+  document.getElementById('sellerName').textContent=l.sellerName;
+  document.getElementById('buyPrice').innerHTML=` ${l.price} ₽`;
+  const btn=document.getElementById('buyConfirmBtn');
+  btn.disabled=balance<l.price;
+  btn.style.opacity=balance<l.price?'0.6':'1';
+  const ov=document.getElementById('buyOv');
+  const sheet=ov.querySelector('.sheet');
+  ov.classList.add('show');
+  setTimeout(()=>{sheet.style.transform='translateY(0)';},10);
+};
 function confirmBuy(){
-  if(!selectedListing||balance<selectedListing.price){showToast('Недостаточно средств!');return;}
-  balance-=selectedListing.price;saveBalance();closeOverlay('buyOverlay');renderHeader();
-  showToast('Куплен '+selectedListing.nftName);applyFiltersAndRender();
+  if(!selectedListing||balance<selectedListing.price){showToast('Недостаточно средств!',true);return;}
+  balance-=selectedListing.price;saveBalance();renderHeader();
+  showToast('Куплен '+selectedListing.nftName);
+  applyFiltersAndRender();
+  closeOverlay('buyOv');
 }
-
 function openDeposit(){
   renderDepGrid();
-  const overlay=document.getElementById('depOverlay');
-  const sheet=overlay.querySelector('.sheet');
-  overlay.classList.remove('visible','hidden');
-  overlay.style.opacity='0';overlay.style.visibility='hidden';overlay.style.background='rgba(0,0,0,0)';
-  sheet.style.transition='none';sheet.style.transform='translateY(100%)';
-  void overlay.offsetWidth;
-  overlay.style.transition='opacity .35s ease, visibility .35s ease, background .35s ease';
-  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
-  overlay.classList.add('visible');
-  overlay.style.opacity='1';overlay.style.visibility='visible';overlay.style.background='rgba(0,0,0,0.75)';
-  sheet.style.transform='translateY(0)';
-  document.body.classList.add('modal-open');
+  document.getElementById('customAmount').value='';
+  selectedDep=500;renderDepGrid();
+  const ov=document.getElementById('depOv');
+  const sheet=ov.querySelector('.sheet');
+  ov.classList.add('show');
+  setTimeout(()=>{sheet.style.transform='translateY(0)';},10);
 }
 function renderDepGrid(){
-  document.getElementById('depGrid').innerHTML=DEP_AMOUNTS.map(a=>`<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectedDep=${a};renderDepGrid()">${fmtNum(a)} ₽</div>`).join('');
+  const container=document.getElementById('depGrid');
+  container.innerHTML=DEP_AMOUNTS.map(a=>`<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectPreset(${a})">${fmtNum(a)} ₽</div>`).join('');
 }
-function confirmDeposit(){balance+=selectedDep;saveBalance();closeOverlay('depOverlay');renderHeader();showToast('Пополнено на '+fmtNum(selectedDep)+' ₽');applyFiltersAndRender();}
-
-function closeOverlay(id){
-  const overlay=document.getElementById(id);if(!overlay)return;
-  const sheet=overlay.querySelector('.sheet');
-  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
-  overlay.style.transition='opacity .35s ease, background .35s ease';
-  sheet.style.transform='translateY(100%)';overlay.style.opacity='0';overlay.style.background='rgba(0,0,0,0)';
-  setTimeout(()=>{
-    overlay.classList.remove('visible');overlay.classList.add('hidden');overlay.style.visibility='hidden';
-    document.body.classList.remove('modal-open');
-    sheet.style.transform='';sheet.style.transition='';overlay.style.opacity='';overlay.style.background='';overlay.style.visibility='';
-  },450);
+function selectPreset(amt){selectedDep=amt;renderDepGrid();document.getElementById('customAmount').value='';}
+function getFinalAmount(){
+  let cv=document.getElementById('customAmount').value.trim();
+  if(cv==='') return selectedDep;
+  let num = parseFloat(cv);
+  if(isNaN(num)) return selectedDep;
+  num = Math.round(num);
+  if(num < 50) num = 50;
+  if(num > 1000000) num = 1000000;
+  return num;
 }
+function confirmDeposit(){let amt=getFinalAmount();if(amt<50)amt=50;if(amt>1000000)amt=1000000;if(amt<=0)amt=50;balance+=amt;saveBalance();renderHeader();showToast('Пополнено на '+fmtNum(amt)+' ₽');applyFiltersAndRender();closeOverlay('depOv');}
+function closeOverlay(id){const ov=document.getElementById(id);const sheet=ov.querySelector('.sheet');sheet.style.transform='translateY(100%)';setTimeout(()=>ov.classList.remove('show'),300);}
 
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
-
+// Swipe to close
 function initSwipeDismiss(overlayId){
   const overlay=document.getElementById(overlayId);if(!overlay)return;
   const sheet=overlay.querySelector('.sheet');const handle=overlay.querySelector('.sheet-handle');if(!sheet)return;
@@ -535,53 +370,100 @@ function initSwipeDismiss(overlayId){
   if(handle){handle.addEventListener('touchstart',onStart,{passive:true});handle.style.cursor='grab';}
   sheet.addEventListener('mousedown',onStart);document.addEventListener('mousemove',(e)=>{if(isDragging)onMove(e);});document.addEventListener('mouseup',onEnd);
 }
-initSwipeDismiss('buyOverlay');initSwipeDismiss('depOverlay');
+initSwipeDismiss('depOv');
+initSwipeDismiss('buyOv');
 
-['buyOverlay','depOverlay'].forEach(id=>{const overlay=document.getElementById(id);if(overlay){overlay.addEventListener('click',(e)=>{if(e.target.hasAttribute('data-dismissible')&&e.target===overlay)closeOverlay(id);});}});
-document.getElementById('closeBuyX')?.addEventListener('click',()=>closeOverlay('buyOverlay'));
-document.getElementById('navProfileBtn')?.addEventListener('click',()=>{window.location.href='profile.html';});
-document.getElementById('navMarketBtn')?.addEventListener('click',()=>{window.location.reload();});
-document.getElementById('menuCircleBtn')?.addEventListener('click',()=>showToast('Меню'));
-document.getElementById('bBuyBtn')?.addEventListener('click',confirmBuy);
-
-function openFilter(){document.getElementById('filterPanel').classList.add('open');renderFpTabs();renderFpContent();}
-function closeFilter(){document.getElementById('filterPanel').classList.remove('open');applyFiltersAndRender();}
+// Фильтры
+function openFilter(){
+  tempFilters = JSON.parse(JSON.stringify(activeFilters));
+  fpModelNft = null;
+  document.getElementById('filterPanel').classList.add('open');
+  renderFpTabs();
+  renderFpContent();
+}
+function closeFilter(){document.getElementById('filterPanel').classList.remove('open');}
+function applyFilters(){
+  activeFilters = JSON.parse(JSON.stringify(tempFilters));
+  closeFilter();
+  applyFiltersAndRender();
+}
+function onFpSearchInput(){renderFpContent();}
+function clearFpSearch(){document.getElementById('fpSearch').value='';renderFpContent();document.activeElement?.blur();}
 function renderFpTabs(){
   const tabs=[['collection','Коллекция'],['model','Модель'],['background','Фон'],['pattern','Узор']];
-  document.getElementById('fpTabs').innerHTML=tabs.map(([key,label])=>`<button class="fp-tab${fpTab===key?' active':''}" onclick="fpTab='${key}';fpModelNft=null;renderFpTabs();renderFpContent()">${label}${filters[key].length?`<span class="fp-tab-badge">${filters[key].length}</span>`:''}</button>`).join('');
+  document.getElementById('fpTabs').innerHTML=tabs.map(([key,label])=>`<button class="fp-tab${fpTab===key?' active':''}" onclick="fpTab='${key}';fpModelNft=null;renderFpTabs();renderFpContent()">${label}${tempFilters[key].length?`<span style="background:#b87aff;color:#fff;border-radius:20px;padding:0 5px;margin-left:5px">${tempFilters[key].length}</span>`:''}</button>`).join('');
   document.getElementById('fpSortBtn').style.display=fpTab==='collection'?'flex':'none';
   updateFilterButtons();
 }
-function updateFilterButtons(){const total=Object.values(filters).reduce((s,a)=>s+a.length,0);const resetContainer=document.getElementById('resetContainer');if(total>0){resetContainer.style.display='block';document.getElementById('resetCount').innerText=total;}else{resetContainer.style.display='none';}}
-function resetAllFilters(){filters={collection:[],model:[],background:[],pattern:[]};fpModelNft=null;renderFpTabs();renderFpContent();updateFilterButtons();}
+function updateFilterButtons(){const total=Object.values(tempFilters).reduce((s,a)=>s+a.length,0);const rc=document.getElementById('resetContainer');if(total>0){rc.style.display='block';document.getElementById('resetCount').innerText=total;}else{rc.style.display='none';}}
+function resetAllFilters(){tempFilters={collection:[],model:[],background:[],pattern:[]};fpModelNft=null;renderFpTabs();renderFpContent();updateFilterButtons();}
 function toggleFpSort(){fpSortAsc=!fpSortAsc;document.getElementById('fpSortIcon').className=fpSortAsc?'fas fa-sort-amount-up':'fas fa-sort-amount-down';renderFpContent();}
 function renderFpContent(){
   const q=document.getElementById('fpSearch').value.trim().toLowerCase();const list=document.getElementById('fpList');
   if(fpTab==='collection'){
     let opts=[...NAMES];if(q)opts=opts.filter(n=>n.toLowerCase().includes(q));opts=fpSortAsc?opts.sort():opts.sort().reverse();
-    list.innerHTML=opts.map(name=>{const sel=filters.collection.includes(name);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('collection','${name.replace(/'/g,"\\'")}')"><img src="${imgUrl(name)}"><span class="fp-row-name">${name}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
+    list.innerHTML=opts.map(name=>{const sel=tempFilters.collection.includes(name);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('collection','${name.replace(/'/g,"\\'")}')"><img src="${imgUrl(name)}"><span class="fp-row-name">${name}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
   }else if(fpTab==='model'){
-    if(!fpModelNft){
-      const base=filters.collection.length?NAMES.filter(n=>filters.collection.includes(n)):NAMES;
-      const opts=q?base.filter(n=>n.toLowerCase().includes(q)):base;
-      list.innerHTML=opts.map(name=>`<div class="fp-row" onclick="fpModelNft='${name.replace(/'/g,"\\'")}';renderFpContent()"><img src="${imgUrl(name)}"><span class="fp-row-name">${name}</span><i class="fas fa-chevron-right" style="color:#b87aff"></i></div>`).join('');
+    if(tempFilters.collection.length===0){
+      list.innerHTML='<div style="text-align:center;padding:40px;color:rgba(255,255,255,.5);font-size:13px">Сначала выберите любую коллекцию</div>';
+    }else if(!fpModelNft){
+      let allNfts=getListings();
+      let selectedCollectionNfts=allNfts.filter(n=>tempFilters.collection.includes(n.nftName));
+      let uniqueModels=[...new Set(selectedCollectionNfts.map(n=>n.model))];
+      if(q) uniqueModels=uniqueModels.filter(m=>m.toLowerCase().includes(q));
+      list.innerHTML=uniqueModels.map(m=>`<div class="fp-row" onclick="fpModelNft='${m}';renderFpContent()"><img src="${MODEL_ICONS[m]}"><div style="flex:1"><div>${m}</div><div style="font-size:12px;color:rgba(255,255,255,.4)">Модель</div></div><i class="fas fa-chevron-right" style="color:#b87aff"></i></div>`).join('');
     }else{
-      list.innerHTML=`<div class="back-link" onclick="fpModelNft=null;renderFpContent()"><i class="fas fa-arrow-left"></i> Назад</div><div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><img src="${imgUrl(fpModelNft)}" style="width:40px;height:40px;border-radius:10px"><span style="font-weight:600">${fpModelNft}</span></div><div style="height:1px;background:rgba(255,255,255,.08);margin-bottom:14px"></div>`+MODELS.map(m=>{const sel=filters.model.includes(m);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('model','${m}')"><img src="${MODEL_ICONS[m]}"><div style="flex:1"><div>${m}</div><div style="font-size:12px;color:rgba(255,255,255,.4)">Модель</div></div><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
+      let allNfts=getListings();
+      let nftsWithModel=allNfts.filter(n=>n.model===fpModelNft && tempFilters.collection.includes(n.nftName));
+      let uniqueNfts=[...new Map(nftsWithModel.map(n=>[n.nftName,n])).values()];
+      list.innerHTML=`<div class="back-link" onclick="fpModelNft=null;renderFpContent()"><i class="fas fa-arrow-left"></i> Назад</div>`+uniqueNfts.map(nft=>{
+        const sel=tempFilters.model.includes(nft.model);
+        return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('model','${nft.model}')"><img src="${nft.image}"><span class="fp-row-name">${nft.nftName}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;
+      }).join('');
     }
   }else if(fpTab==='background'){
-    const opts=q?BACKGROUNDS.filter(b=>b.toLowerCase().includes(q)):BACKGROUNDS;
-    list.innerHTML=opts.map(bg=>{const sel=filters.background.includes(bg);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('background','${bg}')"><img src="${BG_IMAGES[bg]}"><span class="fp-row-name">${bg}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
+    let opts=[...BACKGROUNDS];if(q)opts=opts.filter(b=>b.toLowerCase().includes(q));
+    list.innerHTML=opts.map(bg=>{const sel=tempFilters.background.includes(bg);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('background','${bg}')"><img src="${BG_IMAGES[bg]}"><span class="fp-row-name">${bg}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
   }else if(fpTab==='pattern'){
-    const opts=q?PATTERNS.filter(p=>p.toLowerCase().includes(q)):PATTERNS;
-    list.innerHTML=opts.map(pt=>{const sel=filters.pattern.includes(pt);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('pattern','${pt}')"><img src="${PATTERN_IMAGES[pt]}"><span class="fp-row-name">${pt}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
+    let opts=[...PATTERNS];if(q)opts=opts.filter(p=>p.toLowerCase().includes(q));
+    list.innerHTML=opts.map(pt=>{const sel=tempFilters.pattern.includes(pt);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('pattern','${pt}')"><img src="${PATTERN_IMAGES[pt]}"><span class="fp-row-name">${pt}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
   }
   const fpClear=document.getElementById('fpSearchClear');const fpInput=document.getElementById('fpSearch');if(fpInput.value.length>0)fpClear.classList.add('show');else fpClear.classList.remove('show');
 }
-function toggleFilter(key,val){const arr=filters[key];const idx=arr.indexOf(val);if(idx>=0)arr.splice(idx,1);else arr.push(val);renderFpTabs();renderFpContent();updateFilterButtons();}
+function toggleFilter(key,val){const arr=tempFilters[key];const idx=arr.indexOf(val);if(idx>=0)arr.splice(idx,1);else arr.push(val);fpModelNft=null;renderFpTabs();renderFpContent();updateFilterButtons();}
+
+// Event binding
+document.getElementById('searchClear').onclick=clearMainSearch;
+document.getElementById('searchInput').oninput=()=>{applyFiltersAndRender();updateSearchClear();};
+document.getElementById('sortBtn').onclick=toggleSort;
+document.getElementById('filterBtn').onclick=openFilter;
+document.getElementById('closeFilterBtn').onclick=closeFilter;
+document.getElementById('applyFiltersBtn').onclick=applyFilters;
+document.getElementById('resetAllBtn').onclick=resetAllFilters;
+document.getElementById('fpSortBtn').onclick=toggleFpSort;
+document.getElementById('closeDepBtn').onclick=()=>closeOverlay('depOv');
+document.getElementById('confirmDepBtn').onclick=confirmDeposit;
+document.getElementById('closeBuyBtn').onclick=()=>closeOverlay('buyOv');
+document.getElementById('buyConfirmBtn').onclick=confirmBuy;
+document.getElementById('plusBtn').onclick=openDeposit;
+document.getElementById('menuCircle').onclick=()=>showToast('Меню');
+document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';selectedDep=null;renderDepGrid();document.activeElement?.blur();};
+document.getElementById('customAmount').addEventListener('blur',function(){
+  let val=this.value.trim();
+  if(val==='') return;
+  let num=parseFloat(val);
+  if(isNaN(num)){this.value='';return;}
+  num=Math.round(num);
+  if(num<50)num=50;
+  if(num>1000000)num=1000000;
+  this.value=num;
+  selectedDep=null;
+  renderDepGrid();
+});
+document.getElementById('depOv').onclick=e=>{if(e.target===document.getElementById('depOv'))closeOverlay('depOv');};
+document.getElementById('buyOv').onclick=e=>{if(e.target===document.getElementById('buyOv'))closeOverlay('buyOv');};
 
 renderHeader();applyFiltersAndRender();
-document.addEventListener('keydown',(e)=>{if(e.key==='Escape'){if(!document.getElementById('buyOverlay').classList.contains('hidden'))closeOverlay('buyOverlay');if(!document.getElementById('depOverlay').classList.contains('hidden'))closeOverlay('depOverlay');}});
 </script>
-<script src="https://telegram.org/js/telegram-web-app.js?56"></script>
 </body>
 </html>
