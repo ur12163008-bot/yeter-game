@@ -180,7 +180,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 
 <div class="bnav">
   <a href="#" class="ni on" id="navMarket"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
-  <a href="profile.html" class="ni" id="navProfileBtn"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
+  <a href="profle.html" class="ni" id="navProfileBtn"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
 </div>
 
 <!-- Модалка пополнения -->
@@ -457,7 +457,7 @@ document.getElementById('plusBtn').onclick=openDeposit;
 document.getElementById('menuCircle').onclick=()=>showToast('Меню');
 document.getElementById('navProfileBtn').onclick=function(e){
   e.preventDefault();
-  window.location.href = 'profile.html';
+  window.location.href = 'profle.html';
 };
 document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';selectedDep=null;renderDepGrid();document.activeElement?.blur();};
 document.getElementById('customAmount').addEventListener('input', function(e){
