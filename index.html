@@ -31,10 +31,10 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .phdr-un{font-size:13px;color:rgba(255,255,255,.48);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bal-block{display:flex;align-items:center;gap:6px;background:rgba(18,18,34,.92);border:1px solid rgba(138,43,226,.2);border-radius:60px;padding:6px 8px 6px 14px;flex-shrink:0}
 .bal-val{font-size:15px;font-weight:600;display:flex;align-items:center;gap:5px}
-.plus-btn{background:rgba(255,255,255,.1);border:1px solid rgba(138,43,226,.38);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:20px;font-weight:300;cursor:pointer;transition:all .2s ease}
-.plus-btn:hover{border-color:#b87aff;box-shadow:0 0 8px rgba(184,122,255,.5);transform:scale(1.05)}
-.menu-circle{width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;cursor:pointer;transition:all .2s ease}
-.menu-circle:hover{border-color:#b87aff;box-shadow:0 0 8px rgba(184,122,255,.5);transform:scale(1.05)}
+.plus-btn{background:rgba(255,255,255,.1);border:1px solid rgba(138,43,226,.38);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:20px;font-weight:300;cursor:pointer}
+.plus-btn:active{transform:scale(.92)}
+.menu-circle{width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;cursor:pointer}
+.menu-circle:active{transform:scale(.92)}
 
 /* Поиск */
 .search-row{display:flex;gap:10px;align-items:center;padding:0 20px 12px;flex-shrink:0}
@@ -45,20 +45,23 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .search-box input::placeholder{color:rgba(255,255,255,.35)}
 .search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.4);font-size:12px;padding:6px;display:none;cursor:pointer;border-radius:50%;width:24px;height:24px;align-items:center;justify-content:center}
 .search-clear.show{display:flex}
-.icon-btn{background:rgba(255,255,255,.06);border:1px solid rgba(184,122,255,.28);border-radius:60px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;flex-shrink:0;cursor:pointer;transition:all .2s ease}
-.icon-btn:hover{border-color:#b87aff;box-shadow:0 0 8px rgba(184,122,255,.5);transform:scale(1.05)}
+.icon-btn{background:rgba(255,255,255,.06);border:1px solid rgba(184,122,255,.28);border-radius:60px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;flex-shrink:0;cursor:pointer}
+.icon-btn:active{transform:scale(.95)}
 .icon-btn.has-filter{border-color:#b87aff;box-shadow:0 0 10px rgba(184,122,255,.25)}
 
 .scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:30px}
 .scroll-area::-webkit-scrollbar{width:3px}
 .scroll-area::-webkit-scrollbar-thumb{background:rgba(184,122,255,.35);border-radius:3px}
 
-/* NFT СЕТКА — РАМКИ КАК БЫЛИ, ФОТКИ МЕНЬШЕ */
+/* NFT СЕТКА — РАМКИ КАК В ТОМ СКРИПТЕ (100% фото) */
 .nft-grid{padding:0 20px 110px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .nft-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px;overflow:hidden;cursor:pointer}
 .nft-card:active{transform:scale(.98)}
-.nft-img{position:relative;padding-top:50%;background:rgba(40,25,65,.6);margin:2px 2px 0 2px;border-radius:12px 12px 0 0}
-.nft-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0}
+@media (hover: hover) and (pointer: fine) {
+  .nft-card:hover .nft-img img{transform:scale(1.02)}
+}
+.nft-img{position:relative;padding-top:100%;background:rgba(40,25,65,.6);margin:2px 2px 0 2px;border-radius:12px 12px 0 0}
+.nft-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0;transition:transform .2s ease}
 .nft-info{padding:10px 10px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .nft-left{flex:1;min-width:0}
 .nft-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
@@ -68,6 +71,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 /* Bottom nav */
 .bnav{position:fixed;bottom:18px;left:18px;right:18px;max-width:404px;margin:0 auto;background:rgba(12,12,22,.95);border:1px solid rgba(184,122,255,.16);border-radius:28px;display:flex;justify-content:space-around;padding:8px 16px;z-index:100}
 .ni{display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,.48);font-size:10px;font-weight:500;cursor:pointer;padding:6px 14px;border-radius:22px;min-width:70px;text-decoration:none;background:transparent;border:none}
+.ni:active{transform:scale(.96)}
 .ni i{font-size:20px}
 .ni.on{background:rgba(106,13,173,.2);color:#b87aff}
 
@@ -79,17 +83,21 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .sheet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .sheet-title{font-size:19px;font-weight:700}
 .close-btn{width:34px;height:34px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.4);border-radius:50%;color:#b87aff;font-size:19px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.close-btn:active{transform:scale(.92)}
 
 /* Пополнение */
 .dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:20px}
 .dep-amount{padding:13px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);text-align:center;font-size:14px;color:rgba(255,255,255,.85);cursor:pointer}
 .dep-amount.sel{background:rgba(88,10,148,.45);border-color:#b87aff;color:#fff}
+.dep-amount:active{transform:scale(.96)}
 .custom-amount-wrapper{position:relative;margin-bottom:20px}
 .custom-amount-wrapper input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:60px;padding:14px 44px 14px 18px;color:#fff;font-size:15px;outline:none}
 .custom-amount-wrapper input::placeholder{color:rgba(255,255,255,.35)}
 .custom-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.5);font-size:14px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.custom-clear:active{transform:translateY(-50%) scale(.92)}
 .dep-info{display:flex;justify-content:space-between;margin-bottom:20px;background:rgba(255,255,255,.04);padding:15px 18px;border-radius:18px}
 .purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border-radius:60px;padding:15px;color:#fff;font-weight:700;font-size:16px;border:none;cursor:pointer}
+.purple-btn:active{transform:scale(.97)}
 
 /* Детали покупки */
 .detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.1)}
@@ -99,7 +107,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .seller-block{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.05);border-radius:18px;padding:14px 16px;margin-bottom:22px}
 .seller-ava{width:40px;height:40px;border-radius:50%;background:rgba(88,10,148,.5);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
 
-/* Фильтры панель */
+/* Фильтры панель — БЕЗ ХОВЕРОВ */
 #filterPanel{position:fixed;inset:0;background:rgba(8,8,18,.98);z-index:1500;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);pointer-events:none}
 #filterPanel.open{transform:translateY(0);pointer-events:auto}
 .fp-inner{max-width:440px;width:100%;margin:0 auto;display:flex;flex-direction:column;height:100%;overflow:hidden}
@@ -108,6 +116,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .fp-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 20px 16px}
 .fp-tab{border-radius:40px;padding:9px 4px;font-size:12px;font-weight:500;border:1px solid rgba(184,122,255,.22);background:rgba(255,255,255,.06);color:rgba(255,255,255,.48);display:flex;align-items:center;justify-content:center;gap:4px;cursor:pointer}
 .fp-tab.active{background:rgba(88,10,148,.5);border-color:#b87aff;color:#fff}
+.fp-tab:active{transform:scale(.96)}
 .fp-search-row{display:flex;gap:10px;margin:0 20px 12px}
 .fp-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
 .fp-scroll::-webkit-scrollbar{width:3px}
@@ -115,16 +124,19 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .fp-list{padding:0 20px 100px}
 .fp-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:16px;margin-bottom:8px;background:rgba(255,255,255,.03);cursor:pointer}
 .fp-row.sel{background:rgba(88,10,148,.25);border:1px solid rgba(184,122,255,.4)}
-.fp-row img{width:46px;height:46px;border-radius:12px;object-fit:cover;transition:all .2s ease}
-.fp-row img:hover{transform:scale(1.08);border:2px solid #b87aff;box-shadow:0 0 12px rgba(184,122,255,.6)}
+.fp-row:active{transform:scale(.98)}
+.fp-row img{width:46px;height:46px;border-radius:12px;object-fit:cover}
 .fp-row-name{flex:1;font-size:13px;font-weight:500}
 .fp-check{width:22px;height:22px;border-radius:30px;border:1.5px solid rgba(184,122,255,.5);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:12px}
 .fp-check.checked{background:#b87aff;border-color:#b87aff;color:#fff}
 .fp-footer{position:sticky;bottom:0;padding:12px 20px;background:rgba(8,8,18,.98);border-top:1px solid rgba(255,255,255,.07)}
 .fp-apply{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border:none;border-radius:60px;padding:14px;color:#fff;font-size:14px;font-weight:700;cursor:pointer}
+.fp-apply:active{transform:scale(.97)}
 .back-link{display:flex;align-items:center;gap:8px;color:#b87aff;font-size:14px;font-weight:600;margin-bottom:16px;padding:8px 0;cursor:pointer}
+.back-link:active{transform:translateX(-2px)}
 .reset-container{margin:0 20px 12px}
 .reset-text{width:100%;background:transparent;border:1px solid #ff4d4d;border-radius:40px;padding:12px;color:#ff4d4d;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+.reset-text:active{transform:scale(.97)}
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(26,24,56,.97);border:1px solid rgba(184,122,255,.3);border-radius:16px;padding:10px 18px;font-size:14px;z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
 </style>
@@ -343,7 +355,7 @@ function renderDepGrid(){
   const container=document.getElementById('depGrid');
   container.innerHTML=DEP_AMOUNTS.map(a=>`<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectPreset(${a})">${fmtNum(a)} ₽</div>`).join('');
 }
-function selectPreset(amt){selectedDep=amt;renderDepGrid();document.getElementById('customAmount').value='';}
+function selectPreset(amt){selectedDep=amt;renderDepGrid();document.getElementById('customAmount').value=amt;}
 function getFinalAmount(){
   let cv=document.getElementById('customAmount').value.trim();
   if(cv==='') return selectedDep;
@@ -387,7 +399,6 @@ function applyFilters(){
   closeFilter();
   applyFiltersAndRender();
 }
-function onFpSearchInput(){renderFpContent();}
 function clearFpSearch(){document.getElementById('fpSearch').value='';renderFpContent();document.activeElement?.blur();}
 function renderFpTabs(){
   const tabs=[['collection','Коллекция'],['model','Модель'],['background','Фон'],['pattern','Узор']];
@@ -397,11 +408,10 @@ function renderFpTabs(){
 }
 function updateFilterButtons(){const total=Object.values(tempFilters).reduce((s,a)=>s+a.length,0);const rc=document.getElementById('resetContainer');if(total>0){rc.style.display='block';document.getElementById('resetCount').innerText=total;}else{rc.style.display='none';}}
 function resetAllFilters(){tempFilters={collection:[],model:[],background:[],pattern:[]};fpModelNft=null;renderFpTabs();renderFpContent();updateFilterButtons();}
-function toggleFpSort(){fpSortAsc=!fpSortAsc;document.getElementById('fpSortIcon').className=fpSortAsc?'fas fa-sort-amount-up':'fas fa-sort-amount-down';renderFpContent();}
 function renderFpContent(){
   const q=document.getElementById('fpSearch').value.trim().toLowerCase();const list=document.getElementById('fpList');
   if(fpTab==='collection'){
-    let opts=[...NAMES];if(q)opts=opts.filter(n=>n.toLowerCase().includes(q));opts=fpSortAsc?opts.sort():opts.sort().reverse();
+    let opts=[...NAMES];if(q)opts=opts.filter(n=>n.toLowerCase().includes(q));
     list.innerHTML=opts.map(name=>{const sel=tempFilters.collection.includes(name);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('collection','${name.replace(/'/g,"\\'")}')"><img src="${imgUrl(name)}"><span class="fp-row-name">${name}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
   }else if(fpTab==='model'){
     if(tempFilters.collection.length===0){
@@ -409,17 +419,17 @@ function renderFpContent(){
     }else if(!fpModelNft){
       let allNfts=getListings();
       let selectedCollectionNfts=allNfts.filter(n=>tempFilters.collection.includes(n.nftName));
-      let uniqueModels=[...new Set(selectedCollectionNfts.map(n=>n.model))];
-      if(q) uniqueModels=uniqueModels.filter(m=>m.toLowerCase().includes(q));
-      list.innerHTML=uniqueModels.map(m=>`<div class="fp-row" onclick="fpModelNft='${m}';renderFpContent()"><img src="${MODEL_ICONS[m]}"><div style="flex:1"><div>${m}</div><div style="font-size:12px;color:rgba(255,255,255,.4)">Модель</div></div><i class="fas fa-chevron-right" style="color:#b87aff"></i></div>`).join('');
+      let uniqueNfts=[...new Map(selectedCollectionNfts.map(n=>[n.nftName,n])).values()];
+      if(q) uniqueNfts=uniqueNfts.filter(n=>n.nftName.toLowerCase().includes(q));
+      list.innerHTML=uniqueNfts.map(nft=>`<div class="fp-row" onclick="fpModelNft='${nft.nftName.replace(/'/g,"\\'")}';renderFpContent()"><img src="${nft.image}"><span class="fp-row-name">${nft.nftName}</span><i class="fas fa-chevron-right" style="color:#b87aff"></i></div>`).join('');
     }else{
       let allNfts=getListings();
-      let nftsWithModel=allNfts.filter(n=>n.model===fpModelNft && tempFilters.collection.includes(n.nftName));
-      let uniqueNfts=[...new Map(nftsWithModel.map(n=>[n.nftName,n])).values()];
-      list.innerHTML=`<div class="back-link" onclick="fpModelNft=null;renderFpContent()"><i class="fas fa-arrow-left"></i> Назад</div>`+uniqueNfts.map(nft=>{
-        const sel=tempFilters.model.includes(nft.model);
-        return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('model','${nft.model}')"><img src="${nft.image}"><span class="fp-row-name">${nft.nftName}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;
-      }).join('');
+      let selectedNft=allNfts.find(n=>n.nftName===fpModelNft);
+      if(selectedNft){
+        list.innerHTML=`<div class="back-link" onclick="fpModelNft=null;renderFpContent()"><i class="fas fa-arrow-left"></i> Назад</div><div style="margin-bottom:14px"><div style="font-weight:600;margin-bottom:8px">Модели для ${selectedNft.nftName}:</div>`+MODELS.map(m=>{const sel=tempFilters.model.includes(m);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('model','${m}')"><img src="${MODEL_ICONS[m]}"><div style="flex:1"><div>${m}</div><div style="font-size:12px;color:rgba(255,255,255,.4)">Модель</div></div><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('')+`</div>`;
+      }else{
+        list.innerHTML='<div style="text-align:center;padding:40px">NFT не найден</div>';
+      }
     }
   }else if(fpTab==='background'){
     let opts=[...BACKGROUNDS];if(q)opts=opts.filter(b=>b.toLowerCase().includes(q));
@@ -428,9 +438,8 @@ function renderFpContent(){
     let opts=[...PATTERNS];if(q)opts=opts.filter(p=>p.toLowerCase().includes(q));
     list.innerHTML=opts.map(pt=>{const sel=tempFilters.pattern.includes(pt);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('pattern','${pt}')"><img src="${PATTERN_IMAGES[pt]}"><span class="fp-row-name">${pt}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
   }
-  const fpClear=document.getElementById('fpSearchClear');const fpInput=document.getElementById('fpSearch');if(fpInput.value.length>0)fpClear.classList.add('show');else fpClear.classList.remove('show');
 }
-function toggleFilter(key,val){const arr=tempFilters[key];const idx=arr.indexOf(val);if(idx>=0)arr.splice(idx,1);else arr.push(val);fpModelNft=null;renderFpTabs();renderFpContent();updateFilterButtons();}
+function toggleFilter(key,val){const arr=tempFilters[key];const idx=arr.indexOf(val);if(idx>=0)arr.splice(idx,1);else arr.push(val);if(key==='collection') fpModelNft=null;renderFpTabs();renderFpContent();updateFilterButtons();}
 
 // Event binding
 document.getElementById('searchClear').onclick=clearMainSearch;
@@ -440,7 +449,6 @@ document.getElementById('filterBtn').onclick=openFilter;
 document.getElementById('closeFilterBtn').onclick=closeFilter;
 document.getElementById('applyFiltersBtn').onclick=applyFilters;
 document.getElementById('resetAllBtn').onclick=resetAllFilters;
-document.getElementById('fpSortBtn').onclick=toggleFpSort;
 document.getElementById('closeDepBtn').onclick=()=>closeOverlay('depOv');
 document.getElementById('confirmDepBtn').onclick=confirmDeposit;
 document.getElementById('closeBuyBtn').onclick=()=>closeOverlay('buyOv');
@@ -448,6 +456,9 @@ document.getElementById('buyConfirmBtn').onclick=confirmBuy;
 document.getElementById('plusBtn').onclick=openDeposit;
 document.getElementById('menuCircle').onclick=()=>showToast('Меню');
 document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';selectedDep=null;renderDepGrid();document.activeElement?.blur();};
+document.getElementById('customAmount').addEventListener('input', function(e){
+  this.value = this.value.replace(/[^0-9]/g, '');
+});
 document.getElementById('customAmount').addEventListener('blur',function(){
   let val=this.value.trim();
   if(val==='') return;
