@@ -8,55 +8,25 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;border-color:rgba(138,43,226,.2)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;border-color:rgba(138,43,226,.2);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 html,body{height:100%;overflow:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
 
-/* Stars BG — CSS radial-gradients (same as index.css) */
 .stars-bg{position:fixed;inset:0;background:radial-gradient(ellipse at 40% 50%,#0a0e1a 0%,#03050a 70%,#000103 100%);z-index:0;pointer-events:none}
 .stars-bg::before,.stars-bg::after{content:'';position:absolute;inset:0}
-.stars-bg::before{background-image:
-  radial-gradient(1.5px 1.5px at 15% 20%,rgba(255,255,255,.32) 0%,transparent 100%),
-  radial-gradient(1px 1px at 82% 10%,rgba(255,255,255,.22) 0%,transparent 100%),
-  radial-gradient(1.5px 1.5px at 60% 35%,rgba(255,255,255,.28) 0%,transparent 100%),
-  radial-gradient(1px 1px at 30% 65%,rgba(255,255,255,.18) 0%,transparent 100%),
-  radial-gradient(1.5px 1.5px at 75% 55%,rgba(255,255,255,.25) 0%,transparent 100%),
-  radial-gradient(1px 1px at 5% 45%,rgba(255,255,255,.18) 0%,transparent 100%),
-  radial-gradient(1.5px 1.5px at 50% 80%,rgba(255,255,255,.2) 0%,transparent 100%),
-  radial-gradient(1px 1px at 90% 75%,rgba(255,255,255,.16) 0%,transparent 100%),
-  radial-gradient(1px 1px at 25% 90%,rgba(255,255,255,.18) 0%,transparent 100%),
-  radial-gradient(1.5px 1.5px at 40% 5%,rgba(255,255,255,.28) 0%,transparent 100%),
-  radial-gradient(1px 1px at 68% 15%,rgba(255,255,255,.2) 0%,transparent 100%),
-  radial-gradient(1px 1px at 12% 78%,rgba(255,255,255,.18) 0%,transparent 100%),
-  radial-gradient(1.5px 1.5px at 55% 60%,rgba(255,255,255,.22) 0%,transparent 100%),
-  radial-gradient(1px 1px at 88% 40%,rgba(255,255,255,.16) 0%,transparent 100%),
-  radial-gradient(1.5px 1.5px at 72% 88%,rgba(255,255,255,.22) 0%,transparent 100%)}
-.stars-bg::after{background-image:
-  radial-gradient(1px 1px at 22% 15%,rgba(255,255,255,.18) 0%,transparent 100%),
-  radial-gradient(1.5px 1.5px at 77% 28%,rgba(255,255,255,.24) 0%,transparent 100%),
-  radial-gradient(1px 1px at 43% 42%,rgba(255,255,255,.16) 0%,transparent 100%),
-  radial-gradient(1.5px 1.5px at 8% 60%,rgba(255,255,255,.22) 0%,transparent 100%),
-  radial-gradient(1px 1px at 58% 22%,rgba(255,255,255,.2) 0%,transparent 100%),
-  radial-gradient(1px 1px at 85% 65%,rgba(255,255,255,.16) 0%,transparent 100%),
-  radial-gradient(1.5px 1.5px at 33% 85%,rgba(255,255,255,.26) 0%,transparent 100%),
-  radial-gradient(1px 1px at 92% 12%,rgba(255,255,255,.22) 0%,transparent 100%)}
+.stars-bg::before{background-image:radial-gradient(1.5px 1.5px at 15% 20%,rgba(255,255,255,.32) 0%,transparent 100%),radial-gradient(1px 1px at 82% 10%,rgba(255,255,255,.22) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 60% 35%,rgba(255,255,255,.28) 0%,transparent 100%),radial-gradient(1px 1px at 30% 65%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 75% 55%,rgba(255,255,255,.25) 0%,transparent 100%),radial-gradient(1px 1px at 5% 45%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 50% 80%,rgba(255,255,255,.2) 0%,transparent 100%),radial-gradient(1px 1px at 90% 75%,rgba(255,255,255,.16) 0%,transparent 100%),radial-gradient(1px 1px at 25% 90%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 40% 5%,rgba(255,255,255,.28) 0%,transparent 100%),radial-gradient(1px 1px at 68% 15%,rgba(255,255,255,.2) 0%,transparent 100%),radial-gradient(1px 1px at 12% 78%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 55% 60%,rgba(255,255,255,.22) 0%,transparent 100%),radial-gradient(1px 1px at 88% 40%,rgba(255,255,255,.16) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 72% 88%,rgba(255,255,255,.22) 0%,transparent 100%)}
+.stars-bg::after{background-image:radial-gradient(1px 1px at 22% 15%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 77% 28%,rgba(255,255,255,.24) 0%,transparent 100%),radial-gradient(1px 1px at 43% 42%,rgba(255,255,255,.16) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 8% 60%,rgba(255,255,255,.22) 0%,transparent 100%),radial-gradient(1px 1px at 58% 22%,rgba(255,255,255,.2) 0%,transparent 100%),radial-gradient(1px 1px at 85% 65%,rgba(255,255,255,.16) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 33% 85%,rgba(255,255,255,.26) 0%,transparent 100%),radial-gradient(1px 1px at 92% 12%,rgba(255,255,255,.22) 0%,transparent 100%)}
 
-/* Ambient orbs */
 @keyframes orb1{0%,100%{transform:translate(0,0) scale(1);opacity:.12}50%{transform:translate(30px,-20px) scale(1.08);opacity:.18}}
 @keyframes orb2{0%,100%{transform:translate(0,0) scale(1);opacity:.08}50%{transform:translate(-25px,30px) scale(1.05);opacity:.14}}
 .ambient-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;will-change:transform,opacity}
 .orb1{width:340px;height:340px;background:radial-gradient(circle,rgba(148,38,255,.22) 0%,transparent 70%);top:-60px;left:-60px;animation:orb1 8s ease-in-out infinite}
 .orb2{width:300px;height:300px;background:radial-gradient(circle,rgba(90,20,200,.18) 0%,transparent 70%);bottom:60px;right:-50px;animation:orb2 10s ease-in-out infinite}
 
-/* App */
 .app{max-width:440px;width:100%;height:100vh;height:100dvh;display:flex;flex-direction:column;position:relative;z-index:1;overflow:hidden}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(26,24,56,.97);border:1px solid rgba(184,122,255,.3);border-radius:16px;padding:10px 18px;font-size:14px;z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
 
-/* Toast */
-.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);padding:10px 18px;border-radius:60px;background:rgba(0,200,83,.9);color:#fff;font-weight:500;font-size:13px;z-index:9999;transition:transform .22s;pointer-events:none;white-space:nowrap;border:.5px solid rgba(255,255,255,.2)}
-.toast.err{background:rgba(139,26,26,.95)}
-.toast.show{transform:translateX(-50%) translateY(0)}
-
-/* Profile header (same as ProfileHeader.tsx) */
 .phdr{display:flex;align-items:center;justify-content:space-between;margin:16px 20px 18px;gap:12px;flex-shrink:0}
 .phdr-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
 .ava{width:50px;height:50px;border-radius:18px;background:rgba(106,13,173,.5);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;border:.5px solid rgba(184,122,255,.5);flex-shrink:0;overflow:hidden}
@@ -65,120 +35,97 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .phdr-un{font-size:13px;color:rgba(255,255,255,.48);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bal-block{display:flex;align-items:center;gap:6px;background:rgba(18,18,34,.92);border:1px solid rgba(138,43,226,.2);border-radius:60px;padding:6px 8px 6px 14px;flex-shrink:0}
 .bal-val{font-size:15px;font-weight:600;display:flex;align-items:center;gap:5px}
-.plus-btn{background:rgba(255,255,255,.1);border:1px solid rgba(138,43,226,.38);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:20px;font-weight:300;cursor:pointer;line-height:1}
-.plus-btn:active{background:rgba(106,13,173,.6);transform:scale(.92)}
+.plus-btn{background:rgba(255,255,255,.1);border:1px solid rgba(138,43,226,.38);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:20px;font-weight:300;cursor:pointer}
+.plus-btn:active{transform:scale(.92)}
 
-/* Scrollable profile area (same as ProfilePage flex:1 overflow-y:auto) */
-.prof-scroll{flex:1;overflow-y:auto;padding:0 20px 110px;scrollbar-width:none}
-.prof-scroll::-webkit-scrollbar{display:none}
+.prof-scroll{flex:1;overflow-y:auto;padding:0 20px 110px}
+.prof-scroll::-webkit-scrollbar{width:3px}
+.prof-scroll::-webkit-scrollbar-thumb{background:rgba(184,122,255,.35);border-radius:3px}
 
-/* Inventory container (same as ProfilePage main div) */
 .inv-wrap{background:rgba(255,255,255,.03);backdrop-filter:blur(24px);border:.5px solid rgba(138,43,226,.2);border-radius:32px;padding:20px 18px 22px;position:relative}
-
-/* Inventory header */
 .inv-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .inv-hdr-left{display:flex;align-items:center;gap:10px}
 .inv-hdr-left i{font-size:22px;color:#b87aff}
 .inv-hdr-left span{font-size:19px;font-weight:600}
-/* Info button — same as ProfilePage (32x32, border .5px, i text) */
-.info-btn{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:.5px solid rgba(184,122,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(184,122,255,.7);font-size:16px;font-weight:600;user-select:none;transition:background .1s,border-color .1s}
+.info-btn{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:.5px solid rgba(184,122,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(184,122,255,.7);font-size:16px;font-weight:600;user-select:none}
 .info-btn.on{background:rgba(106,13,173,.4);border-color:rgba(184,122,255,.8);color:#b87aff}
 
-/* Hint popup — same as ProfilePage hintVisible block */
-.hint{position:absolute;top:58px;right:18px;width:260px;background:rgba(106,13,173,.85);backdrop-filter:blur(28px);border-radius:22px;padding:14px 16px;border:.5px solid rgba(255,255,255,.2);z-index:10;display:none}
-.hint.show{display:block;animation:fadeHint .12s ease}
-@keyframes fadeHint{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
-/* Arrow pointing up-right */
+.hint{position:absolute;top:58px;right:18px;width:280px;background:rgba(106,13,173,.85);backdrop-filter:blur(28px);border-radius:22px;padding:14px 16px;border:.5px solid rgba(255,255,255,.2);z-index:10;display:none}
+.hint.show{display:block}
 .hint-arr{position:absolute;top:-8px;right:14px;border-left:10px solid transparent;border-right:10px solid transparent;border-bottom:10px solid rgba(106,13,173,.85);width:0;height:0}
 .hint-text{font-size:13px;color:rgba(255,255,255,.95);line-height:1.45}
 .hint-pill{font-weight:700;color:#fff;background:rgba(255,255,255,.15);padding:2px 7px;border-radius:40px;display:inline-block;margin:0 2px}
 
-/* Add gift button — same as ProfilePage dashed button */
-.add-gift{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px 0;min-height:76px;border:1.5px dashed rgba(184,122,255,.4);border-radius:60px;background:rgba(106,13,173,.08);backdrop-filter:blur(8px);cursor:pointer;margin-bottom:20px;font-family:inherit;transition:background .1s}
-.add-gift:active,.add-gift.pressed{background:rgba(106,13,173,.2)}
+.add-gift{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px 0;min-height:76px;border:1.5px dashed rgba(184,122,255,.4);border-radius:60px;background:rgba(106,13,173,.08);backdrop-filter:blur(8px);cursor:pointer;margin-bottom:20px;font-family:inherit}
+.add-gift:active{background:rgba(106,13,173,.2)}
 .add-gift-plus{font-size:30px;font-weight:300;line-height:1;margin-bottom:3px;color:rgba(255,255,255,.7)}
 .add-gift-label{font-size:13px;color:rgba(255,255,255,.5);font-weight:500}
 
-/* Inventory grid — original card style (same as ProfilePage) */
 .inv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.icard{background:rgba(255,255,255,.05);backdrop-filter:blur(12px);border:.5px solid rgba(138,43,226,.25);border-radius:18px;padding:10px 6px 8px;display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:all .08s}
-.icard:active{transform:scale(.96);border-color:rgba(184,122,255,.6)}
-.icard img{width:76px;height:76px;border-radius:16px;object-fit:cover;margin-bottom:6px;background:rgba(42,30,58,.5);border:.5px solid rgba(184,122,255,.2);display:block}
+.icard{background:rgba(255,255,255,.05);backdrop-filter:blur(12px);border:.5px solid rgba(138,43,226,.25);border-radius:18px;padding:10px 6px 8px;display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.icard:active{transform:scale(.96)}
+.icard img{width:76px;height:76px;border-radius:16px;object-fit:cover;margin-bottom:6px;background:rgba(42,30,58,.5);border:.5px solid rgba(184,122,255,.2)}
 .icard-name{font-size:12px;font-weight:500;color:#f0f0f0;text-align:center;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.icard-price{display:flex;align-items:center;gap:3px;font-size:12px;font-weight:600;color:#b87aff}
-/* Empty state */
+.icard-price{font-size:12px;font-weight:600;color:#b87aff}
 .inv-empty{text-align:center;color:rgba(255,255,255,.5);font-size:13px;padding:28px 0}
 .inv-empty i{font-size:44px;color:#b87aff;opacity:.3;display:block;margin-bottom:12px}
-
-/* Bottom nav — fixed, same as React BottomNav */
 .bnav{position:fixed;bottom:18px;left:18px;right:18px;max-width:404px;margin:0 auto;background:rgba(12,12,22,.95);border:1px solid rgba(184,122,255,.16);border-radius:28px;display:flex;justify-content:space-around;padding:8px 16px;z-index:1000}
-.ni{display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,.48);font-size:10px;font-weight:500;cursor:pointer;padding:6px 14px;border-radius:22px;min-width:70px;text-decoration:none;background:transparent;border:none;font-family:inherit;transition:background .12s,color .12s}
+.ni{display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,.48);font-size:10px;font-weight:500;cursor:pointer;padding:6px 14px;border-radius:22px;min-width:70px;text-decoration:none;background:transparent;border:none}
 .ni i{font-size:20px}
 .ni.on{background:rgba(106,13,173,.2);color:#b87aff}
-.ni.on i{color:#b87aff}
 
-/* Overlays */
-.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:2000;display:none;align-items:center;justify-content:center}
-.ov.show{display:flex}
-@keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:none;opacity:1}}
-@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+/* Overlay как в index.html — снизу, с ручкой */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0);backdrop-filter:blur(10px);z-index:2000;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease, visibility .35s ease, background .35s ease}
+.overlay.visible{opacity:1;visibility:visible;pointer-events:auto;background:rgba(0,0,0,.75)}
+.overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.sheet{max-width:420px;width:94%;background:rgba(20,18,35,.98);border:0.5px solid rgba(184,122,255,.3);border-radius:26px 26px 0 0;padding:20px 22px 30px;transform:translateY(100%);transition:transform .45s cubic-bezier(0.16,1,0.3,1);max-height:88vh;overflow-y:auto}
+.sheet-handle{width:48px;height:5px;background:rgba(255,255,255,.25);border-radius:3px;margin:0 auto 18px;cursor:grab;touch-action:pan-y}
+.sheet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.sheet-title{font-size:19px;font-weight:700}
+.close-btn{width:34px;height:34px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.4);border-radius:50%;color:#b87aff;font-size:19px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:20px}
+.dep-amount{padding:13px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);text-align:center;font-size:14px;color:rgba(255,255,255,.85);cursor:pointer}
+.dep-amount.sel{background:rgba(88,10,148,.45);border-color:#b87aff;color:#fff}
+.custom-amount-wrapper{position:relative;margin-bottom:20px}
+.custom-amount-wrapper input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:60px;padding:14px 44px 14px 18px;color:#fff;font-size:15px;outline:none}
+.custom-amount-wrapper input::placeholder{color:rgba(255,255,255,.35)}
+.custom-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.5);font-size:14px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.dep-info{display:flex;justify-content:space-between;margin-bottom:20px;background:rgba(255,255,255,.04);padding:15px 18px;border-radius:18px}
+.purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border-radius:60px;padding:15px;color:#fff;font-weight:700;font-size:16px;border:none;cursor:pointer}
 
-/* Deposit modal — same as React DepositModal */
-.dmod{max-width:360px;width:90%;background:rgba(14,14,26,.98);border:1px solid rgba(255,255,255,.15);border-radius:28px;padding:28px 20px 22px;position:relative;animation:slideUp .22s cubic-bezier(.34,1.56,.64,1)}
-.dtitle{font-size:21px;font-weight:700;text-align:center;margin-bottom:20px}
-.qas{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
-.qa{background:rgba(88,10,148,.2);border:1px solid rgba(184,122,255,.25);border-radius:30px;padding:7px 14px;font-size:13px;font-weight:600;color:#b87aff;cursor:pointer}
-.qa:active{transform:scale(.94)}
-.qa.sel{background:rgba(88,10,148,.5);border-color:#b87aff;color:#fff}
-.dep-inp{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:13px 16px;font-size:16px;color:#fff;outline:none;margin-bottom:14px;font-family:inherit}
-.dep-inp:focus{border-color:rgba(184,122,255,.6)}
-.dep-confirm{background:linear-gradient(135deg,rgba(88,10,148,.85),rgba(148,38,255,.65));border:1px solid rgba(184,122,255,.35);border-radius:60px;padding:13px 20px;width:100%;color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:inherit}
-.dep-confirm:active{transform:scale(.97)}
-.dep-confirm span:last-child{background:rgba(255,255,255,.15);padding:3px 12px;border-radius:30px;font-size:14px}
-
-/* Gift modal — same as React GiftModal */
+/* Gift modal */
 .gmod{max-width:360px;width:90%;background:rgba(20,20,35,.85);backdrop-filter:blur(40px);border:.5px solid rgba(184,122,255,.3);border-radius:32px;padding:28px 20px 24px;position:relative;animation:slideUp .25s ease}
-.xbtn{position:absolute;top:8px;right:8px;width:28px;height:28px;background:transparent;border:none;color:#b87aff;font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:50%;font-family:system-ui,Inter,sans-serif}
-.xbtn:active{transform:scale(.9)}
-/* Warning block */
+@keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:none;opacity:1}}
+.xbtn{position:absolute;top:8px;right:8px;width:32px;height:32px;background:transparent;border:none;color:#b87aff;font-size:24px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:50%}
 .g-warn{background:rgba(184,77,77,.2);border-radius:18px;padding:14px 16px;margin:0 0 22px;border:.5px solid rgba(255,255,255,.1)}
 .g-warn-title{color:#ff8888;font-size:15px;font-weight:600;margin-bottom:5px}
 .g-warn-sub{color:rgba(255,255,255,.8);font-size:13px}
-/* Steps */
 .g-step{display:flex;align-items:center;gap:14px;margin-bottom:18px;background:rgba(255,255,255,.03);backdrop-filter:blur(8px);border-radius:18px;padding:12px 14px;border:.5px solid rgba(255,255,255,.05)}
-.g-step.link{cursor:pointer;transition:background .1s}
-.g-step.link:active{background:rgba(184,122,255,.2)}
+.g-step.link{cursor:pointer}
 .g-ico{width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:26px;color:rgba(255,255,255,.7);flex-shrink:0}
 .g-txt{flex:1}
 .g-title{font-size:15px;font-weight:600;margin-bottom:3px}
 .g-sub{font-size:13px;color:rgba(255,255,255,.5)}
 .g-link{font-size:13px;color:#b87aff;font-weight:500}
-.g-bot-btn{background:rgba(106,13,173,.7);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.3);border-radius:60px;padding:14px;width:100%;color:#fff;font-size:17px;font-weight:600;cursor:pointer;text-align:center;margin-top:8px;font-family:inherit}
-.g-bot-btn:active{transform:scale(.97)}
+.g-bot-btn{background:rgba(106,13,173,.7);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.3);border-radius:60px;padding:14px;width:100%;color:#fff;font-size:17px;font-weight:600;cursor:pointer;text-align:center;margin-top:8px}
 
-/* NFT detail modal — same as React NftModal */
+/* NFT detail modal */
 .nmod{max-width:310px;width:85%;background:rgba(20,20,35,.85);backdrop-filter:blur(40px);border:.5px solid rgba(184,122,255,.3);border-radius:30px;padding:28px 18px 22px;position:relative;animation:fadeIn .18s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 .nmod-img{width:130px;height:130px;border-radius:24px;margin:4px auto 12px;display:block;object-fit:cover;background:rgba(42,42,58,.5);border:.5px solid rgba(184,122,255,.2)}
 .nmod-name{font-size:20px;font-weight:600;color:rgba(255,255,255,.85);text-align:center;margin-bottom:6px}
 .nmod-price{display:flex;align-items:center;justify-content:center;gap:5px;font-size:22px;font-weight:700;margin-bottom:18px}
 .nmod-actions{display:flex;flex-direction:column;gap:8px;width:100%}
-/* Sell button locked (same as SellTimerButton locked state) */
-.sell-locked{display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px 18px;border-radius:60px;font-size:15px;font-weight:600;cursor:default;border:.5px solid rgba(184,122,255,.2);background:rgba(255,255,255,.05);backdrop-filter:blur(8px);color:rgba(255,255,255,.6);font-family:inherit}
+.sell-locked{display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px 18px;border-radius:60px;font-size:15px;font-weight:600;cursor:default;border:.5px solid rgba(184,122,255,.2);background:rgba(255,255,255,.05);backdrop-filter:blur(8px);color:rgba(255,255,255,.6)}
 .sell-locked-l{display:flex;align-items:center;gap:7px}
 .sell-timer{font-weight:500;background:rgba(0,0,0,.3);backdrop-filter:blur(4px);padding:3px 9px;border-radius:30px;font-size:13px}
-/* Sell button unlocked */
-.sell-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:12px 18px;border-radius:60px;font-size:15px;font-weight:600;cursor:pointer;background:rgba(106,13,173,.7);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.4);color:#fff;font-family:inherit}
-.sell-btn:active{transform:scale(.96)}
-/* Sell price input state */
-.sell-inp{width:100%;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:.5px solid rgba(255,255,255,.15);border-radius:20px;padding:13px 16px;font-size:16px;color:#fff;outline:none;font-family:inherit}
+.sell-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:12px 18px;border-radius:60px;font-size:15px;font-weight:600;cursor:pointer;background:rgba(106,13,173,.7);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.4);color:#fff}
+.sell-inp{width:100%;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:.5px solid rgba(255,255,255,.15);border-radius:20px;padding:13px 16px;font-size:16px;color:#fff;outline:none}
 .sell-inp:focus{border-color:rgba(184,122,255,.5)}
 .sell-row{display:flex;gap:8px}
-.sell-cancel{flex:1;background:rgba(255,255,255,.05);backdrop-filter:blur(8px);border:.5px solid rgba(184,122,255,.2);border-radius:60px;padding:12px;color:rgba(255,255,255,.6);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
-.sell-do{flex:1;background:rgba(106,13,173,.7);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.4);border-radius:60px;padding:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
-.sell-do:active,.sell-cancel:active{transform:scale(.97)}
-/* Withdraw — same as React (color:#b87aff) */
-.withdraw-btn{background:rgba(255,255,255,.05);backdrop-filter:blur(8px);border:.5px solid rgba(184,122,255,.3);border-radius:60px;padding:12px;width:100%;color:#b87aff;font-size:15px;font-weight:600;cursor:pointer;text-align:center;font-family:inherit}
-.withdraw-btn:active{transform:scale(.97)}
+.sell-cancel{flex:1;background:rgba(255,255,255,.05);backdrop-filter:blur(8px);border:.5px solid rgba(184,122,255,.2);border-radius:60px;padding:12px;color:rgba(255,255,255,.6);font-size:15px;font-weight:600;cursor:pointer}
+.sell-do{flex:1;background:rgba(106,13,173,.7);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.4);border-radius:60px;padding:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+.withdraw-btn{background:rgba(255,255,255,.05);backdrop-filter:blur(8px);border:.5px solid rgba(184,122,255,.3);border-radius:60px;padding:12px;width:100%;color:#b87aff;font-size:15px;font-weight:600;cursor:pointer;text-align:center}
 </style>
 </head>
 <body>
@@ -187,62 +134,7 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 <div class="ambient-orb orb2"></div>
 <div class="toast" id="toast"></div>
 
-<!-- DEPOSIT MODAL -->
-<div class="ov" id="depOv">
-  <div class="dmod">
-    <div class="xbtn" id="depX">×</div>
-    <div class="dtitle">Пополнение</div>
-    <div class="qas">
-      <span class="qa" data-a="50">50 ⭐</span><span class="qa" data-a="100">100 ⭐</span>
-      <span class="qa" data-a="200">200 ⭐</span><span class="qa" data-a="500">500 ⭐</span>
-      <span class="qa" data-a="1000">1000 ⭐</span><span class="qa" data-a="2000">2000 ⭐</span>
-    </div>
-    <input class="dep-inp" id="depIn" type="text" inputmode="numeric" placeholder="Введите количество звёзд">
-    <button class="dep-confirm" id="depBtn"><span>Пополнить</span><span id="depAmt">0 ⭐</span></button>
-  </div>
-</div>
-
-<!-- GIFT MODAL — same as GiftModal.tsx -->
-<div class="ov" id="giftOv">
-  <div class="gmod">
-    <div class="xbtn" id="giftX">✕</div>
-    <div class="g-warn">
-      <div class="g-warn-title">Не дарите подарки с Telegram Маркета</div>
-      <div class="g-warn-sub">Отправляйте подарки только напрямую со своего аккаунта</div>
-    </div>
-    <!-- Step 1 clickable -->
-    <div class="g-step link" id="gStep1">
-      <div class="g-ico"><i class="fas fa-robot"></i></div>
-      <div class="g-txt"><div class="g-title">Перейдите в бота</div><div class="g-link">@yeter16_bot</div></div>
-    </div>
-    <!-- Step 2 -->
-    <div class="g-step">
-      <div class="g-ico"><i class="fas fa-gift"></i></div>
-      <div class="g-txt"><div class="g-title">Отправьте ему подарок</div><div class="g-sub">(любой из Telegram)</div></div>
-    </div>
-    <!-- Step 3 -->
-    <div class="g-step" style="margin-bottom:8px">
-      <div class="g-ico"><i class="fas fa-clock"></i></div>
-      <div class="g-txt"><div class="g-title">Подарок добавится в инвентарь</div><div class="g-sub">в течение нескольких минут</div></div>
-    </div>
-    <button class="g-bot-btn" id="gBotBtn">Перейти в бота</button>
-  </div>
-</div>
-
-<!-- NFT DETAIL MODAL -->
-<div class="ov" id="nftOv">
-  <div class="nmod">
-    <div class="xbtn" id="nftX">✕</div>
-    <img class="nmod-img" id="nImg" src="" alt="">
-    <div class="nmod-name" id="nName"></div>
-    <div class="nmod-price"><span style="font-size:20px;color:#ffd700">🧩</span><span id="nPrice"></span></div>
-    <div class="nmod-actions" id="nActions"></div>
-  </div>
-</div>
-
-<!-- APP -->
 <div class="app">
-  <!-- Profile header (same as ProfileHeader.tsx) -->
   <div class="phdr">
     <div class="phdr-left">
       <div class="ava" id="av">И</div>
@@ -252,50 +144,92 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
       </div>
     </div>
     <div class="bal-block">
-      <div class="bal-val"><span>⭐</span><span id="bv">5 000</span></div>
-      <div class="plus-btn" id="plus">+</div>
+      <div class="bal-val"><span id="bv">5000</span> ₽</div>
+      <div class="plus-btn" id="plusBtn">+</div>
     </div>
   </div>
 
-  <!-- Scrollable content (same as ProfilePage flex:1 overflow-y:auto padding 0 20px 110px) -->
   <div class="prof-scroll">
     <div class="inv-wrap">
-      <!-- Inventory header -->
       <div class="inv-hdr">
         <div class="inv-hdr-left"><i class="fas fa-box"></i><span>Инвентарь</span></div>
-        <!-- Info button same as id="info-btn" in ProfilePage -->
         <div class="info-btn" id="infoBtn">i</div>
       </div>
-
-      <!-- Hint popup (same as ProfilePage hintVisible block) -->
       <div class="hint" id="hint">
         <div class="hint-arr"></div>
-        <div class="hint-text">
-          Воспользуйся кнопкой <span class="hint-pill">«Добавить подарок»</span>, чтобы добавить NFT в инвентарь и выставить его на продажу в магазине
-        </div>
+        <div class="hint-text">Воспользуйтесь кнопкой <span class="hint-pill">«Добавить подарок»</span>, чтобы добавить NFT в инвентарь и выставить его на продажу в маркете</div>
       </div>
-
-      <!-- Add gift button (same as ProfilePage dashed button) -->
       <button class="add-gift" id="addGift">
         <span class="add-gift-plus">+</span>
         <span class="add-gift-label">Добавить подарок</span>
       </button>
-
-      <!-- Inventory -->
       <div class="inv-empty" id="invEmpty">
         <i class="fas fa-gift"></i>
         <p>В инвентаре пока пусто</p>
-        <p style="font-size:12px;margin-top:4px">Купите NFT в маркете</p>
+        <p style="font-size:12px;margin-top:4px">Купите NFT в маркете или</p>
+        <p style="font-size:12px">воспользуйтесь кнопкой «Добавить подарок»</p>
       </div>
       <div class="inv-grid" id="invGrid" style="display:none"></div>
     </div>
   </div>
 </div>
 
-<!-- Bottom nav — fixed, same as BottomNav.tsx -->
 <div class="bnav">
   <a href="index.html" class="ni"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
-  <a href="profile.html" class="ni on"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
+  <a href="profle.html" class="ni on"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
+</div>
+
+<!-- МОДАЛКА ПОПОЛНЕНИЯ (как в index.html) -->
+<div class="overlay hidden" id="depOverlay" data-dismissible="true">
+  <div class="sheet" data-dismissible="true">
+    <div class="sheet-handle" id="depHandle"></div>
+    <div class="sheet-title-row">
+      <span class="sheet-title">Пополнение баланса</span>
+      <button class="close-btn" id="closeDepBtn">×</button>
+    </div>
+    <div class="dep-grid" id="depGrid"></div>
+    <div class="custom-amount-wrapper">
+      <input type="text" id="customAmount" inputmode="numeric" placeholder="введите сумму пополнения">
+      <div class="custom-clear" id="customClear">✕</div>
+    </div>
+    <div class="dep-info"><span>Текущий баланс</span><span><span id="depBalance">5000</span> ₽</span></div>
+    <button class="purple-btn" id="confirmDepBtn">Пополнить</button>
+  </div>
+</div>
+
+<!-- GIFT MODAL (рабочая) -->
+<div class="overlay hidden" id="giftOverlay" data-dismissible="true">
+  <div class="gmod">
+    <div class="xbtn" id="giftX">✕</div>
+    <div class="g-warn">
+      <div class="g-warn-title">Не дарите подарки с Telegram Маркета</div>
+      <div class="g-warn-sub">Отправляйте подарки только напрямую со своего аккаунта</div>
+    </div>
+    <div class="g-step link" id="gStep1">
+      <div class="g-ico"><i class="fas fa-user"></i></div>
+      <div class="g-txt"><div class="g-title">Перейдите в аккаунт</div><div class="g-link">@yeter16</div></div>
+    </div>
+    <div class="g-step">
+      <div class="g-ico"><i class="fas fa-gift"></i></div>
+      <div class="g-txt"><div class="g-title">Отправьте подарок</div><div class="g-sub">(любой из Telegram)</div></div>
+    </div>
+    <div class="g-step" style="margin-bottom:8px">
+      <div class="g-ico"><i class="fas fa-clock"></i></div>
+      <div class="g-txt"><div class="g-title">Подарок добавится в инвентарь</div><div class="g-sub">в течение нескольких минут</div></div>
+    </div>
+    <button class="g-bot-btn" id="gBotBtn">Перейти в аккаунт</button>
+  </div>
+</div>
+
+<!-- NFT DETAIL MODAL -->
+<div class="overlay hidden" id="nftOverlay" data-dismissible="true">
+  <div class="nmod">
+    <div class="xbtn" id="nftX">✕</div>
+    <img class="nmod-img" id="nImg" src="" alt="">
+    <div class="nmod-name" id="nName"></div>
+    <div class="nmod-price"><span id="nPrice"></span> ₽</div>
+    <div class="nmod-actions" id="nActions"></div>
+  </div>
 </div>
 
 <script>
@@ -304,34 +238,34 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 
 const GB='https://raw.githubusercontent.com/ur12163008-bot/yeter-game/main/nft/';
 const SELL_LOCK_MS=30*60*1000;
-/* same keys as React store.ts */
 const BAL_K='nft_balance', MKT_K='nft_market_listings_v2', INV_K='nft_inventory';
+const DEP_AMOUNTS = [100,200,500,1000,2000,5000];
 
 const lsGet=k=>{try{return JSON.parse(localStorage.getItem(k))}catch{return null}};
 const lsSet=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 const getBal=()=>parseInt(localStorage.getItem(BAL_K)||'')||5000;
 const setBal=n=>{localStorage.setItem(BAL_K,String(n));renderBal()};
-const renderBal=()=>document.getElementById('bv').textContent=getBal().toLocaleString('ru-RU');
+const renderBal=()=>{document.getElementById('bv').textContent=getBal().toLocaleString('ru-RU');document.getElementById('depBalance').textContent=getBal().toLocaleString('ru-RU')};
 const getInv=()=>lsGet(INV_K)||[];
 const setInv=d=>lsSet(INV_K,d);
 const getMkt=()=>lsGet(MKT_K)||[];
 const setMkt=d=>lsSet(MKT_K,d);
 
-/* image from cache or GitHub */
-const imgUrl=n=>{const c=localStorage.getItem('img_c_'+n);return c?c:GB+encodeURIComponent(n+'.png')};
+const imgUrl=n=>GB+encodeURIComponent(n+'.png');
 const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-/* timer format (same as formatTimer in ProfilePage) */
 function fmt(ms){
   const total=Math.ceil(ms/1000);
   return String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0');
 }
 
-/* toast */
-const toastEl=document.getElementById('toast');let tT;
-const toast=(msg,err=false)=>{clearTimeout(tT);toastEl.textContent=msg;toastEl.className='toast'+(err?' err':'')+' show';tT=setTimeout(()=>toastEl.classList.remove('show'),2400)};
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
 
-/* Telegram user */
 const tg=window.Telegram?.WebApp;
 let U={fullName:'Игрок',username:'@player',avatarChar:'И',photo:null};
 if(tg?.initDataUnsafe?.user){
@@ -346,19 +280,107 @@ const avEl=document.getElementById('av');
 if(U.photo){avEl.innerHTML=`<img src="${U.photo}" alt="">`}else{avEl.textContent=U.avatarChar}
 renderBal();
 
-/* ── DEPOSIT ── */
-const depOv=document.getElementById('depOv'),depIn=document.getElementById('depIn'),depAmtEl=document.getElementById('depAmt');
-document.getElementById('plus').onclick=()=>{depIn.value='';depAmtEl.textContent='0 ⭐';document.querySelectorAll('.qa').forEach(q=>q.classList.remove('sel'));depOv.classList.add('show')};
-document.getElementById('depX').onclick=()=>depOv.classList.remove('show');
-depOv.onclick=e=>{if(e.target===depOv)depOv.classList.remove('show')};
-document.querySelectorAll('.qa').forEach(q=>{q.onclick=()=>{document.querySelectorAll('.qa').forEach(x=>x.classList.remove('sel'));q.classList.add('sel');depIn.value=q.dataset.a;depAmtEl.textContent=q.dataset.a+' ⭐'}});
-depIn.oninput=e=>{const v=e.target.value.replace(/\D/g,'');e.target.value=v;depAmtEl.textContent=(v||'0')+' ⭐';document.querySelectorAll('.qa').forEach(q=>q.classList.remove('sel'))};
-document.getElementById('depBtn').onclick=()=>{
-  const a=Math.min(100000,Math.max(0,parseInt(depIn.value)||0));
-  if(!a)return;setBal(getBal()+a);toast('✅ Баланс пополнен на '+a+' ⭐');depOv.classList.remove('show');
+// DEPOSIT MODAL (как в index.html)
+let selectedDep = 500;
+function renderDepGrid(){
+  const container=document.getElementById('depGrid');
+  container.innerHTML=DEP_AMOUNTS.map(a=>`<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectPreset(${a})">${a.toLocaleString('ru-RU')} ₽</div>`).join('');
+}
+window.selectPreset=function(amt){
+  selectedDep=amt;
+  renderDepGrid();
+  const inputField=document.getElementById('customAmount');
+  if(inputField) inputField.value=amt;
 };
+function getFinalAmount(){
+  let cv=document.getElementById('customAmount').value.trim();
+  if(cv==='') return selectedDep;
+  let num=parseFloat(cv);
+  if(isNaN(num)) return selectedDep;
+  num=Math.round(num);
+  if(num<50) num=50;
+  if(num>1000000) num=1000000;
+  return num;
+}
+function openDeposit(){
+  renderDepGrid();
+  document.getElementById('customAmount').value='';
+  selectedDep=500;
+  renderDepGrid();
+  const overlay=document.getElementById('depOverlay');
+  const sheet=overlay.querySelector('.sheet');
+  overlay.classList.remove('visible','hidden');
+  overlay.style.opacity='0';overlay.style.visibility='hidden';overlay.style.background='rgba(0,0,0,0)';
+  sheet.style.transition='none';sheet.style.transform='translateY(100%)';
+  void overlay.offsetWidth;
+  overlay.style.transition='opacity .35s ease, visibility .35s ease, background .35s ease';
+  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
+  overlay.classList.add('visible');
+  overlay.style.opacity='1';overlay.style.visibility='visible';overlay.style.background='rgba(0,0,0,0.75)';
+  sheet.style.transform='translateY(0)';
+  document.body.classList.add('modal-open');
+}
+function closeDepOverlay(){
+  const overlay=document.getElementById('depOverlay');
+  const sheet=overlay.querySelector('.sheet');
+  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
+  overlay.style.transition='opacity .35s ease, background .35s ease';
+  sheet.style.transform='translateY(100%)';overlay.style.opacity='0';overlay.style.background='rgba(0,0,0,0)';
+  setTimeout(()=>{
+    overlay.classList.remove('visible');overlay.classList.add('hidden');overlay.style.visibility='hidden';
+    document.body.classList.remove('modal-open');
+  },450);
+}
+function confirmDeposit(){
+  let amount=getFinalAmount();
+  if(amount<50) amount=50;
+  if(amount>1000000) amount=1000000;
+  setBal(getBal()+amount);
+  closeDepOverlay();
+  showToast('Пополнено на '+amount.toLocaleString('ru-RU')+' ₽');
+}
+document.getElementById('plusBtn').onclick=openDeposit;
+document.getElementById('confirmDepBtn').onclick=confirmDeposit;
+document.getElementById('closeDepBtn').onclick=closeDepOverlay;
+document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';selectedDep=null;renderDepGrid();document.activeElement?.blur();};
+document.getElementById('customAmount').addEventListener('input', function(e){
+  this.value = this.value.replace(/[^0-9]/g, '');
+  selectedDep=null;
+  renderDepGrid();
+});
+document.getElementById('customAmount').addEventListener('blur',function(){
+  let val=this.value.trim();
+  if(val==='') return;
+  let num=parseInt(val,10);
+  if(isNaN(num)){this.value='';return;}
+  if(num<50) num=50;
+  if(num>1000000) num=1000000;
+  this.value=num;
+  selectedDep=null;
+  renderDepGrid();
+});
+document.getElementById('depOverlay').addEventListener('click',function(e){
+  if(e.target===this){
+    closeDepOverlay();
+  }
+});
+function initDepSwipe(){
+  const overlay=document.getElementById('depOverlay');
+  const sheet=overlay.querySelector('.sheet');
+  const handle=document.getElementById('depHandle');
+  let startY=0,startYOffset=0,isDragging=false,hasMoved=false;
+  const getTransformY=(el)=>{const style=window.getComputedStyle(el);const matrix=style.transform;if(matrix==='none')return 0;const values=matrix.split('(')[1]?.split(')')[0]?.split(',');return values?parseFloat(values[5])||0:0;};
+  const onStart=(e)=>{isDragging=true;hasMoved=false;startY=e.touches?.[0]?.clientY||e.clientY;startYOffset=getTransformY(sheet);sheet.style.transition='none';sheet.style.willChange='transform';e.stopPropagation();};
+  const onMove=(e)=>{if(!isDragging)return;const currentY=e.touches?.[0]?.clientY||e.clientY;const dy=currentY-startY;if(dy>0){hasMoved=true;sheet.style.transform=`translateY(${startYOffset+dy}px)`;const opacity=Math.max(0.3,1-dy/(window.innerHeight*0.4));overlay.style.background=`rgba(0,0,0,${opacity*0.75})`;}e.preventDefault();};
+  const onEnd=()=>{if(!isDragging)return;isDragging=false;const currentY=getTransformY(sheet);const threshold=window.innerHeight*0.25;sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';overlay.style.transition='background .25s ease';if(hasMoved&&currentY>threshold){closeDepOverlay();}else{sheet.style.transform='translateY(0)';overlay.style.background='rgba(0,0,0,0.75)';}setTimeout(()=>{sheet.style.willChange='auto';},300);};
+  sheet.addEventListener('touchstart',onStart,{passive:true});
+  sheet.addEventListener('touchmove',onMove,{passive:false});
+  sheet.addEventListener('touchend',onEnd);
+  if(handle){handle.addEventListener('touchstart',onStart,{passive:true});handle.style.cursor='grab';}
+}
+initDepSwipe();
 
-/* ── HINT POPUP (same as ProfilePage hintVisible logic) ── */
+// HINT POPUP
 const hintEl=document.getElementById('hint'),infoBtn=document.getElementById('infoBtn');
 infoBtn.onclick=e=>{
   e.stopPropagation();
@@ -371,49 +393,59 @@ document.addEventListener('click',e=>{
   }
 });
 
-/* ── GIFT MODAL (same as GiftModal.tsx) ── */
-const giftOv=document.getElementById('giftOv');
-const openBot=()=>{const url='https://t.me/yeter16_bot';if(tg){tg.openLink(url)}else{window.open(url,'_blank')}};
-document.getElementById('addGift').onclick=()=>giftOv.classList.add('show');
-document.getElementById('giftX').onclick=()=>giftOv.classList.remove('show');
-giftOv.onclick=e=>{if(e.target===giftOv)giftOv.classList.remove('show')};
-document.getElementById('gStep1').onclick=openBot;
-document.getElementById('gBotBtn').onclick=openBot;
+// GIFT MODAL (рабочая)
+const giftOverlay=document.getElementById('giftOverlay');
+const openAccount=()=>{const url='https://t.me/yeter16';if(tg){tg.openLink(url)}else{window.open(url,'_blank')}};
+document.getElementById('addGift').onclick=()=>{
+  giftOverlay.classList.remove('visible','hidden');
+  giftOverlay.style.opacity='0';giftOverlay.style.visibility='hidden';
+  void giftOverlay.offsetWidth;
+  giftOverlay.classList.add('visible');
+  giftOverlay.style.opacity='1';giftOverlay.style.visibility='visible';
+};
+document.getElementById('giftX').onclick=()=>giftOverlay.classList.remove('visible');
+giftOverlay.onclick=e=>{if(e.target===giftOverlay)giftOverlay.classList.remove('visible')};
+document.getElementById('gStep1').onclick=openAccount;
+document.getElementById('gBotBtn').onclick=openAccount;
 
-/* ── INVENTORY ── */
+// INVENTORY
 function renderInv(){
   const inv=getInv();
-  document.getElementById('invEmpty').style.display=inv.length?'none':'block';
+  const emptyDiv=document.getElementById('invEmpty');
   const grid=document.getElementById('invGrid');
-  grid.style.display=inv.length?'grid':'none';
-  if(!inv.length)return;
+  if(!inv.length){
+    emptyDiv.style.display='block';
+    grid.style.display='none';
+    return;
+  }
+  emptyDiv.style.display='none';
+  grid.style.display='grid';
   grid.innerHTML=inv.map(it=>`
     <div class="icard" onclick="openNft('${it.id}')">
       <img src="${imgUrl(it.name)}" alt="${esc(it.name)}" loading="lazy" onerror="this.style.opacity='.25'">
       <div class="icard-name">${esc(it.name)}</div>
-      <div class="icard-price"><span style="font-size:11px;color:#ffd700">🧩</span><span>${it.price}</span></div>
-    </div>`).join('');
+      <div class="icard-price">${it.price.toLocaleString('ru-RU')} ₽</div>
+    </div>
+  `).join('');
 }
 renderInv();
 
-/* ── NFT DETAIL MODAL (same as NftModal + SellTimerButton) ── */
-const nftOv=document.getElementById('nftOv');
+// NFT DETAIL MODAL
+const nftOverlay=document.getElementById('nftOverlay');
 let curNft=null,timerIv=null;
 
 window.openNft=function(id){
   const inv=getInv();const it=inv.find(x=>String(x.id)===String(id));
   if(!it)return;curNft=it;
   document.getElementById('nImg').src=imgUrl(it.name);
-  document.getElementById('nImg').onerror=function(){this.style.opacity='.3'};
   document.getElementById('nName').textContent=it.name;
-  document.getElementById('nPrice').textContent=it.price;
-  nftOv.classList.add('show');
+  document.getElementById('nPrice').textContent=it.price.toLocaleString('ru-RU');
+  nftOverlay.classList.add('visible');
   showNormalActions();
 };
-document.getElementById('nftX').onclick=()=>{nftOv.classList.remove('show');clearInterval(timerIv);curNft=null};
-nftOv.onclick=e=>{if(e.target===nftOv){nftOv.classList.remove('show');clearInterval(timerIv);curNft=null}};
+document.getElementById('nftX').onclick=()=>{nftOverlay.classList.remove('visible');clearInterval(timerIv);curNft=null};
+nftOverlay.onclick=e=>{if(e.target===nftOverlay){nftOverlay.classList.remove('visible');clearInterval(timerIv);curNft=null}};
 
-/* SellTimerButton logic (same as React) */
 function showNormalActions(){
   clearInterval(timerIv);
   renderSellBtn();
@@ -425,27 +457,24 @@ function renderSellBtn(){
   const el=document.getElementById('nActions');
   const remaining=Math.max(0,SELL_LOCK_MS-(Date.now()-(curNft.purchaseTime||0)));
   if(remaining>0){
-    /* locked state */
     el.innerHTML=`
       <button class="sell-locked">
-        <span class="sell-locked-l"><i class="fas fa-lock" style="font-size:15px;color:rgba(255,255,255,.5)"></i>Продать</span>
+        <span class="sell-locked-l"><i class="fas fa-lock"></i>Продать</span>
         <span class="sell-timer">${fmt(remaining)}</span>
       </button>
       <button class="withdraw-btn" onclick="doWithdraw()">Вывести</button>`;
   }else{
     clearInterval(timerIv);
-    /* unlocked state */
     el.innerHTML=`
       <button class="sell-btn" onclick="showSellInput()">Продать</button>
       <button class="withdraw-btn" onclick="doWithdraw()">Вывести</button>`;
   }
 }
 
-/* When sell button is clicked — show price input (same as showSellInput in NftModal) */
 window.showSellInput=function(){
   const el=document.getElementById('nActions');
   el.innerHTML=`
-    <input class="sell-inp" id="sellPriceInp" type="text" inputmode="numeric" placeholder="Цена продажи (⭐)">
+    <input class="sell-inp" id="sellPriceInp" type="text" inputmode="numeric" placeholder="Цена продажи (₽)">
     <div class="sell-row">
       <button class="sell-cancel" onclick="showNormalActions()">Отмена</button>
       <button class="sell-do" onclick="doSell()">Продать</button>
@@ -454,28 +483,24 @@ window.showSellInput=function(){
   setTimeout(()=>{const i=document.getElementById('sellPriceInp');if(i)i.focus()},50);
 };
 
-/* handleSell logic (same as React NftModal handleSell) */
 window.doSell=function(){
   const inp=document.getElementById('sellPriceInp');
   const price=parseInt(inp?.value||'');
-  if(!price||price<=0){toast('❌ Введите корректную цену',true);return}
+  if(!price||price<=0){showToast('❌ Введите корректную цену');return}
   if(!curNft)return;
-  /* listNftForSale equivalent */
   const mkt=getMkt();
-  mkt.push({id:Date.now(),nftName:curNft.name,price,image:curNft.image||imgUrl(curNft.name),
+  mkt.push({id:Date.now(),nftName:curNft.name,price,image:imgUrl(curNft.name),
     sellerId:0,sellerName:U.fullName,sellerUsername:U.username,sellerAvatar:U.avatarChar,
     pattern:'Классический',background:'Темный',model:'2D',listedAt:Date.now()});
   setMkt(mkt);
-  /* remove from inventory */
   setInv(getInv().filter(x=>String(x.id)!==String(curNft.id)));
-  toast('✅ NFT «'+curNft.name+'» выставлен за '+price+' ⭐');
-  nftOv.classList.remove('show');clearInterval(timerIv);curNft=null;
+  showToast('✅ NFT «'+curNft.name+'» выставлен за '+price.toLocaleString('ru-RU')+' ₽');
+  nftOverlay.classList.remove('visible');clearInterval(timerIv);curNft=null;
   renderInv();
 };
 
-/* withdraw (same as React — shows toast) */
 window.doWithdraw=function(){
-  toast('Функция вывода средств временно недоступна',true);
+  showToast('Функция вывода средств временно недоступна');
 };
 
 })();
