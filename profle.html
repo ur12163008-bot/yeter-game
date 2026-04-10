@@ -33,6 +33,8 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .bal-val{font-size:15px;font-weight:600;display:flex;align-items:center;gap:5px}
 .plus-btn{background:rgba(255,255,255,.1);border:1px solid rgba(138,43,226,.38);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:20px;font-weight:300;cursor:pointer}
 .plus-btn:active{transform:scale(.92)}
+.menu-circle{width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;cursor:pointer}
+.menu-circle:active{transform:scale(.92)}
 
 .prof-scroll{flex:1;overflow-y:auto;padding:0 20px 110px}
 .prof-scroll::-webkit-scrollbar{width:3px}
@@ -62,7 +64,7 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .icard:active{transform:scale(.96)}
 .icard img{width:76px;height:76px;border-radius:16px;object-fit:cover;margin-bottom:6px;background:rgba(42,30,58,.5);border:.5px solid rgba(184,122,255,.2)}
 .icard-name{font-size:12px;font-weight:500;color:#f0f0f0;text-align:center;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.icard-price{font-size:12px;font-weight:600;color:#b87aff}
+.icard-price{font-size:12px;font-weight:600;color:#fff}
 .inv-empty{text-align:center;color:rgba(255,255,255,.5);font-size:13px;padding:28px 0}
 .inv-empty i{font-size:44px;color:#b87aff;opacity:.3;display:block;margin-bottom:12px}
 .bnav{position:fixed;bottom:18px;left:18px;right:18px;max-width:404px;margin:0 auto;background:rgba(12,12,22,.95);border:1px solid rgba(184,122,255,.16);border-radius:28px;display:flex;justify-content:space-around;padding:8px 16px;z-index:1000}
@@ -78,7 +80,7 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .sheet-handle{width:48px;height:5px;background:rgba(255,255,255,.25);border-radius:3px;margin:0 auto 18px;cursor:grab;touch-action:pan-y}
 .sheet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .sheet-title{font-size:19px;font-weight:700}
-.close-btn{width:34px;height:34px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.4);border-radius:50%;color:#b87aff;font-size:19px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.close-btn{color:#b87aff;font-size:22px;cursor:pointer;background:none;border:none;padding:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
 .dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:20px}
 .dep-amount{padding:13px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);text-align:center;font-size:14px;color:rgba(255,255,255,.85);cursor:pointer}
 .dep-amount.sel{background:rgba(88,10,148,.45);border-color:#b87aff;color:#fff}
@@ -89,12 +91,12 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .dep-info{display:flex;justify-content:space-between;margin-bottom:20px;background:rgba(255,255,255,.04);padding:15px 18px;border-radius:18px}
 .purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border-radius:60px;padding:15px;color:#fff;font-weight:700;font-size:16px;border:none;cursor:pointer}
 
-/* Gift modal (центрированная, с крестиком в углу) */
+/* Gift modal (центрированная, крестик без круга в углу) */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:2000;display:none;align-items:center;justify-content:center}
 .ov.show{display:flex}
-.gmod{max-width:360px;width:90%;background:rgba(20,20,35,.85);backdrop-filter:blur(40px);border:.5px solid rgba(184,122,255,.3);border-radius:32px;padding:28px 20px 24px;position:relative;animation:slideUp .25s ease}
+.gmod{max-width:360px;width:90%;background:rgba(20,20,35,.85);backdrop-filter:blur(40px);border:.5px solid rgba(184,122,255,.3);border-radius:32px;padding:32px 24px 24px 24px;position:relative;animation:slideUp .25s ease}
 @keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:none;opacity:1}}
-.xbtn{position:absolute;top:12px;right:12px;width:28px;height:28px;background:rgba(255,255,255,.1);border:1px solid rgba(184,122,255,.4);border-radius:50%;color:#b87aff;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.xbtn{position:absolute;top:12px;right:12px;width:28px;height:28px;background:none;border:none;color:#b87aff;font-size:22px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .xbtn:active{transform:scale(.9)}
 .g-warn{background:rgba(184,77,77,.2);border-radius:18px;padding:14px 16px;margin:0 0 22px;border:.5px solid rgba(255,255,255,.1)}
 .g-warn-title{color:#ff8888;font-size:15px;font-weight:600;margin-bottom:5px}
@@ -110,7 +112,7 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .g-bot-btn{background:rgba(106,13,173,.7);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.3);border-radius:60px;padding:14px;width:100%;color:#fff;font-size:17px;font-weight:600;cursor:pointer;text-align:center;margin-top:8px}
 .g-bot-btn:active{transform:scale(.97)}
 
-/* NFT detail modal */
+/* NFT detail modal центрированная */
 .nmod{max-width:310px;width:85%;background:rgba(20,20,35,.85);backdrop-filter:blur(40px);border:.5px solid rgba(184,122,255,.3);border-radius:30px;padding:28px 18px 22px;position:relative;animation:fadeIn .18s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 .nmod-img{width:130px;height:130px;border-radius:24px;margin:4px auto 12px;display:block;object-fit:cover;background:rgba(42,42,58,.5);border:.5px solid rgba(184,122,255,.2)}
@@ -151,6 +153,7 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
       <div class="bal-val"><span id="bv">5000</span> ₽</div>
       <div class="plus-btn" id="plusBtn">+</div>
     </div>
+    <div class="menu-circle" id="menuCircle"><i class="fas fa-bars"></i></div>
   </div>
 
   <div class="prof-scroll">
@@ -183,13 +186,13 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
   <a href="profle.html" class="ni on"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
 </div>
 
-<!-- МОДАЛКА ПОПОЛНЕНИЯ (как в index.html) -->
+<!-- Модалка пополнения -->
 <div class="overlay hidden" id="depOverlay" data-dismissible="true">
   <div class="sheet" data-dismissible="true">
     <div class="sheet-handle" id="depHandle"></div>
     <div class="sheet-title-row">
       <span class="sheet-title">Пополнение баланса</span>
-      <button class="close-btn" id="closeDepBtn">×</button>
+      <button class="close-btn" id="closeDepBtn">✕</button>
     </div>
     <div class="dep-grid" id="depGrid"></div>
     <div class="custom-amount-wrapper">
@@ -201,7 +204,7 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
   </div>
 </div>
 
-<!-- GIFT MODAL (центрированная, с крестиком в углу) -->
+<!-- Модалка добавления подарка (крестик без круга, в углу) -->
 <div class="ov" id="giftOv">
   <div class="gmod">
     <div class="xbtn" id="giftX">✕</div>
@@ -210,8 +213,8 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
       <div class="g-warn-sub">Отправляйте подарки только напрямую со своего аккаунта</div>
     </div>
     <div class="g-step link" id="gStep1">
-      <div class="g-ico"><i class="fas fa-user"></i></div>
-      <div class="g-txt"><div class="g-title">Перейдите в аккаунт</div><div class="g-link">@yeter16</div></div>
+      <div class="g-ico"><i class="fab fa-telegram-plane"></i></div>
+      <div class="g-txt"><div class="g-title">Перейдите в бота</div><div class="g-link">@yeter16</div></div>
     </div>
     <div class="g-step">
       <div class="g-ico"><i class="fas fa-gift"></i></div>
@@ -221,11 +224,36 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
       <div class="g-ico"><i class="fas fa-clock"></i></div>
       <div class="g-txt"><div class="g-title">Подарок добавится в инвентарь</div><div class="g-sub">в течение нескольких минут</div></div>
     </div>
-    <button class="g-bot-btn" id="gBotBtn">Перейти в аккаунт</button>
+    <button class="g-bot-btn" id="gBotBtn">Перейти в бота</button>
   </div>
 </div>
 
-<!-- NFT DETAIL MODAL -->
+<!-- Модалка меню -->
+<div class="overlay hidden" id="menuOverlay" data-dismissible="true">
+  <div class="sheet" data-dismissible="true">
+    <div class="sheet-handle" id="menuHandle"></div>
+    <div class="sheet-title-row">
+      <span class="sheet-title" style="margin:0 auto;text-align:center">Меню</span>
+      <button class="close-btn" id="closeMenuBtn">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;margin-top:8px">
+      <div class="menu-item" style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="supportBtn">
+        <i class="fas fa-headset" style="width:24px;color:#888;font-size:18px"></i>
+        <span style="color:#aaa;font-size:16px">Поддержка</span>
+      </div>
+      <div class="menu-item" style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="termsBtn">
+        <i class="fas fa-file-alt" style="width:24px;color:#888;font-size:18px"></i>
+        <span style="color:#aaa;font-size:16px">Условия использования</span>
+      </div>
+      <div class="menu-item" style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="channelBtn">
+        <i class="fas fa-telegram-plane" style="width:24px;color:#888;font-size:18px"></i>
+        <span style="color:#aaa;font-size:16px">Канал</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Модалка NFT детально -->
 <div class="overlay hidden" id="nftOverlay" data-dismissible="true">
   <div class="nmod">
     <div class="xbtn" id="nftX">✕</div>
@@ -284,40 +312,25 @@ const avEl=document.getElementById('av');
 if(U.photo){avEl.innerHTML=`<img src="${U.photo}" alt="">`}else{avEl.textContent=U.avatarChar}
 renderBal();
 
-// СЛУШАЕМ СОБЫТИЕ ИЗ INDEX.HTML ДЛЯ ДОБАВЛЕНИЯ NFT В ИНВЕНТАРЬ
+// Событие из index.html
 window.addEventListener('storage', function(e) {
-  if(e.key === INV_K){
-    renderInv();
-  }
+  if(e.key === INV_K) renderInv();
 });
 
-// ДОБАВЛЯЕМ ФУНКЦИЮ ДЛЯ ДОБАВЛЕНИЯ NFT В ИНВЕНТАРЬ (будет вызываться из index.html)
 window.addNftToInventory = function(nft) {
   const inv = getInv();
-  const newNft = {
-    id: Date.now(),
-    name: nft.nftName,
-    price: nft.price,
-    purchaseTime: Date.now()
-  };
-  inv.push(newNft);
+  inv.push({id:Date.now(), name:nft.nftName, price:nft.price, purchaseTime:Date.now()});
   setInv(inv);
   renderInv();
   showToast('✅ NFT «'+nft.nftName+'» добавлен в инвентарь');
 };
 
-// DEPOSIT MODAL (как в index.html)
+// DEPOSIT
 let selectedDep = 500;
 function renderDepGrid(){
-  const container=document.getElementById('depGrid');
-  container.innerHTML=DEP_AMOUNTS.map(a=>`<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectPreset(${a})">${a.toLocaleString('ru-RU')} ₽</div>`).join('');
+  document.getElementById('depGrid').innerHTML=DEP_AMOUNTS.map(a=>`<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectPreset(${a})">${a.toLocaleString('ru-RU')} ₽</div>`).join('');
 }
-window.selectPreset=function(amt){
-  selectedDep=amt;
-  renderDepGrid();
-  const inputField=document.getElementById('customAmount');
-  if(inputField) inputField.value=amt;
-};
+window.selectPreset=function(amt){selectedDep=amt;renderDepGrid();document.getElementById('customAmount').value=amt;};
 function getFinalAmount(){
   let cv=document.getElementById('customAmount').value.trim();
   if(cv==='') return selectedDep;
@@ -331,12 +344,11 @@ function getFinalAmount(){
 function openDeposit(){
   renderDepGrid();
   document.getElementById('customAmount').value='';
-  selectedDep=500;
-  renderDepGrid();
+  selectedDep=500;renderDepGrid();
   const overlay=document.getElementById('depOverlay');
   const sheet=overlay.querySelector('.sheet');
   overlay.classList.remove('visible','hidden');
-  overlay.style.opacity='0';overlay.style.visibility='hidden';overlay.style.background='rgba(0,0,0,0)';
+  overlay.style.opacity='0';overlay.style.visibility='hidden';
   sheet.style.transition='none';sheet.style.transform='translateY(100%)';
   void overlay.offsetWidth;
   overlay.style.transition='opacity .35s ease, visibility .35s ease, background .35s ease';
@@ -344,18 +356,14 @@ function openDeposit(){
   overlay.classList.add('visible');
   overlay.style.opacity='1';overlay.style.visibility='visible';overlay.style.background='rgba(0,0,0,0.75)';
   sheet.style.transform='translateY(0)';
-  document.body.classList.add('modal-open');
 }
 function closeDepOverlay(){
   const overlay=document.getElementById('depOverlay');
   const sheet=overlay.querySelector('.sheet');
   sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
   overlay.style.transition='opacity .35s ease, background .35s ease';
-  sheet.style.transform='translateY(100%)';overlay.style.opacity='0';overlay.style.background='rgba(0,0,0,0)';
-  setTimeout(()=>{
-    overlay.classList.remove('visible');overlay.classList.add('hidden');overlay.style.visibility='hidden';
-    document.body.classList.remove('modal-open');
-  },450);
+  sheet.style.transform='translateY(100%)';overlay.style.opacity='0';
+  setTimeout(()=>{overlay.classList.remove('visible');overlay.classList.add('hidden');},450);
 }
 function confirmDeposit(){
   let amount=getFinalAmount();
@@ -369,11 +377,7 @@ document.getElementById('plusBtn').onclick=openDeposit;
 document.getElementById('confirmDepBtn').onclick=confirmDeposit;
 document.getElementById('closeDepBtn').onclick=closeDepOverlay;
 document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';selectedDep=null;renderDepGrid();document.activeElement?.blur();};
-document.getElementById('customAmount').addEventListener('input', function(e){
-  this.value = this.value.replace(/[^0-9]/g, '');
-  selectedDep=null;
-  renderDepGrid();
-});
+document.getElementById('customAmount').addEventListener('input', function(e){this.value=this.value.replace(/[^0-9]/g,'');selectedDep=null;renderDepGrid();});
 document.getElementById('customAmount').addEventListener('blur',function(){
   let val=this.value.trim();
   if(val==='') return;
@@ -382,14 +386,9 @@ document.getElementById('customAmount').addEventListener('blur',function(){
   if(num<50) num=50;
   if(num>1000000) num=1000000;
   this.value=num;
-  selectedDep=null;
-  renderDepGrid();
+  selectedDep=null;renderDepGrid();
 });
-document.getElementById('depOverlay').addEventListener('click',function(e){
-  if(e.target===this){
-    closeDepOverlay();
-  }
-});
+// Свайп и клик для пополнения
 function initDepSwipe(){
   const overlay=document.getElementById('depOverlay');
   const sheet=overlay.querySelector('.sheet');
@@ -398,59 +397,84 @@ function initDepSwipe(){
   const getTransformY=(el)=>{const style=window.getComputedStyle(el);const matrix=style.transform;if(matrix==='none')return 0;const values=matrix.split('(')[1]?.split(')')[0]?.split(',');return values?parseFloat(values[5])||0:0;};
   const onStart=(e)=>{isDragging=true;hasMoved=false;startY=e.touches?.[0]?.clientY||e.clientY;startYOffset=getTransformY(sheet);sheet.style.transition='none';sheet.style.willChange='transform';e.stopPropagation();};
   const onMove=(e)=>{if(!isDragging)return;const currentY=e.touches?.[0]?.clientY||e.clientY;const dy=currentY-startY;if(dy>0){hasMoved=true;sheet.style.transform=`translateY(${startYOffset+dy}px)`;const opacity=Math.max(0.3,1-dy/(window.innerHeight*0.4));overlay.style.background=`rgba(0,0,0,${opacity*0.75})`;}e.preventDefault();};
-  const onEnd=()=>{if(!isDragging)return;isDragging=false;const currentY=getTransformY(sheet);const threshold=window.innerHeight*0.25;sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';overlay.style.transition='background .25s ease';if(hasMoved&&currentY>threshold){closeDepOverlay();}else{sheet.style.transform='translateY(0)';overlay.style.background='rgba(0,0,0,0.75)';}setTimeout(()=>{sheet.style.willChange='auto';},300);};
+  const onEnd=()=>{if(!isDragging)return;isDragging=false;const currentY=getTransformY(sheet);const threshold=window.innerHeight*0.25;sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';overlay.style.transition='background .25s ease';if(hasMoved&&currentY>threshold){closeDepOverlay();}else{sheet.style.transform='translateY(0)';overlay.style.background='rgba(0,0,0,0.75)';}};
   sheet.addEventListener('touchstart',onStart,{passive:true});
   sheet.addEventListener('touchmove',onMove,{passive:false});
   sheet.addEventListener('touchend',onEnd);
   if(handle){handle.addEventListener('touchstart',onStart,{passive:true});handle.style.cursor='grab';}
 }
 initDepSwipe();
+document.getElementById('depOverlay').addEventListener('click',function(e){if(e.target===this) closeDepOverlay();});
 
-// HINT POPUP
+// HINT
 const hintEl=document.getElementById('hint'),infoBtn=document.getElementById('infoBtn');
-infoBtn.onclick=e=>{
-  e.stopPropagation();
-  const v=hintEl.classList.toggle('show');
-  infoBtn.classList.toggle('on',v);
-};
-document.addEventListener('click',e=>{
-  if(!hintEl.contains(e.target)&&e.target!==infoBtn){
-    hintEl.classList.remove('show');infoBtn.classList.remove('on');
-  }
-});
+infoBtn.onclick=e=>{e.stopPropagation();const v=hintEl.classList.toggle('show');infoBtn.classList.toggle('on',v);};
+document.addEventListener('click',e=>{if(!hintEl.contains(e.target)&&e.target!==infoBtn){hintEl.classList.remove('show');infoBtn.classList.remove('on');}});
 
-// GIFT MODAL (рабочая, центрированная)
+// GIFT MODAL
 const giftOv=document.getElementById('giftOv');
-const openAccount=()=>{const url='https://t.me/yeter16';if(tg){tg.openLink(url)}else{window.open(url,'_blank')}};
+const openBot=()=>{const url='https://t.me/yeter16';if(tg){tg.openLink(url)}else{window.open(url,'_blank')}};
 document.getElementById('addGift').onclick=()=>giftOv.classList.add('show');
 document.getElementById('giftX').onclick=()=>giftOv.classList.remove('show');
 giftOv.onclick=e=>{if(e.target===giftOv)giftOv.classList.remove('show')};
-document.getElementById('gStep1').onclick=openAccount;
-document.getElementById('gBotBtn').onclick=openAccount;
+document.getElementById('gStep1').onclick=openBot;
+document.getElementById('gBotBtn').onclick=openBot;
+
+// MENU с свайпом и кликом
+const menuOverlay=document.getElementById('menuOverlay');
+document.getElementById('menuCircle').onclick=()=>{
+  const sheet=menuOverlay.querySelector('.sheet');
+  menuOverlay.classList.remove('visible','hidden');
+  menuOverlay.style.opacity='0';menuOverlay.style.visibility='hidden';
+  sheet.style.transition='none';sheet.style.transform='translateY(100%)';
+  void menuOverlay.offsetWidth;
+  menuOverlay.style.transition='opacity .35s ease, visibility .35s ease, background .35s ease';
+  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
+  menuOverlay.classList.add('visible');
+  menuOverlay.style.opacity='1';menuOverlay.style.visibility='visible';menuOverlay.style.background='rgba(0,0,0,0.75)';
+  sheet.style.transform='translateY(0)';
+};
+function closeMenuOverlay(){
+  const overlay=document.getElementById('menuOverlay');
+  const sheet=overlay.querySelector('.sheet');
+  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
+  overlay.style.transition='opacity .35s ease, background .35s ease';
+  sheet.style.transform='translateY(100%)';overlay.style.opacity='0';
+  setTimeout(()=>{overlay.classList.remove('visible');overlay.classList.add('hidden');},450);
+}
+document.getElementById('closeMenuBtn').onclick=closeMenuOverlay;
+document.getElementById('menuOverlay').addEventListener('click',function(e){if(e.target===this) closeMenuOverlay();});
+function initMenuSwipe(){
+  const overlay=document.getElementById('menuOverlay');
+  const sheet=overlay.querySelector('.sheet');
+  const handle=document.getElementById('menuHandle');
+  let startY=0,startYOffset=0,isDragging=false,hasMoved=false;
+  const getTransformY=(el)=>{const style=window.getComputedStyle(el);const matrix=style.transform;if(matrix==='none')return 0;const values=matrix.split('(')[1]?.split(')')[0]?.split(',');return values?parseFloat(values[5])||0:0;};
+  const onStart=(e)=>{isDragging=true;hasMoved=false;startY=e.touches?.[0]?.clientY||e.clientY;startYOffset=getTransformY(sheet);sheet.style.transition='none';sheet.style.willChange='transform';e.stopPropagation();};
+  const onMove=(e)=>{if(!isDragging)return;const currentY=e.touches?.[0]?.clientY||e.clientY;const dy=currentY-startY;if(dy>0){hasMoved=true;sheet.style.transform=`translateY(${startYOffset+dy}px)`;const opacity=Math.max(0.3,1-dy/(window.innerHeight*0.4));overlay.style.background=`rgba(0,0,0,${opacity*0.75})`;}e.preventDefault();};
+  const onEnd=()=>{if(!isDragging)return;isDragging=false;const currentY=getTransformY(sheet);const threshold=window.innerHeight*0.25;sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';overlay.style.transition='background .25s ease';if(hasMoved&&currentY>threshold){closeMenuOverlay();}else{sheet.style.transform='translateY(0)';overlay.style.background='rgba(0,0,0,0.75)';}};
+  sheet.addEventListener('touchstart',onStart,{passive:true});
+  sheet.addEventListener('touchmove',onMove,{passive:false});
+  sheet.addEventListener('touchend',onEnd);
+  if(handle){handle.addEventListener('touchstart',onStart,{passive:true});handle.style.cursor='grab';}
+}
+initMenuSwipe();
+document.getElementById('supportBtn').onclick=()=>showToast('Служба поддержки: @support');
+document.getElementById('termsBtn').onclick=()=>showToast('Условия использования: скоро');
+document.getElementById('channelBtn').onclick=()=>{window.open('https://t.me/swill_way','_blank');};
 
 // INVENTORY
 function renderInv(){
   const inv=getInv();
   const emptyDiv=document.getElementById('invEmpty');
   const grid=document.getElementById('invGrid');
-  if(!inv.length){
-    emptyDiv.style.display='block';
-    grid.style.display='none';
-    return;
-  }
-  emptyDiv.style.display='none';
-  grid.style.display='grid';
-  grid.innerHTML=inv.map(it=>`
-    <div class="icard" onclick="openNft('${it.id}')">
-      <img src="${imgUrl(it.name)}" alt="${esc(it.name)}" loading="lazy" onerror="this.style.opacity='.25'">
-      <div class="icard-name">${esc(it.name)}</div>
-      <div class="icard-price">${it.price.toLocaleString('ru-RU')} ₽</div>
-    </div>
-  `).join('');
+  if(!inv.length){emptyDiv.style.display='block';grid.style.display='none';return;}
+  emptyDiv.style.display='none';grid.style.display='grid';
+  grid.innerHTML=inv.map(it=>`<div class="icard" onclick="openNft('${it.id}')"><img src="${imgUrl(it.name)}" onerror="this.style.opacity='.25'"><div class="icard-name">${esc(it.name)}</div><div class="icard-price">${it.price.toLocaleString('ru-RU')} ₽</div></div>`).join('');
 }
 renderInv();
 
-// NFT DETAIL MODAL
+// NFT DETAIL
 const nftOverlay=document.getElementById('nftOverlay');
 let curNft=null,timerIv=null;
 
@@ -471,58 +495,38 @@ function showNormalActions(){
   renderSellBtn();
   timerIv=setInterval(renderSellBtn,1000);
 }
-
 function renderSellBtn(){
   if(!curNft)return;
   const el=document.getElementById('nActions');
   const remaining=Math.max(0,SELL_LOCK_MS-(Date.now()-(curNft.purchaseTime||0)));
   if(remaining>0){
-    el.innerHTML=`
-      <button class="sell-locked">
-        <span class="sell-locked-l"><i class="fas fa-lock"></i>Продать</span>
-        <span class="sell-timer">${fmt(remaining)}</span>
-      </button>
-      <button class="withdraw-btn" onclick="doWithdraw()">Вывести</button>`;
+    el.innerHTML=`<button class="sell-locked"><span class="sell-locked-l"><i class="fas fa-lock"></i>Продать</span><span class="sell-timer">${fmt(remaining)}</span></button><button class="withdraw-btn" onclick="doWithdraw()">Вывести</button>`;
   }else{
     clearInterval(timerIv);
-    el.innerHTML=`
-      <button class="sell-btn" onclick="showSellInput()">Продать</button>
-      <button class="withdraw-btn" onclick="doWithdraw()">Вывести</button>`;
+    el.innerHTML=`<button class="sell-btn" onclick="showSellInput()">Продать</button><button class="withdraw-btn" onclick="doWithdraw()">Вывести</button>`;
   }
 }
-
 window.showSellInput=function(){
   const el=document.getElementById('nActions');
-  el.innerHTML=`
-    <input class="sell-inp" id="sellPriceInp" type="text" inputmode="numeric" placeholder="Цена продажи (₽)">
-    <div class="sell-row">
-      <button class="sell-cancel" onclick="showNormalActions()">Отмена</button>
-      <button class="sell-do" onclick="doSell()">Продать</button>
-    </div>`;
+  el.innerHTML=`<input class="sell-inp" id="sellPriceInp" type="text" inputmode="numeric" placeholder="Цена продажи (₽)"><div class="sell-row"><button class="sell-cancel" onclick="showNormalActions()">Отмена</button><button class="sell-do" onclick="doSell()">Продать</button></div>`;
   document.getElementById('sellPriceInp').oninput=e=>{e.target.value=e.target.value.replace(/\D/g,'')};
   setTimeout(()=>{const i=document.getElementById('sellPriceInp');if(i)i.focus()},50);
 };
-
 window.doSell=function(){
   const inp=document.getElementById('sellPriceInp');
   const price=parseInt(inp?.value||'');
   if(!price||price<=0){showToast('❌ Введите корректную цену');return}
   if(!curNft)return;
   const mkt=getMkt();
-  mkt.push({id:Date.now(),nftName:curNft.name,price,image:imgUrl(curNft.name),
-    sellerId:0,sellerName:U.fullName,sellerUsername:U.username,sellerAvatar:U.avatarChar,
-    pattern:'Классический',background:'Темный',model:'2D',listedAt:Date.now()});
+  mkt.push({id:Date.now(),nftName:curNft.name,price,image:imgUrl(curNft.name),sellerName:U.fullName,sellerUsername:U.username,sellerAvatar:U.avatarChar,pattern:'Классический',background:'Темный',model:'2D',listedAt:Date.now()});
   setMkt(mkt);
   setInv(getInv().filter(x=>String(x.id)!==String(curNft.id)));
   showToast('✅ NFT «'+curNft.name+'» выставлен за '+price.toLocaleString('ru-RU')+' ₽');
   nftOverlay.classList.remove('visible');clearInterval(timerIv);curNft=null;
   renderInv();
+  window.dispatchEvent(new StorageEvent('storage', {key:MKT_K, newValue:JSON.stringify(mkt)}));
 };
-
-window.doWithdraw=function(){
-  showToast('Функция вывода средств временно недоступна');
-};
-
+window.doWithdraw=function(){showToast('Функция вывода средств временно недоступна');};
 })();
 </script>
 </body>
