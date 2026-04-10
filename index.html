@@ -22,7 +22,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 @keyframes orb1f{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-22px,22px) scale(1.12)}}
 @keyframes orb2f{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(18px,-18px) scale(1.09)}}
 
-/* ШАПКА */
 .phdr{display:flex;align-items:center;justify-content:space-between;margin:16px 20px 18px;gap:12px;flex-shrink:0}
 .phdr-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
 .ava{width:50px;height:50px;border-radius:18px;background:rgba(106,13,173,.5);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;border:.5px solid rgba(184,122,255,.5);flex-shrink:0;overflow:hidden}
@@ -36,7 +35,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .menu-circle{width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;cursor:pointer}
 .menu-circle:active{transform:scale(.92)}
 
-/* Поиск */
 .search-row{display:flex;gap:10px;align-items:center;padding:0 20px 12px;flex-shrink:0}
 .search-wrapper{position:relative;flex:1}
 .search-box{width:100%;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:60px;padding:10px 14px}
@@ -53,7 +51,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .scroll-area::-webkit-scrollbar{width:3px}
 .scroll-area::-webkit-scrollbar-thumb{background:rgba(184,122,255,.35);border-radius:3px}
 
-/* NFT СЕТКА */
 .nft-grid{padding:0 20px 110px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .nft-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px;overflow:hidden;cursor:pointer}
 .nft-card:active{transform:scale(.98)}
@@ -68,14 +65,12 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .nft-price{font-size:15px;font-weight:800;color:#fff}
 .seller-dot{width:32px;height:32px;border-radius:50%;background:rgba(88,10,148,.5);border:1px solid rgba(184,122,255,.5);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#b87aff;flex-shrink:0}
 
-/* Bottom nav */
 .bnav{position:fixed;bottom:18px;left:18px;right:18px;max-width:404px;margin:0 auto;background:rgba(12,12,22,.95);border:1px solid rgba(184,122,255,.16);border-radius:28px;display:flex;justify-content:space-around;padding:8px 16px;z-index:100}
 .ni{display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,.48);font-size:10px;font-weight:500;cursor:pointer;padding:6px 14px;border-radius:22px;min-width:70px;text-decoration:none;background:transparent;border:none}
 .ni:active{transform:scale(.96)}
 .ni i{font-size:20px}
 .ni.on{background:rgba(106,13,173,.2);color:#b87aff}
 
-/* Оверлеи */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,0);backdrop-filter:blur(10px);z-index:2000;display:none;align-items:flex-end;justify-content:center}
 .ov.show{display:flex}
 .sheet{max-width:420px;width:94%;background:rgba(20,18,35,.98);border:0.5px solid rgba(184,122,255,.3);border-radius:26px 26px 0 0;padding:20px 22px 30px;transform:translateY(100%);transition:transform .45s cubic-bezier(0.16,1,0.3,1);max-height:88vh;overflow-y:auto}
@@ -85,7 +80,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .close-btn{color:#b87aff;font-size:22px;cursor:pointer;background:none;border:none;padding:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
 .close-btn:active{transform:scale(.9)}
 
-/* Пополнение */
 .dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:20px}
 .dep-amount{padding:13px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);text-align:center;font-size:14px;color:rgba(255,255,255,.85);cursor:pointer}
 .dep-amount.sel{background:rgba(88,10,148,.45);border-color:#b87aff;color:#fff}
@@ -99,7 +93,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border-radius:60px;padding:15px;color:#fff;font-weight:700;font-size:16px;border:none;cursor:pointer}
 .purple-btn:active{transform:scale(.97)}
 
-/* Детали покупки */
 .detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.1)}
 .detail-row:last-child{border-bottom:none}
 .detail-label{color:rgba(255,255,255,.55);font-weight:500}
@@ -111,7 +104,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .confirm-yes{flex:1;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border:none;border-radius:60px;padding:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
 .confirm-text{text-align:center;color:#aaa;font-size:14px;margin-bottom:12px}
 
-/* Фильтры панель */
 #filterPanel{position:fixed;inset:0;background:rgba(8,8,18,.98);z-index:1500;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);pointer-events:none}
 #filterPanel.open{transform:translateY(0);pointer-events:auto}
 .fp-inner{max-width:440px;width:100%;margin:0 auto;display:flex;flex-direction:column;height:100%;overflow:hidden}
@@ -194,7 +186,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
   <a href="profle.html" class="ni" id="navProfileBtn"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
 </div>
 
-<!-- Модалка пополнения -->
+<!-- Модалки и фильтры (без изменений, работают) -->
 <div class="ov" id="depOv">
   <div class="sheet">
     <div class="sheet-handle" id="depHandle"></div>
@@ -212,7 +204,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
   </div>
 </div>
 
-<!-- Модалка покупки с подтверждением -->
 <div class="ov" id="buyOv">
   <div class="sheet">
     <div class="sheet-handle" id="buyHandle"></div>
@@ -239,7 +230,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
   </div>
 </div>
 
-<!-- Модалка меню -->
 <div class="ov" id="menuOv">
   <div class="sheet">
     <div class="sheet-handle" id="menuHandle"></div>
@@ -264,7 +254,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
   </div>
 </div>
 
-<!-- Панель фильтров -->
 <div id="filterPanel">
   <div class="fp-inner">
     <div class="fp-header"><span class="fp-title">Фильтры</span><button class="close-btn" id="closeFilterBtn" style="position:absolute;right:12px;top:18px">✕</button></div>
@@ -300,7 +289,6 @@ const PATTERN_IMAGES = {"Классический":"https://images.unsplash.com/
 const SELLERS = [{name:'Алексей Смирнов',avatar:'А'},{name:'Мария Иванова',avatar:'М'},{name:'Дмитрий Козлов',avatar:'Д'},{name:'Анна Новикова',avatar:'А'},{name:'Иван Попов',avatar:'И'}];
 const DEP_AMOUNTS = [100,200,500,1000,2000,5000];
 
-// Глобальные данные маркета
 let marketListings = [];
 function loadMarketListings(){
   const stored = localStorage.getItem('nft_market_listings_v2');
@@ -340,7 +328,6 @@ function saveBalance(){localStorage.setItem('nft_balance',balance);}
 function renderHeader(){document.getElementById('bv').textContent=fmtNum(balance);document.getElementById('depBalance').textContent=fmtNum(balance);}
 function showToast(msg,err=false){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
-// Telegram
 const tg = window.Telegram?.WebApp;
 if(tg){
   tg.expand();
@@ -414,7 +401,6 @@ window.openBuy=function(id){
   document.getElementById('sellerAva').textContent=l.sellerAvatar;
   document.getElementById('sellerName').textContent=l.sellerName;
   document.getElementById('buyPrice').innerHTML=` ${l.price} ₽`;
-  // Показываем кнопку Купить, скрываем подтверждение
   document.getElementById('confirmBlock').style.display='none';
   document.getElementById('buyConfirmBtn').style.display='flex';
   const ov=document.getElementById('buyOv');
@@ -432,10 +418,8 @@ function cancelBuy(){
 function executeBuy(){
   if(!selectedListing||balance<selectedListing.price){showToast('Недостаточно средств!',true);closeOverlay('buyOv');return;}
   balance-=selectedListing.price;saveBalance();renderHeader();
-  // Удаляем NFT из маркета
   marketListings = marketListings.filter(x=>x.id!==selectedListing.id);
   saveMarketListings();
-  // Добавляем в инвентарь
   let inv = JSON.parse(localStorage.getItem('nft_inventory') || '[]');
   const newNft = {id:Date.now(),name:selectedListing.nftName,price:selectedListing.price,purchaseTime:Date.now()};
   inv.push(newNft);
@@ -489,7 +473,6 @@ initSwipeDismiss('depOv');
 initSwipeDismiss('buyOv');
 initSwipeDismiss('menuOv');
 
-// Меню
 document.getElementById('menuCircle').onclick=()=>{
   const ov=document.getElementById('menuOv');
   const sheet=ov.querySelector('.sheet');
@@ -501,7 +484,6 @@ document.getElementById('supportBtn').onclick=()=>showToast('Служба под
 document.getElementById('termsBtn').onclick=()=>showToast('Условия использования: скоро');
 document.getElementById('channelBtn').onclick=()=>{window.open('https://t.me/swill_way','_blank');};
 
-// Фильтры
 const filterTabs = ['collection','model','background','pattern','number','price'];
 const tabLabels = {collection:'Коллекция',model:'Модель',background:'Фон',pattern:'Узор',number:'Номер',price:'Цена'};
 
@@ -517,7 +499,6 @@ function openFilter(){
 }
 function closeFilter(){
   document.getElementById('filterPanel').classList.remove('open');
-  // После закрытия сбрасываем fpTab на 'collection'
   fpTab = 'collection';
 }
 function applyFilters(){
@@ -617,7 +598,6 @@ function toggleFilter(key,val){
 }
 function clearFpSearch(){document.getElementById('fpSearch').value='';renderFpContent();document.activeElement?.blur();}
 
-// Event binding
 document.getElementById('searchClear').onclick=clearMainSearch;
 document.getElementById('searchInput').oninput=()=>{applyFiltersAndRender();updateSearchClear();};
 document.getElementById('sortBtn').onclick=toggleSort;
@@ -636,10 +616,8 @@ document.getElementById('navProfileBtn').onclick=function(e){e.preventDefault();
 document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';selectedDep=null;renderDepGrid();document.activeElement?.blur();};
 document.getElementById('customAmount').addEventListener('input', function(e){this.value = this.value.replace(/[^0-9]/g,'');});
 document.getElementById('customAmount').addEventListener('blur',function(){let val=this.value.trim();if(val==='') return;let num=parseFloat(val);if(isNaN(num)){this.value='';return;}num=Math.round(num);if(num<50)num=50;if(num>1000000)num=1000000;this.value=num;selectedDep=null;renderDepGrid();});
-// Номер фильтр
 document.getElementById('fpNumberInput').addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'');tempFilters.number=this.value;});
 document.getElementById('fpNumberClear').onclick=()=>{document.getElementById('fpNumberInput').value='';tempFilters.number='';document.activeElement?.blur();};
-// Цена фильтр
 document.getElementById('fpPriceFrom').addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'');tempFilters.priceFrom=this.value;});
 document.getElementById('fpPriceTo').addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'');tempFilters.priceTo=this.value;});
 document.querySelectorAll('.price-clear').forEach(btn=>{
