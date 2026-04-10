@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;border-color:rgba(138,43,226,.2);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 html,body{height:100%;overflow:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
 
@@ -54,7 +54,7 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .hint-text{font-size:13px;color:rgba(255,255,255,.95);line-height:1.45}
 .hint-pill{font-weight:700;color:#fff;background:rgba(255,255,255,.15);padding:2px 7px;border-radius:40px;display:inline-block;margin:0 2px}
 
-.add-gift{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px 0;min-height:76px;border:1.5px dashed rgba(184,122,255,.4);border-radius:60px;background:rgba(106,13,173,.08);backdrop-filter:blur(8px);cursor:pointer;margin-bottom:20px;font-family:inherit}
+.add-gift{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px 0;min-height:76px;border:1.5px dashed rgba(184,122,255,.4);border-radius:60px;background:rgba(106,13,173,.08);backdrop-filter:blur(8px);cursor:pointer;font-family:inherit;margin-bottom:20px}
 .add-gift:active{background:rgba(106,13,173,.2)}
 .add-gift-plus{font-size:30px;font-weight:300;line-height:1;margin-bottom:3px;color:rgba(255,255,255,.7)}
 .add-gift-label{font-size:13px;color:rgba(255,255,255,.5);font-weight:500}
@@ -72,7 +72,7 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .ni i{font-size:20px}
 .ni.on{background:rgba(106,13,173,.2);color:#b87aff}
 
-/* Overlay как в index.html — снизу, с ручкой */
+/* Overlay */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,0);backdrop-filter:blur(10px);z-index:2000;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease, visibility .35s ease, background .35s ease}
 .overlay.visible{opacity:1;visibility:visible;pointer-events:auto;background:rgba(0,0,0,.75)}
 .overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
@@ -91,7 +91,7 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .dep-info{display:flex;justify-content:space-between;margin-bottom:20px;background:rgba(255,255,255,.04);padding:15px 18px;border-radius:18px}
 .purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border-radius:60px;padding:15px;color:#fff;font-weight:700;font-size:16px;border:none;cursor:pointer}
 
-/* Gift modal (центрированная, крестик без круга в углу) */
+/* Gift modal */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:2000;display:none;align-items:center;justify-content:center}
 .ov.show{display:flex}
 .gmod{max-width:360px;width:90%;background:rgba(20,20,35,.85);backdrop-filter:blur(40px);border:.5px solid rgba(184,122,255,.3);border-radius:32px;padding:32px 24px 24px 24px;position:relative;animation:slideUp .25s ease}
@@ -112,26 +112,36 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .g-bot-btn{background:rgba(106,13,173,.7);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.3);border-radius:60px;padding:14px;width:100%;color:#fff;font-size:17px;font-weight:600;cursor:pointer;text-align:center;margin-top:8px}
 .g-bot-btn:active{transform:scale(.97)}
 
-/* NFT detail modal центрированная */
-.nmod{max-width:310px;width:85%;background:rgba(20,20,35,.85);backdrop-filter:blur(40px);border:.5px solid rgba(184,122,255,.3);border-radius:30px;padding:28px 18px 22px;position:relative;animation:fadeIn .18s ease}
+/* NFT detail modal */
+.nft-ov{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);z-index:3000;display:none;align-items:center;justify-content:center}
+.nft-ov.show{display:flex}
+.nmod{max-width:340px;width:90%;background:rgba(20,20,35,.95);backdrop-filter:blur(40px);border:.5px solid rgba(184,122,255,.3);border-radius:32px;padding:28px 20px 24px;position:relative;animation:fadeIn .18s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
-.nmod-img{width:130px;height:130px;border-radius:24px;margin:4px auto 12px;display:block;object-fit:cover;background:rgba(42,42,58,.5);border:.5px solid rgba(184,122,255,.2)}
-.nmod-name{font-size:20px;font-weight:600;color:rgba(255,255,255,.85);text-align:center;margin-bottom:6px}
-.nmod-price{display:flex;align-items:center;justify-content:center;gap:5px;font-size:22px;font-weight:700;margin-bottom:18px}
-.nmod-actions{display:flex;flex-direction:column;gap:8px;width:100%}
-.sell-locked{display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px 18px;border-radius:60px;font-size:15px;font-weight:600;cursor:default;border:.5px solid rgba(184,122,255,.2);background:rgba(255,255,255,.05);backdrop-filter:blur(8px);color:rgba(255,255,255,.6)}
-.sell-locked-l{display:flex;align-items:center;gap:7px}
-.sell-timer{font-weight:500;background:rgba(0,0,0,.3);backdrop-filter:blur(4px);padding:3px 9px;border-radius:30px;font-size:13px}
-.sell-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:12px 18px;border-radius:60px;font-size:15px;font-weight:600;cursor:pointer;background:rgba(106,13,173,.7);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.4);color:#fff}
+.nmod-img{width:140px;height:140px;border-radius:24px;margin:4px auto 16px;display:block;object-fit:cover;background:rgba(42,42,58,.5);border:.5px solid rgba(184,122,255,.2)}
+.nmod-name{font-size:20px;font-weight:600;color:#fff;text-align:center;margin-bottom:6px}
+.nmod-price{display:flex;align-items:center;justify-content:center;gap:5px;font-size:22px;font-weight:700;margin-bottom:22px}
+.nmod-actions{display:flex;flex-direction:column;gap:10px;width:100%}
+.sell-locked{display:flex;align-items:center;justify-content:space-between;width:100%;padding:14px 18px;border-radius:60px;font-size:15px;font-weight:600;cursor:default;border:.5px solid rgba(184,122,255,.2);background:rgba(255,255,255,.05);backdrop-filter:blur(8px);color:rgba(255,255,255,.6)}
+.sell-locked-l{display:flex;align-items:center;gap:8px}
+.sell-timer{font-weight:500;background:rgba(0,0,0,.3);backdrop-filter:blur(4px);padding:4px 10px;border-radius:30px;font-size:14px}
+.sell-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:14px 18px;border-radius:60px;font-size:15px;font-weight:600;cursor:pointer;background:rgba(106,13,173,.8);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.4);color:#fff}
 .sell-btn:active{transform:scale(.96)}
-.sell-inp{width:100%;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:.5px solid rgba(255,255,255,.15);border-radius:20px;padding:13px 16px;font-size:16px;color:#fff;outline:none}
-.sell-inp:focus{border-color:rgba(184,122,255,.5)}
-.sell-row{display:flex;gap:8px}
-.sell-cancel{flex:1;background:rgba(255,255,255,.05);backdrop-filter:blur(8px);border:.5px solid rgba(184,122,255,.2);border-radius:60px;padding:12px;color:rgba(255,255,255,.6);font-size:15px;font-weight:600;cursor:pointer}
-.sell-do{flex:1;background:rgba(106,13,173,.7);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.4);border-radius:60px;padding:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
-.sell-do:active,.sell-cancel:active{transform:scale(.97)}
-.withdraw-btn{background:rgba(255,255,255,.05);backdrop-filter:blur(8px);border:.5px solid rgba(184,122,255,.3);border-radius:60px;padding:12px;width:100%;color:#b87aff;font-size:15px;font-weight:600;cursor:pointer;text-align:center}
+.withdraw-btn{background:rgba(106,13,173,.7);backdrop-filter:blur(8px);border:.5px solid rgba(184,122,255,.3);border-radius:60px;padding:14px;width:100%;color:#fff;font-size:15px;font-weight:600;cursor:pointer;text-align:center}
 .withdraw-btn:active{transform:scale(.97)}
+.sell-inp-wrap{position:relative;margin-bottom:8px}
+.sell-inp{width:100%;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:.5px solid rgba(255,255,255,.15);border-radius:20px;padding:14px 40px 14px 18px;font-size:16px;color:#fff;outline:none}
+.sell-inp::placeholder{color:rgba(255,255,255,.4);font-size:14px}
+.sell-inp-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.5);font-size:16px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.sell-inp-clear:active{transform:translateY(-50%) scale(.9)}
+.sell-row{display:flex;gap:8px}
+.sell-cancel{flex:1;background:rgba(255,255,255,.05);backdrop-filter:blur(8px);border:.5px solid rgba(184,122,255,.2);border-radius:60px;padding:14px;color:rgba(255,255,255,.7);font-size:15px;font-weight:600;cursor:pointer}
+.sell-do{flex:1;background:rgba(106,13,173,.8);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.4);border-radius:60px;padding:14px;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+.sell-do:active,.sell-cancel:active{transform:scale(.97)}
+
+.confirm-text{text-align:center;color:rgba(255,255,255,.5);font-size:14px;margin-bottom:12px}
+.confirm-row{display:flex;gap:8px}
+.confirm-no{flex:1;background:transparent;border:1.5px solid #b87aff;border-radius:60px;padding:12px;color:#b87aff;font-size:15px;font-weight:600;cursor:pointer}
+.confirm-yes{flex:1;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border:none;border-radius:60px;padding:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
 </style>
 </head>
 <body>
@@ -173,8 +183,8 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
       <div class="inv-empty" id="invEmpty">
         <i class="fas fa-gift"></i>
         <p>В инвентаре пока пусто</p>
-        <p style="font-size:12px;margin-top:4px">Купите NFT в маркете или</p>
-        <p style="font-size:12px">воспользуйтесь кнопкой «Добавить подарок»</p>
+        <p style="font-size:12px;margin-top:4px">купите NFT на маркете или</p>
+        <p style="font-size:12px">воспользуйтесь кнопкой «добавить подарок»</p>
       </div>
       <div class="inv-grid" id="invGrid" style="display:none"></div>
     </div>
@@ -204,7 +214,7 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
   </div>
 </div>
 
-<!-- Модалка добавления подарка (крестик без круга, в углу) -->
+<!-- Модалка добавления подарка -->
 <div class="ov" id="giftOv">
   <div class="gmod">
     <div class="xbtn" id="giftX">✕</div>
@@ -254,7 +264,7 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 </div>
 
 <!-- Модалка NFT детально -->
-<div class="overlay hidden" id="nftOverlay" data-dismissible="true">
+<div class="nft-ov" id="nftOverlay">
   <div class="nmod">
     <div class="xbtn" id="nftX">✕</div>
     <img class="nmod-img" id="nImg" src="" alt="">
@@ -312,7 +322,6 @@ const avEl=document.getElementById('av');
 if(U.photo){avEl.innerHTML=`<img src="${U.photo}" alt="">`}else{avEl.textContent=U.avatarChar}
 renderBal();
 
-// Событие из index.html
 window.addEventListener('storage', function(e) {
   if(e.key === INV_K) renderInv();
 });
@@ -388,7 +397,6 @@ document.getElementById('customAmount').addEventListener('blur',function(){
   this.value=num;
   selectedDep=null;renderDepGrid();
 });
-// Свайп и клик для пополнения
 function initDepSwipe(){
   const overlay=document.getElementById('depOverlay');
   const sheet=overlay.querySelector('.sheet');
@@ -484,11 +492,11 @@ window.openNft=function(id){
   document.getElementById('nImg').src=imgUrl(it.name);
   document.getElementById('nName').textContent=it.name;
   document.getElementById('nPrice').textContent=it.price.toLocaleString('ru-RU');
-  nftOverlay.classList.add('visible');
+  nftOverlay.classList.add('show');
   showNormalActions();
 };
-document.getElementById('nftX').onclick=()=>{nftOverlay.classList.remove('visible');clearInterval(timerIv);curNft=null};
-nftOverlay.onclick=e=>{if(e.target===nftOverlay){nftOverlay.classList.remove('visible');clearInterval(timerIv);curNft=null}};
+document.getElementById('nftX').onclick=()=>{nftOverlay.classList.remove('show');clearInterval(timerIv);curNft=null};
+nftOverlay.onclick=e=>{if(e.target===nftOverlay){nftOverlay.classList.remove('show');clearInterval(timerIv);curNft=null}};
 
 function showNormalActions(){
   clearInterval(timerIv);
@@ -508,21 +516,51 @@ function renderSellBtn(){
 }
 window.showSellInput=function(){
   const el=document.getElementById('nActions');
-  el.innerHTML=`<input class="sell-inp" id="sellPriceInp" type="text" inputmode="numeric" placeholder="Цена продажи (₽)"><div class="sell-row"><button class="sell-cancel" onclick="showNormalActions()">Отмена</button><button class="sell-do" onclick="doSell()">Продать</button></div>`;
-  document.getElementById('sellPriceInp').oninput=e=>{e.target.value=e.target.value.replace(/\D/g,'')};
-  setTimeout(()=>{const i=document.getElementById('sellPriceInp');if(i)i.focus()},50);
+  el.innerHTML=`
+    <div class="sell-inp-wrap">
+      <input class="sell-inp" id="sellPriceInp" type="text" inputmode="numeric" placeholder="Введите цену для продажи">
+      <div class="sell-inp-clear" id="sellPriceClear">✕</div>
+    </div>
+    <button class="sell-do" onclick="askConfirmSell()">Выставить на маркете</button>
+  `;
+  const inp=document.getElementById('sellPriceInp');
+  inp.oninput=e=>{e.target.value=e.target.value.replace(/\D/g,'')};
+  document.getElementById('sellPriceClear').onclick=()=>{inp.value='';inp.focus();};
+  setTimeout(()=>inp.focus(),50);
 };
-window.doSell=function(){
+window.askConfirmSell=function(){
   const inp=document.getElementById('sellPriceInp');
   const price=parseInt(inp?.value||'');
   if(!price||price<=0){showToast('❌ Введите корректную цену');return}
+  const el=document.getElementById('nActions');
+  el.innerHTML=`
+    <div class="confirm-text">вы точно хотите продать NFT?</div>
+    <div class="confirm-row">
+      <button class="confirm-no" onclick="showNormalActions()">Нет</button>
+      <button class="confirm-yes" onclick="doSell(${price})">Да</button>
+    </div>
+  `;
+};
+window.doSell=function(price){
   if(!curNft)return;
   const mkt=getMkt();
-  mkt.push({id:Date.now(),nftName:curNft.name,price,image:imgUrl(curNft.name),sellerName:U.fullName,sellerUsername:U.username,sellerAvatar:U.avatarChar,pattern:'Классический',background:'Темный',model:'2D',listedAt:Date.now()});
+  mkt.push({
+    id:Date.now(),
+    nftName:curNft.name,
+    price,
+    image:imgUrl(curNft.name),
+    sellerName:U.fullName,
+    sellerUsername:U.username,
+    sellerAvatar:U.avatarChar,
+    pattern:'Классический',
+    background:'Тёмный',
+    model:'2D',
+    listedAt:Date.now()
+  });
   setMkt(mkt);
   setInv(getInv().filter(x=>String(x.id)!==String(curNft.id)));
   showToast('✅ NFT «'+curNft.name+'» выставлен за '+price.toLocaleString('ru-RU')+' ₽');
-  nftOverlay.classList.remove('visible');clearInterval(timerIv);curNft=null;
+  nftOverlay.classList.remove('show');clearInterval(timerIv);curNft=null;
   renderInv();
   window.dispatchEvent(new StorageEvent('storage', {key:MKT_K, newValue:JSON.stringify(mkt)}));
 };
