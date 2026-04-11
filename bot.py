@@ -1,92 +1,72 @@
-#!/usr/bin/env python
-# bot.py - Tyron Market Bot для Render (Webhook + Flask)
+const express = require('express');
+const TelegramBot = require('node-telegram-bot-api');
+const path = require('path');
 
-import logging
-import os
-from flask import Flask, request, Response
-from telegram import Update, KeyboardButton, ReplyKeyboardMarkup, WebAppInfo, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, CommandHandler, ContextTypes
+const app = express();
+const PORT = process.env.PORT || 3000;
+const BOT_TOKEN = process.env.BOT_TOKEN || '8259804573:AAGGkoqbU9iyyp5o5vkgFX7mdx44i5LfwaQ';
 
-# ========== НАСТРОЙКИ ==========
-BOT_TOKEN = "8768464184:AAE32xJKSIhTM-USAbWAnlnr3eP9AIq_Vb0"
-SITE_URL = "https://yeter-game.vercel.app"
-WELCOME_PHOTO = "https://i.yapx.ru/dXczP.jpg"
-COMMUNITY_URL = "https://t.me/tyron_community"
+// ========== НАСТРОЙКИ ==========
+const WELCOME_PHOTO = 'https://i.yapx.ru/dXczP.jpg';
+const COMMUNITY_URL = 'https://t.me/tyron_community';
+const SITE_URL = 'https://yeter-game.onrender.com/index.html';
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
-logger = logging.getLogger(__name__)
+// ========== БОТ ==========
+const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 
-# ========== FLASK СЕРВЕР ==========
-app_flask = Flask(__name__)
+bot.onText(/\/start/, async (msg) => {
+  const chatId = msg.chat.id;
+  const firstName = msg.from.first_name || 'игрок';
+  
+  const caption = 
+    `🎮 Welcome to Tyron Market, ${firstName}!\n\n` +
+    `Buy and sell NFT gifts\n` +
+    `Great deals!`;
+  
+  try {
+    // Отправляем фото с инлайн-кнопками
+    await bot.sendPhoto(chatId, WELCOME_PHOTO, {
+      caption: caption,
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: '🚀 Open Tyron Market', web_app: { url: SITE_URL } }],
+          [{ text: '💬 Come to our community', url: COMMUNITY_URL }]
+        ]
+      }
+    });
+  } catch (error) {
+    console.error('Ошибка отправки фото:', error.message);
+    // Если фото не загрузилось, отправляем текст с кнопками
+    await bot.sendMessage(chatId, caption, {
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: '🚀 Open Tyron Market', web_app: { url: SITE_URL } }],
+          [{ text: '💬 Come to our community', url: COMMUNITY_URL }]
+        ]
+      }
+    });
+  }
+  
+  // Отправляем клавиатуру с кнопкой Mini App (слева от поля ввода)
+  await bot.sendMessage(chatId, '​', {
+    reply_markup: {
+      keyboard: [[{ text: '🎮 Tyron Market', web_app: { url: SITE_URL } }]],
+      resize_keyboard: true,
+      is_persistent: true
+    }
+  });
+});
 
-# ========== TELEGRAM БОТ ==========
-application = Application.builder().token(BOT_TOKEN).build()
+// ========== САЙТ ==========
+// Раздаем статические файлы из корня
+app.use(express.static(__dirname));
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.effective_user
-    first_name = user.first_name or "игрок"
-    
-    caption = (
-        f"🎮 Welcome to Tyron Market, {first_name}!\n\n"
-        f"Buy and sell NFT gifts\n"
-        f"Great deals!"
-    )
-    
-    inline_keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("🚀 Open Tyron Market", web_app=WebAppInfo(url=SITE_URL))],
-        [InlineKeyboardButton("💬 Come to our community", url=COMMUNITY_URL)]
-    ])
-    
-    mini_app_keyboard = ReplyKeyboardMarkup(
-        keyboard=[[KeyboardButton("🎮 Tyron Market", web_app=WebAppInfo(url=SITE_URL))]],
-        resize_keyboard=True,
-        is_persistent=True
-    )
-    
-    try:
-        await update.message.reply_photo(
-            photo=WELCOME_PHOTO,
-            caption=caption,
-            reply_markup=inline_keyboard
-        )
-    except Exception as e:
-        logger.error(f"Ошибка отправки фото: {e}")
-        await update.message.reply_text(
-            text=caption,
-            reply_markup=inline_keyboard
-        )
-    
-    await update.message.reply_text(
-        text="​",
-        reply_markup=mini_app_keyboard
-    )
+// ВСЕ запросы, которые не нашли файл, отправляем на index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
-application.add_handler(CommandHandler("start", start))
-
-# ========== WEBHOOK ENDPOINT ==========
-@app_flask.route(f'/{BOT_TOKEN}', methods=['POST'])
-async def webhook():
-    if request.method == 'POST':
-        update = Update.de_json(request.get_json(force=True), application.bot)
-        await application.process_update(update)
-    return Response('OK', status=200)
-
-@app_flask.route('/')
-def home():
-    return Response('Tyron Market Bot is running', mimetype='text/plain')
-
-# ========== ЗАПУСК ==========
-if __name__ == "__main__":
-    import asyncio
-    
-    RENDER_URL = os.environ.get("RENDER_EXTERNAL_URL", "https://yeter-game-115o.onrender.com")
-    
-    async def set_webhook():
-        webhook_url = f"{RENDER_URL}/{BOT_TOKEN}"
-        await application.bot.set_webhook(url=webhook_url)
-        print(f"✅ Webhook установлен: {webhook_url}")
-    
-    asyncio.run(set_webhook())
-    
-    port = int(os.environ.get("PORT", 10000))
-    app_flask.run(host='0.0.0.0', port=port)
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ Сервер запущен на порту ${PORT}`);
+  console.log(`✅ Сайт доступен: https://yeter-game.onrender.com`);
+});
