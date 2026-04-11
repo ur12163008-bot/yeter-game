@@ -19,53 +19,40 @@ bot.onText(/\/start/, async (msg) => {
   const firstName = msg.from.first_name || 'игрок';
   
   const caption = 
-    ` Welcome to Tyron Market, ${firstName}!\n\n` +
+    `Welcome to Tyron Market, ${firstName}!\n\n` +
     `Buy and sell NFT gifts\n` +
     `Great deals!`;
   
   try {
-    // Отправляем фото с инлайн-кнопками
     await bot.sendPhoto(chatId, WELCOME_PHOTO, {
       caption: caption,
       reply_markup: {
         inline_keyboard: [
-          [{ text: ' Open Tyron Market', web_app: { url: SITE_URL } }],
-          [{ text: ' Come to our community', url: COMMUNITY_URL }]
+          [{ text: 'Open Tyron Market', web_app: { url: SITE_URL } }],
+          [{ text: 'Come to our community', url: COMMUNITY_URL }]
         ]
       }
     });
   } catch (error) {
-    console.error('Ошибка отправки фото:', error.message);
-    // Если фото не загрузилось, отправляем текст с кнопками
+    console.error('Error sending photo:', error.message);
     await bot.sendMessage(chatId, caption, {
       reply_markup: {
         inline_keyboard: [
-          [{ text: ' Open Tyron Market', web_app: { url: SITE_URL } }],
-          [{ text: ' Come to our community', url: COMMUNITY_URL }]
+          [{ text: 'Open Tyron Market', web_app: { url: SITE_URL } }],
+          [{ text: 'Come to our community', url: COMMUNITY_URL }]
         ]
       }
     });
   }
-  
-  // Отправляем клавиатуру с кнопкой Mini App (слева от поля ввода)
-  await bot.sendMessage(chatId, '​', {
-    reply_markup: {
-      keyboard: [[{ text: '🎮 Tyron Market', web_app: { url: SITE_URL } }]],
-      resize_keyboard: true,
-      is_persistent: true
-    }
-  });
 });
 
 // ========== САЙТ ==========
-// Раздаём статические файлы из текущей папки
 app.use(express.static(__dirname));
 
-// Все запросы направляем на index.html
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Сервер запущен на порту ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
