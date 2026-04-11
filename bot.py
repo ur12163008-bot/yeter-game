@@ -19,7 +19,7 @@ bot.onText(/\/start/, async (msg) => {
   const firstName = msg.from.first_name || 'игрок';
   
   const caption = 
-    `🎮 Welcome to Tyron Market, ${firstName}!\n\n` +
+    `Welcome to Tyron Market, ${firstName}!\n\n` +
     `Buy and sell NFT gifts\n` +
     `Great deals!`;
   
@@ -29,8 +29,8 @@ bot.onText(/\/start/, async (msg) => {
       caption: caption,
       reply_markup: {
         inline_keyboard: [
-          [{ text: '🚀 Open Tyron Market', web_app: { url: SITE_URL } }],
-          [{ text: '💬 Come to our community', url: COMMUNITY_URL }]
+          [{ text: ' Open Tyron Market', web_app: { url: SITE_URL } }],
+          [{ text: ' Come to our community', url: COMMUNITY_URL }]
         ]
       }
     });
