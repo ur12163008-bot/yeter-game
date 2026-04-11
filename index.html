@@ -128,7 +128,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .fp-row:active{transform:scale(.98)}
 .fp-row img{width:46px;height:46px;border-radius:12px;object-fit:cover}
 .fp-row-name{flex:1;font-size:13px;font-weight:500}
-.fp-check{width:22px;height:22px;border-radius:6px;border:1.5px solid rgba(184,122,255,.5);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
+.fp-check{width:24px;height:24px;border-radius:50%;border:2px solid rgba(184,122,255,.5);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
 .fp-check.checked{background:#b87aff;border-color:#b87aff}
 .select-all-row{background:rgba(184,122,255,.15);border:1px solid rgba(184,122,255,.4);margin-bottom:12px}
 .fp-footer{position:sticky;bottom:0;padding:12px 20px;background:rgba(8,8,18,.98);border-top:1px solid rgba(255,255,255,.07);display:flex;gap:12px}
@@ -303,6 +303,8 @@ const DEP_AMOUNTS = [100,200,500,1000,2000,5000];
 let marketListings = [];
 let currentUserId = null;
 let currentUserPhoto = null;
+let currentUserFullName = 'Игрок';
+let currentUserAvatarChar = 'И';
 
 function loadMarketListings(){
   const stored = localStorage.getItem('nft_market_listings_v2');
@@ -361,16 +363,35 @@ if(tg){
     const firstName = user.first_name || 'Игрок';
     const lastName = user.last_name || '';
     const username = user.username || 'player';
-    let fullName = firstName;
-    if(lastName) fullName = firstName + ' ' + lastName;
-    document.getElementById('fn').innerHTML = fullName;
+    currentUserFullName = firstName + (lastName ? ' ' + lastName : '');
+    currentUserAvatarChar = firstName.charAt(0) + (lastName.charAt(0) || '');
+    document.getElementById('fn').innerHTML = currentUserFullName;
     document.getElementById('un').innerHTML = '@' + username;
     const av = document.getElementById('av');
     if(user.photo_url) av.innerHTML = `<img src="${user.photo_url}">`;
-    else av.innerHTML = firstName.charAt(0) + (lastName.charAt(0) || '');
+    else av.innerHTML = currentUserAvatarChar;
   }
 } else {
   currentUserId = 'local_user_' + Date.now();
+  currentUserFullName = 'Игрок';
+  currentUserAvatarChar = 'И';
+}
+
+// Обновляем существующие NFT продавца при загрузке
+function updateSellerInfoInListings(){
+  if(!currentUserId) return;
+  marketListings = marketListings.map(item => {
+    if(item.sellerId === currentUserId){
+      return {
+        ...item,
+        sellerName: currentUserFullName,
+        sellerAvatar: currentUserAvatarChar,
+        sellerPhoto: currentUserPhoto
+      };
+    }
+    return item;
+  });
+  saveMarketListings();
 }
 
 function applyFiltersAndRender(){
@@ -450,6 +471,12 @@ window.openBuy=function(id){
   setTimeout(()=>{sheet.style.transform='translateY(0)';},10);
 };
 function showConfirm(){
+  if(!selectedListing) return;
+  if(selectedListing.sellerId === currentUserId){
+    showToast('❌ ERROR: Нельзя купить свой же NFT', true);
+    closeOverlay('buyOv');
+    return;
+  }
   document.getElementById('confirmBlock').style.display='block';
   document.getElementById('buyConfirmBtn').style.display='none';
 }
@@ -644,6 +671,14 @@ function toggleFilter(key,val){
 }
 function clearFpSearch(){document.getElementById('fpSearch').value='';renderFpContent();document.activeElement?.blur();}
 
+// Обработчик событий storage для синхронизации
+window.addEventListener('storage', function(e) {
+  if(e.key === 'nft_market_listings_v2'){
+    loadMarketListings();
+    applyFiltersAndRender();
+  }
+});
+
 document.getElementById('searchClear').onclick=clearMainSearch;
 document.getElementById('searchInput').oninput=()=>{applyFiltersAndRender();updateSearchClear();};
 document.getElementById('sortBtn').onclick=toggleSort;
@@ -676,6 +711,7 @@ document.getElementById('buyOv').onclick=e=>{if(e.target===document.getElementBy
 document.getElementById('menuOv').onclick=e=>{if(e.target===document.getElementById('menuOv'))closeOverlay('menuOv');};
 
 loadMarketListings();
+updateSellerInfoInListings();
 renderHeader();
 applyFiltersAndRender();
 </script>
