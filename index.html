@@ -171,7 +171,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
       </div>
     </div>
     <div class="bal-block">
-      <div class="bal-val"><span id="bv">5000</span> ₽</div>
+      <div class="bal-val"><span id="bv">0</span> ₽</div>
       <div class="plus-btn" id="plusBtn">+</div>
     </div>
     <div class="menu-circle" id="menuCircle"><i class="fas fa-bars"></i></div>
@@ -203,14 +203,14 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
     <div class="sheet-handle" id="depHandle"></div>
     <div class="sheet-title-row">
       <span class="sheet-title">Пополнение баланса</span>
-      <button class="close-btn" id="closeDepBtn">✕</button>
+      <button class="close-btn" id="closeDepBtn"><i class="fas fa-times"></i></button>
     </div>
     <div class="dep-grid" id="depGrid"></div>
     <div class="custom-amount-wrapper">
       <input type="text" id="customAmount" inputmode="numeric" placeholder="Введите сумму пополнения">
-      <div class="custom-clear" id="customClear">✕</div>
+      <div class="custom-clear" id="customClear"><i class="fas fa-times"></i></div>
     </div>
-    <div class="dep-info"><span>Текущий баланс</span><span><span id="depBalance">5000</span> ₽</span></div>
+    <div class="dep-info"><span>Текущий баланс</span><span><span id="depBalance">0</span> ₽</span></div>
     <button class="purple-btn" id="confirmDepBtn">Пополнить</button>
   </div>
 </div>
@@ -220,7 +220,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
     <div class="sheet-handle" id="buyHandle"></div>
     <div class="sheet-title-row">
       <span class="sheet-title" id="buyTitle"></span>
-      <button class="close-btn" id="closeBuyBtn">✕</button>
+      <button class="close-btn" id="closeBuyBtn"><i class="fas fa-times"></i></button>
     </div>
     <div style="display:flex;gap:16px;margin-bottom:20px">
       <img id="buyImg" style="width:100px;height:100px;border-radius:20px;object-fit:cover">
@@ -246,7 +246,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
     <div class="sheet-handle" id="menuHandle"></div>
     <div class="sheet-title-row">
       <span class="sheet-title" style="margin:0 auto;text-align:center">Меню</span>
-      <button class="close-btn" id="closeMenuBtn">✕</button>
+      <button class="close-btn" id="closeMenuBtn"><i class="fas fa-times"></i></button>
     </div>
     <div style="display:flex;flex-direction:column;gap:16px;margin-top:8px">
       <div class="menu-item" style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="supportBtn">
@@ -258,7 +258,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
         <span style="color:#aaa;font-size:16px">Условия использования</span>
       </div>
       <div class="menu-item" style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="channelBtn">
-        <i class="fas fa-telegram-plane" style="width:24px;color:#888;font-size:18px"></i>
+        <i class="fas fa-bullhorn" style="width:24px;color:#888;font-size:18px"></i>
         <span style="color:#aaa;font-size:16px">Канал</span>
       </div>
     </div>
@@ -267,19 +267,19 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 
 <div id="filterPanel">
   <div class="fp-inner">
-    <div class="fp-header"><span class="fp-title">Фильтры</span><button class="close-btn" id="closeFilterBtn" style="position:absolute;right:12px;top:18px">✕</button></div>
+    <div class="fp-header"><span class="fp-title">Фильтры</span><button class="close-btn" id="closeFilterBtn"><i class="fas fa-times"></i></button></div>
     <div class="fp-tabs-wrapper"><div class="fp-tabs" id="fpTabs"></div></div>
     <div class="fp-search-row" id="fpSearchRow" style="display:none">
       <div class="search-wrapper"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="fpSearch" placeholder="Поиск..."></div><div class="search-clear" id="fpSearchClear"><i class="fas fa-times-circle"></i></div></div>
       <button class="icon-btn" id="fpSortBtn"><i class="fas fa-sort-amount-up" id="fpSortIcon"></i></button>
     </div>
     <div id="fpNumberRow" style="display:none;margin:0 20px 12px">
-      <div class="custom-amount-wrapper"><input type="text" id="fpNumberInput" inputmode="numeric" placeholder="Введите номер модели"><div class="custom-clear" id="fpNumberClear">✕</div></div>
+      <div class="custom-amount-wrapper"><input type="text" id="fpNumberInput" inputmode="numeric" placeholder="Введите номер модели"><div class="custom-clear" id="fpNumberClear"><i class="fas fa-times"></i></div></div>
     </div>
     <div id="fpPriceRow" style="display:none;margin:0 20px 12px">
       <div class="price-inputs">
-        <div class="price-input-wrapper"><input type="text" id="fpPriceFrom" inputmode="numeric" placeholder="От"><span class="price-symbol">₽</span><div class="price-clear" data-target="fpPriceFrom">✕</div></div>
-        <div class="price-input-wrapper"><input type="text" id="fpPriceTo" inputmode="numeric" placeholder="До"><span class="price-symbol">₽</span><div class="price-clear" data-target="fpPriceTo">✕</div></div>
+        <div class="price-input-wrapper"><input type="text" id="fpPriceFrom" inputmode="numeric" placeholder="От"><span class="price-symbol">₽</span><div class="price-clear" data-target="fpPriceFrom"><i class="fas fa-times"></i></div></div>
+        <div class="price-input-wrapper"><input type="text" id="fpPriceTo" inputmode="numeric" placeholder="До"><span class="price-symbol">₽</span><div class="price-clear" data-target="fpPriceTo"><i class="fas fa-times"></i></div></div>
       </div>
     </div>
     <div class="fp-scroll"><div class="fp-list" id="fpList"></div></div>
@@ -305,38 +305,11 @@ let currentUserId = null;
 let currentUserPhoto = null;
 let currentUserFullName = 'Игрок';
 let currentUserAvatarChar = 'И';
-
-function loadMarketListings(){
-  const stored = localStorage.getItem('nft_market_listings_v2');
-  if(stored){
-    marketListings = JSON.parse(stored);
-  }else{
-    marketListings = ALL_NFT_NAMES.map((name,i)=>({
-      id:i+1,
-      nftName:name,
-      price:ALL_PRICES[i%ALL_PRICES.length],
-      image:imgUrl(name),
-      sellerName:SELLERS[i%SELLERS.length].name,
-      sellerAvatar:SELLERS[i%SELLERS.length].avatar,
-      sellerPhoto: null,
-      sellerId: 'seller_' + i,
-      pattern:PATTERNS[i%4],
-      background:BACKGROUNDS[i%4],
-      model:MODELS[i%4]
-    }));
-    saveMarketListings();
-  }
-}
-function saveMarketListings(){
-  localStorage.setItem('nft_market_listings_v2', JSON.stringify(marketListings));
-}
-function getListings(){return marketListings;}
-
-let balance = parseInt(localStorage.getItem('nft_balance') || '5000');
+let balance = 0;
 let sortAsc = true;
 let tempFilters = {collection:[],model:[],background:[],pattern:[],number:'',priceFrom:'',priceTo:''};
 let activeFilters = {collection:[],model:[],background:[],pattern:[],number:'',priceFrom:'',priceTo:''};
-let selectedDep = 500;
+let selectedDep = null;
 let selectedListing = null;
 let fpTab = 'collection', fpSortAsc = true, fpModelNft = null;
 
@@ -377,7 +350,30 @@ if(tg){
   currentUserAvatarChar = 'И';
 }
 
-// Обновляем существующие NFT продавца при загрузке
+// Загрузка баланса
+const savedBalance = localStorage.getItem('nft_balance');
+if(savedBalance !== null){
+  balance = parseInt(savedBalance) || 0;
+} else {
+  balance = 0;
+  saveBalance();
+}
+renderHeader();
+
+function loadMarketListings(){
+  const stored = localStorage.getItem('nft_market_listings_v2');
+  if(stored){
+    marketListings = JSON.parse(stored);
+  } else {
+    marketListings = [];
+    saveMarketListings();
+  }
+}
+function saveMarketListings(){
+  localStorage.setItem('nft_market_listings_v2', JSON.stringify(marketListings));
+}
+function getListings(){return marketListings;}
+
 function updateSellerInfoInListings(){
   if(!currentUserId) return;
   marketListings = marketListings.map(item => {
@@ -420,7 +416,7 @@ function applyFiltersAndRender(){
   else filterBtn.classList.remove('has-filter');
   const grid=document.getElementById('nftGrid');
   if(!items.length){
-    grid.innerHTML='<div class="empty-market"><i class="fas fa-store-alt"></i><p>Товаров на маркете пока нету</p></div>';
+    grid.innerHTML='<div class="empty-market"><i class="fas fa-store-alt"></i><p>Товаров на маркете пока нет</p></div>';
     return;
   }
   grid.innerHTML=items.map(l=>{
@@ -444,7 +440,7 @@ window.openBuy=function(id){
   const l=getListings().find(x=>x.id===id);
   if(!l)return;
   if(l.sellerId === currentUserId){
-    showToast('❌ ERROR: Нельзя купить свой же NFT', true);
+    showToast('Нельзя купить свой NFT', true);
     return;
   }
   selectedListing=l;
@@ -473,7 +469,7 @@ window.openBuy=function(id){
 function showConfirm(){
   if(!selectedListing) return;
   if(selectedListing.sellerId === currentUserId){
-    showToast('❌ ERROR: Нельзя купить свой же NFT', true);
+    showToast('Нельзя купить свой NFT', true);
     closeOverlay('buyOv');
     return;
   }
@@ -484,9 +480,9 @@ function cancelBuy(){
   closeOverlay('buyOv');
 }
 function executeBuy(){
-  if(!selectedListing||balance<selectedListing.price){showToast('Недостаточно средств!',true);closeOverlay('buyOv');return;}
+  if(!selectedListing||balance<selectedListing.price){showToast('Недостаточно средств',true);closeOverlay('buyOv');return;}
   if(selectedListing.sellerId === currentUserId){
-    showToast('❌ ERROR: Нельзя купить свой же NFT', true);
+    showToast('Нельзя купить свой NFT', true);
     closeOverlay('buyOv');
     return;
   }
@@ -504,9 +500,9 @@ function executeBuy(){
   closeOverlay('buyOv');
 }
 function openDeposit(){
+  selectedDep = null;
   renderDepGrid();
   document.getElementById('customAmount').value='';
-  selectedDep=500;renderDepGrid();
   const ov=document.getElementById('depOv');
   const sheet=ov.querySelector('.sheet');
   ov.classList.add('show');
@@ -514,20 +510,33 @@ function openDeposit(){
 }
 function renderDepGrid(){
   const container=document.getElementById('depGrid');
-  container.innerHTML=DEP_AMOUNTS.map(a=>`<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectPreset(${a})">${fmtNum(a)} ₽</div>`).join('');
+  container.innerHTML=DEP_AMOUNTS.map(a=>{
+    const sel = a === selectedDep;
+    return `<div class="dep-amount${sel?' sel':''}" onclick="selectPreset(${a})">${fmtNum(a)} ₽</div>`;
+  }).join('');
 }
-function selectPreset(amt){selectedDep=amt;renderDepGrid();document.getElementById('customAmount').value=amt;}
+window.selectPreset=function(amt){selectedDep=amt;renderDepGrid();document.getElementById('customAmount').value='';};
 function getFinalAmount(){
   let cv=document.getElementById('customAmount').value.trim();
-  if(cv==='') return selectedDep;
-  let num = parseFloat(cv);
-  if(isNaN(num)) return selectedDep;
-  num = Math.round(num);
-  if(num < 50) num = 50;
-  if(num > 1000000) num = 1000000;
+  if(cv===''){
+    if(selectedDep === null) return null;
+    return selectedDep;
+  }
+  let num=parseFloat(cv);
+  if(isNaN(num)) return null;
+  num=Math.round(num);
+  if(num<50) num=50;
+  if(num>1000000) num=1000000;
   return num;
 }
-function confirmDeposit(){let amt=getFinalAmount();if(amt<50)amt=50;if(amt>1000000)amt=1000000;if(amt<=0)amt=50;balance+=amt;saveBalance();renderHeader();showToast('Пополнено на '+fmtNum(amt)+' ₽');applyFiltersAndRender();closeOverlay('depOv');}
+function confirmDeposit(){
+  const amt=getFinalAmount();
+  if(amt===null){showToast('Введите корректную сумму',true);return;}
+  balance+=amt;saveBalance();renderHeader();
+  showToast('Пополнено на '+fmtNum(amt)+' ₽');
+  applyFiltersAndRender();
+  closeOverlay('depOv');
+}
 function closeOverlay(id){const ov=document.getElementById(id);const sheet=ov.querySelector('.sheet');sheet.style.transform='translateY(100%)';setTimeout(()=>ov.classList.remove('show'),300);}
 
 function initSwipeDismiss(overlayId){
@@ -671,11 +680,19 @@ function toggleFilter(key,val){
 }
 function clearFpSearch(){document.getElementById('fpSearch').value='';renderFpContent();document.activeElement?.blur();}
 
-// Обработчик событий storage для синхронизации
 window.addEventListener('storage', function(e) {
   if(e.key === 'nft_market_listings_v2'){
-    loadMarketListings();
+    const stored = localStorage.getItem('nft_market_listings_v2');
+    if(stored) marketListings = JSON.parse(stored);
+    else marketListings = [];
+    updateSellerInfoInListings();
     applyFiltersAndRender();
+  }
+  if(e.key === 'nft_balance'){
+    const saved = localStorage.getItem('nft_balance');
+    if(saved !== null) balance = parseInt(saved) || 0;
+    else balance = 0;
+    renderHeader();
   }
 });
 
@@ -694,9 +711,9 @@ document.getElementById('confirmNoBtn').onclick=cancelBuy;
 document.getElementById('confirmYesBtn').onclick=executeBuy;
 document.getElementById('plusBtn').onclick=openDeposit;
 document.getElementById('navProfileBtn').onclick=function(e){e.preventDefault();window.location.href='profle.html';};
-document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';selectedDep=null;renderDepGrid();document.activeElement?.blur();};
+document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';document.activeElement?.blur();};
 document.getElementById('customAmount').addEventListener('input', function(e){this.value = this.value.replace(/[^0-9]/g,'');});
-document.getElementById('customAmount').addEventListener('blur',function(){let val=this.value.trim();if(val==='') return;let num=parseFloat(val);if(isNaN(num)){this.value='';return;}num=Math.round(num);if(num<50)num=50;if(num>1000000)num=1000000;this.value=num;selectedDep=null;renderDepGrid();});
+document.getElementById('customAmount').addEventListener('blur',function(){let val=this.value.trim();if(val==='') return;let num=parseFloat(val);if(isNaN(num)){this.value='';return;}num=Math.round(num);if(num<50)num=50;if(num>1000000)num=1000000;this.value=num;});
 document.getElementById('fpNumberInput').addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'');tempFilters.number=this.value;});
 document.getElementById('fpNumberClear').onclick=()=>{document.getElementById('fpNumberInput').value='';tempFilters.number='';document.activeElement?.blur();};
 document.getElementById('fpPriceFrom').addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'');tempFilters.priceFrom=this.value;});
@@ -712,7 +729,6 @@ document.getElementById('menuOv').onclick=e=>{if(e.target===document.getElementB
 
 loadMarketListings();
 updateSellerInfoInListings();
-renderHeader();
 applyFiltersAndRender();
 </script>
 </body>
