@@ -1,7 +1,9 @@
 #!/usr/bin/env python
-# bot.py - Tyron Market Bot
+# bot.py - Tyron Market Bot для Render (Webhook + Flask)
 
 import logging
+import os
+from flask import Flask, request, Response
 from telegram import Update, KeyboardButton, ReplyKeyboardMarkup, WebAppInfo, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, ContextTypes
 
@@ -14,7 +16,12 @@ COMMUNITY_URL = "https://t.me/tyron_community"
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# ========== КОМАНДА /start ==========
+# ========== FLASK СЕРВЕР ==========
+app_flask = Flask(__name__)
+
+# ========== TELEGRAM БОТ ==========
+application = Application.builder().token(BOT_TOKEN).build()
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     first_name = user.first_name or "игрок"
@@ -54,13 +61,32 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=mini_app_keyboard
     )
 
-# ========== ЗАПУСК ==========
-def main():
-    app = Application.builder().token(BOT_TOKEN).build()
-    app.add_handler(CommandHandler("start", start))
-    
-    print("✅ Бот запущен!")
-    app.run_polling()
+application.add_handler(CommandHandler("start", start))
 
+# ========== WEBHOOK ENDPOINT ==========
+@app_flask.route(f'/{BOT_TOKEN}', methods=['POST'])
+async def webhook():
+    if request.method == 'POST':
+        update = Update.de_json(request.get_json(force=True), application.bot)
+        await application.process_update(update)
+    return Response('OK', status=200)
+
+@app_flask.route('/')
+def home():
+    return Response('Tyron Market Bot is running', mimetype='text/plain')
+
+# ========== ЗАПУСК ==========
 if __name__ == "__main__":
-    main()
+    import asyncio
+    
+    RENDER_URL = os.environ.get("RENDER_EXTERNAL_URL", "https://yeter-game-115o.onrender.com")
+    
+    async def set_webhook():
+        webhook_url = f"{RENDER_URL}/{BOT_TOKEN}"
+        await application.bot.set_webhook(url=webhook_url)
+        print(f"✅ Webhook установлен: {webhook_url}")
+    
+    asyncio.run(set_webhook())
+    
+    port = int(os.environ.get("PORT", 10000))
+    app_flask.run(host='0.0.0.0', port=port)
