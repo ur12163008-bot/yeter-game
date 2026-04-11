@@ -113,7 +113,9 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .fp-inner{max-width:440px;width:100%;margin:0 auto;display:flex;flex-direction:column;height:100%;overflow:hidden}
 .fp-header{display:flex;justify-content:center;align-items:center;position:relative;padding:22px 20px 12px}
 .fp-title{font-size:18px;font-weight:700}
-.fp-tabs-wrapper{overflow-x:auto;overflow-y:hidden;white-space:nowrap;margin:0 20px 16px;scrollbar-width:thin}
+.fp-header .close-btn{position:absolute;right:20px;top:22px}
+.fp-tabs-wrapper{overflow-x:auto;overflow-y:hidden;white-space:nowrap;margin:0 20px 16px;scrollbar-width:none}
+.fp-tabs-wrapper::-webkit-scrollbar{display:none}
 .fp-tabs{display:inline-flex;gap:8px}
 .fp-tab{padding:9px 16px;border-radius:40px;font-size:12px;font-weight:500;border:1px solid rgba(184,122,255,.22);background:rgba(255,255,255,.06);color:rgba(255,255,255,.48);cursor:pointer;white-space:nowrap}
 .fp-tab.active{background:rgba(88,10,148,.5);border-color:#b87aff;color:#fff}
@@ -267,7 +269,10 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 
 <div id="filterPanel">
   <div class="fp-inner">
-    <div class="fp-header"><span class="fp-title">Фильтры</span><button class="close-btn" id="closeFilterBtn"><i class="fas fa-times"></i></button></div>
+    <div class="fp-header">
+      <span class="fp-title">Фильтры</span>
+      <button class="close-btn" id="closeFilterBtn"><i class="fas fa-times"></i></button>
+    </div>
     <div class="fp-tabs-wrapper"><div class="fp-tabs" id="fpTabs"></div></div>
     <div class="fp-search-row" id="fpSearchRow" style="display:none">
       <div class="search-wrapper"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="fpSearch" placeholder="Поиск..."></div><div class="search-clear" id="fpSearchClear"><i class="fas fa-times-circle"></i></div></div>
@@ -297,7 +302,6 @@ const MODELS = ["2D","3D","Pixel","Vector"];
 const BG_IMAGES = {"Тёмный":"https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=80&h=80&fit=crop","Светлый":"https://images.unsplash.com/photo-1579547621113-e4bb2a19bdd6?w=80&h=80&fit=crop","Градиент":"https://images.unsplash.com/photo-1620121692029-d088224ddc74?w=80&h=80&fit=crop","Звёздный":"https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=80&h=80&fit=crop"};
 const MODEL_ICONS = {"2D":"https://images.unsplash.com/photo-1607706189992-eae578626c86?w=80&h=80&fit=crop","3D":"https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=80&h=80&fit=crop","Pixel":"https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=80&h=80&fit=crop","Vector":"https://images.unsplash.com/photo-1461344577544-4e5dc9487184?w=80&h=80&fit=crop"};
 const PATTERN_IMAGES = {"Классический":"https://images.unsplash.com/photo-1519741497674-611481863552?w=80&h=80&fit=crop","Современный":"https://images.unsplash.com/photo-1464802686167-b939a6910659?w=80&h=80&fit=crop","Винтажный":"https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=80&h=80&fit=crop","Неоновый":"https://images.unsplash.com/photo-1518235506717-e1ed3306a89b?w=80&h=80&fit=crop"};
-const SELLERS = [{name:'Алексей Смирнов',avatar:'А'},{name:'Мария Иванова',avatar:'М'},{name:'Дмитрий Козлов',avatar:'Д'},{name:'Анна Новикова',avatar:'А'},{name:'Иван Попов',avatar:'И'}];
 const DEP_AMOUNTS = [100,200,500,1000,2000,5000];
 
 let marketListings = [];
@@ -350,7 +354,6 @@ if(tg){
   currentUserAvatarChar = 'И';
 }
 
-// Загрузка баланса
 const savedBalance = localStorage.getItem('nft_balance');
 if(savedBalance !== null){
   balance = parseInt(savedBalance) || 0;
@@ -363,11 +366,16 @@ renderHeader();
 function loadMarketListings(){
   const stored = localStorage.getItem('nft_market_listings_v2');
   if(stored){
-    marketListings = JSON.parse(stored);
+    try {
+      marketListings = JSON.parse(stored);
+      if(!Array.isArray(marketListings)) marketListings = [];
+    } catch(e) {
+      marketListings = [];
+    }
   } else {
     marketListings = [];
-    saveMarketListings();
   }
+  saveMarketListings();
 }
 function saveMarketListings(){
   localStorage.setItem('nft_market_listings_v2', JSON.stringify(marketListings));
@@ -376,18 +384,22 @@ function getListings(){return marketListings;}
 
 function updateSellerInfoInListings(){
   if(!currentUserId) return;
+  let changed = false;
   marketListings = marketListings.map(item => {
     if(item.sellerId === currentUserId){
-      return {
-        ...item,
-        sellerName: currentUserFullName,
-        sellerAvatar: currentUserAvatarChar,
-        sellerPhoto: currentUserPhoto
-      };
+      if(item.sellerName !== currentUserFullName || item.sellerAvatar !== currentUserAvatarChar || item.sellerPhoto !== currentUserPhoto){
+        changed = true;
+        return {
+          ...item,
+          sellerName: currentUserFullName,
+          sellerAvatar: currentUserAvatarChar,
+          sellerPhoto: currentUserPhoto
+        };
+      }
     }
     return item;
   });
-  saveMarketListings();
+  if(changed) saveMarketListings();
 }
 
 function applyFiltersAndRender(){
@@ -682,9 +694,7 @@ function clearFpSearch(){document.getElementById('fpSearch').value='';renderFpCo
 
 window.addEventListener('storage', function(e) {
   if(e.key === 'nft_market_listings_v2'){
-    const stored = localStorage.getItem('nft_market_listings_v2');
-    if(stored) marketListings = JSON.parse(stored);
-    else marketListings = [];
+    loadMarketListings();
     updateSellerInfoInListings();
     applyFiltersAndRender();
   }
