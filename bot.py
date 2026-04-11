@@ -1,64 +1,71 @@
 #!/usr/bin/env python
-# bot.py - Telegram бот с Web App кнопкой
+# bot.py
 
 import logging
-from telegram import Update, KeyboardButton, ReplyKeyboardMarkup, WebAppInfo
+from telegram import Update, KeyboardButton, ReplyKeyboardMarkup, WebAppInfo, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, ContextTypes
 
-logging.basicConfig(format='%(asime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
-BOT_TOKEN = "8768464184:AAE32xJKSIhTM-USAbWAnlnr3eP9AIq_Vb0"  # 👈 ВСТАВЬ СВОЙ ТОКЕН
-
-SITE_URL = "https://enchanting-biscuit-dcbc37.netlify.app"  # 👈 ВСТАВЬ СВОЮ ССЫЛКУ
+BOT_TOKEN = "8768464184:AAE32xJKSIhTM-USAbWAnlnr3eP9AIq_Vb0"
+SITE_URL = "https://yeter-game.onrender.com"  # 👈 замени на свою ссылку, если другая
+WELCOME_PHOTO = "https://i.yapx.ru/dXczP.jpg"
+COMMUNITY_URL = "https://t.me/tyron_community"
 
 # ======================================================
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
+    first_name = user.first_name or "игрок"
     
-    webapp_button = KeyboardButton(
-        text="🛍️ ОТКРЫТЬ МАГАЗИН",
-        web_app=WebAppInfo(url=SITE_URL)
+    caption = (
+        f"Welcome to Tyron Market, {first_name}!\n\n"
+        f"Buy and sell NFT gifts\n"
+        f"Great deals!"
     )
     
-    keyboard = ReplyKeyboardMarkup(
-        keyboard=[[webapp_button]],
-        resize_keyboard=True,      # Красивая кнопка
-        one_time_keyboard=False    # Кнопка остаётся всегда
+    # Инлайн-кнопки под фото
+    inline_keyboard = InlineKeyboardMarkup([
+        [InlineKeyboardButton(" Open Tyron Market", web_app=WebAppInfo(url=SITE_URL))],
+        [InlineKeyboardButton(" Come to our community", url=COMMUNITY_URL)]
+    ])
+    
+    # Клавиатура с кнопкой Mini App (слева от поля ввода)
+    mini_app_keyboard = ReplyKeyboardMarkup(
+        keyboard=[[KeyboardButton(" Tyron Market", web_app=WebAppInfo(url=SITE_URL))]],
+        resize_keyboard=True,
+        is_persistent=True
     )
     
+    # Отправляем фото с инлайн-кнопками
+    try:
+        await update.message.reply_photo(
+            photo=WELCOME_PHOTO,
+            caption=caption,
+            reply_markup=inline_keyboard
+        )
+    except Exception as e:
+        logger.error(f"Ошибка отправки фото: {e}")
+        await update.message.reply_text(
+            text=caption,
+            reply_markup=inline_keyboard
+        )
+    
+    # Устанавливаем клавиатуру с кнопкой Mini App (без лишнего текста)
     await update.message.reply_text(
-        f"👋 Привет, {user.first_name}!\n\n"
-        f"👇 Нажми на кнопку снизу, чтобы артём помог сделать магазин:",
-        reply_markup=keyboard
+        text="​",  # невидимый символ
+        reply_markup=mini_app_keyboard
     )
 
-async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "🤖 Как пользоваться:\n"
-        "1. Нажми кнопку '🛍️ ОТКРЫТЬ МАГАЗИН'\n"
-        "2. Откроется Web App с магазином\n"
-        "3. Покупай и выигрывай!"
-    )
+# ======================================================
 
 def main():
-    # Проверяем, вставил ли пользователь токен
-    if BOT_TOKEN == "7282716016:AAHwoFnpJXXXXXXXXXXXXXX" or "YOUR" in BOT_TOKEN:
-        print("❌ ОШИБКА: Ты не вставил токен бота!")
-        print("📝 Получи токен у @BotFather и вставь его в BOT_TOKEN")
-        return
-    
-    if SITE_URL == "https://твой-сайт.ru/index.html":
-        print("❌ ОШИБКА: Ты не вставил ссылку на сайт!")
-        print("📝 Вставь свою ссылку в SITE_URL")
-        return
+    if BOT_TOKEN == "8768464184:AAE32xJKSIhTM-USAbWAnlnr3eP9AIq_Vb0":
+        print("✅ Токен загружен")
     
     app = Application.builder().token(BOT_TOKEN).build()
-    
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("help", help_command))
     
     print("✅ Бот запущен! Напиши ему /start в Telegram")
     app.run_polling()
