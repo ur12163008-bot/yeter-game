@@ -9,7 +9,7 @@ logging.basicConfig(format='%(asime)s - %(name)s - %(levelname)s - %(message)s',
 logger = logging.getLogger(__name__)
 
 
-BOT_TOKEN = "8259804573:AAGGkoqbU9iyyp5o5vkgFX7mdx44i5LfwaQ"  # 👈 ВСТАВЬ СВОЙ ТОКЕН
+BOT_TOKEN = "8768464184:AAE32xJKSIhTM-USAbWAnlnr3eP9AIq_Vb0"  # 👈 ВСТАВЬ СВОЙ ТОКЕН
 
 SITE_URL = "https://enchanting-biscuit-dcbc37.netlify.app"  # 👈 ВСТАВЬ СВОЮ ССЫЛКУ
 
