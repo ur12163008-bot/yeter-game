@@ -28,8 +28,8 @@ bot.onText(/\/start/, async (msg) => {
       caption: caption,
       reply_markup: {
         inline_keyboard: [
-          [{ text: 'Open Tyron Market', web_app: { url: SITE_URL } }],
-          [{ text: 'Come to our community', url: COMMUNITY_URL }]
+          [{ text: 'Открыть Tyron Market', web_app: { url: SITE_URL } }],
+          [{ text: 'Присоеденится к сообществу', url: COMMUNITY_URL }]
         ]
       }
     });
@@ -38,8 +38,8 @@ bot.onText(/\/start/, async (msg) => {
     await bot.sendMessage(chatId, caption, {
       reply_markup: {
         inline_keyboard: [
-          [{ text: 'Open Tyron Market', web_app: { url: SITE_URL } }],
-          [{ text: 'Come to our community', url: COMMUNITY_URL }]
+          [{ text: 'Открыть Tyron Market', web_app: { url: SITE_URL } }],
+          [{ text: 'Присоеденится к сообществу', url: COMMUNITY_URL }]
         ]
       }
     });
