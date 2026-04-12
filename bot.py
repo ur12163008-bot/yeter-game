@@ -29,8 +29,8 @@ bot.onText(/\/start/, async (msg) => {
       caption: caption,
       reply_markup: {
         inline_keyboard: [
-          [{ text: ' Open Tyron Market', web_app: { url: SITE_URL } }],
-          [{ text: ' Come to our community', url: COMMUNITY_URL }]
+          [{ text: ' Открыть Tyron Market', web_app: { url: SITE_URL } }],
+          [{ text: 'Присоединиится к каналу', url: COMMUNITY_URL }]
         ]
       }
     });
@@ -40,8 +40,8 @@ bot.onText(/\/start/, async (msg) => {
     await bot.sendMessage(chatId, caption, {
       reply_markup: {
         inline_keyboard: [
-          [{ text: '🚀 Open Tyron Market', web_app: { url: SITE_URL } }],
-          [{ text: '💬 Come to our community', url: COMMUNITY_URL }]
+          [{ text: ' Open Tyron Market', web_app: { url: SITE_URL } }],
+          [{ text: ' Come to our community', url: COMMUNITY_URL }]
         ]
       }
     });
@@ -50,7 +50,7 @@ bot.onText(/\/start/, async (msg) => {
   // Отправляем клавиатуру с кнопкой Mini App (слева от поля ввода)
   await bot.sendMessage(chatId, '​', {
     reply_markup: {
-      keyboard: [[{ text: '🎮 Tyron Market', web_app: { url: SITE_URL } }]],
+      keyboard: [[{ text: ' Tyron Market', web_app: { url: SITE_URL } }]],
       resize_keyboard: true,
       is_persistent: true
     }
