@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* Все стили без изменений */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 html,body{height:100%;overflow:hidden;-webkit-font-smoothing:antialiased}
 body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
@@ -272,6 +273,9 @@ const SELL_LOCK_MS = 30*60*1000;
 const BAL_K = 'nft_balance';
 const INV_K = 'nft_inventory';
 const DEP_AMOUNTS = [100,200,500,1000,2000,5000];
+const PATTERNS = ["Классический","Современный","Винтажный","Неоновый"];
+const BACKGROUNDS = ["Тёмный","Светлый","Градиент","Звёздный"];
+const MODELS = ["2D","3D","Pixel","Vector"];
 
 const getInv = () => { try{return JSON.parse(localStorage.getItem(INV_K)||'[]');}catch{return [];} };
 const setInv = d => localStorage.setItem(INV_K, JSON.stringify(d));
@@ -318,7 +322,7 @@ let selectedDep = null;
 function renderDepGrid(){
   document.getElementById('depGrid').innerHTML = DEP_AMOUNTS.map(a=>`<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectPreset(${a})">${a.toLocaleString('ru-RU')} ₽</div>`).join('');
 }
-window.selectPreset = function(amt){selectedDep=amt;renderDepGrid();document.getElementById('customAmount').value='';};
+window.selectPreset = function(amt){selectedDep=amt;renderDepGrid();document.getElementById('customAmount').value=amt;};
 function getFinalAmount(){
   let cv=document.getElementById('customAmount').value.trim();
   if(cv===''){if(selectedDep===null)return null;return selectedDep;}
@@ -339,7 +343,7 @@ function confirmDeposit(){
 document.getElementById('plusBtn').onclick=openDeposit;
 document.getElementById('confirmDepBtn').onclick=confirmDeposit;
 document.getElementById('closeDepBtn').onclick=closeDepOverlay;
-document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';document.activeElement?.blur();};
+document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';selectedDep=null;renderDepGrid();document.activeElement?.blur();};
 document.getElementById('customAmount').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'');});
 
 // OVERLAY helpers
@@ -393,9 +397,9 @@ document.getElementById('menuCircle').onclick=openMenu;
 document.getElementById('closeMenuBtn').onclick=closeMenu;
 document.getElementById('menuOverlay').onclick=e=>{if(e.target===document.getElementById('menuOverlay'))closeMenu();};
 initSwipe('menuOverlay',closeMenu);
-document.getElementById('supportBtn').onclick=()=>showToast('Служба поддержки: @support');
+document.getElementById('supportBtn').onclick=()=>{window.open('https://t.me/tyron_support','_blank');};
 document.getElementById('termsBtn').onclick=()=>showToast('Условия использования: скоро');
-document.getElementById('channelBtn').onclick=()=>showToast('Канал скоро появится');
+document.getElementById('channelBtn').onclick=()=>{window.open('https://t.me/tyron_community','_blank');};
 
 // INVENTORY
 function renderInv(){
@@ -479,6 +483,12 @@ window.cancelSell=function(){closeNftOverlay();};
 
 window.doSell=async function(){
   if(!curNft||!tempSellPrice)return;
+  
+  // Генерируем случайные атрибуты для NFT
+  const randomPattern = PATTERNS[Math.floor(Math.random() * PATTERNS.length)];
+  const randomBackground = BACKGROUNDS[Math.floor(Math.random() * BACKGROUNDS.length)];
+  const randomModel = MODELS[Math.floor(Math.random() * MODELS.length)];
+  
   const listing = {
     nftName: curNft.name,
     price: tempSellPrice,
@@ -488,24 +498,33 @@ window.doSell=async function(){
     sellerAvatar: U.avatarChar,
     sellerPhoto: U.photo,
     sellerId: U.id,
-    pattern: 'Классический',
-    background: 'Тёмный',
-    model: '2D',
+    pattern: randomPattern,
+    background: randomBackground,
+    model: randomModel,
     listedAt: Date.now()
   };
+  
   try {
     const resp = await fetch('/api/market/list', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify(listing)
     });
-    if(!resp.ok) throw new Error('Server error');
+    
+    if(!resp.ok) {
+      const err = await resp.text();
+      console.error('Server error:', err);
+      showToast('Ошибка при выставлении: ' + (err || 'Неизвестная ошибка'), true);
+      return;
+    }
+    
     setInv(getInv().filter(x=>String(x.id)!==String(curNft.id)));
     showToast('NFT «'+curNft.name+'» выставлен за '+tempSellPrice.toLocaleString('ru-RU')+' ₽');
     closeNftOverlay();
     renderInv();
   } catch(e){
-    showToast('Ошибка при выставлении', true);
+    console.error('Fetch error:', e);
+    showToast('Ошибка соединения с сервером', true);
   }
 };
 
