@@ -19,9 +19,9 @@ bot.onText(/\/start/, async (msg) => {
   const firstName = msg.from.first_name || 'игрок';
   
   const caption = 
-    `Welcome to Tyron Market, ${firstName}!\n\n` +
-    `Buy and sell NFT gifts\n` +
-    `Great deals!`;
+    `Добро пожаловать в Tyron Market, ${firstName}!\n\n` +
+    `Покупай и продовай NFT подарки\n` +
+    `Удачных сделок!`;
   
   try {
     await bot.sendPhoto(chatId, WELCOME_PHOTO, {
