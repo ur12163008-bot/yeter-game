@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-/* Стили без изменений, добавлены стили для no-results */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 html,body{height:100%;overflow:hidden;background:#07070e}
 body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
@@ -180,10 +179,11 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 </div>
 
 <div class="bnav">
-  <a href="/" class="ni on"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
-  <a href="/profle.html" class="ni"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
+  <a href="index.html" class="ni on"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
+  <a href="profle.html" class="ni"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
 </div>
 
+<!-- Модалки -->
 <div class="ov" id="depOv">
   <div class="sheet">
     <div class="sheet-handle" id="depHandle"></div>
@@ -264,6 +264,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
     </div>
     <div id="fpNumberRow" style="display:none;margin:0 20px 12px">
       <div class="custom-amount-wrapper"><input type="text" id="fpNumberInput" inputmode="numeric" placeholder="Введите номер подарка"><div class="custom-clear" id="fpNumberClear"><i class="fas fa-times"></i></div></div>
+      <div style="color:rgba(255,255,255,.45); font-size:12px; margin-top:4px; padding-left:8px;">Введите номер подарка</div>
     </div>
     <div id="fpPriceRow" style="display:none;margin:0 20px 12px">
       <div class="price-inputs">
@@ -286,6 +287,8 @@ const BG_IMAGES = {"Тёмный":"https://images.unsplash.com/photo-15347966369
 const MODEL_ICONS = {"2D":"https://images.unsplash.com/photo-1607706189992-eae578626c86?w=80&h=80&fit=crop","3D":"https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=80&h=80&fit=crop","Pixel":"https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=80&h=80&fit=crop","Vector":"https://images.unsplash.com/photo-1461344577544-4e5dc9487184?w=80&h=80&fit=crop"};
 const PATTERN_IMAGES = {"Классический":"https://images.unsplash.com/photo-1519741497674-611481863552?w=80&h=80&fit=crop","Современный":"https://images.unsplash.com/photo-1464802686167-b939a6910659?w=80&h=80&fit=crop","Винтажный":"https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=80&h=80&fit=crop","Неоновый":"https://images.unsplash.com/photo-1518235506717-e1ed3306a89b?w=80&h=80&fit=crop"};
 const DEP_AMOUNTS = [100,200,500,1000,2000,5000];
+const MARKET_K = 'nft_market_listings_v2';
+const BAL_K = 'nft_balance';
 
 let marketListings = [];
 let currentUserId = null;
@@ -299,11 +302,10 @@ let activeFilters = {collection:[],model:[],background:[],pattern:[],number:'',p
 let selectedDep = null;
 let selectedListing = null;
 let fpTab = 'collection', fpSortAsc = true, fpModelNft = null;
-let ws = null;
 
 function imgUrl(name){return GITHUB + encodeURIComponent(name+'.png');}
 function fmtNum(n){return n.toLocaleString('ru-RU');}
-function saveBalance(){localStorage.setItem('nft_balance',balance);}
+function saveBalance(){localStorage.setItem(BAL_K, balance);}
 function renderHeader(){document.getElementById('bv').textContent=fmtNum(balance);document.getElementById('depBalance').textContent=fmtNum(balance);}
 
 function showToast(msg, isError=false){
@@ -343,19 +345,36 @@ if(tg){
   currentUserAvatarChar = 'И';
 }
 
-const savedBalance = localStorage.getItem('nft_balance');
+// Загрузка баланса
+const savedBalance = localStorage.getItem(BAL_K);
 if(savedBalance !== null) balance = parseInt(savedBalance) || 0;
 renderHeader();
 
+// Загрузка маркета
+function loadMarketListings(){
+  const stored = localStorage.getItem(MARKET_K);
+  if(stored){
+    try {
+      marketListings = JSON.parse(stored);
+      if(!Array.isArray(marketListings)) marketListings = [];
+    } catch(e) {
+      marketListings = [];
+    }
+  } else {
+    marketListings = [];
+  }
+  applyFiltersAndRender();
+}
+
 function hasActiveFilters(){
-  return activeFilters.collection.length > 0 ||
+  return document.getElementById('searchInput').value.trim() !== '' ||
+         activeFilters.collection.length > 0 ||
          activeFilters.model.length > 0 ||
          activeFilters.background.length > 0 ||
          activeFilters.pattern.length > 0 ||
          activeFilters.number !== '' ||
          activeFilters.priceFrom !== '' ||
-         activeFilters.priceTo !== '' ||
-         document.getElementById('searchInput').value.trim() !== '';
+         activeFilters.priceTo !== '';
 }
 
 function applyFiltersAndRender(){
@@ -377,16 +396,13 @@ function applyFiltersAndRender(){
   else filterBtn.classList.remove('has-filter');
   
   const grid = document.getElementById('nftGrid');
-  const totalItems = marketListings.length;
-  const isFiltered = hasActiveFilters();
   
   if(!items.length){
-    if(totalItems === 0 && !isFiltered) {
-      // Пустой маркет
-      grid.innerHTML='<div class="empty-market"><i class="fas fa-store-alt"></i><p>Товаров пока нету</p></div>';
-    } else {
-      // Ничего не найдено
+    const isFiltered = hasActiveFilters();
+    if(isFiltered) {
       grid.innerHTML='<div class="empty-market"><i class="fas fa-search"></i><p>Ничего не найдено</p></div>';
+    } else {
+      grid.innerHTML='<div class="empty-market"><i class="fas fa-store-alt"></i><p>Товаров на маркете пока нету</p></div>';
     }
     return;
   }
@@ -440,41 +456,26 @@ function showConfirm(){
 }
 function cancelBuy(){closeOverlay('buyOv');}
 
-async function executeBuy(){
-  if(!selectedListing){closeOverlay('buyOv');return;}
-  if(balance < selectedListing.price){showToast('Недостаточно средств', true);closeOverlay('buyOv');return;}
+function executeBuy(){
+  if(!selectedListing||balance<selectedListing.price){showToast('Недостаточно средств',true);closeOverlay('buyOv');return;}
   if(selectedListing.sellerId === currentUserId){showToast('Нельзя купить свой NFT', true);closeOverlay('buyOv');return;}
-
-  const listingId = selectedListing.id;
-  const listingName = selectedListing.nftName;
-  const listingPrice = selectedListing.price;
+  
+  balance -= selectedListing.price;
+  saveBalance();
+  renderHeader();
+  
+  marketListings = marketListings.filter(x=>x.id!==selectedListing.id);
+  localStorage.setItem(MARKET_K, JSON.stringify(marketListings));
+  window.dispatchEvent(new StorageEvent('storage', {key: MARKET_K, newValue: JSON.stringify(marketListings)}));
+  
+  let inv = JSON.parse(localStorage.getItem('nft_inventory') || '[]');
+  inv.push({id: Date.now(), name: selectedListing.nftName, price: selectedListing.price, purchaseTime: Date.now()});
+  localStorage.setItem('nft_inventory', JSON.stringify(inv));
+  window.dispatchEvent(new StorageEvent('storage', {key: 'nft_inventory', newValue: JSON.stringify(inv)}));
+  
+  showToast('Куплен ' + selectedListing.nftName);
+  applyFiltersAndRender();
   closeOverlay('buyOv');
-
-  try {
-    const resp = await fetch('/api/market/buy', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({id: listingId, buyerId: currentUserId})
-    });
-    const data = await resp.json();
-    if(!resp.ok || data.error === 'ERROR'){
-      showToast('ERROR', true);
-      return;
-    }
-    if(data.error){
-      showToast(data.error, true);
-      return;
-    }
-    balance -= listingPrice;
-    saveBalance();
-    renderHeader();
-    let inv = JSON.parse(localStorage.getItem('nft_inventory') || '[]');
-    inv.push({id: Date.now(), name: listingName, price: listingPrice, purchaseTime: Date.now()});
-    localStorage.setItem('nft_inventory', JSON.stringify(inv));
-    showToast('Куплен ' + listingName);
-  } catch(e) {
-    showToast('ERROR', true);
-  }
 }
 
 function openDeposit(){
@@ -486,27 +487,43 @@ function openDeposit(){
   ov.classList.add('show');
   setTimeout(()=>{sheet.style.transform='translateY(0)';},10);
 }
+
 function renderDepGrid(){
   document.getElementById('depGrid').innerHTML = DEP_AMOUNTS.map(a=>`<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectPreset(${a})">${fmtNum(a)} ₽</div>`).join('');
 }
-window.selectPreset = function(amt){selectedDep=amt;renderDepGrid();document.getElementById('customAmount').value=amt;};
+
+window.selectPreset = function(amt){
+  selectedDep = amt;
+  renderDepGrid();
+  document.getElementById('customAmount').value = amt;
+};
+
 function getFinalAmount(){
   let cv = document.getElementById('customAmount').value.trim();
-  if(cv===''){if(selectedDep===null)return null;return selectedDep;}
+  if(cv===''){
+    if(selectedDep===null) return null;
+    return selectedDep;
+  }
   let num = parseFloat(cv);
   if(isNaN(num)) return null;
   num = Math.round(num);
-  if(num<50) num=50;
-  if(num>1000000) num=1000000;
+  if(num < 50) num = 50;
+  if(num > 1000000) num = 1000000;
+  // Автоматически подставляем исправленное значение в поле
+  document.getElementById('customAmount').value = num;
   return num;
 }
+
 function confirmDeposit(){
   const amt = getFinalAmount();
-  if(amt===null){showToast('Введите корректную сумму',true);return;}
-  balance += amt;saveBalance();renderHeader();
+  if(amt === null){showToast('Введите корректную сумму', true);return;}
+  balance += amt;
+  saveBalance();
+  renderHeader();
   showToast('Пополнено на ' + fmtNum(amt) + ' ₽');
   closeOverlay('depOv');
 }
+
 function closeOverlay(id){const ov=document.getElementById(id);const sheet=ov.querySelector('.sheet');sheet.style.transform='translateY(100%)';setTimeout(()=>ov.classList.remove('show'),300);}
 
 function initSwipeDismiss(overlayId){
@@ -594,37 +611,18 @@ function toggleSelectAll(key){
 }
 function toggleFilter(key,val){const arr=tempFilters[key];const idx=arr.indexOf(val);if(idx>=0)arr.splice(idx,1);else arr.push(val);if(key==='collection')fpModelNft=null;renderFpContent();}
 
-async function loadMarketFromServer(){
-  try {
-    const resp = await fetch('/api/market');
-    const data = await resp.json();
-    marketListings = data.listings || [];
-    applyFiltersAndRender();
-  } catch(e) {
-    console.error('Failed to load market', e);
+// Слушаем изменения в localStorage
+window.addEventListener('storage', function(e) {
+  if(e.key === MARKET_K){
+    loadMarketListings();
   }
-}
-
-function connectWebSocket(){
-  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
-  ws = new WebSocket(`${proto}//${location.host}/api/ws`);
-  ws.onmessage = (e) => {
-    try {
-      const msg = JSON.parse(e.data);
-      if(msg.type === 'listed'){
-        marketListings.push(msg.listing);
-        applyFiltersAndRender();
-      } else if(msg.type === 'bought'){
-        const wasClosed = selectedListing && selectedListing.id === msg.id;
-        marketListings = marketListings.filter(x=>x.id!==msg.id);
-        if(wasClosed) closeOverlay('buyOv');
-        applyFiltersAndRender();
-      }
-    } catch(err){}
-  };
-  ws.onclose = () => {setTimeout(connectWebSocket, 3000);};
-  ws.onerror = () => {ws.close();};
-}
+  if(e.key === BAL_K){
+    const saved = localStorage.getItem(BAL_K);
+    if(saved !== null) balance = parseInt(saved) || 0;
+    else balance = 0;
+    renderHeader();
+  }
+});
 
 document.getElementById('searchClear').onclick=clearMainSearch;
 document.getElementById('searchInput').oninput=()=>{applyFiltersAndRender();updateSearchClear();};
@@ -642,6 +640,16 @@ document.getElementById('confirmYesBtn').onclick=executeBuy;
 document.getElementById('plusBtn').onclick=openDeposit;
 document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';selectedDep=null;renderDepGrid();document.activeElement?.blur();};
 document.getElementById('customAmount').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'');});
+document.getElementById('customAmount').addEventListener('blur',function(){
+  let val = this.value.trim();
+  if(val === '') return;
+  let num = parseFloat(val);
+  if(isNaN(num)){this.value='';return;}
+  num = Math.round(num);
+  if(num < 50) num = 50;
+  if(num > 1000000) num = 1000000;
+  this.value = num;
+});
 document.getElementById('fpNumberInput').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'');tempFilters.number=this.value;});
 document.getElementById('fpNumberClear').onclick=()=>{document.getElementById('fpNumberInput').value='';tempFilters.number='';document.activeElement?.blur();};
 document.getElementById('fpPriceFrom').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'');tempFilters.priceFrom=this.value;});
@@ -653,8 +661,16 @@ document.getElementById('depOv').onclick=e=>{if(e.target===document.getElementBy
 document.getElementById('buyOv').onclick=e=>{if(e.target===document.getElementById('buyOv'))closeOverlay('buyOv');};
 document.getElementById('menuOv').onclick=e=>{if(e.target===document.getElementById('menuOv'))closeOverlay('menuOv');};
 
-loadMarketFromServer();
-connectWebSocket();
+// Прокрутка колесиком в фильтрах
+const fpScroll = document.getElementById('fpScrollArea');
+if(fpScroll) {
+  fpScroll.addEventListener('wheel', (e) => {
+    e.stopPropagation();
+  }, { passive: true });
+}
+
+// Загружаем маркет при старте
+loadMarketListings();
 </script>
 </body>
 </html>
