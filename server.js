@@ -19,7 +19,7 @@ bot.onText(/\/start/, async (msg) => {
   const firstName = msg.from.first_name || 'игрок';
   
   const caption = 
-    `Добро пожаловать в Tyron Market, ${firstName}!\n\n` +
+    `Добро пожаловать в Tyron Market\n` +
     `Покупай и продовай NFT подарки\n` +
     `Удачных сделок!`;
   
