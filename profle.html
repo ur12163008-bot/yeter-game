@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* Все стили без изменений */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 html,body{height:100%;overflow:hidden;-webkit-font-smoothing:antialiased}
 body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
@@ -182,8 +181,8 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 </div>
 
 <div class="bnav">
-  <a href="/" class="ni"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
-  <a href="/profle.html" class="ni on"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
+  <a href="index.html" class="ni"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
+  <a href="profle.html" class="ni on"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
 </div>
 
 <!-- Модалка пополнения -->
@@ -269,16 +268,19 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 'use strict';
 
 const GB = 'https://raw.githubusercontent.com/ur12163008-bot/yeter-game/main/nft/';
+const ALL_NFT_NAMES = ["Artisan Brick","B-Day Candle","Berry Box","Big Year","Bling Binky","Bonded Ring","Bow Tie","Bunny Muffin","Candy Cane","Clover Pin","Cookie Heart","Crystal Ball","Cupid Charm","Desk Calendar","Diamond Ring","Easter Egg","Electric Skull","Eternal Candle","Eternal Rose","Evil Eye","Faith Amulet","Flying Broom","Fresh Socks","Gem Signet","Genie Lamp","Ginger Cookie","Hanging Star","Heroic Helmet","Hex Pot","Holiday Drink","Homemade Cake","Hypno Lollipop","Ice Cream","Input Key","Instant Ramen","Ionic Dryer","Jack-in-the-Box","Jelly Bunny","Jester Hat","Jingle Bells","Jolly Chimp","Joyful Bundle","Khabibs Papakha","Kissed Frog","Light Sword","Lol Pop","Lon Gem","Love Candle","Love Potion","Low Rider","Lunar Snake","Lush Bouquet","Mad Pumpkin","Magic Potion","Mini Oscar","Money Pot","Moon Pendant","Mousse Cake","Nail Bracelet","Neko Helmet","Perfume Bottle","Pet Snake","Pretty Posy","Rare Bird","Record Player","Restless Jar","Sakura Flower","Santa Hat","Sharp Tongue","Signet Ring","Skull Flower","Sky Stilettos","Sleigh Bell","Snake Box","Snoop Cigar","Snow Globe","Snow Mittens","Spiced Wine","Spring Basket","Spy Agaric","Star Notepad","Stellar Rocket","Swag Bag","Swiss Watch","Tama Gadget","Top Hat","Toy Bear","Trapped Heart","UFC Strike","Valentine Box","Victory Medal","Vintage Cigar","Voodoo Doll","Westside Sign","Whip Cupcake","Winter Wreath","Witch Hat","Xmas Stocking"];
+const PRICES = [215,87,342,163,421,78,290,155,380,99,265,440,118,330,195,275,410,143,388,222,157,300,93,350,178,425,112,255,395,168,310,84,230,445,205,137,365,192,285,96,307,89,241,390,174,315,98,258,416,139,362,213,292,428,166,335,103,276,449,188,302,132,379,221,146,398,117,263,434,181,327,95,283,412,158,340,119,271,447,136];
 const SELL_LOCK_MS = 30*60*1000;
 const BAL_K = 'nft_balance';
 const INV_K = 'nft_inventory';
+const MARKET_K = 'nft_market_listings_v2';
 const DEP_AMOUNTS = [100,200,500,1000,2000,5000];
 const PATTERNS = ["Классический","Современный","Винтажный","Неоновый"];
 const BACKGROUNDS = ["Тёмный","Светлый","Градиент","Звёздный"];
 const MODELS = ["2D","3D","Pixel","Vector"];
 
 const getInv = () => { try{return JSON.parse(localStorage.getItem(INV_K)||'[]');}catch{return [];} };
-const setInv = d => localStorage.setItem(INV_K, JSON.stringify(d));
+const setInv = d => { localStorage.setItem(INV_K, JSON.stringify(d)); window.dispatchEvent(new StorageEvent('storage', {key: INV_K, newValue: JSON.stringify(d)})); };
 const getBal = () => parseInt(localStorage.getItem(BAL_K)||'')||0;
 const setBal = n => { localStorage.setItem(BAL_K, String(n)); renderBal(); };
 const renderBal = () => {
@@ -481,15 +483,18 @@ window.askConfirmSell=function(){
 
 window.cancelSell=function(){closeNftOverlay();};
 
-window.doSell=async function(){
+// НОВАЯ ФУНКЦИЯ - ВЫСТАВЛЕНИЕ НА ПРОДАЖУ (БЕЗ СЕРВЕРА)
+window.doSell=function(){
   if(!curNft||!tempSellPrice)return;
   
-  // Генерируем случайные атрибуты для NFT
+  // Генерируем случайные атрибуты
   const randomPattern = PATTERNS[Math.floor(Math.random() * PATTERNS.length)];
   const randomBackground = BACKGROUNDS[Math.floor(Math.random() * BACKGROUNDS.length)];
   const randomModel = MODELS[Math.floor(Math.random() * MODELS.length)];
   
-  const listing = {
+  // Создаём новый листинг
+  const newListing = {
+    id: Date.now() + Math.floor(Math.random() * 1000),
     nftName: curNft.name,
     price: tempSellPrice,
     image: imgUrl(curNft.name),
@@ -504,31 +509,65 @@ window.doSell=async function(){
     listedAt: Date.now()
   };
   
+  // Получаем текущие листинги с маркета
+  let marketListings = [];
   try {
-    const resp = await fetch('/api/market/list', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(listing)
-    });
-    
-    if(!resp.ok) {
-      const err = await resp.text();
-      console.error('Server error:', err);
-      showToast('Ошибка при выставлении: ' + (err || 'Неизвестная ошибка'), true);
-      return;
-    }
-    
-    setInv(getInv().filter(x=>String(x.id)!==String(curNft.id)));
-    showToast('NFT «'+curNft.name+'» выставлен за '+tempSellPrice.toLocaleString('ru-RU')+' ₽');
-    closeNftOverlay();
-    renderInv();
-  } catch(e){
-    console.error('Fetch error:', e);
-    showToast('Ошибка соединения с сервером', true);
+    const stored = localStorage.getItem(MARKET_K);
+    if(stored) marketListings = JSON.parse(stored);
+  } catch(e) {
+    marketListings = [];
   }
+  
+  // Добавляем новый листинг
+  marketListings.push(newListing);
+  
+  // Сохраняем в localStorage
+  localStorage.setItem(MARKET_K, JSON.stringify(marketListings));
+  
+  // Оповещаем другие вкладки об изменении
+  window.dispatchEvent(new StorageEvent('storage', {
+    key: MARKET_K,
+    newValue: JSON.stringify(marketListings)
+  }));
+  
+  // Удаляем NFT из инвентаря
+  const newInv = getInv().filter(x => String(x.id) !== String(curNft.id));
+  setInv(newInv);
+  
+  // Показываем уведомление об успехе
+  showToast('✅ NFT «' + curNft.name + '» выставлен на маркет за ' + tempSellPrice.toLocaleString('ru-RU') + ' ₽');
+  
+  // Закрываем модалку
+  closeNftOverlay();
+  
+  // Обновляем отображение инвентаря
+  renderInv();
 };
 
 window.doWithdraw=function(){showToast('Функция вывода средств временно недоступна');};
+
+// Функция для теста - добавить случайный NFT в инвентарь
+window.testAddNft = function() {
+  const randomIndex = Math.floor(Math.random() * ALL_NFT_NAMES.length);
+  const nftName = ALL_NFT_NAMES[randomIndex];
+  const nftPrice = PRICES[randomIndex];
+  
+  const inv = getInv();
+  const newNft = {
+    id: Date.now() + Math.floor(Math.random() * 1000),
+    name: nftName,
+    price: nftPrice,
+    purchaseTime: Date.now()
+  };
+  inv.push(newNft);
+  setInv(inv);
+  renderInv();
+  showToast('✅ Тестовый NFT добавлен: ' + nftName);
+  console.log('Тестовый NFT добавлен. Всего в инвентаре: ' + inv.length);
+};
+
+// Добавляем кнопку теста в консоль (для отладки)
+console.log('Для теста введите в консоли: testAddNft()');
 
 })();
 </script>
