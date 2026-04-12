@@ -9,21 +9,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
-html,body{height:100%;overflow:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+html,body{height:100%;overflow:hidden;-webkit-font-smoothing:antialiased}
 body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
-
 .stars-bg{position:fixed;inset:0;background:radial-gradient(ellipse at 40% 50%,#0a0e1a 0%,#03050a 70%,#000103 100%);z-index:0;pointer-events:none}
 .ambient-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0}
 .orb1{width:340px;height:340px;background:radial-gradient(circle,rgba(148,38,255,.22) 0%,transparent 70%);top:-60px;left:-60px;animation:orb1 8s ease-in-out infinite}
 .orb2{width:300px;height:300px;background:radial-gradient(circle,rgba(90,20,200,.18) 0%,transparent 70%);bottom:60px;right:-50px;animation:orb2 10s ease-in-out infinite}
 @keyframes orb1{0%,100%{transform:translate(0,0) scale(1);opacity:.12}50%{transform:translate(30px,-20px) scale(1.08);opacity:.18}}
 @keyframes orb2{0%,100%{transform:translate(0,0) scale(1);opacity:.08}50%{transform:translate(-25px,30px) scale(1.05);opacity:.14}}
-
 .app{max-width:440px;width:100%;height:100vh;height:100dvh;display:flex;flex-direction:column;position:relative;z-index:1;overflow:hidden}
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(26,24,56,.97);border:1px solid rgba(184,122,255,.3);border-radius:16px;padding:10px 18px;font-size:14px;z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
 .toast.error{background:rgba(184,77,77,.97);border-color:#ff8888}
-
 .phdr{display:flex;align-items:center;justify-content:space-between;margin:16px 20px 18px;gap:12px;flex-shrink:0}
 .phdr-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
 .ava{width:50px;height:50px;border-radius:18px;background:rgba(106,13,173,.5);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;border:.5px solid rgba(184,122,255,.5);flex-shrink:0;overflow:hidden}
@@ -36,32 +33,27 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .plus-btn:active{transform:scale(.92)}
 .menu-circle{width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;cursor:pointer}
 .menu-circle:active{transform:scale(.92)}
-
 .prof-scroll{flex:1;overflow-y:auto;padding:0 20px 110px}
 .prof-scroll::-webkit-scrollbar{width:3px}
 .prof-scroll::-webkit-scrollbar-thumb{background:rgba(184,122,255,.35);border-radius:3px}
-
 .inv-wrap{background:rgba(255,255,255,.03);backdrop-filter:blur(24px);border:.5px solid rgba(138,43,226,.2);border-radius:32px;padding:20px 18px 22px;position:relative}
 .inv-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .inv-hdr-left{display:flex;align-items:center;gap:10px}
 .inv-hdr-left i{font-size:22px;color:#b87aff}
 .inv-hdr-left span{font-size:19px;font-weight:600}
-.info-btn{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:.5px solid rgba(184,122,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(184,122,255,.7);font-size:16px;font-weight:600;user-select:none}
+.info-btn{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);border:.5px solid rgba(184,122,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(184,122,255,.7);font-size:16px;font-weight:600}
 .info-btn.on{background:rgba(106,13,173,.4);border-color:rgba(184,122,255,.8);color:#b87aff}
-
 .hint{position:absolute;top:58px;right:18px;width:280px;background:rgba(106,13,173,.85);backdrop-filter:blur(28px);border-radius:22px;padding:14px 16px;border:.5px solid rgba(255,255,255,.2);z-index:10;display:none}
 .hint.show{display:block}
 .hint-arr{position:absolute;top:-8px;right:14px;border-left:10px solid transparent;border-right:10px solid transparent;border-bottom:10px solid rgba(106,13,173,.85);width:0;height:0}
 .hint-text{font-size:13px;color:rgba(255,255,255,.95);line-height:1.45}
 .hint-pill{font-weight:700;color:#fff;background:rgba(255,255,255,.15);padding:2px 7px;border-radius:40px;display:inline-block;margin:0 2px}
-
-.add-gift{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px 0;min-height:76px;border:1.5px dashed rgba(184,122,255,.4);border-radius:60px;background:rgba(106,13,173,.08);backdrop-filter:blur(8px);cursor:pointer;font-family:inherit;margin-bottom:20px}
+.add-gift{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:14px 0;min-height:76px;border:1.5px dashed rgba(184,122,255,.4);border-radius:60px;background:rgba(106,13,173,.08);cursor:pointer;font-family:inherit;margin-bottom:20px}
 .add-gift:active{background:rgba(106,13,173,.2)}
 .add-gift-plus{font-size:30px;font-weight:300;line-height:1;margin-bottom:3px;color:rgba(255,255,255,.7)}
 .add-gift-label{font-size:13px;color:rgba(255,255,255,.5);font-weight:500}
-
 .inv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.icard{background:rgba(255,255,255,.05);backdrop-filter:blur(12px);border:.5px solid rgba(138,43,226,.25);border-radius:18px;padding:10px 6px 8px;display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.icard{background:rgba(255,255,255,.05);border:.5px solid rgba(138,43,226,.25);border-radius:18px;padding:10px 6px 8px;display:flex;flex-direction:column;align-items:center;cursor:pointer}
 .icard:active{transform:scale(.96)}
 .icard img{width:76px;height:76px;border-radius:16px;object-fit:cover;margin-bottom:6px;background:rgba(42,30,58,.5);border:.5px solid rgba(184,122,255,.2)}
 .icard-name{font-size:12px;font-weight:500;color:#f0f0f0;text-align:center;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
@@ -72,18 +64,14 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .ni{display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,.48);font-size:10px;font-weight:500;cursor:pointer;padding:6px 14px;border-radius:22px;min-width:70px;text-decoration:none;background:transparent;border:none}
 .ni i{font-size:20px}
 .ni.on{background:rgba(106,13,173,.2);color:#b87aff}
-
-/* Overlay */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,0);backdrop-filter:blur(10px);z-index:2000;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease, visibility .35s ease, background .35s ease}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0);backdrop-filter:blur(10px);z-index:2000;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease,visibility .35s ease,background .35s ease}
 .overlay.visible{opacity:1;visibility:visible;pointer-events:auto;background:rgba(0,0,0,.75)}
-.overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
 .sheet{max-width:420px;width:94%;background:rgba(20,18,35,.98);border:0.5px solid rgba(184,122,255,.3);border-radius:26px 26px 0 0;padding:20px 22px 30px;transform:translateY(100%);transition:transform .45s cubic-bezier(0.16,1,0.3,1);max-height:88vh;overflow-y:auto}
 .sheet-handle{width:48px;height:5px;background:rgba(255,255,255,.25);border-radius:3px;margin:0 auto 18px;cursor:grab;touch-action:pan-y}
 .sheet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .sheet-title{font-size:19px;font-weight:700}
 .close-btn{color:#b87aff;font-size:22px;cursor:pointer;background:none;border:none;padding:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
 .close-btn:active{transform:scale(.9)}
-
 .dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:20px}
 .dep-amount{padding:13px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);text-align:center;font-size:14px;color:rgba(255,255,255,.85);cursor:pointer}
 .dep-amount.sel{background:rgba(88,10,148,.45);border-color:#b87aff;color:#fff}
@@ -96,18 +84,16 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .dep-info{display:flex;justify-content:space-between;margin-bottom:20px;background:rgba(255,255,255,.04);padding:15px 18px;border-radius:18px}
 .purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border-radius:60px;padding:15px;color:#fff;font-weight:700;font-size:16px;border:none;cursor:pointer}
 .purple-btn:active{transform:scale(.97)}
-
-/* Gift modal */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:2000;display:none;align-items:center;justify-content:center}
 .ov.show{display:flex}
-.gmod{max-width:360px;width:90%;background:rgba(20,20,35,.85);backdrop-filter:blur(40px);border:.5px solid rgba(184,122,255,.3);border-radius:32px;padding:32px 24px 24px 24px;position:relative;animation:slideUp .25s ease}
+.gmod{max-width:360px;width:90%;background:rgba(20,20,35,.85);backdrop-filter:blur(40px);border:.5px solid rgba(184,122,255,.3);border-radius:32px;padding:32px 24px 24px;position:relative;animation:slideUp .25s ease}
 @keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:none;opacity:1}}
-.xbtn{position:absolute;top:12px;right:12px;width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;color:#b87aff;font-size:18px;font-weight:400;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.xbtn:active{transform:scale(.9);background:rgba(184,122,255,.2)}
+.xbtn{position:absolute;top:12px;right:12px;width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;color:#b87aff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.xbtn:active{transform:scale(.9)}
 .g-warn{background:rgba(184,77,77,.2);border-radius:18px;padding:14px 16px;margin:0 0 22px;border:.5px solid rgba(255,255,255,.1)}
 .g-warn-title{color:#ff8888;font-size:15px;font-weight:600;margin-bottom:5px}
 .g-warn-sub{color:rgba(255,255,255,.8);font-size:13px}
-.g-step{display:flex;align-items:center;gap:14px;margin-bottom:18px;background:rgba(255,255,255,.03);backdrop-filter:blur(8px);border-radius:18px;padding:12px 14px;border:.5px solid rgba(255,255,255,.05)}
+.g-step{display:flex;align-items:center;gap:14px;margin-bottom:18px;background:rgba(255,255,255,.03);border-radius:18px;padding:12px 14px;border:.5px solid rgba(255,255,255,.05)}
 .g-step.link{cursor:pointer}
 .g-step.link:active{background:rgba(184,122,255,.2)}
 .g-ico{width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:26px;color:rgba(255,255,255,.7);flex-shrink:0}
@@ -115,10 +101,8 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .g-title{font-size:15px;font-weight:600;margin-bottom:3px}
 .g-sub{font-size:13px;color:rgba(255,255,255,.5)}
 .g-link{font-size:13px;color:#b87aff;font-weight:500}
-.g-bot-btn{background:rgba(106,13,173,.7);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.3);border-radius:60px;padding:14px;width:100%;color:#fff;font-size:17px;font-weight:600;cursor:pointer;text-align:center;margin-top:8px}
+.g-bot-btn{background:rgba(106,13,173,.7);border:.5px solid rgba(184,122,255,.3);border-radius:60px;padding:14px;width:100%;color:#fff;font-size:17px;font-weight:600;cursor:pointer;text-align:center;margin-top:8px}
 .g-bot-btn:active{transform:scale(.97)}
-
-/* NFT detail modal */
 .nft-ov{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);z-index:3000;display:none;align-items:center;justify-content:center}
 .nft-ov.show{display:flex}
 .nmod{max-width:340px;width:90%;background:rgba(20,20,35,.95);backdrop-filter:blur(40px);border:.5px solid rgba(184,122,255,.3);border-radius:32px;padding:28px 20px 24px;position:relative;animation:fadeIn .18s ease}
@@ -127,23 +111,22 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 .nmod-name{font-size:20px;font-weight:600;color:#fff;text-align:center;margin-bottom:6px}
 .nmod-price{display:flex;align-items:center;justify-content:center;gap:5px;font-size:22px;font-weight:700;margin-bottom:22px}
 .nmod-actions{display:flex;flex-direction:column;gap:10px;width:100%}
-.sell-locked{display:flex;align-items:center;justify-content:space-between;width:100%;padding:14px 18px;border-radius:60px;font-size:15px;font-weight:600;cursor:default;border:.5px solid rgba(184,122,255,.2);background:rgba(255,255,255,.05);backdrop-filter:blur(8px);color:rgba(255,255,255,.6)}
+.sell-locked{display:flex;align-items:center;justify-content:space-between;width:100%;padding:14px 18px;border-radius:60px;font-size:15px;font-weight:600;cursor:default;border:.5px solid rgba(184,122,255,.2);background:rgba(255,255,255,.05);color:rgba(255,255,255,.6)}
 .sell-locked-l{display:flex;align-items:center;gap:8px}
-.sell-timer{font-weight:500;background:rgba(0,0,0,.3);backdrop-filter:blur(4px);padding:4px 10px;border-radius:30px;font-size:14px}
-.sell-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:14px 18px;border-radius:60px;font-size:15px;font-weight:600;cursor:pointer;background:rgba(106,13,173,.8);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.4);color:#fff}
+.sell-timer{font-weight:500;background:rgba(0,0,0,.3);padding:4px 10px;border-radius:30px;font-size:14px}
+.sell-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:14px 18px;border-radius:60px;font-size:15px;font-weight:600;cursor:pointer;background:rgba(106,13,173,.8);border:.5px solid rgba(184,122,255,.4);color:#fff}
 .sell-btn:active{transform:scale(.96)}
-.withdraw-btn{background:rgba(106,13,173,.7);backdrop-filter:blur(8px);border:.5px solid rgba(184,122,255,.3);border-radius:60px;padding:14px;width:100%;color:#fff;font-size:15px;font-weight:600;cursor:pointer;text-align:center}
+.withdraw-btn{background:rgba(106,13,173,.7);border:.5px solid rgba(184,122,255,.3);border-radius:60px;padding:14px;width:100%;color:#fff;font-size:15px;font-weight:600;cursor:pointer;text-align:center}
 .withdraw-btn:active{transform:scale(.97)}
 .sell-inp-wrap{position:relative;margin-bottom:8px}
-.sell-inp{width:100%;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:.5px solid rgba(255,255,255,.15);border-radius:20px;padding:14px 40px 14px 18px;font-size:16px;color:#fff;outline:none}
+.sell-inp{width:100%;background:rgba(255,255,255,.08);border:.5px solid rgba(255,255,255,.15);border-radius:20px;padding:14px 40px 14px 18px;font-size:16px;color:#fff;outline:none}
 .sell-inp::placeholder{color:rgba(255,255,255,.4);font-size:14px}
 .sell-inp-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.5);font-size:16px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%}
 .sell-inp-clear:active{transform:translateY(-50%) scale(.9)}
 .sell-row{display:flex;gap:8px}
-.sell-cancel{flex:1;background:rgba(255,255,255,.05);backdrop-filter:blur(8px);border:.5px solid rgba(184,122,255,.2);border-radius:60px;padding:14px;color:rgba(255,255,255,.7);font-size:15px;font-weight:600;cursor:pointer}
-.sell-do{flex:1;background:rgba(106,13,173,.8);backdrop-filter:blur(20px);border:.5px solid rgba(184,122,255,.4);border-radius:60px;padding:14px;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+.sell-cancel{flex:1;background:rgba(255,255,255,.05);border:.5px solid rgba(184,122,255,.2);border-radius:60px;padding:14px;color:rgba(255,255,255,.7);font-size:15px;font-weight:600;cursor:pointer}
+.sell-do{flex:1;background:rgba(106,13,173,.8);border:.5px solid rgba(184,122,255,.4);border-radius:60px;padding:14px;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
 .sell-do:active,.sell-cancel:active{transform:scale(.97)}
-
 .confirm-text{text-align:center;color:rgba(255,255,255,.5);font-size:14px;margin-bottom:12px}
 .confirm-row{display:flex;gap:8px}
 .confirm-no{flex:1;background:transparent;border:1.5px solid #b87aff;border-radius:60px;padding:12px;color:#b87aff;font-size:15px;font-weight:600;cursor:pointer}
@@ -198,13 +181,13 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 </div>
 
 <div class="bnav">
-  <a href="index.html" class="ni"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
-  <a href="profle.html" class="ni on"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
+  <a href="/" class="ni"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
+  <a href="/profle.html" class="ni on"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
 </div>
 
 <!-- Модалка пополнения -->
-<div class="overlay hidden" id="depOverlay" data-dismissible="true">
-  <div class="sheet" data-dismissible="true">
+<div class="overlay" id="depOverlay">
+  <div class="sheet">
     <div class="sheet-handle" id="depHandle"></div>
     <div class="sheet-title-row">
       <span class="sheet-title">Пополнение баланса</span>
@@ -245,23 +228,23 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 </div>
 
 <!-- Модалка меню -->
-<div class="overlay hidden" id="menuOverlay" data-dismissible="true">
-  <div class="sheet" data-dismissible="true">
+<div class="overlay" id="menuOverlay">
+  <div class="sheet">
     <div class="sheet-handle" id="menuHandle"></div>
     <div class="sheet-title-row">
       <span class="sheet-title" style="margin:0 auto;text-align:center">Меню</span>
       <button class="close-btn" id="closeMenuBtn"><i class="fas fa-times"></i></button>
     </div>
     <div style="display:flex;flex-direction:column;gap:16px;margin-top:8px">
-      <div class="menu-item" style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="supportBtn">
+      <div style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="supportBtn">
         <i class="fas fa-headset" style="width:24px;color:#888;font-size:18px"></i>
         <span style="color:#aaa;font-size:16px">Поддержка</span>
       </div>
-      <div class="menu-item" style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="termsBtn">
+      <div style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="termsBtn">
         <i class="fas fa-file-alt" style="width:24px;color:#888;font-size:18px"></i>
         <span style="color:#aaa;font-size:16px">Условия использования</span>
       </div>
-      <div class="menu-item" style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="channelBtn">
+      <div style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="channelBtn">
         <i class="fas fa-bullhorn" style="width:24px;color:#888;font-size:18px"></i>
         <span style="color:#aaa;font-size:16px">Канал</span>
       </div>
@@ -284,162 +267,110 @@ body{font-family:'Inter',sans-serif;background:#03050a;color:#fff;display:flex;j
 (function(){
 'use strict';
 
-const GB='https://raw.githubusercontent.com/ur12163008-bot/yeter-game/main/nft/';
-const SELL_LOCK_MS=30*60*1000;
-const BAL_K='nft_balance', MKT_K='nft_market_listings_v2', INV_K='nft_inventory';
+const GB = 'https://raw.githubusercontent.com/ur12163008-bot/yeter-game/main/nft/';
+const SELL_LOCK_MS = 30*60*1000;
+const BAL_K = 'nft_balance';
+const INV_K = 'nft_inventory';
 const DEP_AMOUNTS = [100,200,500,1000,2000,5000];
 
-const lsGet=k=>{try{return JSON.parse(localStorage.getItem(k))}catch{return null}};
-const lsSet=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
-const getBal=()=>parseInt(localStorage.getItem(BAL_K)||'')||5000;
-const setBal=n=>{localStorage.setItem(BAL_K,String(n));renderBal()};
-const renderBal=()=>{document.getElementById('bv').textContent=getBal().toLocaleString('ru-RU');document.getElementById('depBalance').textContent=getBal().toLocaleString('ru-RU')};
-const getInv=()=>lsGet(INV_K)||[];
-const setInv=d=>lsSet(INV_K,d);
-const getMkt=()=>lsGet(MKT_K)||[];
-const setMkt=d=>lsSet(MKT_K,d);
+const getInv = () => { try{return JSON.parse(localStorage.getItem(INV_K)||'[]');}catch{return [];} };
+const setInv = d => localStorage.setItem(INV_K, JSON.stringify(d));
+const getBal = () => parseInt(localStorage.getItem(BAL_K)||'')||0;
+const setBal = n => { localStorage.setItem(BAL_K, String(n)); renderBal(); };
+const renderBal = () => {
+  document.getElementById('bv').textContent = getBal().toLocaleString('ru-RU');
+  document.getElementById('depBalance').textContent = getBal().toLocaleString('ru-RU');
+};
+const imgUrl = n => GB + encodeURIComponent(n+'.png');
+const esc = s => String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-const imgUrl=n=>GB+encodeURIComponent(n+'.png');
-const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-function fmt(ms){
-  const total=Math.ceil(ms/1000);
-  return String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0');
-}
+function fmt(ms){const total=Math.ceil(ms/1000);return String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0');}
 
 function showToast(msg, isError=false){
   const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.classList.add('show');
-  if(isError) t.classList.add('error');
-  else t.classList.remove('error');
+  t.textContent=msg;t.classList.add('show');
+  if(isError)t.classList.add('error');else t.classList.remove('error');
   setTimeout(()=>{t.classList.remove('show');t.classList.remove('error');},2000);
 }
 
-const tg=window.Telegram?.WebApp;
-let U={fullName:'Игрок',username:'@player',avatarChar:'И',photo:null,id:'local_user'};
+const tg = window.Telegram?.WebApp;
+let U = {fullName:'Игрок',username:'@player',avatarChar:'И',photo:null,id:'local_user'};
 if(tg?.initDataUnsafe?.user){
   const u=tg.initDataUnsafe.user;
   const fn=u.first_name||'Игрок',ln=u.last_name||'';
-  U.fullName=(fn+' '+ln).trim();U.username=u.username?'@'+u.username:'@'+fn.toLowerCase();
-  U.avatarChar=fn[0].toUpperCase();U.photo=u.photo_url||null;
-  U.id = String(u.id || 'local_user');
+  U.fullName=(fn+' '+ln).trim();
+  U.username=u.username?'@'+u.username:'@'+fn.toLowerCase();
+  U.avatarChar=fn[0].toUpperCase();
+  U.photo=u.photo_url||null;
+  U.id=String(u.id||'local_user');
+} else {
+  U.id = localStorage.getItem('nft_user_id');
+  if(!U.id){U.id='user_'+Date.now()+'_'+Math.random().toString(36).slice(2);localStorage.setItem('nft_user_id',U.id);}
 }
 document.getElementById('fn').textContent=U.fullName;
 document.getElementById('un').textContent=U.username;
 const avEl=document.getElementById('av');
-if(U.photo){avEl.innerHTML=`<img src="${U.photo}" alt="">`}else{avEl.textContent=U.avatarChar}
+if(U.photo){avEl.innerHTML=`<img src="${U.photo}" alt="">`;}else{avEl.textContent=U.avatarChar;}
 renderBal();
-
-window.addEventListener('storage', function(e) {
-  if(e.key === INV_K) renderInv();
-});
-
-window.addNftToInventory = function(nft) {
-  const inv = getInv();
-  inv.push({id:Date.now(), name:nft.nftName, price:nft.price, purchaseTime:Date.now()});
-  setInv(inv);
-  renderInv();
-  showToast('NFT «'+nft.nftName+'» добавлен в инвентарь');
-};
 
 // DEPOSIT
 let selectedDep = null;
-
 function renderDepGrid(){
-  const grid = document.getElementById('depGrid');
-  grid.innerHTML=DEP_AMOUNTS.map(a=>{
-    const sel = a === selectedDep;
-    return `<div class="dep-amount${sel?' sel':''}" onclick="selectPreset(${a})">${a.toLocaleString('ru-RU')} ₽</div>`;
-  }).join('');
+  document.getElementById('depGrid').innerHTML = DEP_AMOUNTS.map(a=>`<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectPreset(${a})">${a.toLocaleString('ru-RU')} ₽</div>`).join('');
 }
-window.selectPreset=function(amt){
-  selectedDep=amt;
-  renderDepGrid();
-  document.getElementById('customAmount').value='';
-};
+window.selectPreset = function(amt){selectedDep=amt;renderDepGrid();document.getElementById('customAmount').value='';};
 function getFinalAmount(){
   let cv=document.getElementById('customAmount').value.trim();
-  if(cv===''){
-    if(selectedDep === null) return null;
-    return selectedDep;
-  }
-  let num=parseFloat(cv);
-  if(isNaN(num)) return null;
-  num=Math.round(num);
-  if(num<50) num=50;
-  if(num>1000000) num=1000000;
-  return num;
+  if(cv===''){if(selectedDep===null)return null;return selectedDep;}
+  let num=parseFloat(cv);if(isNaN(num))return null;
+  num=Math.round(num);if(num<50)num=50;if(num>1000000)num=1000000;return num;
 }
 function openDeposit(){
-  selectedDep = null;
-  renderDepGrid();
-  document.getElementById('customAmount').value='';
-  const overlay=document.getElementById('depOverlay');
-  const sheet=overlay.querySelector('.sheet');
-  overlay.classList.remove('visible','hidden');
-  overlay.style.opacity='0';overlay.style.visibility='hidden';
-  sheet.style.transition='none';sheet.style.transform='translateY(100%)';
-  void overlay.offsetWidth;
-  overlay.style.transition='opacity .35s ease, visibility .35s ease, background .35s ease';
-  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
-  overlay.classList.add('visible');
-  overlay.style.opacity='1';overlay.style.visibility='visible';overlay.style.background='rgba(0,0,0,0.75)';
-  sheet.style.transform='translateY(0)';
+  selectedDep=null;renderDepGrid();document.getElementById('customAmount').value='';
+  showOverlay('depOverlay');
 }
-function closeDepOverlay(){
-  const overlay=document.getElementById('depOverlay');
-  const sheet=overlay.querySelector('.sheet');
-  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
-  overlay.style.transition='opacity .35s ease, background .35s ease';
-  sheet.style.transform='translateY(100%)';overlay.style.opacity='0';
-  setTimeout(()=>{overlay.classList.remove('visible');overlay.classList.add('hidden');},450);
-}
+function closeDepOverlay(){hideOverlay('depOverlay');}
 function confirmDeposit(){
-  const amount = getFinalAmount();
-  if(amount === null){
-    showToast('Введите корректную сумму', true);
-    return;
-  }
-  setBal(getBal()+amount);
-  closeDepOverlay();
+  const amount=getFinalAmount();
+  if(amount===null){showToast('Введите корректную сумму',true);return;}
+  setBal(getBal()+amount);closeDepOverlay();
   showToast('Пополнено на '+amount.toLocaleString('ru-RU')+' ₽');
 }
 document.getElementById('plusBtn').onclick=openDeposit;
 document.getElementById('confirmDepBtn').onclick=confirmDeposit;
 document.getElementById('closeDepBtn').onclick=closeDepOverlay;
-document.getElementById('customClear').onclick=()=>{
-  document.getElementById('customAmount').value='';
-  document.activeElement?.blur();
-};
-document.getElementById('customAmount').addEventListener('input', function(e){
-  this.value=this.value.replace(/[^0-9]/g,'');
-});
-document.getElementById('customAmount').addEventListener('blur',function(){
-  let val=this.value.trim();
-  if(val==='') return;
-  let num=parseInt(val,10);
-  if(isNaN(num)){this.value='';return;}
-  if(num<50) num=50;
-  if(num>1000000) num=1000000;
-  this.value=num;
-});
-function initDepSwipe(){
-  const overlay=document.getElementById('depOverlay');
-  const sheet=overlay.querySelector('.sheet');
-  const handle=document.getElementById('depHandle');
-  let startY=0,startYOffset=0,isDragging=false,hasMoved=false;
-  const getTransformY=(el)=>{const style=window.getComputedStyle(el);const matrix=style.transform;if(matrix==='none')return 0;const values=matrix.split('(')[1]?.split(')')[0]?.split(',');return values?parseFloat(values[5])||0:0;};
-  const onStart=(e)=>{isDragging=true;hasMoved=false;startY=e.touches?.[0]?.clientY||e.clientY;startYOffset=getTransformY(sheet);sheet.style.transition='none';sheet.style.willChange='transform';e.stopPropagation();};
-  const onMove=(e)=>{if(!isDragging)return;const currentY=e.touches?.[0]?.clientY||e.clientY;const dy=currentY-startY;if(dy>0){hasMoved=true;sheet.style.transform=`translateY(${startYOffset+dy}px)`;const opacity=Math.max(0.3,1-dy/(window.innerHeight*0.4));overlay.style.background=`rgba(0,0,0,${opacity*0.75})`;}e.preventDefault();};
-  const onEnd=()=>{if(!isDragging)return;isDragging=false;const currentY=getTransformY(sheet);const threshold=window.innerHeight*0.25;sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';overlay.style.transition='background .25s ease';if(hasMoved&&currentY>threshold){closeDepOverlay();}else{sheet.style.transform='translateY(0)';overlay.style.background='rgba(0,0,0,0.75)';}};
-  sheet.addEventListener('touchstart',onStart,{passive:true});
-  sheet.addEventListener('touchmove',onMove,{passive:false});
-  sheet.addEventListener('touchend',onEnd);
-  if(handle){handle.addEventListener('touchstart',onStart,{passive:true});handle.style.cursor='grab';}
+document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';document.activeElement?.blur();};
+document.getElementById('customAmount').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'');});
+
+// OVERLAY helpers
+function showOverlay(id){
+  const ov=document.getElementById(id);const sheet=ov.querySelector('.sheet');
+  sheet.style.transition='none';sheet.style.transform='translateY(100%)';
+  ov.classList.add('visible');
+  requestAnimationFrame(()=>{
+    sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
+    sheet.style.transform='translateY(0)';
+  });
 }
-initDepSwipe();
-document.getElementById('depOverlay').addEventListener('click',function(e){if(e.target===this) closeDepOverlay();});
+function hideOverlay(id){
+  const ov=document.getElementById(id);const sheet=ov.querySelector('.sheet');
+  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
+  sheet.style.transform='translateY(100%)';
+  setTimeout(()=>ov.classList.remove('visible'),450);
+}
+
+// SWIPE
+function initSwipe(overlayId, closeFn){
+  const ov=document.getElementById(overlayId);const sheet=ov?.querySelector('.sheet');if(!sheet)return;
+  let startY=0,startYOffset=0,isDragging=false,hasMoved=false;
+  const getY=(el)=>{const m=window.getComputedStyle(el).transform;if(m==='none')return 0;const v=m.split('(')[1]?.split(')')[0]?.split(',');return v?parseFloat(v[5])||0:0;};
+  const onStart=(e)=>{isDragging=true;hasMoved=false;startY=e.touches?.[0]?.clientY||e.clientY;startYOffset=getY(sheet);sheet.style.transition='none';e.stopPropagation();};
+  const onMove=(e)=>{if(!isDragging)return;const dy=(e.touches?.[0]?.clientY||e.clientY)-startY;if(dy>0){hasMoved=true;sheet.style.transform=`translateY(${startYOffset+dy}px)`;}e.preventDefault();};
+  const onEnd=()=>{if(!isDragging)return;isDragging=false;const cur=getY(sheet);sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';if(hasMoved&&cur>window.innerHeight*0.25)closeFn();else sheet.style.transform='translateY(0)';};
+  sheet.addEventListener('touchstart',onStart,{passive:true});sheet.addEventListener('touchmove',onMove,{passive:false});sheet.addEventListener('touchend',onEnd);
+}
+initSwipe('depOverlay',closeDepOverlay);
+document.getElementById('depOverlay').onclick=e=>{if(e.target===document.getElementById('depOverlay'))closeDepOverlay();};
 
 // HINT
 const hintEl=document.getElementById('hint'),infoBtn=document.getElementById('infoBtn');
@@ -448,52 +379,20 @@ document.addEventListener('click',e=>{if(!hintEl.contains(e.target)&&e.target!==
 
 // GIFT MODAL
 const giftOv=document.getElementById('giftOv');
-const openBot=()=>{const url='https://t.me/yeter16';if(tg){tg.openLink(url)}else{window.open(url,'_blank')}};
+const openBot=()=>{const url='https://t.me/yeter16';if(tg){tg.openLink(url);}else{window.open(url,'_blank');}};
 document.getElementById('addGift').onclick=()=>giftOv.classList.add('show');
 document.getElementById('giftX').onclick=()=>giftOv.classList.remove('show');
-giftOv.onclick=e=>{if(e.target===giftOv)giftOv.classList.remove('show')};
+giftOv.onclick=e=>{if(e.target===giftOv)giftOv.classList.remove('show');};
 document.getElementById('gStep1').onclick=openBot;
 document.getElementById('gBotBtn').onclick=openBot;
 
-// MENU с свайпом и кликом
-const menuOverlay=document.getElementById('menuOverlay');
-document.getElementById('menuCircle').onclick=()=>{
-  const sheet=menuOverlay.querySelector('.sheet');
-  menuOverlay.classList.remove('visible','hidden');
-  menuOverlay.style.opacity='0';menuOverlay.style.visibility='hidden';
-  sheet.style.transition='none';sheet.style.transform='translateY(100%)';
-  void menuOverlay.offsetWidth;
-  menuOverlay.style.transition='opacity .35s ease, visibility .35s ease, background .35s ease';
-  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
-  menuOverlay.classList.add('visible');
-  menuOverlay.style.opacity='1';menuOverlay.style.visibility='visible';menuOverlay.style.background='rgba(0,0,0,0.75)';
-  sheet.style.transform='translateY(0)';
-};
-function closeMenuOverlay(){
-  const overlay=document.getElementById('menuOverlay');
-  const sheet=overlay.querySelector('.sheet');
-  sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';
-  overlay.style.transition='opacity .35s ease, background .35s ease';
-  sheet.style.transform='translateY(100%)';overlay.style.opacity='0';
-  setTimeout(()=>{overlay.classList.remove('visible');overlay.classList.add('hidden');},450);
-}
-document.getElementById('closeMenuBtn').onclick=closeMenuOverlay;
-document.getElementById('menuOverlay').addEventListener('click',function(e){if(e.target===this) closeMenuOverlay();});
-function initMenuSwipe(){
-  const overlay=document.getElementById('menuOverlay');
-  const sheet=overlay.querySelector('.sheet');
-  const handle=document.getElementById('menuHandle');
-  let startY=0,startYOffset=0,isDragging=false,hasMoved=false;
-  const getTransformY=(el)=>{const style=window.getComputedStyle(el);const matrix=style.transform;if(matrix==='none')return 0;const values=matrix.split('(')[1]?.split(')')[0]?.split(',');return values?parseFloat(values[5])||0:0;};
-  const onStart=(e)=>{isDragging=true;hasMoved=false;startY=e.touches?.[0]?.clientY||e.clientY;startYOffset=getTransformY(sheet);sheet.style.transition='none';sheet.style.willChange='transform';e.stopPropagation();};
-  const onMove=(e)=>{if(!isDragging)return;const currentY=e.touches?.[0]?.clientY||e.clientY;const dy=currentY-startY;if(dy>0){hasMoved=true;sheet.style.transform=`translateY(${startYOffset+dy}px)`;const opacity=Math.max(0.3,1-dy/(window.innerHeight*0.4));overlay.style.background=`rgba(0,0,0,${opacity*0.75})`;}e.preventDefault();};
-  const onEnd=()=>{if(!isDragging)return;isDragging=false;const currentY=getTransformY(sheet);const threshold=window.innerHeight*0.25;sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';overlay.style.transition='background .25s ease';if(hasMoved&&currentY>threshold){closeMenuOverlay();}else{sheet.style.transform='translateY(0)';overlay.style.background='rgba(0,0,0,0.75)';}};
-  sheet.addEventListener('touchstart',onStart,{passive:true});
-  sheet.addEventListener('touchmove',onMove,{passive:false});
-  sheet.addEventListener('touchend',onEnd);
-  if(handle){handle.addEventListener('touchstart',onStart,{passive:true});handle.style.cursor='grab';}
-}
-initMenuSwipe();
+// MENU
+function openMenu(){showOverlay('menuOverlay');}
+function closeMenu(){hideOverlay('menuOverlay');}
+document.getElementById('menuCircle').onclick=openMenu;
+document.getElementById('closeMenuBtn').onclick=closeMenu;
+document.getElementById('menuOverlay').onclick=e=>{if(e.target===document.getElementById('menuOverlay'))closeMenu();};
+initSwipe('menuOverlay',closeMenu);
 document.getElementById('supportBtn').onclick=()=>showToast('Служба поддержки: @support');
 document.getElementById('termsBtn').onclick=()=>showToast('Условия использования: скоро');
 document.getElementById('channelBtn').onclick=()=>showToast('Канал скоро появится');
@@ -509,45 +408,29 @@ function renderInv(){
 }
 renderInv();
 
+window.addEventListener('storage', e=>{if(e.key===INV_K) renderInv();});
+
 // NFT DETAIL
 const nftOverlay=document.getElementById('nftOverlay');
-let curNft=null,timerIv=null;
-let isSelling = false;
-let tempSellPrice = null;
+let curNft=null,timerIv=null,isSelling=false,tempSellPrice=null;
 
 window.openNft=function(id){
-  if(isSelling) return;
+  if(isSelling)return;
   const inv=getInv();const it=inv.find(x=>String(x.id)===String(id));
-  if(!it)return;curNft=it;
-  tempSellPrice = null;
+  if(!it)return;curNft=it;tempSellPrice=null;
   document.getElementById('nImg').src=imgUrl(it.name);
   document.getElementById('nName').textContent=it.name;
   document.getElementById('nPrice').textContent=it.price.toLocaleString('ru-RU');
   nftOverlay.classList.add('show');
   showNormalActions();
 };
-
-function closeNftOverlay(){
-  nftOverlay.classList.remove('show');
-  clearInterval(timerIv);
-  curNft=null;
-  isSelling = false;
-  tempSellPrice = null;
-  document.activeElement?.blur();
-}
-
+function closeNftOverlay(){nftOverlay.classList.remove('show');clearInterval(timerIv);curNft=null;isSelling=false;tempSellPrice=null;document.activeElement?.blur();}
 document.getElementById('nftX').onclick=closeNftOverlay;
-nftOverlay.onclick=e=>{if(e.target===nftOverlay) closeNftOverlay();};
+nftOverlay.onclick=e=>{if(e.target===nftOverlay)closeNftOverlay();};
 
-function showNormalActions(){
-  isSelling = false;
-  tempSellPrice = null;
-  clearInterval(timerIv);
-  renderSellBtn();
-  timerIv=setInterval(renderSellBtn,1000);
-}
+function showNormalActions(){isSelling=false;tempSellPrice=null;clearInterval(timerIv);renderSellBtn();timerIv=setInterval(renderSellBtn,1000);}
 function renderSellBtn(){
-  if(!curNft||isSelling) return;
+  if(!curNft||isSelling)return;
   const el=document.getElementById('nActions');
   const remaining=Math.max(0,SELL_LOCK_MS-(Date.now()-(curNft.purchaseTime||0)));
   if(remaining>0){
@@ -557,75 +440,77 @@ function renderSellBtn(){
     el.innerHTML=`<button class="sell-btn" onclick="showSellInput()">Продать</button><button class="withdraw-btn" onclick="doWithdraw()">Вывести</button>`;
   }
 }
+
 window.showSellInput=function(){
-  if(!curNft) return;
-  isSelling = true;
-  clearInterval(timerIv);
+  if(!curNft)return;
+  isSelling=true;clearInterval(timerIv);
   const el=document.getElementById('nActions');
   el.innerHTML=`
     <div class="sell-inp-wrap">
       <input class="sell-inp" id="sellPriceInp" type="text" inputmode="numeric" placeholder="Введите цену для продажи">
       <div class="sell-inp-clear" id="sellPriceClear"><i class="fas fa-times"></i></div>
     </div>
-    <button class="sell-do" onclick="askConfirmSell()">Выставить на маркете</button>
-  `;
+    <div class="sell-row">
+      <button class="sell-cancel" onclick="cancelSell()">Отмена</button>
+      <button class="sell-do" onclick="askConfirmSell()">Выставить</button>
+    </div>`;
   const inp=document.getElementById('sellPriceInp');
   inp.oninput=e=>{e.target.value=e.target.value.replace(/\D/g,'');};
-  document.getElementById('sellPriceClear').onclick=()=>{
-    inp.value='';
-    inp.focus();
-    inp.blur();
-  };
+  document.getElementById('sellPriceClear').onclick=()=>{inp.value='';inp.focus();};
   setTimeout(()=>inp.focus(),50);
 };
+
 window.askConfirmSell=function(){
   const inp=document.getElementById('sellPriceInp');
   const price=parseInt(inp?.value||'');
-  if(!price||price<=0){
-    showToast('Введите корректную цену', true);
-    return;
-  }
-  if(!curNft) return;
-  tempSellPrice = price;
-  const el=document.getElementById('nActions');
-  el.innerHTML=`
-    <div class="confirm-text">Вы точно хотите продать NFT за ${price.toLocaleString('ru-RU')} ₽?</div>
+  if(!price||price<=0){showToast('Введите корректную цену',true);return;}
+  if(!curNft)return;
+  tempSellPrice=price;
+  document.getElementById('nActions').innerHTML=`
+    <div class="confirm-text">Продать NFT за ${price.toLocaleString('ru-RU')} ₽?</div>
     <div class="confirm-row">
       <button class="confirm-no" onclick="cancelSell()">Нет</button>
       <button class="confirm-yes" onclick="doSell()">Да</button>
-    </div>
-  `;
-  document.getElementById('nPrice').textContent = price.toLocaleString('ru-RU');
+    </div>`;
+  document.getElementById('nPrice').textContent=price.toLocaleString('ru-RU');
 };
-window.cancelSell = function(){
-  closeNftOverlay();
-};
-window.doSell=function(){
-  if(!curNft||!tempSellPrice) return;
-  const mkt=getMkt();
-  mkt.push({
-    id:Date.now(),
-    nftName:curNft.name,
-    price:tempSellPrice,
-    image:imgUrl(curNft.name),
-    sellerName:U.fullName,
-    sellerUsername:U.username,
-    sellerAvatar:U.avatarChar,
+
+window.cancelSell=function(){closeNftOverlay();};
+
+window.doSell=async function(){
+  if(!curNft||!tempSellPrice)return;
+  const listing = {
+    nftName: curNft.name,
+    price: tempSellPrice,
+    image: imgUrl(curNft.name),
+    sellerName: U.fullName,
+    sellerUsername: U.username,
+    sellerAvatar: U.avatarChar,
     sellerPhoto: U.photo,
     sellerId: U.id,
-    pattern:'Классический',
-    background:'Тёмный',
-    model:'2D',
-    listedAt:Date.now()
-  });
-  setMkt(mkt);
-  setInv(getInv().filter(x=>String(x.id)!==String(curNft.id)));
-  showToast('NFT «'+curNft.name+'» выставлен за '+tempSellPrice.toLocaleString('ru-RU')+' ₽');
-  closeNftOverlay();
-  renderInv();
-  window.dispatchEvent(new StorageEvent('storage', {key:MKT_K, newValue:JSON.stringify(mkt)}));
+    pattern: 'Классический',
+    background: 'Тёмный',
+    model: '2D',
+    listedAt: Date.now()
+  };
+  try {
+    const resp = await fetch('/api/market/list', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(listing)
+    });
+    if(!resp.ok) throw new Error('Server error');
+    setInv(getInv().filter(x=>String(x.id)!==String(curNft.id)));
+    showToast('NFT «'+curNft.name+'» выставлен за '+tempSellPrice.toLocaleString('ru-RU')+' ₽');
+    closeNftOverlay();
+    renderInv();
+  } catch(e){
+    showToast('Ошибка при выставлении', true);
+  }
 };
+
 window.doWithdraw=function(){showToast('Функция вывода средств временно недоступна');};
+
 })();
 </script>
 </body>
