@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
+/* Стили без изменений, добавлены стили для no-results */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 html,body{height:100%;overflow:hidden;background:#07070e}
 body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
@@ -80,7 +81,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .custom-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.5);font-size:14px;cursor:pointer;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:50%}
 .custom-clear:active{transform:translateY(-50%) scale(.92)}
 .dep-info{display:flex;justify-content:space-between;margin-bottom:20px;background:rgba(255,255,255,.04);padding:15px 18px;border-radius:18px}
-.purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border-radius:60px;padding:15px;color:#fff;font-weight:700;font-size:16px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border-radius:60px;padding:15px;color:#fff;font-weight:700;font-size:16px;border:none;cursor:pointer}
 .purple-btn:active{transform:scale(.97)}
 .detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.1)}
 .detail-row:last-child{border-bottom:none}
@@ -346,6 +347,17 @@ const savedBalance = localStorage.getItem('nft_balance');
 if(savedBalance !== null) balance = parseInt(savedBalance) || 0;
 renderHeader();
 
+function hasActiveFilters(){
+  return activeFilters.collection.length > 0 ||
+         activeFilters.model.length > 0 ||
+         activeFilters.background.length > 0 ||
+         activeFilters.pattern.length > 0 ||
+         activeFilters.number !== '' ||
+         activeFilters.priceFrom !== '' ||
+         activeFilters.priceTo !== '' ||
+         document.getElementById('searchInput').value.trim() !== '';
+}
+
 function applyFiltersAndRender(){
   let items = [...marketListings];
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -358,15 +370,27 @@ function applyFiltersAndRender(){
   if(activeFilters.priceFrom){let from=parseInt(activeFilters.priceFrom);if(!isNaN(from)) items=items.filter(x=>x.price>=from);}
   if(activeFilters.priceTo){let to=parseInt(activeFilters.priceTo);if(!isNaN(to)) items=items.filter(x=>x.price<=to);}
   items.sort((a,b)=>sortAsc?a.price-b.price:b.price-a.price);
+  
   const total = Object.values(activeFilters).reduce((s,a)=>s+(Array.isArray(a)?a.length:a?1:0),0);
   const filterBtn = document.getElementById('filterBtn');
   if(total>0) filterBtn.classList.add('has-filter');
   else filterBtn.classList.remove('has-filter');
+  
   const grid = document.getElementById('nftGrid');
+  const totalItems = marketListings.length;
+  const isFiltered = hasActiveFilters();
+  
   if(!items.length){
-    grid.innerHTML='<div class="empty-market"><i class="fas fa-store-alt"></i><p>Товаров на маркете пока нет</p></div>';
+    if(totalItems === 0 && !isFiltered) {
+      // Пустой маркет
+      grid.innerHTML='<div class="empty-market"><i class="fas fa-store-alt"></i><p>Товаров пока нету</p></div>';
+    } else {
+      // Ничего не найдено
+      grid.innerHTML='<div class="empty-market"><i class="fas fa-search"></i><p>Ничего не найдено</p></div>';
+    }
     return;
   }
+  
   grid.innerHTML = items.map(l=>{
     const avatarContent = l.sellerPhoto ? `<img src="${l.sellerPhoto}">` : l.sellerAvatar;
     return `<div class="nft-card" onclick="openBuy(${l.id})">
