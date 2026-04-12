@@ -329,7 +329,9 @@ function getFinalAmount(){
   let cv=document.getElementById('customAmount').value.trim();
   if(cv===''){if(selectedDep===null)return null;return selectedDep;}
   let num=parseFloat(cv);if(isNaN(num))return null;
-  num=Math.round(num);if(num<50)num=50;if(num>1000000)num=1000000;return num;
+  num=Math.round(num);if(num<50)num=50;if(num>1000000)num=1000000;
+  document.getElementById('customAmount').value = num;
+  return num;
 }
 function openDeposit(){
   selectedDep=null;renderDepGrid();document.getElementById('customAmount').value='';
@@ -347,6 +349,16 @@ document.getElementById('confirmDepBtn').onclick=confirmDeposit;
 document.getElementById('closeDepBtn').onclick=closeDepOverlay;
 document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';selectedDep=null;renderDepGrid();document.activeElement?.blur();};
 document.getElementById('customAmount').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'');});
+document.getElementById('customAmount').addEventListener('blur',function(){
+  let val = this.value.trim();
+  if(val === '') return;
+  let num = parseFloat(val);
+  if(isNaN(num)){this.value='';return;}
+  num = Math.round(num);
+  if(num < 50) num = 50;
+  if(num > 1000000) num = 1000000;
+  this.value = num;
+});
 
 // OVERLAY helpers
 function showOverlay(id){
@@ -483,16 +495,13 @@ window.askConfirmSell=function(){
 
 window.cancelSell=function(){closeNftOverlay();};
 
-// НОВАЯ ФУНКЦИЯ - ВЫСТАВЛЕНИЕ НА ПРОДАЖУ (БЕЗ СЕРВЕРА)
 window.doSell=function(){
   if(!curNft||!tempSellPrice)return;
   
-  // Генерируем случайные атрибуты
   const randomPattern = PATTERNS[Math.floor(Math.random() * PATTERNS.length)];
   const randomBackground = BACKGROUNDS[Math.floor(Math.random() * BACKGROUNDS.length)];
   const randomModel = MODELS[Math.floor(Math.random() * MODELS.length)];
   
-  // Создаём новый листинг
   const newListing = {
     id: Date.now() + Math.floor(Math.random() * 1000),
     nftName: curNft.name,
@@ -509,7 +518,6 @@ window.doSell=function(){
     listedAt: Date.now()
   };
   
-  // Получаем текущие листинги с маркета
   let marketListings = [];
   try {
     const stored = localStorage.getItem(MARKET_K);
@@ -518,35 +526,21 @@ window.doSell=function(){
     marketListings = [];
   }
   
-  // Добавляем новый листинг
   marketListings.push(newListing);
-  
-  // Сохраняем в localStorage
   localStorage.setItem(MARKET_K, JSON.stringify(marketListings));
+  window.dispatchEvent(new StorageEvent('storage', {key: MARKET_K, newValue: JSON.stringify(marketListings)}));
   
-  // Оповещаем другие вкладки об изменении
-  window.dispatchEvent(new StorageEvent('storage', {
-    key: MARKET_K,
-    newValue: JSON.stringify(marketListings)
-  }));
-  
-  // Удаляем NFT из инвентаря
   const newInv = getInv().filter(x => String(x.id) !== String(curNft.id));
   setInv(newInv);
   
-  // Показываем уведомление об успехе
   showToast('✅ NFT «' + curNft.name + '» выставлен на маркет за ' + tempSellPrice.toLocaleString('ru-RU') + ' ₽');
-  
-  // Закрываем модалку
   closeNftOverlay();
-  
-  // Обновляем отображение инвентаря
   renderInv();
 };
 
 window.doWithdraw=function(){showToast('Функция вывода средств временно недоступна');};
 
-// Функция для теста - добавить случайный NFT в инвентарь
+// Тестовая функция
 window.testAddNft = function() {
   const randomIndex = Math.floor(Math.random() * ALL_NFT_NAMES.length);
   const nftName = ALL_NFT_NAMES[randomIndex];
@@ -566,7 +560,6 @@ window.testAddNft = function() {
   console.log('Тестовый NFT добавлен. Всего в инвентаре: ' + inv.length);
 };
 
-// Добавляем кнопку теста в консоль (для отладки)
 console.log('Для теста введите в консоли: testAddNft()');
 
 })();
