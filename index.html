@@ -12,16 +12,13 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 html,body{height:100%;overflow:hidden;background:#07070e}
 body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
-
 .app{max-width:440px;width:100%;height:100dvh;display:flex;flex-direction:column;position:relative;z-index:1;overflow:hidden}
-
 .bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 40% 50%,#0a0e1a 0%,#03050a 70%,#000103 100%)}
 .orb{position:fixed;border-radius:50%;filter:blur(80px);z-index:0;pointer-events:none}
 .orb1{width:320px;height:320px;background:radial-gradient(circle,rgba(88,10,148,.4) 0%,transparent 70%);top:-70px;right:-70px;animation:orb1f 9s ease-in-out infinite}
 .orb2{width:260px;height:260px;background:radial-gradient(circle,rgba(30,10,100,.35) 0%,transparent 70%);bottom:90px;left:-50px;animation:orb2f 11s ease-in-out infinite}
 @keyframes orb1f{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-22px,22px) scale(1.12)}}
 @keyframes orb2f{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(18px,-18px) scale(1.09)}}
-
 .phdr{display:flex;align-items:center;justify-content:space-between;margin:16px 20px 18px;gap:12px;flex-shrink:0}
 .phdr-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
 .ava{width:50px;height:50px;border-radius:18px;background:rgba(106,13,173,.5);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;border:.5px solid rgba(184,122,255,.5);flex-shrink:0;overflow:hidden}
@@ -34,7 +31,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .plus-btn:active{transform:scale(.92)}
 .menu-circle{width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;cursor:pointer}
 .menu-circle:active{transform:scale(.92)}
-
 .search-row{display:flex;gap:10px;align-items:center;padding:0 20px 12px;flex-shrink:0}
 .search-wrapper{position:relative;flex:1}
 .search-box{width:100%;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:60px;padding:10px 14px}
@@ -46,17 +42,13 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .icon-btn{background:rgba(255,255,255,.06);border:1px solid rgba(184,122,255,.28);border-radius:60px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;flex-shrink:0;cursor:pointer}
 .icon-btn:active{transform:scale(.95)}
 .icon-btn.has-filter{border-color:#b87aff;box-shadow:0 0 10px rgba(184,122,255,.25)}
-
 .scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:30px}
 .scroll-area::-webkit-scrollbar{width:3px}
 .scroll-area::-webkit-scrollbar-thumb{background:rgba(184,122,255,.35);border-radius:3px}
-
 .nft-grid{padding:0 20px 110px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .nft-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px;overflow:hidden;cursor:pointer}
 .nft-card:active{transform:scale(.98)}
-@media (hover: hover) and (pointer: fine) {
-  .nft-card:hover .nft-img img{transform:scale(1.02)}
-}
+@media (hover:hover) and (pointer:fine){.nft-card:hover .nft-img img{transform:scale(1.02)}}
 .nft-img{position:relative;padding-top:100%;background:rgba(40,25,65,.6);margin:2px 2px 0 2px;border-radius:12px 12px 0 0}
 .nft-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0;transition:transform .2s ease}
 .nft-info{padding:10px 10px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -65,13 +57,11 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .nft-price{font-size:15px;font-weight:800;color:#fff}
 .seller-dot{width:32px;height:32px;border-radius:50%;background:rgba(88,10,148,.5);border:1px solid rgba(184,122,255,.5);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#b87aff;flex-shrink:0;overflow:hidden}
 .seller-dot img{width:100%;height:100%;object-fit:cover}
-
 .bnav{position:fixed;bottom:18px;left:18px;right:18px;max-width:404px;margin:0 auto;background:rgba(12,12,22,.95);border:1px solid rgba(184,122,255,.16);border-radius:28px;display:flex;justify-content:space-around;padding:8px 16px;z-index:100}
 .ni{display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,.48);font-size:10px;font-weight:500;cursor:pointer;padding:6px 14px;border-radius:22px;min-width:70px;text-decoration:none;background:transparent;border:none}
 .ni:active{transform:scale(.96)}
 .ni i{font-size:20px}
 .ni.on{background:rgba(106,13,173,.2);color:#b87aff}
-
 .ov{position:fixed;inset:0;background:rgba(0,0,0,0);backdrop-filter:blur(10px);z-index:2000;display:none;align-items:flex-end;justify-content:center}
 .ov.show{display:flex}
 .sheet{max-width:420px;width:94%;background:rgba(20,18,35,.98);border:0.5px solid rgba(184,122,255,.3);border-radius:26px 26px 0 0;padding:20px 22px 30px;transform:translateY(100%);transition:transform .45s cubic-bezier(0.16,1,0.3,1);max-height:88vh;overflow-y:auto}
@@ -80,7 +70,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .sheet-title{font-size:19px;font-weight:700}
 .close-btn{color:#b87aff;font-size:22px;cursor:pointer;background:none;border:none;padding:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
 .close-btn:active{transform:scale(.9)}
-
 .dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:20px}
 .dep-amount{padding:13px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);text-align:center;font-size:14px;color:rgba(255,255,255,.85);cursor:pointer}
 .dep-amount.sel{background:rgba(88,10,148,.45);border-color:#b87aff;color:#fff}
@@ -93,7 +82,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .dep-info{display:flex;justify-content:space-between;margin-bottom:20px;background:rgba(255,255,255,.04);padding:15px 18px;border-radius:18px}
 .purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border-radius:60px;padding:15px;color:#fff;font-weight:700;font-size:16px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .purple-btn:active{transform:scale(.97)}
-
 .detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.1)}
 .detail-row:last-child{border-bottom:none}
 .detail-label{color:rgba(255,255,255,.55);font-weight:500}
@@ -105,9 +93,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .confirm-no{flex:1;background:transparent;border:1.5px solid #b87aff;border-radius:60px;padding:12px;color:#b87aff;font-size:15px;font-weight:600;cursor:pointer}
 .confirm-yes{flex:1;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border:none;border-radius:60px;padding:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
 .confirm-text{text-align:center;color:#aaa;font-size:14px;margin-bottom:12px}
-
 .buy-btn-price{display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
-
 #filterPanel{position:fixed;inset:0;background:rgba(8,8,18,.98);z-index:1500;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);pointer-events:none}
 #filterPanel.open{transform:translateY(0);pointer-events:auto}
 .fp-inner{max-width:440px;width:100%;margin:0 auto;display:flex;flex-direction:column;height:100%;overflow:hidden}
@@ -130,7 +116,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .fp-row:active{transform:scale(.98)}
 .fp-row img{width:46px;height:46px;border-radius:12px;object-fit:cover}
 .fp-row-name{flex:1;font-size:13px;font-weight:500}
-/* Обычный чекбокс вместо круглого */
 .fp-check{width:24px;height:24px;border-radius:6px;border:2px solid rgba(184,122,255,.5);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
 .fp-check.checked{background:#b87aff;border-color:#b87aff}
 .select-all-row{background:rgba(184,122,255,.15);border:1px solid rgba(184,122,255,.4);margin-bottom:12px}
@@ -148,11 +133,9 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .price-symbol{position:absolute;right:42px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.4);font-size:13px;pointer-events:none}
 .price-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.5);font-size:12px;cursor:pointer;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%}
 .price-clear:active{transform:translateY(-50%) scale(.9)}
-
 .empty-market{grid-column:1/-1;text-align:center;padding:40px 20px;color:rgba(255,255,255,.4)}
 .empty-market i{font-size:48px;color:#b87aff;opacity:.4;margin-bottom:16px;display:block}
 .empty-market p{font-size:14px}
-
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(26,24,56,.97);border:1px solid rgba(184,122,255,.3);border-radius:16px;padding:10px 18px;font-size:14px;z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
 .toast.error{background:rgba(184,77,77,.97);border-color:#ff8888}
@@ -196,11 +179,10 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 </div>
 
 <div class="bnav">
-  <a href="#" class="ni on" id="navMarket"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
-  <a href="profle.html" class="ni" id="navProfileBtn"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
+  <a href="/" class="ni on"><i class="fas fa-store"></i><span>МАРКЕТ</span></a>
+  <a href="/profle.html" class="ni"><i class="fas fa-user"></i><span>ПРОФИЛЬ</span></a>
 </div>
 
-<!-- Модалки -->
 <div class="ov" id="depOv">
   <div class="sheet">
     <div class="sheet-handle" id="depHandle"></div>
@@ -252,15 +234,15 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
       <button class="close-btn" id="closeMenuBtn"><i class="fas fa-times"></i></button>
     </div>
     <div style="display:flex;flex-direction:column;gap:16px;margin-top:8px">
-      <div class="menu-item" style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="supportBtn">
+      <div style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="supportBtn">
         <i class="fas fa-headset" style="width:24px;color:#888;font-size:18px"></i>
         <span style="color:#aaa;font-size:16px">Поддержка</span>
       </div>
-      <div class="menu-item" style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="termsBtn">
+      <div style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="termsBtn">
         <i class="fas fa-file-alt" style="width:24px;color:#888;font-size:18px"></i>
         <span style="color:#aaa;font-size:16px">Условия использования</span>
       </div>
-      <div class="menu-item" style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="channelBtn">
+      <div style="display:flex;align-items:center;gap:14px;padding:12px 0;cursor:pointer" id="channelBtn">
         <i class="fas fa-bullhorn" style="width:24px;color:#888;font-size:18px"></i>
         <span style="color:#aaa;font-size:16px">Канал</span>
       </div>
@@ -281,7 +263,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
     </div>
     <div id="fpNumberRow" style="display:none;margin:0 20px 12px">
       <div class="custom-amount-wrapper"><input type="text" id="fpNumberInput" inputmode="numeric" placeholder="Введите номер подарка"><div class="custom-clear" id="fpNumberClear"><i class="fas fa-times"></i></div></div>
-      <div style="color:rgba(255,255,255,.45); font-size:12px; margin-top:4px; padding-left:8px;">Введите номер подарка</div>
     </div>
     <div id="fpPriceRow" style="display:none;margin:0 20px 12px">
       <div class="price-inputs">
@@ -297,7 +278,6 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 <script>
 const GITHUB = 'https://raw.githubusercontent.com/ur12163008-bot/yeter-game/main/nft/';
 const ALL_NFT_NAMES = ["Artisan Brick","B-Day Candle","Berry Box","Big Year","Bling Binky","Bonded Ring","Bow Tie","Bunny Muffin","Candy Cane","Clover Pin","Cookie Heart","Crystal Ball","Cupid Charm","Desk Calendar","Diamond Ring","Easter Egg","Electric Skull","Eternal Candle","Eternal Rose","Evil Eye","Faith Amulet","Flying Broom","Fresh Socks","Gem Signet","Genie Lamp","Ginger Cookie","Hanging Star","Heroic Helmet","Hex Pot","Holiday Drink","Homemade Cake","Hypno Lollipop","Ice Cream","Input Key","Instant Ramen","Ionic Dryer","Jack-in-the-Box","Jelly Bunny","Jester Hat","Jingle Bells","Jolly Chimp","Joyful Bundle","Khabibs Papakha","Kissed Frog","Light Sword","Lol Pop","Lon Gem","Love Candle","Love Potion","Low Rider","Lunar Snake","Lush Bouquet","Mad Pumpkin","Magic Potion","Mini Oscar","Money Pot","Moon Pendant","Mousse Cake","Nail Bracelet","Neko Helmet","Perfume Bottle","Pet Snake","Pretty Posy","Rare Bird","Record Player","Restless Jar","Sakura Flower","Santa Hat","Sharp Tongue","Signet Ring","Skull Flower","Sky Stilettos","Sleigh Bell","Snake Box","Snoop Cigar","Snow Globe","Snow Mittens","Spiced Wine","Spring Basket","Spy Agaric","Star Notepad","Stellar Rocket","Swag Bag","Swiss Watch","Tama Gadget","Top Hat","Toy Bear","Trapped Heart","UFC Strike","Valentine Box","Victory Medal","Vintage Cigar","Voodoo Doll","Westside Sign","Whip Cupcake","Winter Wreath","Witch Hat","Xmas Stocking"];
-const ALL_PRICES = [215,87,342,163,421,78,290,155,380,99,265,440,118,330,195,275,410,143,388,222,157,300,93,350,178,425,112,255,395,168,310,84,230,445,205,137,365,192,285,96,307,89,241,390,174,315,98,258,416,139,362,213,292,428,166,335,103,276,449,188,302,132,379,221,146,398,117,263,434,181,327,95,283,412,158,340,119,271,447,136];
 const PATTERNS = ["Классический","Современный","Винтажный","Неоновый"];
 const BACKGROUNDS = ["Тёмный","Светлый","Градиент","Звёздный"];
 const MODELS = ["2D","3D","Pixel","Vector"];
@@ -318,11 +298,13 @@ let activeFilters = {collection:[],model:[],background:[],pattern:[],number:'',p
 let selectedDep = null;
 let selectedListing = null;
 let fpTab = 'collection', fpSortAsc = true, fpModelNft = null;
+let ws = null;
 
 function imgUrl(name){return GITHUB + encodeURIComponent(name+'.png');}
 function fmtNum(n){return n.toLocaleString('ru-RU');}
 function saveBalance(){localStorage.setItem('nft_balance',balance);}
 function renderHeader(){document.getElementById('bv').textContent=fmtNum(balance);document.getElementById('depBalance').textContent=fmtNum(balance);}
+
 function showToast(msg, isError=false){
   const t=document.getElementById('toast');
   t.textContent=msg;
@@ -351,285 +333,199 @@ if(tg){
     else av.innerHTML = currentUserAvatarChar;
   }
 } else {
-  currentUserId = 'local_user_' + Date.now();
+  currentUserId = localStorage.getItem('nft_user_id');
+  if(!currentUserId){
+    currentUserId = 'user_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+    localStorage.setItem('nft_user_id', currentUserId);
+  }
   currentUserFullName = 'Игрок';
   currentUserAvatarChar = 'И';
 }
 
 const savedBalance = localStorage.getItem('nft_balance');
-if(savedBalance !== null){
-  balance = parseInt(savedBalance) || 0;
-} else {
-  balance = 0;
-  saveBalance();
-}
+if(savedBalance !== null) balance = parseInt(savedBalance) || 0;
 renderHeader();
 
-function loadMarketListings(){
-  const stored = localStorage.getItem('nft_market_listings_v2');
-  if(stored){
-    try {
-      marketListings = JSON.parse(stored);
-      if(!Array.isArray(marketListings)) marketListings = [];
-    } catch(e) {
-      marketListings = [];
-    }
-  } else {
-    marketListings = [];
-  }
-  saveMarketListings();
-}
-function saveMarketListings(){
-  localStorage.setItem('nft_market_listings_v2', JSON.stringify(marketListings));
-}
-function getListings(){return marketListings;}
-
-function updateSellerInfoInListings(){
-  if(!currentUserId) return;
-  let changed = false;
-  marketListings = marketListings.map(item => {
-    if(item.sellerId === currentUserId){
-      if(item.sellerName !== currentUserFullName || item.sellerAvatar !== currentUserAvatarChar || item.sellerPhoto !== currentUserPhoto){
-        changed = true;
-        return {
-          ...item,
-          sellerName: currentUserFullName,
-          sellerAvatar: currentUserAvatarChar,
-          sellerPhoto: currentUserPhoto
-        };
-      }
-    }
-    return item;
-  });
-  if(changed) saveMarketListings();
-}
-
 function applyFiltersAndRender(){
-  let items=getListings();
-  const q=document.getElementById('searchInput').value.trim().toLowerCase();
-  if(q) items=items.filter(x=>x.nftName.toLowerCase().includes(q));
-  if(activeFilters.collection.length) items=items.filter(x=>activeFilters.collection.includes(x.nftName));
-  if(activeFilters.model.length) items=items.filter(x=>activeFilters.model.includes(x.model));
-  if(activeFilters.background.length) items=items.filter(x=>activeFilters.background.includes(x.background));
-  if(activeFilters.pattern.length) items=items.filter(x=>activeFilters.pattern.includes(x.pattern));
-  if(activeFilters.number){
-    items=items.filter(x=>x.nftName.toLowerCase().includes(activeFilters.number.toLowerCase()));
-  }
-  if(activeFilters.priceFrom){
-    let from=parseInt(activeFilters.priceFrom);
-    if(!isNaN(from)) items=items.filter(x=>x.price>=from);
-  }
-  if(activeFilters.priceTo){
-    let to=parseInt(activeFilters.priceTo);
-    if(!isNaN(to)) items=items.filter(x=>x.price<=to);
-  }
+  let items = [...marketListings];
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  if(q) items = items.filter(x=>x.nftName.toLowerCase().includes(q));
+  if(activeFilters.collection.length) items = items.filter(x=>activeFilters.collection.includes(x.nftName));
+  if(activeFilters.model.length) items = items.filter(x=>activeFilters.model.includes(x.model));
+  if(activeFilters.background.length) items = items.filter(x=>activeFilters.background.includes(x.background));
+  if(activeFilters.pattern.length) items = items.filter(x=>activeFilters.pattern.includes(x.pattern));
+  if(activeFilters.number) items = items.filter(x=>x.nftName.toLowerCase().includes(activeFilters.number.toLowerCase()));
+  if(activeFilters.priceFrom){let from=parseInt(activeFilters.priceFrom);if(!isNaN(from)) items=items.filter(x=>x.price>=from);}
+  if(activeFilters.priceTo){let to=parseInt(activeFilters.priceTo);if(!isNaN(to)) items=items.filter(x=>x.price<=to);}
   items.sort((a,b)=>sortAsc?a.price-b.price:b.price-a.price);
-  const total=Object.values(activeFilters).reduce((s,a)=>s+(Array.isArray(a)?a.length:a?1:0),0);
-  const filterBtn=document.getElementById('filterBtn');
+  const total = Object.values(activeFilters).reduce((s,a)=>s+(Array.isArray(a)?a.length:a?1:0),0);
+  const filterBtn = document.getElementById('filterBtn');
   if(total>0) filterBtn.classList.add('has-filter');
   else filterBtn.classList.remove('has-filter');
-  const grid=document.getElementById('nftGrid');
+  const grid = document.getElementById('nftGrid');
   if(!items.length){
     grid.innerHTML='<div class="empty-market"><i class="fas fa-store-alt"></i><p>Товаров на маркете пока нет</p></div>';
     return;
   }
-  grid.innerHTML=items.map(l=>{
-    const avatarContent = l.sellerPhoto ? `<img src="${l.sellerPhoto}" style="width:100%;height:100%;object-fit:cover">` : l.sellerAvatar;
-    return `
-    <div class="nft-card" onclick="openBuy(${l.id})">
+  grid.innerHTML = items.map(l=>{
+    const avatarContent = l.sellerPhoto ? `<img src="${l.sellerPhoto}">` : l.sellerAvatar;
+    return `<div class="nft-card" onclick="openBuy(${l.id})">
       <div class="nft-img"><img src="${l.image}" onerror="this.style.opacity='.2'"/></div>
       <div class="nft-info">
         <div class="nft-left"><div class="nft-name">${l.nftName}</div><div class="nft-price">${l.price} ₽</div></div>
         <div class="seller-dot">${avatarContent}</div>
       </div>
-    </div>
-  `}).join('');
+    </div>`;
+  }).join('');
   updateSearchClear();
 }
+
 function updateSearchClear(){const input=document.getElementById('searchInput');const clear=document.getElementById('searchClear');if(input.value.length>0)clear.classList.add('show');else clear.classList.remove('show');}
 function clearMainSearch(){document.getElementById('searchInput').value='';applyFiltersAndRender();document.activeElement?.blur();}
 function toggleSort(){sortAsc=!sortAsc;document.getElementById('sortIcon').className=sortAsc?'fas fa-sort-amount-up':'fas fa-sort-amount-down';applyFiltersAndRender();}
 
-window.openBuy=function(id){
-  const l=getListings().find(x=>x.id===id);
-  if(!l)return;
-  if(l.sellerId === currentUserId){
-    showToast('Нельзя купить свой NFT', true);
-    return;
-  }
-  selectedListing=l;
-  document.getElementById('buyTitle').textContent=l.nftName;
-  document.getElementById('buyImg').src=l.image;
-  document.getElementById('buyAttrs').innerHTML=`
+window.openBuy = function(id){
+  const l = marketListings.find(x=>x.id===id);
+  if(!l) return;
+  if(l.sellerId === currentUserId){showToast('Нельзя купить свой NFT', true);return;}
+  selectedListing = l;
+  document.getElementById('buyTitle').textContent = l.nftName;
+  document.getElementById('buyImg').src = l.image;
+  document.getElementById('buyAttrs').innerHTML = `
     <div class="detail-row"><span class="detail-label">Модель</span><span class="detail-value">${l.model}</span></div>
     <div class="detail-row"><span class="detail-label">Фон</span><span class="detail-value">${l.background}</span></div>
-    <div class="detail-row"><span class="detail-label">Узор</span><span class="detail-value">${l.pattern}</span></div>
-  `;
+    <div class="detail-row"><span class="detail-label">Узор</span><span class="detail-value">${l.pattern}</span></div>`;
   const sellerAva = document.getElementById('sellerAva');
-  if(l.sellerPhoto){
-    sellerAva.innerHTML = `<img src="${l.sellerPhoto}" style="width:100%;height:100%;object-fit:cover">`;
-  } else {
-    sellerAva.textContent = l.sellerAvatar;
-  }
-  document.getElementById('sellerName').textContent=l.sellerName;
-  document.getElementById('buyPrice').innerHTML=`${l.price} ₽`;
-  document.getElementById('confirmBlock').style.display='none';
-  document.getElementById('buyConfirmBtn').style.display='flex';
-  const ov=document.getElementById('buyOv');
-  const sheet=ov.querySelector('.sheet');
+  if(l.sellerPhoto) sellerAva.innerHTML = `<img src="${l.sellerPhoto}" style="width:100%;height:100%;object-fit:cover">`;
+  else sellerAva.textContent = l.sellerAvatar;
+  document.getElementById('sellerName').textContent = l.sellerName;
+  document.getElementById('buyPrice').innerHTML = `${l.price} ₽`;
+  document.getElementById('confirmBlock').style.display = 'none';
+  document.getElementById('buyConfirmBtn').style.display = 'flex';
+  const ov = document.getElementById('buyOv');
+  const sheet = ov.querySelector('.sheet');
   ov.classList.add('show');
   setTimeout(()=>{sheet.style.transform='translateY(0)';},10);
 };
+
 function showConfirm(){
   if(!selectedListing) return;
-  if(selectedListing.sellerId === currentUserId){
-    showToast('Нельзя купить свой NFT', true);
-    closeOverlay('buyOv');
-    return;
-  }
-  document.getElementById('confirmBlock').style.display='block';
-  document.getElementById('buyConfirmBtn').style.display='none';
+  if(selectedListing.sellerId === currentUserId){showToast('Нельзя купить свой NFT', true);closeOverlay('buyOv');return;}
+  document.getElementById('confirmBlock').style.display = 'block';
+  document.getElementById('buyConfirmBtn').style.display = 'none';
 }
-function cancelBuy(){
+function cancelBuy(){closeOverlay('buyOv');}
+
+async function executeBuy(){
+  if(!selectedListing){closeOverlay('buyOv');return;}
+  if(balance < selectedListing.price){showToast('Недостаточно средств', true);closeOverlay('buyOv');return;}
+  if(selectedListing.sellerId === currentUserId){showToast('Нельзя купить свой NFT', true);closeOverlay('buyOv');return;}
+
+  const listingId = selectedListing.id;
+  const listingName = selectedListing.nftName;
+  const listingPrice = selectedListing.price;
   closeOverlay('buyOv');
-}
-function executeBuy(){
-  if(!selectedListing||balance<selectedListing.price){showToast('Недостаточно средств',true);closeOverlay('buyOv');return;}
-  if(selectedListing.sellerId === currentUserId){
-    showToast('Нельзя купить свой NFT', true);
-    closeOverlay('buyOv');
-    return;
+
+  try {
+    const resp = await fetch('/api/market/buy', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({id: listingId, buyerId: currentUserId})
+    });
+    const data = await resp.json();
+    if(!resp.ok || data.error === 'ERROR'){
+      showToast('ERROR', true);
+      return;
+    }
+    if(data.error){
+      showToast(data.error, true);
+      return;
+    }
+    balance -= listingPrice;
+    saveBalance();
+    renderHeader();
+    let inv = JSON.parse(localStorage.getItem('nft_inventory') || '[]');
+    inv.push({id: Date.now(), name: listingName, price: listingPrice, purchaseTime: Date.now()});
+    localStorage.setItem('nft_inventory', JSON.stringify(inv));
+    showToast('Куплен ' + listingName);
+  } catch(e) {
+    showToast('ERROR', true);
   }
-  balance-=selectedListing.price;saveBalance();renderHeader();
-  marketListings = marketListings.filter(x=>x.id!==selectedListing.id);
-  saveMarketListings();
-  let inv = JSON.parse(localStorage.getItem('nft_inventory') || '[]');
-  const newNft = {id:Date.now(),name:selectedListing.nftName,price:selectedListing.price,purchaseTime:Date.now()};
-  inv.push(newNft);
-  localStorage.setItem('nft_inventory',JSON.stringify(inv));
-  window.dispatchEvent(new StorageEvent('storage', {key:'nft_inventory', newValue:JSON.stringify(inv)}));
-  window.dispatchEvent(new StorageEvent('storage', {key:'nft_market_listings_v2', newValue:JSON.stringify(marketListings)}));
-  showToast('Куплен '+selectedListing.nftName);
-  applyFiltersAndRender();
-  closeOverlay('buyOv');
 }
+
 function openDeposit(){
   selectedDep = null;
   renderDepGrid();
-  document.getElementById('customAmount').value='';
-  const ov=document.getElementById('depOv');
-  const sheet=ov.querySelector('.sheet');
+  document.getElementById('customAmount').value = '';
+  const ov = document.getElementById('depOv');
+  const sheet = ov.querySelector('.sheet');
   ov.classList.add('show');
   setTimeout(()=>{sheet.style.transform='translateY(0)';},10);
 }
 function renderDepGrid(){
-  const container=document.getElementById('depGrid');
-  container.innerHTML=DEP_AMOUNTS.map(a=>{
-    const sel = a === selectedDep;
-    return `<div class="dep-amount${sel?' sel':''}" onclick="selectPreset(${a})">${fmtNum(a)} ₽</div>`;
-  }).join('');
+  document.getElementById('depGrid').innerHTML = DEP_AMOUNTS.map(a=>`<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectPreset(${a})">${fmtNum(a)} ₽</div>`).join('');
 }
-// Изменено: теперь при клике сумма сразу записывается в поле ввода
-window.selectPreset=function(amt){
-  selectedDep = amt;
-  renderDepGrid();
-  document.getElementById('customAmount').value = amt;
-};
-
+window.selectPreset = function(amt){selectedDep=amt;renderDepGrid();document.getElementById('customAmount').value=amt;};
 function getFinalAmount(){
-  let cv=document.getElementById('customAmount').value.trim();
-  if(cv===''){
-    if(selectedDep === null) return null;
-    return selectedDep;
-  }
-  let num=parseFloat(cv);
+  let cv = document.getElementById('customAmount').value.trim();
+  if(cv===''){if(selectedDep===null)return null;return selectedDep;}
+  let num = parseFloat(cv);
   if(isNaN(num)) return null;
-  num=Math.round(num);
+  num = Math.round(num);
   if(num<50) num=50;
   if(num>1000000) num=1000000;
   return num;
 }
 function confirmDeposit(){
-  const amt=getFinalAmount();
+  const amt = getFinalAmount();
   if(amt===null){showToast('Введите корректную сумму',true);return;}
-  balance+=amt;saveBalance();renderHeader();
-  showToast('Пополнено на '+fmtNum(amt)+' ₽');
-  applyFiltersAndRender();
+  balance += amt;saveBalance();renderHeader();
+  showToast('Пополнено на ' + fmtNum(amt) + ' ₽');
   closeOverlay('depOv');
 }
 function closeOverlay(id){const ov=document.getElementById(id);const sheet=ov.querySelector('.sheet');sheet.style.transform='translateY(100%)';setTimeout(()=>ov.classList.remove('show'),300);}
 
 function initSwipeDismiss(overlayId){
   const overlay=document.getElementById(overlayId);if(!overlay)return;
-  const sheet=overlay.querySelector('.sheet');const handle=overlay.querySelector('.sheet-handle');if(!sheet)return;
+  const sheet=overlay.querySelector('.sheet');if(!sheet)return;
   let startY=0,startYOffset=0,isDragging=false,hasMoved=false;
-  const getTransformY=(el)=>{const style=window.getComputedStyle(el);const matrix=style.transform;if(matrix==='none')return 0;const values=matrix.split('(')[1]?.split(')')[0]?.split(',');return values?parseFloat(values[5])||0:0;};
-  const onStart=(e)=>{isDragging=true;hasMoved=false;startY=e.touches?.[0]?.clientY||e.clientY;startYOffset=getTransformY(sheet);sheet.style.transition='none';sheet.style.willChange='transform';e.stopPropagation();};
-  const onMove=(e)=>{if(!isDragging)return;const currentY=e.touches?.[0]?.clientY||e.clientY;const dy=currentY-startY;if(dy>0){hasMoved=true;sheet.style.transform=`translateY(${startYOffset+dy}px)`;const opacity=Math.max(0.3,1-dy/(window.innerHeight*0.4));overlay.style.background=`rgba(0,0,0,${opacity*0.75})`;}e.preventDefault();};
-  const onEnd=()=>{if(!isDragging)return;isDragging=false;const currentY=getTransformY(sheet);const threshold=window.innerHeight*0.25;sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';overlay.style.transition='background .25s ease';if(hasMoved&&currentY>threshold){closeOverlay(overlayId);}else{sheet.style.transform='translateY(0)';overlay.style.background='rgba(0,0,0,0.75)';}setTimeout(()=>{sheet.style.willChange='auto';},300);};
-  sheet.addEventListener('touchstart',onStart,{passive:true});sheet.addEventListener('touchmove',onMove,{passive:false});sheet.addEventListener('touchend',onEnd);sheet.addEventListener('touchcancel',onEnd);
-  if(handle){handle.addEventListener('touchstart',onStart,{passive:true});handle.style.cursor='grab';}
-  sheet.addEventListener('mousedown',onStart);document.addEventListener('mousemove',(e)=>{if(isDragging)onMove(e);});document.addEventListener('mouseup',onEnd);
+  const getY=(el)=>{const m=window.getComputedStyle(el).transform;if(m==='none')return 0;const v=m.split('(')[1]?.split(')')[0]?.split(',');return v?parseFloat(v[5])||0:0;};
+  const onStart=(e)=>{isDragging=true;hasMoved=false;startY=e.touches?.[0]?.clientY||e.clientY;startYOffset=getY(sheet);sheet.style.transition='none';e.stopPropagation();};
+  const onMove=(e)=>{if(!isDragging)return;const dy=(e.touches?.[0]?.clientY||e.clientY)-startY;if(dy>0){hasMoved=true;sheet.style.transform=`translateY(${startYOffset+dy}px)`;}e.preventDefault();};
+  const onEnd=()=>{if(!isDragging)return;isDragging=false;const cur=getY(sheet);sheet.style.transition='transform .45s cubic-bezier(0.16,1,0.3,1)';if(hasMoved&&cur>window.innerHeight*0.25)closeOverlay(overlayId);else sheet.style.transform='translateY(0)';};
+  sheet.addEventListener('touchstart',onStart,{passive:true});sheet.addEventListener('touchmove',onMove,{passive:false});sheet.addEventListener('touchend',onEnd);
 }
-initSwipeDismiss('depOv');
-initSwipeDismiss('buyOv');
-initSwipeDismiss('menuOv');
+initSwipeDismiss('depOv');initSwipeDismiss('buyOv');initSwipeDismiss('menuOv');
 
-document.getElementById('menuCircle').onclick=()=>{
-  const ov=document.getElementById('menuOv');
-  const sheet=ov.querySelector('.sheet');
-  ov.classList.add('show');
-  setTimeout(()=>{sheet.style.transform='translateY(0)';},10);
-};
+document.getElementById('menuCircle').onclick=()=>{const ov=document.getElementById('menuOv');const sheet=ov.querySelector('.sheet');ov.classList.add('show');setTimeout(()=>{sheet.style.transform='translateY(0)';},10);};
 document.getElementById('closeMenuBtn').onclick=()=>closeOverlay('menuOv');
-// Изменено: ссылки в меню
-document.getElementById('supportBtn').onclick=()=>{ window.open('https://t.me/tyron_support', '_blank'); };
+document.getElementById('supportBtn').onclick=()=>{window.open('https://t.me/tyron_support','_blank');};
 document.getElementById('termsBtn').onclick=()=>showToast('Условия использования: скоро');
-document.getElementById('channelBtn').onclick=()=>{ window.open('https://t.me/tyron_community', '_blank'); };
+document.getElementById('channelBtn').onclick=()=>{window.open('https://t.me/tyron_community','_blank');};
 
 const filterTabs = ['collection','model','background','pattern','number','price'];
 const tabLabels = {collection:'Коллекция',model:'Модель',background:'Фон',pattern:'Узор',number:'Номер',price:'Цена'};
 
 function openFilter(){
-  tempFilters = JSON.parse(JSON.stringify(activeFilters));
-  fpModelNft = null;
+  tempFilters=JSON.parse(JSON.stringify(activeFilters));fpModelNft=null;
   document.getElementById('fpNumberInput').value=tempFilters.number||'';
   document.getElementById('fpPriceFrom').value=tempFilters.priceFrom||'';
   document.getElementById('fpPriceTo').value=tempFilters.priceTo||'';
   document.getElementById('filterPanel').classList.add('open');
-  renderFpTabs();
-  renderFpContent();
+  renderFpTabs();renderFpContent();
 }
-function closeFilter(){
-  document.getElementById('filterPanel').classList.remove('open');
-  fpTab = 'collection';
-}
-function applyFilters(){
-  activeFilters = JSON.parse(JSON.stringify(tempFilters));
-  closeFilter();
-  applyFiltersAndRender();
-}
+function closeFilter(){document.getElementById('filterPanel').classList.remove('open');fpTab='collection';}
+function applyFilters(){activeFilters=JSON.parse(JSON.stringify(tempFilters));closeFilter();applyFiltersAndRender();}
 function resetAllFilters(){
-  tempFilters = {collection:[],model:[],background:[],pattern:[],number:'',priceFrom:'',priceTo:''};
-  fpModelNft=null;
-  document.getElementById('fpNumberInput').value='';
-  document.getElementById('fpPriceFrom').value='';
-  document.getElementById('fpPriceTo').value='';
-  renderFpTabs();
-  renderFpContent();
+  tempFilters={collection:[],model:[],background:[],pattern:[],number:'',priceFrom:'',priceTo:''};fpModelNft=null;
+  document.getElementById('fpNumberInput').value='';document.getElementById('fpPriceFrom').value='';document.getElementById('fpPriceTo').value='';
+  renderFpTabs();renderFpContent();
 }
 function renderFpTabs(){
   const container=document.getElementById('fpTabs');
   container.innerHTML=filterTabs.map(key=>`<button class="fp-tab${fpTab===key?' active':''}" data-tab="${key}">${tabLabels[key]}${tempFilters[key]?.length?` <span style="background:#b87aff;color:#fff;border-radius:20px;padding:0 5px;margin-left:5px;font-size:10px">${tempFilters[key].length}</span>`:''}</button>`).join('');
-  document.querySelectorAll('.fp-tab').forEach(btn=>{
-    btn.onclick=()=>{
-      fpTab=btn.dataset.tab;
-      fpModelNft=null;
-      renderFpTabs();
-      renderFpContent();
-    };
-  });
-  const showSearch = ['collection','model','background','pattern'].includes(fpTab);
+  document.querySelectorAll('.fp-tab').forEach(btn=>{btn.onclick=()=>{fpTab=btn.dataset.tab;fpModelNft=null;renderFpTabs();renderFpContent();};});
+  const showSearch=['collection','model','background','pattern'].includes(fpTab);
   document.getElementById('fpSearchRow').style.display=showSearch?'flex':'none';
   document.getElementById('fpNumberRow').style.display=fpTab==='number'?'block':'none';
   document.getElementById('fpPriceRow').style.display=fpTab==='price'?'block':'none';
@@ -639,34 +535,24 @@ function renderFpContent(){
   const q=document.getElementById('fpSearch').value.trim().toLowerCase();
   const list=document.getElementById('fpList');
   if(fpTab==='collection'){
-    let opts=[...ALL_NFT_NAMES];
-    if(q) opts=opts.filter(n=>n.toLowerCase().includes(q));
+    let opts=[...ALL_NFT_NAMES];if(q)opts=opts.filter(n=>n.toLowerCase().includes(q));
     list.innerHTML=`<div class="fp-row select-all-row" onclick="toggleSelectAll('collection')"><div class="fp-row-name" style="font-weight:600">Выбрать все</div><div class="fp-check${tempFilters.collection.length===ALL_NFT_NAMES.length?' checked':''}">${tempFilters.collection.length===ALL_NFT_NAMES.length?'✓':''}</div></div>`+opts.map(name=>{const sel=tempFilters.collection.includes(name);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('collection','${name.replace(/'/g,"\\'")}')"><img src="${imgUrl(name)}"><span class="fp-row-name">${name}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
   }else if(fpTab==='model'){
-    if(tempFilters.collection.length===0){
-      list.innerHTML='<div style="text-align:center;padding:40px;color:rgba(255,255,255,.5);font-size:13px">Сначала выберите любую коллекцию</div>';
-    }else if(!fpModelNft){
-      let allNfts=getListings();
-      let selectedCollectionNfts=allNfts.filter(n=>tempFilters.collection.includes(n.nftName));
-      let uniqueNfts=[...new Map(selectedCollectionNfts.map(n=>[n.nftName,n])).values()];
-      if(q) uniqueNfts=uniqueNfts.filter(n=>n.nftName.toLowerCase().includes(q));
+    if(!tempFilters.collection.length){list.innerHTML='<div style="text-align:center;padding:40px;color:rgba(255,255,255,.5);font-size:13px">Сначала выберите любую коллекцию</div>';}
+    else if(!fpModelNft){
+      let allNfts=marketListings.filter(n=>tempFilters.collection.includes(n.nftName));
+      let uniqueNfts=[...new Map(allNfts.map(n=>[n.nftName,n])).values()];if(q)uniqueNfts=uniqueNfts.filter(n=>n.nftName.toLowerCase().includes(q));
       list.innerHTML=`<div class="fp-row select-all-row" onclick="toggleSelectAll('model')"><div class="fp-row-name" style="font-weight:600">Выбрать все</div><div class="fp-check${tempFilters.model.length===MODELS.length?' checked':''}">${tempFilters.model.length===MODELS.length?'✓':''}</div></div>`+uniqueNfts.map(nft=>`<div class="fp-row" onclick="fpModelNft='${nft.nftName.replace(/'/g,"\\'")}';renderFpContent()"><img src="${nft.image}"><span class="fp-row-name">${nft.nftName}</span><i class="fas fa-chevron-right" style="color:#b87aff"></i></div>`).join('');
     }else{
-      let allNfts=getListings();
-      let selectedNft=allNfts.find(n=>n.nftName===fpModelNft);
-      if(selectedNft){
-        list.innerHTML=`<div class="back-link" onclick="fpModelNft=null;renderFpContent()"><i class="fas fa-arrow-left"></i> Назад</div><div style="margin-bottom:14px"><div style="font-weight:600;margin-bottom:8px">Модели для ${selectedNft.nftName}:</div>`+MODELS.map(m=>{const sel=tempFilters.model.includes(m);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('model','${m}')"><img src="${MODEL_ICONS[m]}"><div style="flex:1"><div>${m}</div><div style="font-size:12px;color:rgba(255,255,255,.4)">Модель</div></div><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('')+`</div>`;
-      }else{
-        list.innerHTML='<div style="text-align:center;padding:40px">NFT не найден</div>';
-      }
+      let selectedNft=marketListings.find(n=>n.nftName===fpModelNft);
+      if(selectedNft){list.innerHTML=`<div class="back-link" onclick="fpModelNft=null;renderFpContent()"><i class="fas fa-arrow-left"></i> Назад</div><div style="margin-bottom:14px"><div style="font-weight:600;margin-bottom:8px">Модели для ${selectedNft.nftName}:</div>`+MODELS.map(m=>{const sel=tempFilters.model.includes(m);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('model','${m}')"><img src="${MODEL_ICONS[m]}"><div style="flex:1"><div>${m}</div></div><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('')+`</div>`;}
+      else{list.innerHTML='<div style="text-align:center;padding:40px">NFT не найден</div>';}
     }
   }else if(fpTab==='background'){
-    let opts=[...BACKGROUNDS];
-    if(q) opts=opts.filter(b=>b.toLowerCase().includes(q));
+    let opts=[...BACKGROUNDS];if(q)opts=opts.filter(b=>b.toLowerCase().includes(q));
     list.innerHTML=`<div class="fp-row select-all-row" onclick="toggleSelectAll('background')"><div class="fp-row-name" style="font-weight:600">Выбрать все</div><div class="fp-check${tempFilters.background.length===BACKGROUNDS.length?' checked':''}">${tempFilters.background.length===BACKGROUNDS.length?'✓':''}</div></div>`+opts.map(bg=>{const sel=tempFilters.background.includes(bg);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('background','${bg}')"><img src="${BG_IMAGES[bg]}"><span class="fp-row-name">${bg}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
   }else if(fpTab==='pattern'){
-    let opts=[...PATTERNS];
-    if(q) opts=opts.filter(p=>p.toLowerCase().includes(q));
+    let opts=[...PATTERNS];if(q)opts=opts.filter(p=>p.toLowerCase().includes(q));
     list.innerHTML=`<div class="fp-row select-all-row" onclick="toggleSelectAll('pattern')"><div class="fp-row-name" style="font-weight:600">Выбрать все</div><div class="fp-check${tempFilters.pattern.length===PATTERNS.length?' checked':''}">${tempFilters.pattern.length===PATTERNS.length?'✓':''}</div></div>`+opts.map(pt=>{const sel=tempFilters.pattern.includes(pt);return `<div class="fp-row${sel?' sel':''}" onclick="toggleFilter('pattern','${pt}')"><img src="${PATTERN_IMAGES[pt]}"><span class="fp-row-name">${pt}</span><div class="fp-check${sel?' checked':''}">${sel?'✓':''}</div></div>`;}).join('');
   }else if(fpTab==='number'){
     list.innerHTML='<div style="text-align:center;padding:40px;color:rgba(255,255,255,.5)">Введите номер подарка в поле выше</div>';
@@ -676,51 +562,44 @@ function renderFpContent(){
   const fpClear=document.getElementById('fpSearchClear');const fpInput=document.getElementById('fpSearch');if(fpInput.value.length>0)fpClear.classList.add('show');else fpClear.classList.remove('show');
 }
 function toggleSelectAll(key){
-  if(key==='collection'){
-    if(tempFilters.collection.length===ALL_NFT_NAMES.length) tempFilters.collection=[];
-    else tempFilters.collection=[...ALL_NFT_NAMES];
-  }else if(key==='model'){
-    if(tempFilters.model.length===MODELS.length) tempFilters.model=[];
-    else tempFilters.model=[...MODELS];
-  }else if(key==='background'){
-    if(tempFilters.background.length===BACKGROUNDS.length) tempFilters.background=[];
-    else tempFilters.background=[...BACKGROUNDS];
-  }else if(key==='pattern'){
-    if(tempFilters.pattern.length===PATTERNS.length) tempFilters.pattern=[];
-    else tempFilters.pattern=[...PATTERNS];
-  }
+  if(key==='collection'){if(tempFilters.collection.length===ALL_NFT_NAMES.length)tempFilters.collection=[];else tempFilters.collection=[...ALL_NFT_NAMES];}
+  else if(key==='model'){if(tempFilters.model.length===MODELS.length)tempFilters.model=[];else tempFilters.model=[...MODELS];}
+  else if(key==='background'){if(tempFilters.background.length===BACKGROUNDS.length)tempFilters.background=[];else tempFilters.background=[...BACKGROUNDS];}
+  else if(key==='pattern'){if(tempFilters.pattern.length===PATTERNS.length)tempFilters.pattern=[];else tempFilters.pattern=[...PATTERNS];}
   renderFpContent();
 }
-function toggleFilter(key,val){
-  const arr=tempFilters[key];
-  const idx=arr.indexOf(val);
-  if(idx>=0) arr.splice(idx,1);
-  else arr.push(val);
-  if(key==='collection') fpModelNft=null;
-  renderFpContent();
-}
-function clearFpSearch(){document.getElementById('fpSearch').value='';renderFpContent();document.activeElement?.blur();}
+function toggleFilter(key,val){const arr=tempFilters[key];const idx=arr.indexOf(val);if(idx>=0)arr.splice(idx,1);else arr.push(val);if(key==='collection')fpModelNft=null;renderFpContent();}
 
-window.addEventListener('storage', function(e) {
-  if(e.key === 'nft_market_listings_v2'){
-    loadMarketListings();
-    updateSellerInfoInListings();
+async function loadMarketFromServer(){
+  try {
+    const resp = await fetch('/api/market');
+    const data = await resp.json();
+    marketListings = data.listings || [];
     applyFiltersAndRender();
+  } catch(e) {
+    console.error('Failed to load market', e);
   }
-  if(e.key === 'nft_balance'){
-    const saved = localStorage.getItem('nft_balance');
-    if(saved !== null) balance = parseInt(saved) || 0;
-    else balance = 0;
-    renderHeader();
-  }
-});
+}
 
-// Включаем прокрутку колесиком мыши для области фильтров
-const fpScroll = document.getElementById('fpScrollArea');
-if(fpScroll) {
-  fpScroll.addEventListener('wheel', (e) => {
-    e.stopPropagation();
-  }, { passive: true });
+function connectWebSocket(){
+  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  ws = new WebSocket(`${proto}//${location.host}/api/ws`);
+  ws.onmessage = (e) => {
+    try {
+      const msg = JSON.parse(e.data);
+      if(msg.type === 'listed'){
+        marketListings.push(msg.listing);
+        applyFiltersAndRender();
+      } else if(msg.type === 'bought'){
+        const wasClosed = selectedListing && selectedListing.id === msg.id;
+        marketListings = marketListings.filter(x=>x.id!==msg.id);
+        if(wasClosed) closeOverlay('buyOv');
+        applyFiltersAndRender();
+      }
+    } catch(err){}
+  };
+  ws.onclose = () => {setTimeout(connectWebSocket, 3000);};
+  ws.onerror = () => {ws.close();};
 }
 
 document.getElementById('searchClear').onclick=clearMainSearch;
@@ -737,26 +616,21 @@ document.getElementById('buyConfirmBtn').onclick=showConfirm;
 document.getElementById('confirmNoBtn').onclick=cancelBuy;
 document.getElementById('confirmYesBtn').onclick=executeBuy;
 document.getElementById('plusBtn').onclick=openDeposit;
-document.getElementById('navProfileBtn').onclick=function(e){e.preventDefault();window.location.href='profle.html';};
-document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';selectedDep = null; renderDepGrid(); document.activeElement?.blur();};
-document.getElementById('customAmount').addEventListener('input', function(e){this.value = this.value.replace(/[^0-9]/g,'');});
-document.getElementById('customAmount').addEventListener('blur',function(){let val=this.value.trim();if(val===''){selectedDep=null;renderDepGrid();return;}let num=parseFloat(val);if(isNaN(num)){this.value='';return;}num=Math.round(num);if(num<50)num=50;if(num>1000000)num=1000000;this.value=num;selectedDep=num;renderDepGrid();});
-document.getElementById('fpNumberInput').addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'');tempFilters.number=this.value;});
+document.getElementById('customClear').onclick=()=>{document.getElementById('customAmount').value='';selectedDep=null;renderDepGrid();document.activeElement?.blur();};
+document.getElementById('customAmount').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'');});
+document.getElementById('fpNumberInput').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'');tempFilters.number=this.value;});
 document.getElementById('fpNumberClear').onclick=()=>{document.getElementById('fpNumberInput').value='';tempFilters.number='';document.activeElement?.blur();};
-document.getElementById('fpPriceFrom').addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'');tempFilters.priceFrom=this.value;});
-document.getElementById('fpPriceTo').addEventListener('input',function(e){this.value=this.value.replace(/[^0-9]/g,'');tempFilters.priceTo=this.value;});
-document.querySelectorAll('.price-clear').forEach(btn=>{
-  btn.onclick=()=>{const target=document.getElementById(btn.dataset.target);if(target){target.value='';if(btn.dataset.target==='fpPriceFrom') tempFilters.priceFrom='';else tempFilters.priceTo='';}document.activeElement?.blur();};
-});
+document.getElementById('fpPriceFrom').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'');tempFilters.priceFrom=this.value;});
+document.getElementById('fpPriceTo').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'');tempFilters.priceTo=this.value;});
+document.querySelectorAll('.price-clear').forEach(btn=>{btn.onclick=()=>{const t=document.getElementById(btn.dataset.target);if(t){t.value='';if(btn.dataset.target==='fpPriceFrom')tempFilters.priceFrom='';else tempFilters.priceTo='';}document.activeElement?.blur();};});
 document.getElementById('fpSearch').oninput=()=>renderFpContent();
 document.getElementById('fpSortBtn').onclick=()=>{fpSortAsc=!fpSortAsc;document.getElementById('fpSortIcon').className=fpSortAsc?'fas fa-sort-amount-up':'fas fa-sort-amount-down';renderFpContent();};
 document.getElementById('depOv').onclick=e=>{if(e.target===document.getElementById('depOv'))closeOverlay('depOv');};
 document.getElementById('buyOv').onclick=e=>{if(e.target===document.getElementById('buyOv'))closeOverlay('buyOv');};
 document.getElementById('menuOv').onclick=e=>{if(e.target===document.getElementById('menuOv'))closeOverlay('menuOv');};
 
-loadMarketListings();
-updateSellerInfoInListings();
-applyFiltersAndRender();
+loadMarketFromServer();
+connectWebSocket();
 </script>
 </body>
 </html>
