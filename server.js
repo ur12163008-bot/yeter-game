@@ -1,54 +1,149 @@
-<!-- ЭКРАН ЗАГРУЗКИ -->
-<div id="loadingScreen">
-  <div class="loading-logo"></div>
-</div>
+const express = require('express');
+const TelegramBot = require('node-telegram-bot-api');
+const WebSocket = require('ws');
+const path = require('path');
 
-<style>
-/* ЭКРАН ЗАГРУЗКИ */
-#loadingScreen {
-  position: fixed;
-  inset: 0;
-  background: #07070e;
-  z-index: 99999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
-  opacity: 1;
-  visibility: visible;
-}
-#loadingScreen.hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-.loading-logo {
-  width: 130px;
-  height: 130px;
-  border-radius: 30px;
-  background: url('https://i.ibb.co/Q7LXwRXn/IMG-0299.png') center/cover;
-  background-color: transparent;
-  /* Убраны рамки */
-  border: none;
-  /* Анимация пульсации с синим свечением */
-  animation: pulseGlow 2s ease-in-out infinite;
-}
-@keyframes pulseGlow {
-  0%, 100% { 
-    box-shadow: 0 0 30px rgba(138, 43, 226, 0.4), 0 0 60px rgba(72, 20, 140, 0.2);
-    transform: scale(1);
-  }
-  50% { 
-    box-shadow: 0 0 50px #3a1c71, 0 0 100px #2a0a5e, 0 0 150px rgba(88, 10, 148, 0.3);
-    transform: scale(1.05);
-  }
-}
-</style>
+const app = express();
+const PORT = process.env.PORT || 3000;
+const BOT_TOKEN = process.env.BOT_TOKEN || '8768464184:AAE32xJKSIhTM-USAbWAnlnr3eP9AIq_Vb0';
 
-<script>
-// Скрыть экран загрузки через 3 секунды
-setTimeout(() => {
-  document.getElementById('loadingScreen').classList.add('hidden');
-}, 3000);
-</script>
+// ========== НАСТРОЙКИ ==========
+const WELCOME_PHOTO = 'https://i.yapx.ru/dXczP.jpg';
+const COMMUNITY_URL = 'https://t.me/tyron_community';
+const SITE_URL = 'https://yeter-game.onrender.com/index.html';
+
+// ========== ХРАНИЛИЩЕ МАРКЕТА ==========
+let marketListings = [];
+let connectedClients = new Set();
+
+// ========== БОТ ==========
+const bot = new TelegramBot(BOT_TOKEN, { polling: true });
+
+bot.onText(/\/start/, async (msg) => {
+  const chatId = msg.chat.id;
+  const firstName = msg.from.first_name || 'игрок';
+  
+  const caption = 
+    `Добро пожаловать в Tyron Market\n` +
+    `Покупай и продовай NFT подарки\n` +
+    `Удачных сделок!`;
+  
+  try {
+    await bot.sendPhoto(chatId, WELCOME_PHOTO, {
+      caption: caption,
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: 'Открыть Tyron Market', web_app: { url: SITE_URL } }],
+          [{ text: 'Присоеденится к сообществу', url: COMMUNITY_URL }]
+        ]
+      }
+    });
+  } catch (error) {
+    console.error('Error sending photo:', error.message);
+    await bot.sendMessage(chatId, caption, {
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: 'Открыть Tyron Market', web_app: { url: SITE_URL } }],
+          [{ text: 'Присоеденится к сообществу', url: COMMUNITY_URL }]
+        ]
+      }
+    });
+  }
+});
+
+// ========== API ДЛЯ МАРКЕТА ==========
+app.use(express.json());
+app.use(express.static(__dirname));
+
+// Получить все листинги
+app.get('/api/market', (req, res) => {
+  res.json({ listings: marketListings });
+});
+
+// Выставить NFT на продажу
+app.post('/api/market/list', (req, res) => {
+  const listing = req.body;
+  
+  if (!listing.id) {
+    listing.id = Date.now() + Math.floor(Math.random() * 1000);
+  }
+  
+  marketListings.push(listing);
+  
+  broadcast({
+    type: 'listed',
+    listing: listing
+  });
+  
+  console.log(`📦 NFT "${listing.nftName}" listed by ${listing.sellerName}`);
+  res.json({ success: true, id: listing.id });
+});
+
+// Купить NFT
+app.post('/api/market/buy', (req, res) => {
+  const { id, buyerId } = req.body;
+  
+  const index = marketListings.findIndex(l => l.id == id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'ERROR' });
+  }
+  
+  const listing = marketListings[index];
+  
+  if (listing.sellerId === buyerId) {
+    return res.status(400).json({ error: 'Cannot buy your own NFT' });
+  }
+  
+  marketListings.splice(index, 1);
+  
+  broadcast({
+    type: 'bought',
+    id: id,
+    listing: listing
+  });
+  
+  console.log(`💰 NFT "${listing.nftName}" bought by ${buyerId}`);
+  res.json({ success: true });
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// ========== WEBSOCKET СЕРВЕР ==========
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📡 WebSocket running on ws://0.0.0.0:${PORT}`);
+});
+
+const wss = new WebSocket.Server({ server });
+
+function broadcast(data) {
+  const message = JSON.stringify(data);
+  connectedClients.forEach(client => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(message);
+    }
+  });
+}
+
+wss.on('connection', (ws, req) => {
+  console.log('🔌 New client connected');
+  connectedClients.add(ws);
+  
+  // Отправляем текущее состояние маркета
+  ws.send(JSON.stringify({
+    type: 'init',
+    listings: marketListings
+  }));
+  
+  ws.on('close', () => {
+    console.log('🔌 Client disconnected');
+    connectedClients.delete(ws);
+  });
+  
+  ws.on('error', (err) => {
+    console.error('WebSocket error:', err);
+    connectedClients.delete(ws);
+  });
+});
