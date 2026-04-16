@@ -12,6 +12,47 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 html,body{height:100%;overflow:hidden;background:#07070e}
 body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:center;overflow-x:hidden}
+
+/* ЭКРАН ЗАГРУЗКИ */
+#loadingScreen {
+  position: fixed;
+  inset: 0;
+  background: #07070e;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+  opacity: 1;
+  visibility: visible;
+}
+#loadingScreen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.loading-logo {
+  width: 140px;
+  height: 140px;
+  border-radius: 32px;
+  background: url('https://i.ibb.co/Q7LXwRXn/IMG-0299.png') center/cover;
+  background-color: transparent;
+  border: none;
+  box-shadow: 0 0 40px rgba(138, 43, 226, 0.6), 0 0 80px rgba(72, 20, 140, 0.3);
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+@keyframes pulseGlow {
+  0%, 100% { 
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.5), 0 0 60px rgba(72, 20, 140, 0.3);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 60px #6a0dad, 0 0 120px #3a1c71, 0 0 180px rgba(88, 10, 148, 0.4);
+    transform: scale(1.06);
+  }
+}
+
+/* ОСНОВНОЙ СТИЛЬ */
 .app{max-width:440px;width:100%;height:100dvh;display:flex;flex-direction:column;position:relative;z-index:1;overflow:hidden}
 .bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 40% 50%,#0a0e1a 0%,#03050a 70%,#000103 100%)}
 .orb{position:fixed;border-radius:50%;filter:blur(80px);z-index:0;pointer-events:none}
@@ -19,6 +60,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .orb2{width:260px;height:260px;background:radial-gradient(circle,rgba(30,10,100,.35) 0%,transparent 70%);bottom:90px;left:-50px;animation:orb2f 11s ease-in-out infinite}
 @keyframes orb1f{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-22px,22px) scale(1.12)}}
 @keyframes orb2f{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(18px,-18px) scale(1.09)}}
+
 .phdr{display:flex;align-items:center;justify-content:space-between;margin:16px 20px 18px;gap:12px;flex-shrink:0}
 .phdr-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
 .ava{width:50px;height:50px;border-radius:18px;background:rgba(106,13,173,.5);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;border:.5px solid rgba(184,122,255,.5);flex-shrink:0;overflow:hidden}
@@ -31,6 +73,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .plus-btn:active{transform:scale(.92)}
 .menu-circle{width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid rgba(184,122,255,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;cursor:pointer}
 .menu-circle:active{transform:scale(.92)}
+
 .search-row{display:flex;gap:10px;align-items:center;padding:0 20px 12px;flex-shrink:0}
 .search-wrapper{position:relative;flex:1}
 .search-box{width:100%;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:60px;padding:10px 14px}
@@ -42,13 +85,17 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .icon-btn{background:rgba(255,255,255,.06);border:1px solid rgba(184,122,255,.28);border-radius:60px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:#b87aff;font-size:15px;flex-shrink:0;cursor:pointer}
 .icon-btn:active{transform:scale(.95)}
 .icon-btn.has-filter{border-color:#b87aff;box-shadow:0 0 10px rgba(184,122,255,.25)}
+
 .scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:30px}
 .scroll-area::-webkit-scrollbar{width:3px}
 .scroll-area::-webkit-scrollbar-thumb{background:rgba(184,122,255,.35);border-radius:3px}
+
 .nft-grid{padding:0 20px 110px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .nft-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px;overflow:hidden;cursor:pointer}
 .nft-card:active{transform:scale(.98)}
-@media (hover:hover) and (pointer:fine){.nft-card:hover .nft-img img{transform:scale(1.02)}}
+@media (hover: hover) and (pointer: fine) {
+  .nft-card:hover .nft-img img{transform:scale(1.02)}
+}
 .nft-img{position:relative;padding-top:100%;background:rgba(40,25,65,.6);margin:2px 2px 0 2px;border-radius:12px 12px 0 0}
 .nft-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0;transition:transform .2s ease}
 .nft-info{padding:10px 10px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -57,11 +104,13 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .nft-price{font-size:15px;font-weight:800;color:#fff}
 .seller-dot{width:32px;height:32px;border-radius:50%;background:rgba(88,10,148,.5);border:1px solid rgba(184,122,255,.5);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#b87aff;flex-shrink:0;overflow:hidden}
 .seller-dot img{width:100%;height:100%;object-fit:cover}
+
 .bnav{position:fixed;bottom:18px;left:18px;right:18px;max-width:404px;margin:0 auto;background:rgba(12,12,22,.95);border:1px solid rgba(184,122,255,.16);border-radius:28px;display:flex;justify-content:space-around;padding:8px 16px;z-index:100}
 .ni{display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,.48);font-size:10px;font-weight:500;cursor:pointer;padding:6px 14px;border-radius:22px;min-width:70px;text-decoration:none;background:transparent;border:none}
 .ni:active{transform:scale(.96)}
 .ni i{font-size:20px}
 .ni.on{background:rgba(106,13,173,.2);color:#b87aff}
+
 .ov{position:fixed;inset:0;background:rgba(0,0,0,0);backdrop-filter:blur(10px);z-index:2000;display:none;align-items:flex-end;justify-content:center}
 .ov.show{display:flex}
 .sheet{max-width:420px;width:94%;background:rgba(20,18,35,.98);border:0.5px solid rgba(184,122,255,.3);border-radius:26px 26px 0 0;padding:20px 22px 30px;transform:translateY(100%);transition:transform .45s cubic-bezier(0.16,1,0.3,1);max-height:88vh;overflow-y:auto}
@@ -70,6 +119,7 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .sheet-title{font-size:19px;font-weight:700}
 .close-btn{color:#b87aff;font-size:22px;cursor:pointer;background:none;border:none;padding:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
 .close-btn:active{transform:scale(.9)}
+
 .dep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:20px}
 .dep-amount{padding:13px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);text-align:center;font-size:14px;color:rgba(255,255,255,.85);cursor:pointer}
 .dep-amount.sel{background:rgba(88,10,148,.45);border-color:#b87aff;color:#fff}
@@ -80,8 +130,9 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .custom-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.5);font-size:14px;cursor:pointer;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:50%}
 .custom-clear:active{transform:translateY(-50%) scale(.92)}
 .dep-info{display:flex;justify-content:space-between;margin-bottom:20px;background:rgba(255,255,255,.04);padding:15px 18px;border-radius:18px}
-.purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border-radius:60px;padding:15px;color:#fff;font-weight:700;font-size:16px;border:none;cursor:pointer}
+.purple-btn{width:100%;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border-radius:60px;padding:15px;color:#fff;font-weight:700;font-size:16px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .purple-btn:active{transform:scale(.97)}
+
 .detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.1)}
 .detail-row:last-child{border-bottom:none}
 .detail-label{color:rgba(255,255,255,.55);font-weight:500}
@@ -93,7 +144,9 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .confirm-no{flex:1;background:transparent;border:1.5px solid #b87aff;border-radius:60px;padding:12px;color:#b87aff;font-size:15px;font-weight:600;cursor:pointer}
 .confirm-yes{flex:1;background:linear-gradient(135deg,rgba(88,10,148,.95),rgba(148,38,255,.8));border:none;border-radius:60px;padding:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
 .confirm-text{text-align:center;color:#aaa;font-size:14px;margin-bottom:12px}
+
 .buy-btn-price{display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
+
 #filterPanel{position:fixed;inset:0;background:rgba(8,8,18,.98);z-index:1500;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);pointer-events:none}
 #filterPanel.open{transform:translateY(0);pointer-events:auto}
 .fp-inner{max-width:440px;width:100%;margin:0 auto;display:flex;flex-direction:column;height:100%;overflow:hidden}
@@ -133,15 +186,23 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 .price-symbol{position:absolute;right:42px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.4);font-size:13px;pointer-events:none}
 .price-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.5);font-size:12px;cursor:pointer;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%}
 .price-clear:active{transform:translateY(-50%) scale(.9)}
+
 .empty-market{grid-column:1/-1;text-align:center;padding:40px 20px;color:rgba(255,255,255,.4)}
 .empty-market i{font-size:48px;color:#b87aff;opacity:.4;margin-bottom:16px;display:block}
 .empty-market p{font-size:14px}
+
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(26,24,56,.97);border:1px solid rgba(184,122,255,.3);border-radius:16px;padding:10px 18px;font-size:14px;z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
 .toast.error{background:rgba(184,77,77,.97);border-color:#ff8888}
 </style>
 </head>
 <body>
+
+<!-- ЭКРАН ЗАГРУЗКИ - ТОЛЬКО ЛОГОТИП БЕЗ ТЕКСТА И РАМОК -->
+<div id="loadingScreen">
+  <div class="loading-logo"></div>
+</div>
+
 <div class="bg"></div>
 <div class="orb orb1"></div>
 <div class="orb orb2"></div>
@@ -278,6 +339,11 @@ body{font-family:'Inter',sans-serif;color:#fff;display:flex;justify-content:cent
 </div>
 
 <script>
+// Скрыть экран загрузки через 3 секунды
+setTimeout(() => {
+  document.getElementById('loadingScreen').classList.add('hidden');
+}, 3000);
+
 const GITHUB = 'https://raw.githubusercontent.com/ur12163008-bot/yeter-game/main/nft/';
 const ALL_NFT_NAMES = ["Artisan Brick","B-Day Candle","Berry Box","Big Year","Bling Binky","Bonded Ring","Bow Tie","Bunny Muffin","Candy Cane","Clover Pin","Cookie Heart","Crystal Ball","Cupid Charm","Desk Calendar","Diamond Ring","Easter Egg","Electric Skull","Eternal Candle","Eternal Rose","Evil Eye","Faith Amulet","Flying Broom","Fresh Socks","Gem Signet","Genie Lamp","Ginger Cookie","Hanging Star","Heroic Helmet","Hex Pot","Holiday Drink","Homemade Cake","Hypno Lollipop","Ice Cream","Input Key","Instant Ramen","Ionic Dryer","Jack-in-the-Box","Jelly Bunny","Jester Hat","Jingle Bells","Jolly Chimp","Joyful Bundle","Khabibs Papakha","Kissed Frog","Light Sword","Lol Pop","Lon Gem","Love Candle","Love Potion","Low Rider","Lunar Snake","Lush Bouquet","Mad Pumpkin","Magic Potion","Mini Oscar","Money Pot","Moon Pendant","Mousse Cake","Nail Bracelet","Neko Helmet","Perfume Bottle","Pet Snake","Pretty Posy","Rare Bird","Record Player","Restless Jar","Sakura Flower","Santa Hat","Sharp Tongue","Signet Ring","Skull Flower","Sky Stilettos","Sleigh Bell","Snake Box","Snoop Cigar","Snow Globe","Snow Mittens","Spiced Wine","Spring Basket","Spy Agaric","Star Notepad","Stellar Rocket","Swag Bag","Swiss Watch","Tama Gadget","Top Hat","Toy Bear","Trapped Heart","UFC Strike","Valentine Box","Victory Medal","Vintage Cigar","Voodoo Doll","Westside Sign","Whip Cupcake","Winter Wreath","Witch Hat","Xmas Stocking"];
 const PATTERNS = ["Классический","Современный","Винтажный","Неоновый"];
@@ -287,8 +353,8 @@ const BG_IMAGES = {"Тёмный":"https://images.unsplash.com/photo-15347966369
 const MODEL_ICONS = {"2D":"https://images.unsplash.com/photo-1607706189992-eae578626c86?w=80&h=80&fit=crop","3D":"https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=80&h=80&fit=crop","Pixel":"https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=80&h=80&fit=crop","Vector":"https://images.unsplash.com/photo-1461344577544-4e5dc9487184?w=80&h=80&fit=crop"};
 const PATTERN_IMAGES = {"Классический":"https://images.unsplash.com/photo-1519741497674-611481863552?w=80&h=80&fit=crop","Современный":"https://images.unsplash.com/photo-1464802686167-b939a6910659?w=80&h=80&fit=crop","Винтажный":"https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=80&h=80&fit=crop","Неоновый":"https://images.unsplash.com/photo-1518235506717-e1ed3306a89b?w=80&h=80&fit=crop"};
 const DEP_AMOUNTS = [100,200,500,1000,2000,5000];
-const MARKET_K = 'nft_market_listings_v2';
 const BAL_K = 'nft_balance';
+const INV_K = 'nft_inventory';
 
 let marketListings = [];
 let currentUserId = null;
@@ -302,6 +368,7 @@ let activeFilters = {collection:[],model:[],background:[],pattern:[],number:'',p
 let selectedDep = null;
 let selectedListing = null;
 let fpTab = 'collection', fpSortAsc = true, fpModelNft = null;
+let ws = null;
 
 function imgUrl(name){return GITHUB + encodeURIComponent(name+'.png');}
 function fmtNum(n){return n.toLocaleString('ru-RU');}
@@ -345,26 +412,9 @@ if(tg){
   currentUserAvatarChar = 'И';
 }
 
-// Загрузка баланса
 const savedBalance = localStorage.getItem(BAL_K);
 if(savedBalance !== null) balance = parseInt(savedBalance) || 0;
 renderHeader();
-
-// Загрузка маркета
-function loadMarketListings(){
-  const stored = localStorage.getItem(MARKET_K);
-  if(stored){
-    try {
-      marketListings = JSON.parse(stored);
-      if(!Array.isArray(marketListings)) marketListings = [];
-    } catch(e) {
-      marketListings = [];
-    }
-  } else {
-    marketListings = [];
-  }
-  applyFiltersAndRender();
-}
 
 function hasActiveFilters(){
   return document.getElementById('searchInput').value.trim() !== '' ||
@@ -425,8 +475,12 @@ function clearMainSearch(){document.getElementById('searchInput').value='';apply
 function toggleSort(){sortAsc=!sortAsc;document.getElementById('sortIcon').className=sortAsc?'fas fa-sort-amount-up':'fas fa-sort-amount-down';applyFiltersAndRender();}
 
 window.openBuy = function(id){
-  const l = marketListings.find(x=>x.id===id);
-  if(!l) return;
+  const l = marketListings.find(x=>x.id==id);
+  if(!l) {
+    showToast('ERROR: NFT уже куплен', true);
+    applyFiltersAndRender();
+    return;
+  }
   if(l.sellerId === currentUserId){showToast('Нельзя купить свой NFT', true);return;}
   selectedListing = l;
   document.getElementById('buyTitle').textContent = l.nftName;
@@ -450,32 +504,54 @@ window.openBuy = function(id){
 
 function showConfirm(){
   if(!selectedListing) return;
+  if(!marketListings.find(x=>x.id==selectedListing.id)) {
+    showToast('ERROR: NFT уже куплен', true);
+    closeOverlay('buyOv');
+    applyFiltersAndRender();
+    return;
+  }
   if(selectedListing.sellerId === currentUserId){showToast('Нельзя купить свой NFT', true);closeOverlay('buyOv');return;}
   document.getElementById('confirmBlock').style.display = 'block';
   document.getElementById('buyConfirmBtn').style.display = 'none';
 }
 function cancelBuy(){closeOverlay('buyOv');}
 
-function executeBuy(){
-  if(!selectedListing||balance<selectedListing.price){showToast('Недостаточно средств',true);closeOverlay('buyOv');return;}
-  if(selectedListing.sellerId === currentUserId){showToast('Нельзя купить свой NFT', true);closeOverlay('buyOv');return;}
+async function executeBuy(){
+  if(!selectedListing){closeOverlay('buyOv');return;}
+  if(balance < selectedListing.price){showToast('Недостаточно средств', true);closeOverlay('buyOv');return;}
   
-  balance -= selectedListing.price;
-  saveBalance();
-  renderHeader();
+  const listingId = selectedListing.id;
+  const listingName = selectedListing.nftName;
+  const listingPrice = selectedListing.price;
   
-  marketListings = marketListings.filter(x=>x.id!==selectedListing.id);
-  localStorage.setItem(MARKET_K, JSON.stringify(marketListings));
-  window.dispatchEvent(new StorageEvent('storage', {key: MARKET_K, newValue: JSON.stringify(marketListings)}));
-  
-  let inv = JSON.parse(localStorage.getItem('nft_inventory') || '[]');
-  inv.push({id: Date.now(), name: selectedListing.nftName, price: selectedListing.price, purchaseTime: Date.now()});
-  localStorage.setItem('nft_inventory', JSON.stringify(inv));
-  window.dispatchEvent(new StorageEvent('storage', {key: 'nft_inventory', newValue: JSON.stringify(inv)}));
-  
-  showToast('Куплен ' + selectedListing.nftName);
-  applyFiltersAndRender();
-  closeOverlay('buyOv');
+  try {
+    const resp = await fetch('/api/market/buy', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({id: listingId, buyerId: currentUserId})
+    });
+    const data = await resp.json();
+    
+    if(data.error === 'ERROR' || !resp.ok) {
+      showToast('ERROR: NFT уже куплен', true);
+      applyFiltersAndRender();
+      closeOverlay('buyOv');
+      return;
+    }
+    
+    balance -= listingPrice;
+    saveBalance();
+    renderHeader();
+    
+    let inv = JSON.parse(localStorage.getItem(INV_K) || '[]');
+    inv.push({id: Date.now(), name: listingName, price: listingPrice, purchaseTime: Date.now()});
+    localStorage.setItem(INV_K, JSON.stringify(inv));
+    
+    showToast('Куплен ' + listingName);
+    closeOverlay('buyOv');
+  } catch(e) {
+    showToast('ERROR: Ошибка соединения', true);
+  }
 }
 
 function openDeposit(){
@@ -487,43 +563,28 @@ function openDeposit(){
   ov.classList.add('show');
   setTimeout(()=>{sheet.style.transform='translateY(0)';},10);
 }
-
 function renderDepGrid(){
   document.getElementById('depGrid').innerHTML = DEP_AMOUNTS.map(a=>`<div class="dep-amount${a===selectedDep?' sel':''}" onclick="selectPreset(${a})">${fmtNum(a)} ₽</div>`).join('');
 }
-
-window.selectPreset = function(amt){
-  selectedDep = amt;
-  renderDepGrid();
-  document.getElementById('customAmount').value = amt;
-};
-
+window.selectPreset = function(amt){selectedDep=amt;renderDepGrid();document.getElementById('customAmount').value=amt;};
 function getFinalAmount(){
   let cv = document.getElementById('customAmount').value.trim();
-  if(cv===''){
-    if(selectedDep===null) return null;
-    return selectedDep;
-  }
+  if(cv===''){if(selectedDep===null)return null;return selectedDep;}
   let num = parseFloat(cv);
   if(isNaN(num)) return null;
   num = Math.round(num);
-  if(num < 50) num = 50;
-  if(num > 1000000) num = 1000000;
-  // Автоматически подставляем исправленное значение в поле
+  if(num<50) num=50;
+  if(num>1000000) num=1000000;
   document.getElementById('customAmount').value = num;
   return num;
 }
-
 function confirmDeposit(){
   const amt = getFinalAmount();
-  if(amt === null){showToast('Введите корректную сумму', true);return;}
-  balance += amt;
-  saveBalance();
-  renderHeader();
+  if(amt===null){showToast('Введите корректную сумму',true);return;}
+  balance += amt;saveBalance();renderHeader();
   showToast('Пополнено на ' + fmtNum(amt) + ' ₽');
   closeOverlay('depOv');
 }
-
 function closeOverlay(id){const ov=document.getElementById(id);const sheet=ov.querySelector('.sheet');sheet.style.transform='translateY(100%)';setTimeout(()=>ov.classList.remove('show'),300);}
 
 function initSwipeDismiss(overlayId){
@@ -611,18 +672,41 @@ function toggleSelectAll(key){
 }
 function toggleFilter(key,val){const arr=tempFilters[key];const idx=arr.indexOf(val);if(idx>=0)arr.splice(idx,1);else arr.push(val);if(key==='collection')fpModelNft=null;renderFpContent();}
 
-// Слушаем изменения в localStorage
-window.addEventListener('storage', function(e) {
-  if(e.key === MARKET_K){
-    loadMarketListings();
+async function loadMarketFromServer(){
+  try {
+    const resp = await fetch('/api/market');
+    const data = await resp.json();
+    marketListings = data.listings || [];
+    applyFiltersAndRender();
+  } catch(e) {
+    console.error('Failed to load market', e);
   }
-  if(e.key === BAL_K){
-    const saved = localStorage.getItem(BAL_K);
-    if(saved !== null) balance = parseInt(saved) || 0;
-    else balance = 0;
-    renderHeader();
-  }
-});
+}
+
+function connectWebSocket(){
+  const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  ws = new WebSocket(`${protocol}//${location.host}`);
+  ws.onopen = () => console.log('🔌 WebSocket connected');
+  ws.onmessage = (e) => {
+    try {
+      const msg = JSON.parse(e.data);
+      if(msg.type === 'init') {
+        marketListings = msg.listings || [];
+        applyFiltersAndRender();
+      } else if(msg.type === 'listed'){
+        marketListings.push(msg.listing);
+        applyFiltersAndRender();
+      } else if(msg.type === 'bought'){
+        const wasClosed = selectedListing && selectedListing.id == msg.id;
+        marketListings = marketListings.filter(x=>x.id!=msg.id);
+        if(wasClosed) closeOverlay('buyOv');
+        applyFiltersAndRender();
+      }
+    } catch(err){}
+  };
+  ws.onclose = () => {setTimeout(connectWebSocket, 3000);};
+  ws.onerror = () => {ws.close();};
+}
 
 document.getElementById('searchClear').onclick=clearMainSearch;
 document.getElementById('searchInput').oninput=()=>{applyFiltersAndRender();updateSearchClear();};
@@ -661,7 +745,6 @@ document.getElementById('depOv').onclick=e=>{if(e.target===document.getElementBy
 document.getElementById('buyOv').onclick=e=>{if(e.target===document.getElementById('buyOv'))closeOverlay('buyOv');};
 document.getElementById('menuOv').onclick=e=>{if(e.target===document.getElementById('menuOv'))closeOverlay('menuOv');};
 
-// Прокрутка колесиком в фильтрах
 const fpScroll = document.getElementById('fpScrollArea');
 if(fpScroll) {
   fpScroll.addEventListener('wheel', (e) => {
@@ -669,8 +752,8 @@ if(fpScroll) {
   }, { passive: true });
 }
 
-// Загружаем маркет при старте
-loadMarketListings();
+loadMarketFromServer();
+connectWebSocket();
 </script>
 </body>
 </html>
